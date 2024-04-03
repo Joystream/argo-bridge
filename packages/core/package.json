@@ -1,0 +1,14 @@
+{
+  "name": "@joystream/argo-core",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run src/index.ts"
+  },
+  "dependencies": {
+    "@safe-global/api-kit": "^2.2.0",
+    "@safe-global/protocol-kit": "^3.0.1",
+    "@safe-global/safe-core-sdk-types": "^4.0.1",
+    "ethers": "^6.11.1"
+  }
+}
