@@ -1,30 +1,30 @@
-import { ethers } from "ethers";
+import SafeApiKit from "@safe-global/api-kit"
 import Safe, {
   EthersAdapter,
   type SafeAccountConfig,
   SafeFactory,
-} from "@safe-global/protocol-kit";
-import SafeApiKit from "@safe-global/api-kit";
-import type { MetaTransactionData } from "@safe-global/safe-core-sdk-types";
+} from "@safe-global/protocol-kit"
+import type { MetaTransactionData } from "@safe-global/safe-core-sdk-types"
+import { ethers } from "ethers"
 
-const SAFE_ADDRESS = process.env.SAFE_ADDRESS!;
+const SAFE_ADDRESS = process.env.SAFE_ADDRESS!
 
-const RPC_URL = "https://eth-sepolia.public.blastapi.io";
-const provider = new ethers.JsonRpcProvider(RPC_URL);
+const RPC_URL = "https://eth-sepolia.public.blastapi.io"
+const provider = new ethers.JsonRpcProvider(RPC_URL)
 
 const owner1Signer = new ethers.Wallet(
   process.env.OWNER_1_PRIVATE_KEY!,
   provider,
-);
+)
 
 const ethAdapterOwner1 = new EthersAdapter({
   ethers,
   signerOrProvider: owner1Signer,
-});
+})
 
 const apiKit = new SafeApiKit({
   chainId: 11155111n,
-});
+})
 
 // const safe = await Safe.create({
 //   ethAdapter: ethAdapterOwner1,
@@ -58,11 +58,11 @@ const apiKit = new SafeApiKit({
 //   senderSignature: sig.data,
 // });
 //
-const pendingTransactions = await apiKit.getPendingTransactions(SAFE_ADDRESS);
+const pendingTransactions = await apiKit.getPendingTransactions(SAFE_ADDRESS)
 // console.log(pendingTransactions.results);
 //
-const transaction = pendingTransactions.results[0];
-console.log(transaction);
+const transaction = pendingTransactions.results[0]
+console.log(transaction)
 
 //
 // const executeTxResponse = await safe.executeTransaction(safeTransaction);
