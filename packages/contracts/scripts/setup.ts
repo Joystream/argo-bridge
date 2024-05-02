@@ -10,10 +10,7 @@ async function main() {
     TIMELOCK_ADDRESS,
   )
 
-  const erc20 = await hre.viem.getContractAt(
-    "contracts/JoystreamERC20.sol:JoystreamERC20",
-    ERC20_ADDRESS,
-  )
+  const erc20 = await hre.viem.getContractAt("contracts/JoystreamERC20.sol:JoystreamERC20", ERC20_ADDRESS)
 
   const minterRole = await erc20.read.MINTER_ROLE()
 
@@ -28,11 +25,7 @@ async function main() {
     data,
   })
 
-  t// await timelock.write.schedule([
-  //   ERC20_ADDRESS,
-  //   0n,
-  //   data,
-  //   toHex(0, { size: 32 }),
+  t//   toHex(0, { size: 32 }), //   data, //   0n, //   ERC20_ADDRESS, // await timelock.write.schedule([
   //   toHex(0, { size: 32 }),
   //   30n,
   // ])
@@ -53,13 +46,7 @@ async function main() {
 
   // console.log(await timelock.read.getOperationState([operationHash]))
 
-  await timelock.write.execute([
-    ERC20_ADDRESS,
-    0n,
-    data,
-    toHex(0, { size: 32 }),
-    toHex(0, { size: 32 }),
-  ])
+  await timelock.write.execute([ERC20_ADDRESS, 0n, data, toHex(0, { size: 32 }), toHex(0, { size: 32 })])
 
   // for (const account of accounts) {
   //   console.log(account.account.address)

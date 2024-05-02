@@ -2,7 +2,8 @@
   "name": "@joystream/argo-contracts",
   "scripts": {
     "compile": "hardhat compile",
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
