@@ -4,8 +4,6 @@ import { buildModule } from "@nomicfoundation/hardhat-ignition/modules"
 const MIN_DELAY = 20
 
 const JoystreamEthModule = buildModule("JoystreamEth", (m) => {
-  // const unlockTime = m.getParameter("unlockTime", JAN_1ST_2030)
-  // const lockedAmount = m.getParameter("lockedAmount", ONE_GWEI)
   const minDelay = m.getParameter("minDelay", MIN_DELAY)
   const adminMultisig = m.getParameter("adminMultisig", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
 
