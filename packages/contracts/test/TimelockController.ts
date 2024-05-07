@@ -75,14 +75,15 @@ describe("TimelockController", function () {
         grantRoleCallData,
         predecessorHash,
         salt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx).to.be.revertedWithCustomError(timelock, "AccessControlUnauthorizedAccount")
     })
 
     it("Should not allow scheduling operations with too short delay", async function () {
-      const { timelock, timelockAsProposer, erc20, erc20Address, otherAccount } =
-        await loadFixture(deployTimelockedContracts)
+      const { timelock, timelockAsProposer, erc20, erc20Address, otherAccount } = await loadFixture(
+        deployTimelockedContracts
+      )
 
       const minterAddress = otherAccount.address
       const minterRole = await erc20.MINTER_ROLE()
@@ -97,14 +98,15 @@ describe("TimelockController", function () {
         grantRoleCallData,
         predecessorHash,
         salt,
-        INITIAL_MIN_DELAY - 1,
+        INITIAL_MIN_DELAY - 1
       )
       await expect(scheduleTx).to.be.revertedWithCustomError(timelock, "TimelockInsufficientDelay")
     })
 
     it("Should allow proposers to schedule operations", async function () {
-      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } =
-        await loadFixture(deployTimelockedContracts)
+      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } = await loadFixture(
+        deployTimelockedContracts
+      )
 
       const minterAddress = proposer.address
       const minterRole = await erc20.MINTER_ROLE()
@@ -119,14 +121,15 @@ describe("TimelockController", function () {
         grantRoleCallData,
         predecessorHash,
         salt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx).to.emit(timelock, "CallScheduled")
     })
 
     it("Should not allow scheduling the exact same operation twice", async function () {
-      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } =
-        await loadFixture(deployTimelockedContracts)
+      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } = await loadFixture(
+        deployTimelockedContracts
+      )
 
       const minterAddress = proposer.address
       const minterRole = await erc20.MINTER_ROLE()
@@ -141,7 +144,7 @@ describe("TimelockController", function () {
         grantRoleCallData,
         predecessorHash,
         salt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx).to.emit(timelock, "CallScheduled")
 
@@ -151,14 +154,15 @@ describe("TimelockController", function () {
         grantRoleCallData,
         predecessorHash,
         salt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx2).to.be.revertedWithCustomError(timelock, "TimelockUnexpectedOperationState")
     })
 
     it("Should allow scheduling same operation with different salt", async function () {
-      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } =
-        await loadFixture(deployTimelockedContracts)
+      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } = await loadFixture(
+        deployTimelockedContracts
+      )
 
       const minterAddress = proposer.address
       const minterRole = await erc20.MINTER_ROLE()
@@ -173,7 +177,7 @@ describe("TimelockController", function () {
         grantRoleCallData,
         predecessorHash,
         firstSalt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx).to.emit(timelock, "CallScheduled")
 
@@ -184,7 +188,7 @@ describe("TimelockController", function () {
         grantRoleCallData,
         predecessorHash,
         secondSalt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx2).to.emit(timelock, "CallScheduled")
     })
@@ -192,8 +196,9 @@ describe("TimelockController", function () {
 
   describe("Operations execution", function () {
     it("Should not allow operations to be executed before delay", async function () {
-      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } =
-        await loadFixture(deployTimelockedContracts)
+      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } = await loadFixture(
+        deployTimelockedContracts
+      )
 
       const minterAddress = proposer.address
       const minterRole = await erc20.MINTER_ROLE()
@@ -208,7 +213,7 @@ describe("TimelockController", function () {
         grantRoleCallData,
         predecessorHash,
         salt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx).to.emit(timelock, "CallScheduled")
 
@@ -217,8 +222,9 @@ describe("TimelockController", function () {
     })
 
     it("Should allow operations to be executed after delay", async function () {
-      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } =
-        await loadFixture(deployTimelockedContracts)
+      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } = await loadFixture(
+        deployTimelockedContracts
+      )
 
       const minterAddress = proposer.address
       const minterRole = await erc20.MINTER_ROLE()
@@ -233,7 +239,7 @@ describe("TimelockController", function () {
         grantRoleCallData,
         predecessorHash,
         salt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx).to.emit(timelock, "CallScheduled")
 
@@ -246,8 +252,9 @@ describe("TimelockController", function () {
     })
 
     it("Should not allow unknown operations to be executed", async function () {
-      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } =
-        await loadFixture(deployTimelockedContracts)
+      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } = await loadFixture(
+        deployTimelockedContracts
+      )
 
       const minterAddress = proposer.address
       const minterRole = await erc20.MINTER_ROLE()
@@ -261,8 +268,9 @@ describe("TimelockController", function () {
     })
 
     it("Should not allow operations to be executed twice", async function () {
-      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } =
-        await loadFixture(deployTimelockedContracts)
+      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } = await loadFixture(
+        deployTimelockedContracts
+      )
 
       const minterAddress = proposer.address
       const minterRole = await erc20.MINTER_ROLE()
@@ -277,7 +285,7 @@ describe("TimelockController", function () {
         grantRoleCallData,
         predecessorHash,
         salt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx).to.emit(timelock, "CallScheduled")
 
@@ -291,8 +299,9 @@ describe("TimelockController", function () {
     })
 
     it("Should not allow operations to be executed with pending predecessor", async function () {
-      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } =
-        await loadFixture(deployTimelockedContracts)
+      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } = await loadFixture(
+        deployTimelockedContracts
+      )
 
       const minterAddress = proposer.address
       const minterRole = await erc20.MINTER_ROLE()
@@ -307,7 +316,7 @@ describe("TimelockController", function () {
         grantRoleCallData,
         firstPredecessorHash,
         firstSalt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx).to.emit(timelock, "CallScheduled")
 
@@ -316,7 +325,7 @@ describe("TimelockController", function () {
         0n,
         grantRoleCallData,
         firstPredecessorHash,
-        firstSalt,
+        firstSalt
       )
       const secondSalt = hre.ethers.keccak256(hre.ethers.toUtf8Bytes("salt"))
       const scheduleTx2 = timelockAsProposer.schedule(
@@ -325,32 +334,33 @@ describe("TimelockController", function () {
         grantRoleCallData,
         secondPredecessorHash,
         secondSalt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx2).to.emit(timelock, "CallScheduled")
 
       await time.increase(INITIAL_MIN_DELAY)
 
       await expect(
-        timelock.execute(erc20Address, 0n, grantRoleCallData, secondPredecessorHash, secondSalt),
+        timelock.execute(erc20Address, 0n, grantRoleCallData, secondPredecessorHash, secondSalt)
       ).to.be.revertedWithCustomError(timelock, "TimelockUnexecutedPredecessor")
 
       await expect(timelock.execute(erc20Address, 0n, grantRoleCallData, firstPredecessorHash, firstSalt)).to.emit(
         timelock,
-        "CallExecuted",
+        "CallExecuted"
       )
 
       await expect(timelock.execute(erc20Address, 0n, grantRoleCallData, secondPredecessorHash, secondSalt)).to.emit(
         timelock,
-        "CallExecuted",
+        "CallExecuted"
       )
     })
   })
 
   describe("Operations cancellation", function () {
     it("Should not allow cancelling unknown operations", async function () {
-      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } =
-        await loadFixture(deployTimelockedContracts)
+      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } = await loadFixture(
+        deployTimelockedContracts
+      )
 
       const unknownOperationHash = hre.ethers.keccak256(hre.ethers.toUtf8Bytes("unknown"))
 
@@ -359,8 +369,9 @@ describe("TimelockController", function () {
     })
 
     it("Should not allow non-proposers to cancel operations", async function () {
-      const { timelock, timelockAsProposer, erc20, erc20Address, otherAccount } =
-        await loadFixture(deployTimelockedContracts)
+      const { timelock, timelockAsProposer, erc20, erc20Address, otherAccount } = await loadFixture(
+        deployTimelockedContracts
+      )
 
       const minterAddress = otherAccount.address
       const minterRole = await erc20.MINTER_ROLE()
@@ -375,7 +386,7 @@ describe("TimelockController", function () {
         grantRoleCallData,
         predecessorHash,
         salt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx).to.emit(timelock, "CallScheduled")
 
@@ -386,8 +397,9 @@ describe("TimelockController", function () {
     })
 
     it("Should allow proposers to cancel operations", async function () {
-      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } =
-        await loadFixture(deployTimelockedContracts)
+      const { timelock, timelockAsProposer, erc20, erc20Address, proposer } = await loadFixture(
+        deployTimelockedContracts
+      )
 
       const minterAddress = proposer.address
       const minterRole = await erc20.MINTER_ROLE()
@@ -402,7 +414,7 @@ describe("TimelockController", function () {
         grantRoleCallData,
         predecessorHash,
         salt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx).to.emit(timelock, "CallScheduled")
 
@@ -415,8 +427,9 @@ describe("TimelockController", function () {
 
   describe("Timelock management", function () {
     it("Should allow proposers to change min delay with a timelock", async function () {
-      const { timelock, timelockAddress, timelockAsProposer, erc20, erc20Address, proposer } =
-        await loadFixture(deployTimelockedContracts)
+      const { timelock, timelockAddress, timelockAsProposer, erc20, erc20Address, proposer } = await loadFixture(
+        deployTimelockedContracts
+      )
 
       const newMinDelay = 300
 
@@ -430,7 +443,7 @@ describe("TimelockController", function () {
         setMinDelayCallData,
         predecessorHash,
         salt,
-        INITIAL_MIN_DELAY,
+        INITIAL_MIN_DELAY
       )
       await expect(scheduleTx).to.emit(timelock, "CallScheduled")
 

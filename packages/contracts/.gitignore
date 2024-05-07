@@ -12,3 +12,6 @@ node_modules
 # solidity-coverage files
 /coverage
 /coverage.json
+
+# Ignore local hardhat deployments
+/ignition/deployments/chains-31337

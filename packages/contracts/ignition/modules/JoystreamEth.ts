@@ -1,25 +1,109 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules"
+import { ethers } from "ethers"
 
-// 7 days
-const MIN_DELAY = 20
+export const HARDCODED_TIMELOCK_DELAY = 120n
 
 const JoystreamEthModule = buildModule("JoystreamEth", (m) => {
-  const minDelay = m.getParameter("minDelay", MIN_DELAY)
-  const adminMultisig = m.getParameter("adminMultisig", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
+  const deployer = m.getAccount(0)
 
-  const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
+  // const timelockDelay = m.getParameter("timelockDelay")
+  const bridgeAdmin = m.getParameter("bridgeAdmin")
+  const bridgeOperator = m.getParameter("bridgeOperator")
+  const bridgeFee = m.getParameter("bridgeFee")
+  const mintingLimitPeriodLengthBlocks = m.getParameter("mintingLimitPeriodLengthBlocks")
+  const mintingLimitPerPeriod = m.getParameter("mintingLimitPerPeriod")
 
-  const proposers = [adminMultisig]
-  const executors = [ZERO_ADDRESS] // allow anyone to execute
-  const admin = ZERO_ADDRESS // skip admin
+  // set deployer as the initial bridgeAdmin for the initial setup
+  const joystreamErc20 = m.contract("JoystreamERC20", [deployer])
+  const argoBridge = m.contract(
+    "ArgoBridgeV1",
+    [deployer, joystreamErc20, bridgeFee, mintingLimitPeriodLengthBlocks, mintingLimitPerPeriod],
+    {
+      after: [joystreamErc20],
+    }
+  )
+  const erc20MinterRole = m.staticCall(joystreamErc20, "MINTER_ROLE")
+  const erc20AdminRole = m.staticCall(joystreamErc20, "DEFAULT_ADMIN_ROLE")
+  const bridgeOperatorRole = m.staticCall(argoBridge, "OPERATOR_ROLE")
+  const bridgeAdminRole = m.staticCall(argoBridge, "DEFAULT_ADMIN_ROLE")
 
-  const timelockController = m.contract("JoyTimelockController", [minDelay, proposers, executors, admin], {})
+  const grantMinterCall = m.call(joystreamErc20, "grantRole", [erc20MinterRole, argoBridge], { after: [argoBridge] })
+  const grantOperatorCall = m.call(argoBridge, "grantRole", [bridgeOperatorRole, bridgeOperator])
 
-  const joystreamErc20 = m.contract("JoystreamERC20", [timelockController], {
+  const timelockProposers = [deployer, bridgeAdmin] // temporarily allow bridgeAdmin to propose for the initial setup
+  const timelockExecutors = [ethers.ZeroAddress] // allow anyone to execute
+  const timelockAdmin = deployer // set deployer as temporary admin for the initial setup
+
+  // use 0 for initial timelock delay to allow immediate execution for the initial setup
+  const timelockController = m.contract(
+    "TimelockController",
+    [0, timelockProposers, timelockExecutors, timelockAdmin],
+    {
+      after: [grantMinterCall, grantOperatorCall],
+    }
+  )
+  const timelockAdminRole = m.staticCall(timelockController, "DEFAULT_ADMIN_ROLE")
+  const timelockProposerRole = m.staticCall(timelockController, "PROPOSER_ROLE")
+  const timelockCancellerRole = m.staticCall(timelockController, "CANCELLER_ROLE")
+
+  // set timelock as admin of the ERC20 and the bridge
+  const setErc20AdminCall = m.call(joystreamErc20, "grantRole", [erc20AdminRole, timelockController], {
     after: [timelockController],
+    id: "setErc20AdminCall",
+  })
+  const setBridgeAdminCall = m.call(argoBridge, "grantRole", [bridgeAdminRole, timelockController], {
+    after: [timelockController],
+    id: "setBridgeAdminCall",
   })
 
-  return { timelockController, joystreamErc20 }
+  // revoke temporary deployer admin role
+  const revokeErc20AdminCall = m.call(joystreamErc20, "revokeRole", [erc20AdminRole, deployer], {
+    after: [setErc20AdminCall],
+  })
+  const revokeBridgeAdminCall = m.call(argoBridge, "revokeRole", [bridgeAdminRole, deployer], {
+    after: [setBridgeAdminCall],
+  })
+
+  // set final timelock delay
+  const timelockAbi = ["function updateDelay(uint256 newDelay) external"]
+  const timelockInterface = new ethers.Interface(timelockAbi)
+  // TODO: use ignition parameter instead of the hardcoded value
+  const updateDelayCallData = timelockInterface.encodeFunctionData("updateDelay", [HARDCODED_TIMELOCK_DELAY])
+
+  const proposeUpdateDelayCall = m.call(
+    timelockController,
+    "schedule",
+    [timelockController, 0n, updateDelayCallData, ethers.ZeroHash, ethers.ZeroHash, 0n],
+    {
+      after: [revokeErc20AdminCall, revokeBridgeAdminCall],
+    }
+  )
+  m.call(
+    timelockController,
+    "execute",
+    [timelockController, 0n, updateDelayCallData, ethers.ZeroHash, ethers.ZeroHash],
+    {
+      after: [proposeUpdateDelayCall],
+    }
+  )
+
+  // revoke deployer timelock proposer and canceller roles
+  const revokeTimelockProposerCall = m.call(timelockController, "revokeRole", [timelockProposerRole, deployer], {
+    after: [proposeUpdateDelayCall],
+    id: "revokeTimelockProposerCall",
+  })
+  const revokeTimelockCancellerCall = m.call(timelockController, "revokeRole", [timelockCancellerRole, deployer], {
+    after: [proposeUpdateDelayCall],
+    id: "revokeTimelockCancellerCall",
+  })
+
+  // revoke deployer timelock admin role
+  m.call(timelockController, "revokeRole", [timelockAdminRole, deployer], {
+    after: [revokeTimelockProposerCall, revokeTimelockCancellerCall],
+    id: "revokeTimelockAdminCall",
+  })
+
+  return { timelockController, joystreamErc20, argoBridge }
 })
 
 export default JoystreamEthModule
