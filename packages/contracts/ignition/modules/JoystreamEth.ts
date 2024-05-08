@@ -20,7 +20,7 @@ const JoystreamEthModule = buildModule("JoystreamEth", (m) => {
     [deployer, joystreamErc20, bridgeFee, mintingLimitPeriodLengthBlocks, mintingLimitPerPeriod],
     {
       after: [joystreamErc20],
-    }
+    },
   )
   const erc20MinterRole = m.staticCall(joystreamErc20, "MINTER_ROLE")
   const erc20AdminRole = m.staticCall(joystreamErc20, "DEFAULT_ADMIN_ROLE")
@@ -40,7 +40,7 @@ const JoystreamEthModule = buildModule("JoystreamEth", (m) => {
     [0, timelockProposers, timelockExecutors, timelockAdmin],
     {
       after: [grantMinterCall, grantOperatorCall],
-    }
+    },
   )
   const timelockAdminRole = m.staticCall(timelockController, "DEFAULT_ADMIN_ROLE")
   const timelockProposerRole = m.staticCall(timelockController, "PROPOSER_ROLE")
@@ -70,21 +70,21 @@ const JoystreamEthModule = buildModule("JoystreamEth", (m) => {
   // TODO: use ignition parameter instead of the hardcoded value
   const updateDelayCallData = timelockInterface.encodeFunctionData("updateDelay", [HARDCODED_TIMELOCK_DELAY])
 
-  const proposeUpdateDelayCall = m.call(
+  const proposeUpdateDelayCall = m.call(timelockController, "schedule", [
     timelockController,
-    "schedule",
-    [timelockController, 0n, updateDelayCallData, ethers.ZeroHash, ethers.ZeroHash, 0n],
-    {
-      after: [revokeErc20AdminCall, revokeBridgeAdminCall],
-    }
-  )
+    0n,
+    updateDelayCallData,
+    ethers.ZeroHash,
+    ethers.ZeroHash,
+    0n,
+  ])
   m.call(
     timelockController,
     "execute",
     [timelockController, 0n, updateDelayCallData, ethers.ZeroHash, ethers.ZeroHash],
     {
-      after: [proposeUpdateDelayCall],
-    }
+      after: [proposeUpdateDelayCall, revokeErc20AdminCall, revokeBridgeAdminCall],
+    },
   )
 
   // revoke deployer timelock proposer and canceller roles
