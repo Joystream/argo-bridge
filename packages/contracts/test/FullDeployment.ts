@@ -1,4 +1,4 @@
-import JoystreamEthModule from "../ignition/modules/JoystreamEth"
+import JoystreamEthModule, { HARDCODED_TIMELOCK_DELAY } from "../ignition/modules/JoystreamEth"
 import { ArgoBridgeV1, JoystreamERC20, TimelockController } from "../typechain-types"
 import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers"
 import { expect } from "chai"
@@ -47,7 +47,11 @@ describe("ArgoBridgeV1", function () {
       expect(await argoBridge.joystreamErc20()).to.equal(await joystreamErc20.getAddress())
     })
 
-    // TODO: test min delay gets set properly
+    it("Should set proper timelock delay", async function () {
+      const { timelockController } = await loadFixture(deployArgoBridge)
+
+      expect(await timelockController.getMinDelay()).to.equal(HARDCODED_TIMELOCK_DELAY)
+    })
 
     it("Should set proper roles", async function () {
       const { argoBridge, joystreamErc20, timelockController, deployer, bridgeOperator, bridgeAdmin } =
