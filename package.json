@@ -17,5 +17,10 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.4.3",
     "typescript-eslint": "^7.4.0"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.35.5",
+    "viem": "^2.10.3",
+    "wagmi": "^2.8.5"
   }
 }

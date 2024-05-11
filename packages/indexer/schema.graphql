@@ -1,0 +1,81 @@
+type EthereumRequestedTransfer @entity {
+  id: ID!
+  block: Int!
+  timestamp: DateTime!
+  txHash: String! @index
+  requester: String! @index
+  joyDestAccount: String! @index
+  amount: BigInt!
+  feePaid: BigInt!
+  requestBlock: Int!
+}
+
+type EthereumCompletedTransfer @entity {
+  joyId: ID!
+  block: Int!
+  timestamp: DateTime!
+  txHash: String! @index
+  ethDestAddress: String! @index
+  amount: BigInt!
+}
+
+enum EvmBridgeStatus {
+  ACTIVE
+  PAUSED
+}
+
+type EvmMintingLimits {
+  periodLength: Int!
+  periodLimit: BigInt!
+  currentPeriodMinted: BigInt!
+}
+
+type EvmBridgeConfig @entity {
+  id: ID!
+  status: EvmBridgeStatus!
+  bridgingFee: BigInt!
+  mintingLimits: EvmMintingLimits!
+}
+
+# TODO: add basic events
+
+type EvmBridgeFeesWithdrawn @entity {
+  id: ID!
+  block: Int!
+  timestamp: DateTime!
+  txHash: String! @index
+  chainId: String! @index
+  destination: String! @index
+  amount: BigInt!
+}
+
+enum EvmTimelockCallStatus {
+  PENDING
+  EXECUTED
+  CANCELLED
+}
+
+type EvmTimelockCall @entity {
+  id: ID!
+
+  status: EvmTimelockCallStatus!
+  createdAtBlock: Int!
+  createdAtTimestamp: DateTime!
+  createdTxHash: String!
+
+  executedAtBlock: Int
+  executedAtTimestamp: DateTime
+  executedTxHash: String
+  cancelledAtBlock: Int
+  cancelledAtTimestamp: DateTime
+  cancelledTxHash: String
+
+  callTarget: String!
+  callValue: BigInt!
+  callData: String!
+
+  predecessor: String
+  salt: String
+
+  delayDoneTimestamp: DateTime!
+}

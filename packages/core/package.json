@@ -10,6 +10,7 @@
     "@safe-global/api-kit": "^2.2.0",
     "@safe-global/protocol-kit": "^3.0.1",
     "@safe-global/safe-core-sdk-types": "^4.0.1",
-    "ethers": "^6.11.1"
+    "ethers": "^6.11.1",
+    "viem": "^2.10.3"
   }
 }

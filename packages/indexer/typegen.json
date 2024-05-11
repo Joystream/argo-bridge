@@ -1,0 +1,22 @@
+{
+  "outDir": "src/joy/types",
+  "specVersions": "https://v2.archive.subsquid.io/metadata/joystream",
+  "pallets": {
+    "Balances": {
+      "events": true,
+      "calls": true,
+      "storage": [],
+      "constants": []
+    },
+    "System": {
+      "events": ["ExtrinsicSuccess", "ExtrinsicFailed"]
+    },
+    "Members": {
+      "calls": ["member_remark"],
+      "events": ["MemberRemarked"]
+    },
+    "Vesting": {
+      "calls": ["vested_transfer"]
+    }
+  }
+}
