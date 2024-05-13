@@ -5,6 +5,7 @@
     "build": "rm -rf lib && tsc"
   },
   "dependencies": {
+    "@joystream/argo-core": "workspace:*",
     "@subsquid/archive-registry": "^3.3.2",
     "@subsquid/evm-processor": "^1.18.1",
     "@subsquid/graphql-server": "^4.6.0",

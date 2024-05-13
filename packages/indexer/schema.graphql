@@ -73,6 +73,8 @@ type EvmTimelockCall @entity {
   callTarget: String!
   callValue: BigInt!
   callData: String!
+  callSignature: String
+  callArgs: String
 
   predecessor: String
   salt: String

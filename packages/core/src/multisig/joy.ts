@@ -45,4 +45,4 @@ async function proposeMultisigTransaction() {
   // const propg(`Proposal submitted with hash: ${hash}`);
 }
 
-await proposeMultisigTransaction()
+proposeMultisigTransaction().catch(console.error)

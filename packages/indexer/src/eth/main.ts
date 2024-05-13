@@ -1,9 +1,5 @@
 import { handleEvmBridgeEvents } from "./bridge"
-import {
-  SEPOLIA_ARGO_ADDRESS,
-  SEPOLIA_TIMELOCK_ADDRESS,
-  processor,
-} from "./processor"
+import { ARGO_ADDRESS, TIMELOCK_ADDRESS, processor } from "./processor"
 import { handleTimelockEvents } from "./timelock"
 import { EvmLog } from "./types"
 import { TypeormDatabase } from "@subsquid/typeorm-store"
@@ -16,10 +12,10 @@ processor.run(
 
     for (const block of ctx.blocks) {
       for (const log of block.logs) {
-        if (log.address === SEPOLIA_ARGO_ADDRESS) {
+        if (log.address === ARGO_ADDRESS) {
           bridgeLogs.push(log)
         }
-        if (log.address === SEPOLIA_TIMELOCK_ADDRESS) {
+        if (log.address === TIMELOCK_ADDRESS) {
           timelockLogs.push(log)
         }
       }

@@ -26,63 +26,67 @@ const apiKit = new SafeApiKit({
   chainId: 11155111n,
 })
 
-// const safe = await Safe.create({
-//   ethAdapter: ethAdapterOwner1,
-//   safeAddress: SAFE_ADDRESS,
-// });
+async function test() {
+  // const safe = await Safe.create({
+  //   ethAdapter: ethAdapterOwner1,
+  //   safeAddress: SAFE_ADDRESS,
+  // });
 
-// const destination = owner1Signer.address;
-// const amount = ethers.parseUnits("0.005", "ether").toString();
-//
-// const safeTransactionData: MetaTransactionData = {
-//   to: destination,
-//   data: "0x",
-//   value: amount,
-// };
+  // const destination = owner1Signer.address;
+  // const amount = ethers.parseUnits("0.005", "ether").toString();
+  //
+  // const safeTransactionData: MetaTransactionData = {
+  //   to: destination,
+  //   data: "0x",
+  //   value: amount,
+  // };
 
-// const safeTransaction = await safe.createTransaction({
-//   transactions: [safeTransactionData],
-// });
-// console.log(safeTransaction.data);
-// console.log(safeTransaction.signatures);
-// const txHash = await safe.getTransactionHash(safeTransaction);
-// console.log(txHash);
-//
-// const sig = await safe.signHash(txHash);
+  // const safeTransaction = await safe.createTransaction({
+  //   transactions: [safeTransactionData],
+  // });
+  // console.log(safeTransaction.data);
+  // console.log(safeTransaction.signatures);
+  // const txHash = await safe.getTransactionHash(safeTransaction);
+  // console.log(txHash);
+  //
+  // const sig = await safe.signHash(txHash);
 
-// await apiKit.proposeTransaction({
-//   safeAddress: SAFE_ADDRESS,
-//   safeTransactionData: safeTransaction.data,
-//   safeTxHash: txHash,
-//   senderAddress: owner1Signer.address,
-//   senderSignature: sig.data,
-// });
-//
-const pendingTransactions = await apiKit.getPendingTransactions(SAFE_ADDRESS)
-// console.log(pendingTransactions.results);
-//
-const transaction = pendingTransactions.results[0]
-console.log(transaction)
+  // await apiKit.proposeTransaction({
+  //   safeAddress: SAFE_ADDRESS,
+  //   safeTransactionData: safeTransaction.data,
+  //   safeTxHash: txHash,
+  //   senderAddress: owner1Signer.address,
+  //   senderSignature: sig.data,
+  // });
+  //
+  const pendingTransactions = await apiKit.getPendingTransactions(SAFE_ADDRESS)
+  // console.log(pendingTransactions.results);
+  //
+  const transaction = pendingTransactions.results[0]
+  console.log(transaction)
 
-//
-// const executeTxResponse = await safe.executeTransaction(safeTransaction);
-// const receipt = await executeTxResponse.transactionResponse?.wait();
-//
-// console.log("Transaction executed:");
-// console.log(`https://sepolia.etherscan.io/tx/${receipt?.hash}`);
-//
-// const safeFactory = await SafeFactory.create({ ethAdapter: ethAdapterOwner1 });
-//
-// const safeAccountConfig: SafeAccountConfig = {
-//   owners: [owner1Signer.address],
-//   threshold: 1,
-// };
-//
-//
-// const protocolKitOwner1 = await safeFactory.deploySafe({ safeAccountConfig });
-//
-// const safeAddress = await protocolKitOwner1.getAddress();
-//
-// console.log("Your Safe has been deployed:");
-// console.log(`https://sepolia.etherscan.io/address/${safeAddress}`);
-// console.log(`https://app.safe.global/sep:${safeAddress}`);
+  //
+  // const executeTxResponse = await safe.executeTransaction(safeTransaction);
+  // const receipt = await executeTxResponse.transactionResponse?.wait();
+  //
+  // console.log("Transaction executed:");
+  // console.log(`https://sepolia.etherscan.io/tx/${receipt?.hash}`);
+  //
+  // const safeFactory = await SafeFactory.create({ ethAdapter: ethAdapterOwner1 });
+  //
+  // const safeAccountConfig: SafeAccountConfig = {
+  //   owners: [owner1Signer.address],
+  //   threshold: 1,
+  // };
+  //
+  //
+  // const protocolKitOwner1 = await safeFactory.deploySafe({ safeAccountConfig });
+  //
+  // const safeAddress = await protocolKitOwner1.getAddress();
+  //
+  // console.log("Your Safe has been deployed:");
+  // console.log(`https://sepolia.etherscan.io/address/${safeAddress}`);
+  // console.log(`https://app.safe.global/sep:${safeAddress}`);
+}
+
+test().catch(console.error)

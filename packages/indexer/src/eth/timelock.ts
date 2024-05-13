@@ -1,8 +1,10 @@
 import { EvmTimelockCall, EvmTimelockCallStatus } from "../model"
 import * as timelockControllerAbi from "./abi/timelockController"
+import { ARGO_ADDRESS, TIMELOCK_ADDRESS } from "./processor"
+import { BridgeAbi, TimelockAbi } from "@joystream/argo-core"
 import { DataHandlerContext, Log } from "@subsquid/evm-processor"
 import { Store } from "@subsquid/typeorm-store"
-import { bytesToHex, zeroHash } from "viem"
+import { decodeFunctionData, zeroHash } from "viem"
 
 export async function handleTimelockEvents(
   logs: Log<{ log: { transactionHash: true } }>[],
@@ -26,16 +28,10 @@ export async function handleTimelockEvents(
   for (const log of logs) {
     switch (log.topics[0]) {
       case timelockControllerAbi.events.CallScheduled.topic: {
-        const {
-          id: idBytes,
-          target,
-          value,
-          data,
-          predecessor: predecessorBytes,
-          delay,
-        } = timelockControllerAbi.events.CallScheduled.decode(log)
-        const id = bytesToHex(idBytes)
-        const predecessor = bytesToHex(predecessorBytes)
+        const { id, target, value, data, predecessor, delay } =
+          timelockControllerAbi.events.CallScheduled.decode(log)
+
+        const decodedCall = decodeCall(target, data)
 
         calls.set(
           id,
@@ -48,9 +44,11 @@ export async function handleTimelockEvents(
 
             callTarget: target,
             callValue: value,
-            callData: bytesToHex(data),
-            predecessor: predecessor !== zeroHash ? predecessor : null,
+            callData: data,
+            callSignature: decodedCall[0],
+            callArgs: decodedCall[1],
 
+            predecessor: predecessor !== zeroHash ? predecessor : null,
             delayDoneTimestamp: new Date(
               log.block.timestamp + Number(delay) * 1000,
             ),
@@ -60,20 +58,16 @@ export async function handleTimelockEvents(
       }
 
       case timelockControllerAbi.events.CallSalt.topic: {
-        const { id: idBytes, salt } =
-          timelockControllerAbi.events.CallSalt.decode(log)
-        const id = bytesToHex(idBytes)
+        const { id, salt } = timelockControllerAbi.events.CallSalt.decode(log)
         const call = await getCall(id, log.transactionHash)
         if (call) {
-          call.salt = bytesToHex(salt)
+          call.salt = salt
         }
         break
       }
 
       case timelockControllerAbi.events.CallExecuted.topic: {
-        const { id: idBytes } =
-          timelockControllerAbi.events.CallExecuted.decode(log)
-        const id = bytesToHex(idBytes)
+        const { id } = timelockControllerAbi.events.CallExecuted.decode(log)
         const call = await getCall(id, log.transactionHash)
         if (call) {
           call.status = EvmTimelockCallStatus.EXECUTED
@@ -85,9 +79,7 @@ export async function handleTimelockEvents(
       }
 
       case timelockControllerAbi.events.Cancelled.topic: {
-        const { id: idBytes } =
-          timelockControllerAbi.events.Cancelled.decode(log)
-        const id = bytesToHex(idBytes)
+        const { id } = timelockControllerAbi.events.Cancelled.decode(log)
         const call = await getCall(id, log.transactionHash)
         if (call) {
           call.status = EvmTimelockCallStatus.CANCELLED
@@ -101,4 +93,44 @@ export async function handleTimelockEvents(
 
     await ctx.store.save([...calls.values()])
   }
+}
+
+function decodeCall(
+  callTarget: string,
+  callData: string,
+): [string | null, string | null] {
+  let functionName: string | null = null
+  let args: readonly any[] | null = null
+
+  if (callTarget.toLowerCase() === ARGO_ADDRESS) {
+    const decoded = decodeFunctionData({
+      abi: BridgeAbi,
+      data: callData as `0x${string}`,
+    })
+    if (decoded) {
+      functionName = decoded.functionName
+      args = decoded.args
+    }
+  } else if (callTarget.toLowerCase() === TIMELOCK_ADDRESS) {
+    const decoded = decodeFunctionData({
+      abi: TimelockAbi,
+      data: callData as `0x${string}`,
+    })
+    if (decoded) {
+      functionName = decoded.functionName
+      args = decoded.args
+    }
+  }
+
+  return [
+    functionName,
+    args
+      ? JSON.stringify(args, (_, value) => {
+          if (typeof value === "bigint") {
+            return value.toString()
+          }
+          return value
+        })
+      : null,
+  ]
 }

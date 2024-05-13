@@ -1,5 +1,5 @@
-module.exports = class Data1715432053497 {
-    name = 'Data1715432053497'
+module.exports = class Data1715596861552 {
+    name = 'Data1715596861552'
 
     async up(db) {
         await db.query(`CREATE TABLE "ethereum_requested_transfer" ("id" character varying NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "tx_hash" text NOT NULL, "requester" text NOT NULL, "joy_dest_account" text NOT NULL, "amount" numeric NOT NULL, "fee_paid" numeric NOT NULL, "request_block" integer NOT NULL, CONSTRAINT "PK_a17d6837da0fd576126274cdb94" PRIMARY KEY ("id"))`)
@@ -14,7 +14,7 @@ module.exports = class Data1715432053497 {
         await db.query(`CREATE INDEX "IDX_d9a0f4c40b43a41b10dddb6ae5" ON "evm_bridge_fees_withdrawn" ("tx_hash") `)
         await db.query(`CREATE INDEX "IDX_52e98eefbc7b8aef6839449598" ON "evm_bridge_fees_withdrawn" ("chain_id") `)
         await db.query(`CREATE INDEX "IDX_0335c052caf4bc43dfa4d13283" ON "evm_bridge_fees_withdrawn" ("destination") `)
-        await db.query(`CREATE TABLE "evm_timelock_call" ("id" character varying NOT NULL, "status" character varying(9) NOT NULL, "created_at_block" integer NOT NULL, "created_at_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "created_tx_hash" text NOT NULL, "executed_at_block" integer, "executed_at_timestamp" TIMESTAMP WITH TIME ZONE, "executed_tx_hash" text, "cancelled_at_block" integer, "cancelled_at_timestamp" TIMESTAMP WITH TIME ZONE, "cancelled_tx_hash" text, "call_target" text NOT NULL, "call_value" numeric NOT NULL, "call_data" text NOT NULL, "predecessor" text, "salt" text, "delay_done_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, CONSTRAINT "PK_b396eb1dbdce864526244730a88" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE TABLE "evm_timelock_call" ("id" character varying NOT NULL, "status" character varying(9) NOT NULL, "created_at_block" integer NOT NULL, "created_at_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "created_tx_hash" text NOT NULL, "executed_at_block" integer, "executed_at_timestamp" TIMESTAMP WITH TIME ZONE, "executed_tx_hash" text, "cancelled_at_block" integer, "cancelled_at_timestamp" TIMESTAMP WITH TIME ZONE, "cancelled_tx_hash" text, "call_target" text NOT NULL, "call_value" numeric NOT NULL, "call_data" text NOT NULL, "call_signature" text, "call_args" text, "predecessor" text, "salt" text, "delay_done_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, CONSTRAINT "PK_b396eb1dbdce864526244730a88" PRIMARY KEY ("id"))`)
     }
 
     async down(db) {

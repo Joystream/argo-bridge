@@ -50,6 +50,12 @@ export class EvmTimelockCall {
     callData!: string
 
     @StringColumn_({nullable: true})
+    callSignature!: string | undefined | null
+
+    @StringColumn_({nullable: true})
+    callArgs!: string | undefined | null
+
+    @StringColumn_({nullable: true})
     predecessor!: string | undefined | null
 
     @StringColumn_({nullable: true})
