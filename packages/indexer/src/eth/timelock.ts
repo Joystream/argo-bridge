@@ -12,15 +12,11 @@ export async function handleTimelockEvents(
 ): Promise<void> {
   const calls: Map<string, EvmTimelockCall> = new Map()
 
-  const getCall = async (id: string, txHash: string) => {
+  const getCall = async (id: string) => {
     let call = calls.get(id)
     if (!call) {
-      call = await ctx.store.findOne(EvmTimelockCall, { where: { id } })
-      if (call) {
-        calls.set(id, call)
-      } else {
-        ctx.log.error(`Timelock call not found: ${id}. Tx: ${txHash}`)
-      }
+      call = new EvmTimelockCall({ id })
+      calls.set(id, call)
     }
     return call
   }
@@ -59,34 +55,28 @@ export async function handleTimelockEvents(
 
       case timelockControllerAbi.events.CallSalt.topic: {
         const { id, salt } = timelockControllerAbi.events.CallSalt.decode(log)
-        const call = await getCall(id, log.transactionHash)
-        if (call) {
-          call.salt = salt
-        }
+        const call = await getCall(id)
+        call.salt = salt
         break
       }
 
       case timelockControllerAbi.events.CallExecuted.topic: {
         const { id } = timelockControllerAbi.events.CallExecuted.decode(log)
-        const call = await getCall(id, log.transactionHash)
-        if (call) {
-          call.status = EvmTimelockCallStatus.EXECUTED
-          call.executedAtBlock = log.block.height
-          call.executedAtTimestamp = new Date(log.block.timestamp)
-          call.executedTxHash = log.transactionHash
-        }
+        const call = await getCall(id)
+        call.status = EvmTimelockCallStatus.EXECUTED
+        call.executedAtBlock = log.block.height
+        call.executedAtTimestamp = new Date(log.block.timestamp)
+        call.executedTxHash = log.transactionHash
         break
       }
 
       case timelockControllerAbi.events.Cancelled.topic: {
         const { id } = timelockControllerAbi.events.Cancelled.decode(log)
-        const call = await getCall(id, log.transactionHash)
-        if (call) {
-          call.status = EvmTimelockCallStatus.CANCELLED
-          call.cancelledAtBlock = log.block.height
-          call.cancelledAtTimestamp = new Date(log.block.timestamp)
-          call.cancelledTxHash = log.transactionHash
-        }
+        const call = await getCall(id)
+        call.status = EvmTimelockCallStatus.CANCELLED
+        call.cancelledAtBlock = log.block.height
+        call.cancelledAtTimestamp = new Date(log.block.timestamp)
+        call.cancelledTxHash = log.transactionHash
         break
       }
     }
