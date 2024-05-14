@@ -1,53 +1,123 @@
-type EthereumRequestedTransfer @entity {
-  id: ID!
+# noinspection GraphQLUnresolvedReference,GraphQLMissingType
+interface Event {
+  id: ID! # chainId-blockNumber-indexInBlock
+  chainId: BigInt!
+  txHash: String!
   block: Int!
   timestamp: DateTime!
-  txHash: String! @index
-  requester: String! @index
-  joyDestAccount: String! @index
-  amount: BigInt!
-  feePaid: BigInt!
-  requestBlock: Int!
 }
 
-type EthereumCompletedTransfer @entity {
-  joyId: ID!
-  block: Int!
-  timestamp: DateTime!
-  txHash: String! @index
-  ethDestAddress: String! @index
-  amount: BigInt!
+enum BridgeTransferStatus {
+  REQUESTED
+  COMPLETED
 }
+
+type BridgeTransfer @entity {
+  id: ID! # sourceChainId-sourceTransferId
+  amount: BigInt!
+  status: BridgeTransferStatus! @index
+  feePaid: BigInt! # fee paid in source chain token
+  sourceChainId: BigInt! @index
+  sourceTransferId: BigInt! @index
+  sourceAccount: String! @index
+
+  destChainId: BigInt! @index
+  destAccount: String! @index
+
+  createdAtBlock: Int!
+  createdAtTimestamp: DateTime!
+  createdTxHash: String!
+
+  completedAtBlock: Int
+  completedAtTimestamp: DateTime
+  completedTxHash: String
+}
+
+### EVM BRIDGE ###
 
 enum EvmBridgeStatus {
   ACTIVE
   PAUSED
 }
 
-type EvmMintingLimits {
+type EvmBridgeMintingLimits {
   periodLength: Int!
   periodLimit: BigInt!
   currentPeriodMinted: BigInt!
+  currentPeriodEndBlock: Int!
 }
 
 type EvmBridgeConfig @entity {
   id: ID!
   status: EvmBridgeStatus!
   bridgingFee: BigInt!
-  mintingLimits: EvmMintingLimits!
+  mintingLimits: EvmBridgeMintingLimits!
+  totalMinted: BigInt!
+  totalBurned: BigInt!
 }
 
-# TODO: add basic events
-
-type EvmBridgeFeesWithdrawn @entity {
+type EvmBridgeTransferToJoystreamRequestedEvent implements Event @entity {
   id: ID!
+  chainId: BigInt! @index
+  txHash: String!
   block: Int!
   timestamp: DateTime!
-  txHash: String! @index
-  chainId: String! @index
-  destination: String! @index
+  amount: BigInt!
+  ethRequester: String!
+  ethTransferId: BigInt!
+  joyDestAccount: String!
+}
+
+type EvmBridgeTransferToEthCompletedEvent implements Event @entity {
+  id: ID!
+  chainId: BigInt! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  joyTransferId: BigInt!
+  ethDestAddress: String!
   amount: BigInt!
 }
+
+type EvmBridgeFeeChangedEvent implements Event @entity {
+  id: ID!
+  chainId: BigInt! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  fee: BigInt!
+}
+
+type EvmBridgeFeesWithdrawnEvent implements Event @entity {
+  id: ID!
+  chainId: BigInt! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  amount: BigInt!
+  destination: String!
+}
+
+type EvmBridgeStatusChangedEvent implements Event @entity {
+  id: ID!
+  chainId: BigInt! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  status: EvmBridgeStatus!
+}
+
+type EvmBridgeMintingLimitsUpdatedEvent implements Event @entity {
+  id: ID!
+  chainId: BigInt! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  periodLength: Int!
+  periodLimit: BigInt!
+}
+
+### TIMELOCK ###
 
 enum EvmTimelockCallStatus {
   PENDING
@@ -56,7 +126,9 @@ enum EvmTimelockCallStatus {
 }
 
 type EvmTimelockCall @entity {
-  id: ID!
+  id: ID! # chainId-callId
+  chainId: BigInt! @index
+  callId: String! @index
 
   status: EvmTimelockCallStatus!
   createdAtBlock: Int!
@@ -81,3 +153,12 @@ type EvmTimelockCall @entity {
 
   delayDoneTimestamp: DateTime!
 }
+
+#type EvmTimelockCallScheduledEvent implements Event @entity {
+#  id: ID!
+#  chainId: BigInt! @index
+#  txHash: String!
+#  block: Int!
+#  timestamp: DateTime!
+#  callId: ID!
+#}

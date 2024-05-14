@@ -1,83 +1,201 @@
 import {
-  EthereumCompletedTransfer,
-  EthereumRequestedTransfer,
+  BridgeTransfer,
+  BridgeTransferStatus,
   EvmBridgeConfig,
-  EvmBridgeFeesWithdrawn,
+  EvmBridgeFeeChangedEvent,
+  EvmBridgeFeesWithdrawnEvent,
+  EvmBridgeMintingLimits,
+  EvmBridgeMintingLimitsUpdatedEvent,
   EvmBridgeStatus,
-  EvmMintingLimits,
+  EvmBridgeStatusChangedEvent,
+  EvmBridgeTransferToEthCompletedEvent,
+  EvmBridgeTransferToJoystreamRequestedEvent,
 } from "../model"
 import * as argoBridgeAbi from "./abi/argoBridgeV1"
 import { CHAIN_ID } from "./processor"
-import { Log } from "@subsquid/evm-processor"
+import { EvmLog } from "./types"
+import { CHAIN_IDS, getEntityId } from "@joystream/argo-core"
+import { DataHandlerContext } from "@subsquid/evm-processor"
 import * as ss58 from "@subsquid/ss58"
 import { Store } from "@subsquid/typeorm-store"
+import { In } from "typeorm"
+
+type EvmBridgeEvent =
+  | EvmBridgeTransferToJoystreamRequestedEvent
+  | EvmBridgeTransferToEthCompletedEvent
+  | EvmBridgeFeesWithdrawnEvent
+  | EvmBridgeFeeChangedEvent
+  | EvmBridgeStatusChangedEvent
+  | EvmBridgeMintingLimitsUpdatedEvent
 
 const addressCodec = ss58.codec("joystream")
 
-const getDefaultBridgeConfig = (chainId: number) =>
-  new EvmBridgeConfig({
-    id: chainId.toString(),
-    bridgingFee: 0n,
-    status: EvmBridgeStatus.PAUSED,
-    mintingLimits: new EvmMintingLimits({
-      currentPeriodMinted: 0n,
-      periodLimit: 0n,
-      periodLength: 0,
-    }),
-  })
+const joyTransferId = (id: bigint) => getEntityId("joystream", id)
 
 export async function handleEvmBridgeEvents(
-  logs: Log[],
-  store: Store,
+  logs: EvmLog[],
+  ctx: DataHandlerContext<Store>,
 ): Promise<void> {
-  const requestedTransfers: EthereumRequestedTransfer[] = []
-  const completedTransfers: EthereumCompletedTransfer[] = []
-  const feeWithdrawals: EvmBridgeFeesWithdrawn[] = []
+  const parsedEvents = parseRawLogs(logs)
 
-  const currentConfig =
-    (await store.findOneBy(EvmBridgeConfig, {
+  // load existing transfers from the database
+  const transferIds = new Set(
+    parsedEvents
+      .filter(
+        (event): event is EvmBridgeTransferToEthCompletedEvent =>
+          event instanceof EvmBridgeTransferToEthCompletedEvent,
+      )
+      .map((event) => joyTransferId(event.joyTransferId)),
+  )
+  const transfers: Map<string, BridgeTransfer> = new Map(
+    (await ctx.store.findBy(BridgeTransfer, { id: In([...transferIds]) })).map(
+      (transfer) => [transfer.id, transfer],
+    ),
+  )
+
+  const bridgeConfig =
+    (await ctx.store.findOneBy(EvmBridgeConfig, {
       id: CHAIN_ID.toString(),
     })) || getDefaultBridgeConfig(CHAIN_ID)
 
+  for (const event of parsedEvents) {
+    if (event instanceof EvmBridgeFeeChangedEvent) {
+      bridgeConfig.bridgingFee = event.fee
+    } else if (event instanceof EvmBridgeStatusChangedEvent) {
+      bridgeConfig.status = event.status
+    } else if (event instanceof EvmBridgeMintingLimitsUpdatedEvent) {
+      const limits = bridgeConfig.mintingLimits
+      limits.periodLength = event.periodLength
+      limits.periodLimit = event.periodLimit
+      if (limits.currentPeriodEndBlock === 0) {
+        // this happens in ArgoBridgeV1 constructor
+        limits.currentPeriodEndBlock = event.block + event.periodLength
+      }
+    } else if (event instanceof EvmBridgeTransferToJoystreamRequestedEvent) {
+      const transfer = new BridgeTransfer({
+        id: getEntityId(CHAIN_ID, event.ethTransferId),
+        amount: event.amount,
+        status: BridgeTransferStatus.REQUESTED,
+        feePaid: bridgeConfig.bridgingFee,
+        sourceChainId: CHAIN_ID,
+        sourceTransferId: event.ethTransferId,
+        sourceAccount: event.ethRequester,
+        destChainId: CHAIN_IDS.joystream,
+        destAccount: event.joyDestAccount,
+        createdAtBlock: event.block,
+        createdAtTimestamp: event.timestamp,
+        createdTxHash: event.txHash,
+      })
+      transfers.set(transfer.id, transfer)
+
+      bridgeConfig.totalBurned += event.amount
+    } else if (event instanceof EvmBridgeTransferToEthCompletedEvent) {
+      // update minting period if needed before processing the transfer
+      updateMintingPeriod(bridgeConfig, event.block)
+
+      const transfer = transfers.get(joyTransferId(event.joyTransferId))
+      if (transfer) {
+        transfer.status = BridgeTransferStatus.COMPLETED
+        transfer.completedAtBlock = event.block
+        transfer.completedAtTimestamp = event.timestamp
+        transfer.completedTxHash = event.txHash
+      } else {
+        // this could happen if the Joystream chain processor hasn't processed this transfer yet
+        // in that case, we set MAYBE_COMPLETED status and Joystream processor should mark it as COMPLETED once it processes it
+        ctx.log.warn(
+          `Completed unknown transfer from Joystream ${event.joyTransferId}`,
+        )
+        const transfer = new BridgeTransfer({
+          id: getEntityId(CHAIN_ID, event.joyTransferId),
+          amount: event.amount,
+          status: BridgeTransferStatus.MAYBE_COMPLETED,
+          sourceChainId: CHAIN_IDS.joystream,
+          sourceTransferId: event.joyTransferId,
+          destChainId: CHAIN_ID,
+          destAccount: event.ethDestAddress,
+          // below fields should be updated by Joystream processor
+          feePaid: 0n,
+          createdAtBlock: event.block,
+          createdAtTimestamp: event.timestamp,
+          createdTxHash: event.txHash,
+        })
+        transfers.set(transfer.id, transfer)
+      }
+
+      bridgeConfig.totalMinted += event.amount
+      bridgeConfig.mintingLimits.currentPeriodMinted += event.amount
+    }
+  }
+}
+
+function updateMintingPeriod(
+  config: EvmBridgeConfig,
+  currentBlock: number,
+): void {
+  const limits = config.mintingLimits
+  if (currentBlock >= limits.currentPeriodEndBlock) {
+    limits.currentPeriodEndBlock = currentBlock + limits.periodLength
+    limits.currentPeriodMinted = 0n
+  }
+}
+
+function parseRawLogs(logs: EvmLog[]): EvmBridgeEvent[] {
+  const parsedLogs: EvmBridgeEvent[] = []
+
   for (const log of logs) {
-    const commonFields = {
+    const baseEvent = {
+      id: `${CHAIN_ID}-${log.block.height}-${log.logIndex}`,
+      chainId: CHAIN_ID,
+      txHash: log.transactionHash,
       block: log.block.height,
       timestamp: new Date(log.block.timestamp),
-      txHash: log.transaction?.hash,
     }
     switch (log.topics[0]) {
       case argoBridgeAbi.events.ArgoBridgeFeeChanged.topic: {
         const { newFee } = argoBridgeAbi.events.ArgoBridgeFeeChanged.decode(log)
-        currentConfig.bridgingFee = newFee
+        parsedLogs.push(
+          new EvmBridgeFeeChangedEvent({
+            ...baseEvent,
+            fee: newFee,
+          }),
+        )
         break
       }
 
       case argoBridgeAbi.events.ArgoBridgeStatusChanged.topic: {
         const { newStatus } =
           argoBridgeAbi.events.ArgoBridgeStatusChanged.decode(log)
-        currentConfig.status =
-          newStatus === 1 ? EvmBridgeStatus.PAUSED : EvmBridgeStatus.ACTIVE
+        parsedLogs.push(
+          new EvmBridgeStatusChangedEvent({
+            ...baseEvent,
+            status:
+              newStatus === 1 ? EvmBridgeStatus.PAUSED : EvmBridgeStatus.ACTIVE,
+          }),
+        )
         break
       }
 
       case argoBridgeAbi.events.ArgoBridgeMintingLimitsUpdated.topic: {
         const { newMintingLimitPeriodLengthBlocks, newMintingLimitPerPeriod } =
           argoBridgeAbi.events.ArgoBridgeMintingLimitsUpdated.decode(log)
-        currentConfig.mintingLimits.periodLength = Number(
-          newMintingLimitPeriodLengthBlocks,
+        parsedLogs.push(
+          new EvmBridgeMintingLimitsUpdatedEvent({
+            ...baseEvent,
+            periodLength: Number(newMintingLimitPeriodLengthBlocks),
+            periodLimit: newMintingLimitPerPeriod,
+          }),
         )
-        currentConfig.mintingLimits.periodLimit = newMintingLimitPerPeriod
         break
       }
 
       case argoBridgeAbi.events.ArgoBridgeFeesWithdrawn.topic: {
         const { destination, amount } =
           argoBridgeAbi.events.ArgoBridgeFeesWithdrawn.decode(log)
-        feeWithdrawals.push(
-          new EvmBridgeFeesWithdrawn({
+        parsedLogs.push(
+          new EvmBridgeFeesWithdrawnEvent({
+            ...baseEvent,
             destination,
             amount,
-            ...commonFields,
           }),
         )
         break
@@ -86,14 +204,13 @@ export async function handleEvmBridgeEvents(
       case argoBridgeAbi.events.ArgoTransferToJoystreamRequested.topic: {
         const { amount, ethRequester, ethTransferId, joyDestAccount } =
           argoBridgeAbi.events.ArgoTransferToJoystreamRequested.decode(log)
-
-        requestedTransfers.push(
-          new EthereumRequestedTransfer({
-            id: ethTransferId.toString(),
+        parsedLogs.push(
+          new EvmBridgeTransferToJoystreamRequestedEvent({
+            ...baseEvent,
             amount,
-            requester: ethRequester,
+            ethRequester,
+            ethTransferId,
             joyDestAccount: addressCodec.encode(joyDestAccount),
-            ...commonFields,
           }),
         )
         break
@@ -102,24 +219,33 @@ export async function handleEvmBridgeEvents(
       case argoBridgeAbi.events.ArgoTransferToEthCompleted.topic: {
         const { amount, ethDestAddress, joyTransferId } =
           argoBridgeAbi.events.ArgoTransferToEthCompleted.decode(log)
-
-        completedTransfers.push(
-          new EthereumCompletedTransfer({
-            id: joyTransferId.toString(),
+        parsedLogs.push(
+          new EvmBridgeTransferToEthCompletedEvent({
+            ...baseEvent,
             amount,
             ethDestAddress,
-            ...commonFields,
+            joyTransferId,
           }),
         )
         break
       }
     }
-
-    await Promise.all([
-      store.save(currentConfig),
-      store.upsert(requestedTransfers),
-      store.upsert(completedTransfers),
-      store.upsert(feeWithdrawals),
-    ])
   }
+
+  return parsedLogs
 }
+
+const getDefaultBridgeConfig = (chainId: bigint) =>
+  new EvmBridgeConfig({
+    id: chainId.toString(),
+    bridgingFee: 0n,
+    status: EvmBridgeStatus.PAUSED,
+    totalMinted: 0n,
+    totalBurned: 0n,
+    mintingLimits: new EvmBridgeMintingLimits({
+      currentPeriodEndBlock: 0,
+      currentPeriodMinted: 0n,
+      periodLimit: 0n,
+      periodLength: 0,
+    }),
+  })

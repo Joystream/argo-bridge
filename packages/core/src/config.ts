@@ -1,22 +1,22 @@
 export const CHAIN_IDS = {
-  joystream: 0,
+  joystream: 0n,
   // ethereum: 1,
-  sepolia: 11155111,
+  sepolia: 11155111n,
   // base: 8453,
   // baseSepolia: 84532,
 }
 
-export type ChainId = keyof typeof CHAIN_IDS
-export type EvmChainId = Exclude<ChainId, "joystream">
+export type ChainName = keyof typeof CHAIN_IDS
+export type EvmChainName = Exclude<ChainName, "joystream">
 
-export const RPC_ENDPOINTS: Record<ChainId, string> = {
+export const RPC_ENDPOINTS: Record<ChainName, string> = {
   joystream: "wss://rpc.joyutils.org",
   // ethereum: "https://rpc.ankr.com/eth",
   sepolia: "https://rpc.ankr.com/eth_sepolia",
 }
 
 type EvmContractsAddresses = {
-  [chain in EvmChainId]: {
+  [chain in EvmChainName]: {
     erc20: `0x${string}`
     timelock: `0x${string}`
     bridge: `0x${string}`
