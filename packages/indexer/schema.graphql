@@ -9,6 +9,7 @@ interface Event {
 
 enum BridgeTransferStatus {
   REQUESTED
+  MAYBE_COMPLETED
   COMPLETED
 }
 

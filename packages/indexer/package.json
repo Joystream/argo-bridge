@@ -1,5 +1,5 @@
 {
-  "name": "squid-evm-template",
+  "name": "@joystream/argo-indexer",
   "private": true,
   "scripts": {
     "build": "rm -rf lib && tsc"

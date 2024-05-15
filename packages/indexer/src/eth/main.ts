@@ -21,7 +21,8 @@ processor.run(
       }
     }
 
-    await handleEvmBridgeEvents(bridgeLogs, ctx.store)
+    // TODO: skip if empty
+    await handleEvmBridgeEvents(bridgeLogs, ctx)
     await handleTimelockEvents(timelockLogs, ctx)
   },
 )

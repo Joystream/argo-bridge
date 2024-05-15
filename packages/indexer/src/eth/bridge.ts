@@ -14,7 +14,7 @@ import {
 import * as argoBridgeAbi from "./abi/argoBridgeV1"
 import { CHAIN_ID } from "./processor"
 import { EvmLog } from "./types"
-import { CHAIN_IDS, getEntityId } from "@joystream/argo-core"
+import { NETWORKS, getEntityId } from "@joystream/argo-core"
 import { DataHandlerContext } from "@subsquid/evm-processor"
 import * as ss58 from "@subsquid/ss58"
 import { Store } from "@subsquid/typeorm-store"
@@ -80,7 +80,7 @@ export async function handleEvmBridgeEvents(
         sourceChainId: CHAIN_ID,
         sourceTransferId: event.ethTransferId,
         sourceAccount: event.ethRequester,
-        destChainId: CHAIN_IDS.joystream,
+        destChainId: NETWORKS.joystream.chainId,
         destAccount: event.joyDestAccount,
         createdAtBlock: event.block,
         createdAtTimestamp: event.timestamp,
@@ -109,7 +109,7 @@ export async function handleEvmBridgeEvents(
           id: getEntityId(CHAIN_ID, event.joyTransferId),
           amount: event.amount,
           status: BridgeTransferStatus.MAYBE_COMPLETED,
-          sourceChainId: CHAIN_IDS.joystream,
+          sourceChainId: NETWORKS.joystream.chainId,
           sourceTransferId: event.joyTransferId,
           destChainId: CHAIN_ID,
           destAccount: event.ethDestAddress,
@@ -126,6 +126,8 @@ export async function handleEvmBridgeEvents(
       bridgeConfig.mintingLimits.currentPeriodMinted += event.amount
     }
   }
+
+  await ctx.store.save([bridgeConfig, ...transfers.values()])
 }
 
 function updateMintingPeriod(

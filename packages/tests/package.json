@@ -1,0 +1,20 @@
+{
+  "name": "@joystream/argo-tests",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/client-preset": "4.2.5"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "codegen": "graphql-codegen --config codegen.ts",
+    "db-down": "cd ../indexer && docker compose down -v"
+  },
+  "dependencies": {
+    "graphql-request": "5"
+  }
+}

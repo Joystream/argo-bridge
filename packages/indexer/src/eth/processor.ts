@@ -1,7 +1,6 @@
 import * as argoBridgeAbi from "./abi/argoBridgeV1"
 import * as timelockControllerAbi from "./abi/timelockController"
-import { CHAIN_IDS, EVM_CONTRACTS_ADDRESSES } from "@joystream/argo-core"
-import { lookupArchive } from "@subsquid/archive-registry"
+import { ChainName, NETWORKS } from "@joystream/argo-core"
 import {
   BlockHeader,
   DataHandlerContext,
@@ -13,15 +12,17 @@ import {
 import { Store } from "@subsquid/typeorm-store"
 import { assertNotNull } from "@subsquid/util-internal"
 
-export const CHAIN_ID = CHAIN_IDS.sepolia
-export const ARGO_ADDRESS = EVM_CONTRACTS_ADDRESSES.sepolia.bridge.toLowerCase()
-export const TIMELOCK_ADDRESS =
-  EVM_CONTRACTS_ADDRESSES.sepolia.timelock.toLowerCase()
+const TARGET_CHAIN: ChainName = "hardhat"
+const NETWORK = NETWORKS[TARGET_CHAIN]
+
+export const CHAIN_ID = NETWORK.chainId
+export const ARGO_ADDRESS = NETWORK.contracts.bridge.toLowerCase()
+export const TIMELOCK_ADDRESS = NETWORK.contracts.timelock.toLowerCase()
 
 export const processor = new EvmBatchProcessor()
-  .setGateway(lookupArchive("eth-sepolia"))
+  // .setGateway(lookupArchive("eth-sepolia"))
   .setRpcEndpoint({
-    url: assertNotNull(process.env.SEPOLIA_RPC_ENDPOINT),
+    url: assertNotNull(NETWORK.rpcUrl),
     rateLimit: 25,
   })
   .setFinalityConfirmation(75)
@@ -35,7 +36,7 @@ export const processor = new EvmBatchProcessor()
     },
   })
   .setBlockRange({
-    from: 5_861_090,
+    from: NETWORK.startBlock,
   })
   .addLog({
     address: [ARGO_ADDRESS],

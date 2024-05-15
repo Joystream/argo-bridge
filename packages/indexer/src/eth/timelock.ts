@@ -78,6 +78,7 @@ export async function handleTimelockEvents(
         const call = getCall(log.localId)
         const decodedCall = decodeCall(log.target, log.data)
 
+        call.callId = log.localId
         call.chainId = CHAIN_ID
         call.createdAtBlock = log.block.height
         call.createdAtTimestamp = new Date(log.block.timestamp)

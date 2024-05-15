@@ -14,7 +14,7 @@ export class BridgeTransfer {
     amount!: bigint
 
     @Index_()
-    @Column_("varchar", {length: 9, nullable: false})
+    @Column_("varchar", {length: 15, nullable: false})
     status!: BridgeTransferStatus
 
     @BigIntColumn_({nullable: false})

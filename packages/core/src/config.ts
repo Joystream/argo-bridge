@@ -1,35 +1,45 @@
-export const CHAIN_IDS = {
-  joystream: 0n,
-  // ethereum: 1,
-  sepolia: 11155111n,
-  // base: 8453,
-  // baseSepolia: 84532,
-}
+// export const CHAIN_IDS = {
+//   joystream: 0n,
+//   // ethereum: 1,
+//   sepolia: 11155111n,
+//   hardhat: 31337n,
+//   // base: 8453,
+//   // baseSepolia: 84532,
+// }
 
-export type ChainName = keyof typeof CHAIN_IDS
-export type EvmChainName = Exclude<ChainName, "joystream">
-
-export const RPC_ENDPOINTS: Record<ChainName, string> = {
-  joystream: "wss://rpc.joyutils.org",
-  // ethereum: "https://rpc.ankr.com/eth",
-  sepolia: "https://rpc.ankr.com/eth_sepolia",
-}
-
-type EvmContractsAddresses = {
-  [chain in EvmChainName]: {
-    erc20: `0x${string}`
-    timelock: `0x${string}`
-    bridge: `0x${string}`
-  }
-}
-
-export const EVM_CONTRACTS_ADDRESSES: EvmContractsAddresses = {
+export const NETWORKS = {
+  joystream: {
+    name: "Joystream",
+    chainId: 0n,
+    rpcUrl: "wss://rpc.joyutils.org",
+  },
   sepolia: {
-    erc20: "0xa2717A92FCE2Acb20F83AD9233709D2ce512752E",
-    bridge: "0xdb696e892681A86f421c136F317496DcB5Cb3Ace",
-    timelock: "0xe070f47bf2849593f9745e448b2723C57B7E5292",
+    name: "Sepolia",
+    chainId: 11155111n,
+    rpcUrl:
+      "https://rpc.ankr.com/eth_sepolia/abc1ed712dcea03c2de5b71da89b9ad17341eea8d87a65dbff6cd668e7e65bf8",
+    startBlock: 5_861_090,
+    contracts: {
+      erc20: "0xa2717A92FCE2Acb20F83AD9233709D2ce512752E",
+      bridge: "0xdb696e892681A86f421c136F317496DcB5Cb3Ace",
+      timelock: "0xe070f47bf2849593f9745e448b2723C57B7E5292",
+    },
+  },
+  hardhat: {
+    name: "Hardhat",
+    chainId: 31337n,
+    rpcUrl: "http://127.0.0.1:8545",
+    startBlock: 0,
+    contracts: {
+      erc20: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      bridge: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      timelock: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+    },
   },
 }
+
+export type ChainName = keyof typeof NETWORKS
+export type EvmChainName = Exclude<ChainName, "joystream">
 
 export const Erc20Abi = [
   {
