@@ -8,7 +8,6 @@ import {
 } from "./gql/graphql.ts"
 import {
   API_URL,
-  type EvmConfig,
   cleanup,
   getEvmConfig,
   getEvmDeploymentParams,
@@ -51,7 +50,7 @@ process.on("exit", async () => {
   console.log("exit received")
 })
 
-let evmConfig: EvmConfig
+let evmConfig: Awaited<ReturnType<typeof getEvmConfig>>
 let deploymentParams: ReturnType<typeof getEvmDeploymentParams>["JoystreamEth"]
 let mintingPeriodEndBlock: number | undefined
 

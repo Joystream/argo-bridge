@@ -80,18 +80,18 @@ export async function retry<T>(
   }
 }
 
-export type EvmConfig = {
-  publicClient: PublicClient
-  walletClient: WalletClient
-  testClient: TestClient
-  adminAccount: Hex
-  operatorAccount: Hex
-  otherAccount: Hex
-}
+// export type EvmConfig = {
+//   publicClient: PublicClient
+//   walletClient: WalletClient
+//   testClient: TestClient
+//   adminAccount: Hex
+//   operatorAccount: Hex
+//   otherAccount: Hex
+// }
 
 let startedDb = false
 
-export async function getEvmConfig(): Promise<EvmConfig> {
+export async function getEvmConfig() {
   const publicClient = createPublicClient({
     chain: hardhat,
     transport: http(),
