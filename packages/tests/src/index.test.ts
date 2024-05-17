@@ -24,7 +24,13 @@ import {
 import * as ss58 from "@subsquid/ss58"
 import { afterAll, beforeAll, expect, test } from "bun:test"
 import request from "graphql-request"
-import { bytesToHex, encodeFunctionData, maxUint256, zeroHash } from "viem"
+import {
+  type Hex,
+  bytesToHex,
+  encodeFunctionData,
+  maxUint256,
+  zeroHash,
+} from "viem"
 
 process.on("SIGINT", async () => {
   console.log("SIGINT received")
@@ -168,7 +174,7 @@ test("Unpause EVM bridge", async () => {
       callData,
       zeroHash,
       salt,
-      deploymentParams.timelockDelay,
+      BigInt(deploymentParams.timelockDelay),
     ],
   })
   const result = await evmConfig.publicClient.waitForTransactionReceipt({
@@ -197,11 +203,11 @@ test("Unpause EVM bridge", async () => {
     account: otherAccount,
     functionName: "execute",
     args: [
-      firstCall.callTarget,
-      firstCall.callValue,
-      firstCall.callData,
-      firstCall.predecessor,
-      firstCall.salt,
+      firstCall.callTarget as Hex,
+      BigInt(firstCall.callValue),
+      firstCall.callData as Hex,
+      firstCall.predecessor as Hex,
+      firstCall.salt as Hex,
     ],
   })
   const executeResult = await publicClient.waitForTransactionReceipt({
@@ -257,7 +263,14 @@ test("Mint tokens to test account", async () => {
     address: timelock,
     account: adminAccount,
     functionName: "schedule",
-    args: [erc20, 0n, calldata, zeroHash, salt, deploymentParams.timelockDelay],
+    args: [
+      erc20,
+      0n,
+      calldata,
+      zeroHash,
+      salt,
+      BigInt(deploymentParams.timelockDelay),
+    ],
   })
   const result = await publicClient.waitForTransactionReceipt({
     hash: txHash,

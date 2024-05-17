@@ -2,7 +2,10 @@
   "name": "@joystream/argo-indexer",
   "private": true,
   "scripts": {
-    "build": "rm -rf lib && tsc"
+    "build": "sqd build",
+    "run": "sqd run .",
+    "process:eth": "sqd process:eth",
+    "serve": "sqd serve"
   },
   "dependencies": {
     "@joystream/argo-core": "workspace:*",

@@ -143,11 +143,14 @@ export async function setup(): Promise<void> {
   printDone()
 
   printTask("Starting squid processor")
-  await run(["sqd", "process:eth"], { cwd: "../indexer", background: true })
+  await run(["bun", "run", "process:eth"], {
+    cwd: "../indexer",
+    background: true,
+  })
   printDone()
 
   printTask("Starting squid API")
-  await run(["sqd", "serve"], { cwd: "../indexer", background: true })
+  await run(["bun", "run", "serve"], { cwd: "../indexer", background: true })
   printDone()
 
   printTask("Waiting for squid GraphQL to be up")
