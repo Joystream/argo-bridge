@@ -127,7 +127,10 @@ export async function handleEvmBridgeEvents(
     }
   }
 
-  await ctx.store.save([bridgeConfig, ...transfers.values()])
+  await Promise.all([
+    ctx.store.save([...transfers.values()]),
+    ctx.store.save(bridgeConfig),
+  ])
 }
 
 function updateMintingPeriod(

@@ -1,8 +1,11 @@
 import { $, type Subprocess } from "bun"
 import {
+  type Hex,
   type PublicClient,
+  type TestClient,
   type WalletClient,
   createPublicClient,
+  createTestClient,
   createWalletClient,
   http,
 } from "viem"
@@ -51,9 +54,6 @@ async function run(args: string[], opts?: RunOptions) {
       await exitPromise
       return ""
     }
-    // if (raceResult === undefined) {
-    //   return ""
-    // }
   }
 }
 
@@ -67,7 +67,7 @@ type RetryOptions = {
   retries: number
   timeout: number
 }
-async function retry<T>(
+export async function retry<T>(
   fn: () => Promise<T>,
   { retries, timeout }: RetryOptions,
 ): Promise<T> {
@@ -83,8 +83,10 @@ async function retry<T>(
 export type EvmConfig = {
   publicClient: PublicClient
   walletClient: WalletClient
-  adminAccount: string
-  operatorAccount: string
+  testClient: TestClient
+  adminAccount: Hex
+  operatorAccount: Hex
+  otherAccount: Hex
 }
 
 let startedDb = false
@@ -98,16 +100,24 @@ export async function getEvmConfig(): Promise<EvmConfig> {
     chain: hardhat,
     transport: http(),
   })
+  const testClient = createTestClient({
+    chain: hardhat,
+    transport: http(),
+    mode: "hardhat",
+  })
 
   const accounts = await walletClient.getAddresses()
   // account 0 is the deployer
   const adminAccount = accounts[1]
   const operatorAccount = accounts[2]
+  const otherAccount = accounts[3]
   return {
     publicClient,
     walletClient,
+    testClient,
     adminAccount,
     operatorAccount,
+    otherAccount,
   }
 }
 
@@ -161,8 +171,7 @@ export async function cleanup() {
 
   startedProcesses.reverse()
   for (const { proc, cmd } of startedProcesses) {
-    printTask(`Stopping "${cmd}"`)
-    console.log(`Killing process ${proc.pid}`)
+    printTask(`Stopping "${cmd}", PID: ${proc.pid}`)
     proc.kill("SIGTERM")
     printDone()
   }
@@ -177,7 +186,7 @@ export async function cleanup() {
   console.log("Cleanup done, 👋")
   const portOccupied = (await $`lsof -t -i :4350`).text()
   if (portOccupied) {
-    console.log("Killing graphql process at port 4350")
+    console.log(`Killing graphql process at port 4350, PID: ${portOccupied}`)
     await $`kill -9 ${portOccupied}`
   }
   process.exit(0)
@@ -239,5 +248,3 @@ async function deployEvm() {
   )
   printDone()
 }
-
-await cleanup()

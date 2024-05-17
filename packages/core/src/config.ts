@@ -36,7 +36,7 @@ export const NETWORKS = {
       timelock: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
     },
   },
-}
+} as const
 
 export type ChainName = keyof typeof NETWORKS
 export type EvmChainName = Exclude<ChainName, "joystream">

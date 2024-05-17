@@ -2,7 +2,7 @@
   "name": "@joystream/argo-core",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
-  "types": "./src/index.ts",
+  "types": "./dist/types/index.d.ts",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.json && tsc -p tsconfig.cjs.json",
     "dev": "bun run src/index.ts"
@@ -10,7 +10,8 @@
   "exports": {
     ".": {
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
     }
   },
   "dependencies": {

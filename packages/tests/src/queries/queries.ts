@@ -1,18 +1,8 @@
 import { graphql } from "../gql"
 
 export const getTimelockCallsQueryDocument = graphql(/* GraphQL */ `
-  query GetTimelockCalls(
-    $where: EvmTimelockCallWhereInput
-    $orderBy: [EvmTimelockCallOrderByInput!]
-    $limit: Int
-    $offset: Int
-  ) {
-    evmTimelockCalls(
-      where: $where
-      orderBy: $orderBy
-      limit: $limit
-      offset: $offset
-    ) {
+  query GetTimelockCalls($where: EvmTimelockCallWhereInput) {
+    evmTimelockCalls(where: $where, orderBy: createdAtBlock_DESC) {
       id
       callArgs
       callData
@@ -50,6 +40,28 @@ export const getEvmBridgeConfig = graphql(/* GraphQL */ `
       }
       totalMinted
       totalBurned
+    }
+  }
+`)
+
+export const getBridgeTransfersDocument = graphql(/* GraphQL */ `
+  query GetBridgeTransfers($where: BridgeTransferWhereInput) {
+    bridgeTransfers(orderBy: createdAtBlock_DESC, where: $where) {
+      id
+      amount
+      status
+      feePaid
+      sourceChainId
+      sourceTransferId
+      sourceAccount
+      destChainId
+      destAccount
+      createdAtBlock
+      createdAtTimestamp
+      createdTxHash
+      completedTxHash
+      completedAtTimestamp
+      completedAtBlock
     }
   }
 `)
