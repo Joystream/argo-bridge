@@ -5,7 +5,11 @@
     "build": "sqd build",
     "run": "sqd run .",
     "process:eth": "sqd process:eth",
-    "serve": "sqd serve"
+    "serve": "sqd serve",
+    "codegen": "sqd codegen",
+    "typegen:eth": "sqd typegen:eth",
+    "typegen:joy": "sqd typegen:joy",
+    "metadata:joy": "sqd metadata:joy"
   },
   "dependencies": {
     "@joystream/argo-core": "workspace:*",

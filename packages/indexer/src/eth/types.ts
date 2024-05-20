@@ -1,3 +1,3 @@
-import { Log } from "@subsquid/evm-processor"
+import { Log } from "./processor"
 
-export type EvmLog = Log<{ log: { transactionHash: true } }>
+export type EvmLog = Log

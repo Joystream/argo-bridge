@@ -57,12 +57,12 @@ let mintingPeriodEndBlock: number | undefined
 const addressCodec = ss58.codec("joystream")
 
 beforeAll(async () => {
-  // await setup()
+  await setup()
   evmConfig = await getEvmConfig()
   deploymentParams = getEvmDeploymentParams("", "").JoystreamEth
 })
 
-// afterAll(async () => await cleanup())
+afterAll(async () => await cleanup())
 
 const { chainId, contracts } = NETWORKS.hardhat
 const { timelock, bridge, erc20 } = contracts

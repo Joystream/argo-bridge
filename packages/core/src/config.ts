@@ -13,6 +13,12 @@ export const NETWORKS = {
     chainId: 0n,
     rpcUrl: "wss://rpc.joyutils.org",
   },
+  joystreamDev: {
+    name: "Joystream Dev",
+    chainId: 0n,
+    rpcUrl: "wss://135.181.195.172.nip.io/ws-rpc",
+    startBlock: 10_000,
+  },
   sepolia: {
     name: "Sepolia",
     chainId: 11155111n,

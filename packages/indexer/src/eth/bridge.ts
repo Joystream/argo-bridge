@@ -134,6 +134,7 @@ export async function handleEvmBridgeEvents(
   await Promise.all([
     ctx.store.save([...transfers.values()]),
     ctx.store.save(bridgeConfig),
+    ctx.store.upsert(parsedEvents),
   ])
 }
 

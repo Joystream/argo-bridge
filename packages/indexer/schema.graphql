@@ -163,3 +163,66 @@ type EvmTimelockCall @entity {
 #  timestamp: DateTime!
 #  callId: ID!
 #}
+
+### JOYSTREAM ARGO PALLET ###
+
+type JoyBridgeConfigUpdatedEvent implements Event @entity {
+  id: ID!
+  chainId: BigInt!
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  # TODO: add fields
+}
+
+type JoyBridgeThawnStartedEvent implements Event @entity {
+  id: ID!
+  chainId: BigInt!
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  account: String!
+}
+
+type JoyBridgeThawnFinishedEvent implements Event @entity {
+  id: ID!
+  chainId: BigInt!
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+}
+
+type JoyBridgePausedEvent implements Event @entity {
+  id: ID!
+  chainId: BigInt!
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  account: String!
+}
+
+type JoyBridgeOutboundTransferRequestedEvent implements Event @entity {
+  id: ID!
+  chainId: BigInt!
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  joyRequester: String!
+  joyTransferId: BigInt!
+  destAccount: String!
+  destChainId: BigInt!
+  amount: BigInt!
+  feePaid: BigInt!
+}
+
+type JoyBridgeInboundTransferFinalizedEvent implements Event @entity {
+  id: ID!
+  chainId: BigInt!
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  remoteTransferId: BigInt!
+  remoteChainId: BigInt!
+  joyDestAccount: String!
+  amount: BigInt!
+}

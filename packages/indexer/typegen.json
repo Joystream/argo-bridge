@@ -1,22 +1,16 @@
 {
-  "outDir": "src/joy/types",
-  "specVersions": "https://v2.archive.subsquid.io/metadata/joystream",
+  "outDir": "src/joy/generated",
+  "specVersions": "./joy-metadata.jsonl",
   "pallets": {
-    "Balances": {
+    "ArgoBridge": {
       "events": true,
-      "calls": true,
-      "storage": [],
-      "constants": []
+      "calls": true
     },
     "System": {
-      "events": ["ExtrinsicSuccess", "ExtrinsicFailed"]
-    },
-    "Members": {
-      "calls": ["member_remark"],
-      "events": ["MemberRemarked"]
-    },
-    "Vesting": {
-      "calls": ["vested_transfer"]
+      "events": [
+        "ExtrinsicSuccess",
+        "ExtrinsicFailed"
+      ]
     }
   }
 }
