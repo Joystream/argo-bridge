@@ -4,6 +4,8 @@ export const getTimelockCallsQueryDocument = graphql(/* GraphQL */ `
   query GetTimelockCalls($where: EvmTimelockCallWhereInput) {
     evmTimelockCalls(where: $where, orderBy: createdAtBlock_DESC) {
       id
+      callId
+      chainId
       callArgs
       callData
       callSignature

@@ -80,15 +80,6 @@ export async function retry<T>(
   }
 }
 
-// export type EvmConfig = {
-//   publicClient: PublicClient
-//   walletClient: WalletClient
-//   testClient: TestClient
-//   adminAccount: Hex
-//   operatorAccount: Hex
-//   otherAccount: Hex
-// }
-
 let startedDb = false
 
 export async function getEvmConfig() {
@@ -205,8 +196,8 @@ export function getEvmDeploymentParams(
       bridgeAdmin: adminAccount,
       bridgeOperator: operatorAccount,
       bridgeFee: 100,
-      mintingLimitPeriodLengthBlocks: 1000,
-      mintingLimitPerPeriod: 200,
+      mintingLimitPeriodLengthBlocks: 2000,
+      mintingLimitPerPeriod: 1000,
     },
   }
 }

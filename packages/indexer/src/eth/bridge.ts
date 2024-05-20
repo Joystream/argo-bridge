@@ -106,14 +106,18 @@ export async function handleEvmBridgeEvents(
           `Completed unknown transfer from Joystream ${event.joyTransferId}`,
         )
         const transfer = new BridgeTransfer({
-          id: getEntityId(CHAIN_ID, event.joyTransferId),
+          id: joyTransferId(event.joyTransferId),
           amount: event.amount,
           status: BridgeTransferStatus.MAYBE_COMPLETED,
           sourceChainId: NETWORKS.joystream.chainId,
           sourceTransferId: event.joyTransferId,
           destChainId: CHAIN_ID,
           destAccount: event.ethDestAddress,
+          completedAtBlock: event.block,
+          completedAtTimestamp: event.timestamp,
+          completedTxHash: event.txHash,
           // below fields should be updated by Joystream processor
+          sourceAccount: "",
           feePaid: 0n,
           createdAtBlock: event.block,
           createdAtTimestamp: event.timestamp,
