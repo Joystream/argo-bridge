@@ -354,9 +354,14 @@ test("Check EVM minting periods", async () => {
 
   let bridgeConfig = await getEvmBridgeConfig()
   const currentPeriodEndBlock = bridgeConfig.mintingLimits.currentPeriodEndBlock
-  await testClient.mine({
-    blocks: currentPeriodEndBlock - Number(await publicClient.getBlockNumber()),
-  })
+  const blocksToMine =
+    currentPeriodEndBlock - Number(await publicClient.getBlockNumber())
+  for (let i = 0; i < blocksToMine; i++) {
+    // @ts-ignore
+    await testClient.request({
+      method: "evm_mine",
+    })
+  }
 
   const amount = randomAmount()
   const [_, __, blockNumber] = await completeEvmTransfer(

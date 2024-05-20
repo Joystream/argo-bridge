@@ -196,7 +196,7 @@ export function getEvmDeploymentParams(
       bridgeAdmin: adminAccount,
       bridgeOperator: operatorAccount,
       bridgeFee: 100,
-      mintingLimitPeriodLengthBlocks: 2000,
+      mintingLimitPeriodLengthBlocks: 20,
       mintingLimitPerPeriod: 1000,
     },
   }
