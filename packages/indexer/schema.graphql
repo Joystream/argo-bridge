@@ -52,6 +52,9 @@ type EvmBridgeConfig @entity {
   id: ID!
   status: EvmBridgeStatus!
   bridgingFee: BigInt!
+  adminAccounts: [String!]!
+  operatorAccounts: [String!]!
+  pauserAccounts: [String!]!
   mintingLimits: EvmBridgeMintingLimits!
   totalMinted: BigInt!
   totalBurned: BigInt!
@@ -116,6 +119,26 @@ type EvmBridgeMintingLimitsUpdatedEvent implements Event @entity {
   timestamp: DateTime!
   periodLength: Int!
   periodLimit: BigInt!
+}
+
+type EvmBridgeRoleGrantedEvent implements Event @entity {
+  id: ID!
+  chainId: BigInt! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  role: String!
+  account: String!
+}
+
+type EvmBridgeRoleRevokedEvent implements Event @entity {
+  id: ID!
+  chainId: BigInt! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  role: String!
+  account: String!
 }
 
 ### TIMELOCK ###
@@ -225,4 +248,24 @@ type JoyBridgeInboundTransferFinalizedEvent implements Event @entity {
   remoteChainId: BigInt!
   joyDestAccount: String!
   amount: BigInt!
+}
+
+enum JoyBridgeStatus {
+  ACTIVE
+  PAUSED
+  THAWN
+}
+
+type JoyBridgeConfig @entity {
+  id: ID!
+  status: JoyBridgeStatus!
+  thawnStartedAtBlock: Int
+  bridgingFee: BigInt!
+  thawnDurationBlocks: Int!
+  mintAllowance: BigInt!
+  operatorAccount: String!
+  pauserAccounts: [String!]!
+  totalMinted: BigInt!
+  totalBurned: BigInt!
+  feesBurned: BigInt!
 }

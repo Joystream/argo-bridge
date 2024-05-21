@@ -1,4 +1,4 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, BigIntColumn as BigIntColumn_} from "@subsquid/typeorm-store"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, BigIntColumn as BigIntColumn_, StringColumn as StringColumn_} from "@subsquid/typeorm-store"
 import * as marshal from "./marshal"
 import {EvmBridgeStatus} from "./_evmBridgeStatus"
 import {EvmBridgeMintingLimits} from "./_evmBridgeMintingLimits"
@@ -17,6 +17,15 @@ export class EvmBridgeConfig {
 
     @BigIntColumn_({nullable: false})
     bridgingFee!: bigint
+
+    @StringColumn_({array: true, nullable: false})
+    adminAccounts!: (string)[]
+
+    @StringColumn_({array: true, nullable: false})
+    operatorAccounts!: (string)[]
+
+    @StringColumn_({array: true, nullable: false})
+    pauserAccounts!: (string)[]
 
     @Column_("jsonb", {transformer: {to: obj => obj.toJSON(), from: obj => obj == null ? undefined : new EvmBridgeMintingLimits(undefined, obj)}, nullable: false})
     mintingLimits!: EvmBridgeMintingLimits

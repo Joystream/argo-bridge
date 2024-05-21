@@ -8,12 +8,13 @@ import {
   Call as _Call,
   Event as _Event,
   Extrinsic as _Extrinsic,
+  assertNotNull,
 } from "@subsquid/substrate-processor"
 
 const TARGET_CHAIN: ChainName = "joystreamDev"
 export const NETWORK = NETWORKS[TARGET_CHAIN]
 export const CHAIN_ID = NETWORK.chainId
-const RPC_ENDPOINT = NETWORK.rpcUrl
+const RPC_ENDPOINT = assertNotNull(NETWORK.rpc.url)
 
 console.log(`Connecting to RPC endpoint: ${RPC_ENDPOINT}`)
 
@@ -21,10 +22,7 @@ export const processor = new SubstrateBatchProcessor()
   // .setGateway(lookupArchive("joystream", { release: "ArrowSquid" }))
   .setRpcEndpoint({
     url: RPC_ENDPOINT,
-    rateLimit: 500,
-  })
-  .setBlockRange({
-    from: NETWORK.startBlock,
+    rateLimit: assertNotNull(NETWORK.rpc.rateLimit),
   })
   .setFields({
     event: {
@@ -61,6 +59,12 @@ export const processor = new SubstrateBatchProcessor()
     name: [events.argoBridge.outboundTransferRequested.name],
     extrinsic: true,
   })
+
+if (NETWORK.startBlock) {
+  processor.setBlockRange({
+    from: NETWORK.startBlock,
+  })
+}
 
 export type Fields = SubstrateBatchProcessorFields<typeof processor>
 export type Block = BlockHeader<Fields>

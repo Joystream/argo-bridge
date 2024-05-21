@@ -6,18 +6,20 @@ import {
   EvmBridgeFeesWithdrawnEvent,
   EvmBridgeMintingLimits,
   EvmBridgeMintingLimitsUpdatedEvent,
+  EvmBridgeRoleGrantedEvent,
+  EvmBridgeRoleRevokedEvent,
   EvmBridgeStatus,
   EvmBridgeStatusChangedEvent,
   EvmBridgeTransferToEthCompletedEvent,
   EvmBridgeTransferToJoystreamRequestedEvent,
 } from "../model"
+import { groupByClass } from "../shared"
 import * as argoBridgeAbi from "./abi/argoBridgeV1"
-import { CHAIN_ID } from "./processor"
+import { ARGO_ADDRESS, CHAIN_ID, Context } from "./processor"
 import { EvmLog } from "./types"
 import { NETWORKS, getEntityId } from "@joystream/argo-core"
-import { DataHandlerContext } from "@subsquid/evm-processor"
 import * as ss58 from "@subsquid/ss58"
-import { Store } from "@subsquid/typeorm-store"
+import assert from "assert"
 import { In } from "typeorm"
 
 type EvmBridgeEvent =
@@ -27,16 +29,40 @@ type EvmBridgeEvent =
   | EvmBridgeFeeChangedEvent
   | EvmBridgeStatusChangedEvent
   | EvmBridgeMintingLimitsUpdatedEvent
+  | EvmBridgeRoleGrantedEvent
+  | EvmBridgeRoleGrantedEvent
 
 const addressCodec = ss58.codec("joystream")
 
 const joyTransferId = (id: bigint) => getEntityId("joystream", id)
 
+let BRIDGE_ADMIN_ROLE: string
+let BRIDGE_OPERATOR_ROLE: string
+let BRIDGE_PAUSER_ROLE: string
+let rolesSet = false
+
 export async function handleEvmBridgeEvents(
   logs: EvmLog[],
-  ctx: DataHandlerContext<Store>,
+  ctx: Context,
 ): Promise<void> {
   const parsedEvents = parseRawLogs(logs)
+  if (!rolesSet && logs.length > 0) {
+    const ArgoContract = new argoBridgeAbi.Contract(
+      ctx,
+      logs[0].block,
+      ARGO_ADDRESS,
+    )
+    const results = await Promise.all([
+      ArgoContract.DEFAULT_ADMIN_ROLE(),
+      ArgoContract.OPERATOR_ROLE(),
+      ArgoContract.PAUSER_ROLE(),
+    ])
+    BRIDGE_ADMIN_ROLE = results[0]
+    BRIDGE_OPERATOR_ROLE = results[1]
+    BRIDGE_PAUSER_ROLE = results[2]
+
+    rolesSet = true
+  }
 
   // load existing transfers from the database
   const transferIds = new Set(
@@ -72,21 +98,51 @@ export async function handleEvmBridgeEvents(
         limits.currentPeriodEndBlock = event.block + event.periodLength
       }
     } else if (event instanceof EvmBridgeTransferToJoystreamRequestedEvent) {
-      const transfer = new BridgeTransfer({
-        id: getEntityId(CHAIN_ID, event.ethTransferId),
-        amount: event.amount,
-        status: BridgeTransferStatus.REQUESTED,
-        feePaid: bridgeConfig.bridgingFee,
-        sourceChainId: CHAIN_ID,
-        sourceTransferId: event.ethTransferId,
-        sourceAccount: event.ethRequester,
-        destChainId: NETWORKS.joystream.chainId,
-        destAccount: event.joyDestAccount,
-        createdAtBlock: event.block,
-        createdAtTimestamp: event.timestamp,
-        createdTxHash: event.txHash,
-      })
-      transfers.set(transfer.id, transfer)
+      const {
+        amount,
+        ethRequester,
+        ethTransferId,
+        joyDestAccount,
+        block,
+        timestamp,
+        txHash,
+      } = event
+      const { bridgingFee } = bridgeConfig
+
+      const transferId = getEntityId(CHAIN_ID, ethTransferId)
+      const transfer = transfers.get(transferId)
+
+      if (transfer) {
+        // this could happen if the JOY processor processed the finalization event before the EVM processor processed the request event
+        // in that case, we assert the MAYBE_COMPLETED status and update the transfer
+        assert(
+          transfer.status === BridgeTransferStatus.MAYBE_COMPLETED,
+          `Requested EVM (${CHAIN_ID}) outbound transfer ${transferId} already exists`,
+        )
+
+        transfer.status = BridgeTransferStatus.COMPLETED
+        transfer.sourceAccount = ethRequester
+        transfer.feePaid = bridgingFee
+        transfer.createdAtBlock = block
+        transfer.createdAtTimestamp = timestamp
+        transfer.createdTxHash = txHash
+      } else {
+        const transfer = new BridgeTransfer({
+          id: transferId,
+          amount: amount,
+          status: BridgeTransferStatus.REQUESTED,
+          feePaid: bridgingFee,
+          sourceChainId: CHAIN_ID,
+          sourceTransferId: ethTransferId,
+          sourceAccount: ethRequester,
+          destChainId: NETWORKS.joystream.chainId,
+          destAccount: joyDestAccount,
+          createdAtBlock: block,
+          createdAtTimestamp: timestamp,
+          createdTxHash: txHash,
+        })
+        transfers.set(transfer.id, transfer)
+      }
 
       bridgeConfig.totalBurned += event.amount
     } else if (event instanceof EvmBridgeTransferToEthCompletedEvent) {
@@ -128,13 +184,42 @@ export async function handleEvmBridgeEvents(
 
       bridgeConfig.totalMinted += event.amount
       bridgeConfig.mintingLimits.currentPeriodMinted += event.amount
+    } else if (event instanceof EvmBridgeRoleGrantedEvent) {
+      const { account, role } = event
+      if (role === BRIDGE_ADMIN_ROLE) {
+        bridgeConfig.adminAccounts.push(account)
+      } else if (role === BRIDGE_OPERATOR_ROLE) {
+        bridgeConfig.operatorAccounts.push(account)
+      } else if (role === BRIDGE_PAUSER_ROLE) {
+        bridgeConfig.pauserAccounts.push(account)
+      }
+    } else if (event instanceof EvmBridgeRoleRevokedEvent) {
+      const { account, role } = event
+      if (role === BRIDGE_ADMIN_ROLE) {
+        bridgeConfig.adminAccounts = bridgeConfig.adminAccounts.filter(
+          (a) => a !== account,
+        )
+      } else if (role === BRIDGE_OPERATOR_ROLE) {
+        bridgeConfig.operatorAccounts = bridgeConfig.operatorAccounts.filter(
+          (a) => a !== account,
+        )
+      } else if (role === BRIDGE_PAUSER_ROLE) {
+        bridgeConfig.pauserAccounts = bridgeConfig.pauserAccounts.filter(
+          (a) => a !== account,
+        )
+      }
     }
   }
+
+  const groupedEvents = groupByClass(parsedEvents)
+  const eventsSavePromises = Object.values(groupedEvents).map((events) =>
+    ctx.store.save(events),
+  )
 
   await Promise.all([
     ctx.store.save([...transfers.values()]),
     ctx.store.save(bridgeConfig),
-    ctx.store.upsert(parsedEvents),
+    ...eventsSavePromises,
   ])
 }
 
@@ -239,6 +324,30 @@ function parseRawLogs(logs: EvmLog[]): EvmBridgeEvent[] {
         )
         break
       }
+
+      case argoBridgeAbi.events.RoleGranted.topic: {
+        const { role, account } = argoBridgeAbi.events.RoleGranted.decode(log)
+        parsedLogs.push(
+          new EvmBridgeRoleGrantedEvent({
+            ...baseEvent,
+            role,
+            account,
+          }),
+        )
+        break
+      }
+
+      case argoBridgeAbi.events.RoleRevoked.topic: {
+        const { role, account } = argoBridgeAbi.events.RoleRevoked.decode(log)
+        parsedLogs.push(
+          new EvmBridgeRoleRevokedEvent({
+            ...baseEvent,
+            role,
+            account,
+          }),
+        )
+        break
+      }
     }
   }
 
@@ -249,6 +358,9 @@ const getDefaultBridgeConfig = (chainId: bigint) =>
   new EvmBridgeConfig({
     id: chainId.toString(),
     bridgingFee: 0n,
+    adminAccounts: [],
+    operatorAccounts: [],
+    pauserAccounts: [],
     status: EvmBridgeStatus.PAUSED,
     totalMinted: 0n,
     totalBurned: 0n,

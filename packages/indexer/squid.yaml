@@ -7,9 +7,9 @@ deploy:
   addons:
     postgres:
   processor:
-    # - name: eth-processor
-    # cmd: [ "sqd", "process:prod:eth" ]
-    - name: joy-processor
-      cmd: ["sqd", "process:prod:joy"]
+    - name: eth-processor
+      cmd: ["sqd", "process:prod:eth"]
+    # - name: joy-processor
+    # cmd: ["sqd", "process:prod:joy"]
   api:
     cmd: ["sqd", "serve:prod"]

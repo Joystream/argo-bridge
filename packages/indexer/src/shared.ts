@@ -9,3 +9,13 @@ export const tryDecodeEthereumAddress = (address: string): Address | false => {
   if (!isAddress(trimmed)) return false
   return trimmed
 }
+
+export function groupByClass(list: any[]) {
+  return list.reduce<Record<string, any[]>>((acc, item) => {
+    const key = item?.constructor?.name
+    if (!key) return acc
+    if (!acc[key]) acc[key] = []
+    acc[key].push(item)
+    return acc
+  }, {})
+}

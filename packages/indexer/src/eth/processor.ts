@@ -1,6 +1,7 @@
 import * as argoBridgeAbi from "./abi/argoBridgeV1"
 import * as timelockControllerAbi from "./abi/timelockController"
 import { ChainName, NETWORKS } from "@joystream/argo-core"
+import { lookupArchive } from "@subsquid/archive-registry"
 import {
   BlockHeader,
   DataHandlerContext,
@@ -13,17 +14,16 @@ import { Store } from "@subsquid/typeorm-store"
 import { assertNotNull } from "@subsquid/util-internal"
 
 const TARGET_CHAIN: ChainName = "hardhat"
-const NETWORK = NETWORKS[TARGET_CHAIN]
+export const NETWORK = NETWORKS[TARGET_CHAIN]
 
 export const CHAIN_ID = NETWORK.chainId
-export const ARGO_ADDRESS = NETWORK.contracts.bridge.toLowerCase()
-export const TIMELOCK_ADDRESS = NETWORK.contracts.timelock.toLowerCase()
+export const ARGO_ADDRESS = NETWORK.contracts!.bridge.toLowerCase()
+export const TIMELOCK_ADDRESS = NETWORK.contracts!.timelock.toLowerCase()
 
 export const processor = new EvmBatchProcessor()
-  // .setGateway(lookupArchive("eth-sepolia"))
   .setRpcEndpoint({
-    url: assertNotNull(NETWORK.rpcUrl),
-    rateLimit: 25,
+    url: assertNotNull(NETWORK.rpc.url),
+    rateLimit: assertNotNull(NETWORK.rpc.rateLimit),
   })
   .setFinalityConfirmation(75)
   .setFields({
@@ -34,9 +34,6 @@ export const processor = new EvmBatchProcessor()
       from: true,
       hash: true,
     },
-  })
-  .setBlockRange({
-    from: NETWORK.startBlock,
   })
   .addLog({
     address: [ARGO_ADDRESS],
@@ -64,6 +61,14 @@ export const processor = new EvmBatchProcessor()
     topic0: [argoBridgeAbi.events.ArgoTransferToJoystreamRequested.topic],
   })
   .addLog({
+    address: [ARGO_ADDRESS],
+    topic0: [argoBridgeAbi.events.RoleGranted.topic],
+  })
+  .addLog({
+    address: [ARGO_ADDRESS],
+    topic0: [argoBridgeAbi.events.RoleRevoked.topic],
+  })
+  .addLog({
     address: [TIMELOCK_ADDRESS],
     topic0: [timelockControllerAbi.events.CallScheduled.topic],
   })
@@ -83,6 +88,16 @@ export const processor = new EvmBatchProcessor()
     address: [TIMELOCK_ADDRESS],
     topic0: [timelockControllerAbi.events.MinDelayChange.topic],
   })
+
+if (NETWORK.archiveName) {
+  processor.setGateway(lookupArchive(NETWORK.archiveName))
+}
+
+if (NETWORK.startBlock) {
+  processor.setBlockRange({
+    from: NETWORK.startBlock,
+  })
+}
 
 export type Fields = EvmBatchProcessorFields<typeof processor>
 export type Context = DataHandlerContext<Store, Fields>

@@ -7,23 +7,50 @@
 //   // baseSepolia: 84532,
 // }
 
-export const NETWORKS = {
+import { Hex } from "viem"
+
+type NetworkConfig = {
+  name: string
+  chainId: bigint
+  rpc: {
+    url: string
+    rateLimit: number
+  }
+  startBlock?: number
+  contracts?: {
+    erc20: Hex
+    bridge: Hex
+    timelock: Hex
+  }
+  archiveName?: string
+}
+
+export const NETWORKS: Record<string, NetworkConfig> = {
   joystream: {
     name: "Joystream",
     chainId: 0n,
-    rpcUrl: "wss://rpc.joyutils.org",
+    rpc: {
+      url: "wss://rpc.joystream.org",
+      rateLimit: 500,
+    },
   },
   joystreamDev: {
     name: "Joystream Dev",
     chainId: 0n,
-    rpcUrl: "wss://135.181.195.172.nip.io/ws-rpc",
+    rpc: {
+      url: "wss://135.181.195.172.nip.io/ws-rpc",
+      rateLimit: 100,
+    },
     startBlock: 10_000,
   },
   sepolia: {
     name: "Sepolia",
     chainId: 11155111n,
-    rpcUrl:
-      "https://rpc.ankr.com/eth_sepolia/abc1ed712dcea03c2de5b71da89b9ad17341eea8d87a65dbff6cd668e7e65bf8",
+    archiveName: "eth-sepolia",
+    rpc: {
+      url: "https://rpc.ankr.com/eth_sepolia/abc1ed712dcea03c2de5b71da89b9ad17341eea8d87a65dbff6cd668e7e65bf8",
+      rateLimit: 30,
+    },
     startBlock: 5_861_090,
     contracts: {
       erc20: "0xa2717A92FCE2Acb20F83AD9233709D2ce512752E",
@@ -34,7 +61,10 @@ export const NETWORKS = {
   hardhat: {
     name: "Hardhat",
     chainId: 31337n,
-    rpcUrl: "http://127.0.0.1:8545",
+    rpc: {
+      url: "http://127.0.0.1:8545",
+      rateLimit: 1000,
+    },
     startBlock: 0,
     contracts: {
       erc20: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
@@ -42,7 +72,7 @@ export const NETWORKS = {
       timelock: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
     },
   },
-} as const
+}
 
 export type ChainName = keyof typeof NETWORKS
 export type EvmChainName = Exclude<ChainName, "joystream">
