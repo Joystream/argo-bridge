@@ -6,6 +6,7 @@ export const BridgeConstraints: sts.Type<BridgeConstraints> = sts.struct(() => {
         pauserAccounts: sts.option(() => sts.array(() => AccountId32)),
         bridgingFee: sts.option(() => sts.bigint()),
         thawnDuration: sts.option(() => sts.number()),
+        remoteChains: sts.option(() => sts.array(() => sts.number())),
     }
 })
 
@@ -14,6 +15,7 @@ export interface BridgeConstraints {
     pauserAccounts?: (AccountId32[] | undefined)
     bridgingFee?: (bigint | undefined)
     thawnDuration?: (number | undefined)
+    remoteChains?: (number[] | undefined)
 }
 
 export type AccountId32 = Bytes

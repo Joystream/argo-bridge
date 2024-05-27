@@ -1,4 +1,4 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, BigIntColumn as BigIntColumn_, Index as Index_, StringColumn as StringColumn_, IntColumn as IntColumn_, DateTimeColumn as DateTimeColumn_} from "@subsquid/typeorm-store"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, IntColumn as IntColumn_, Index as Index_, StringColumn as StringColumn_, DateTimeColumn as DateTimeColumn_} from "@subsquid/typeorm-store"
 import {EvmBridgeStatus} from "./_evmBridgeStatus"
 
 @Entity_()
@@ -11,8 +11,8 @@ export class EvmBridgeStatusChangedEvent {
     id!: string
 
     @Index_()
-    @BigIntColumn_({nullable: false})
-    chainId!: bigint
+    @IntColumn_({nullable: false})
+    chainId!: number
 
     @StringColumn_({nullable: false})
     txHash!: string

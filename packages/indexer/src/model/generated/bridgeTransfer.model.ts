@@ -1,4 +1,4 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, BigIntColumn as BigIntColumn_, Index as Index_, StringColumn as StringColumn_, IntColumn as IntColumn_, DateTimeColumn as DateTimeColumn_} from "@subsquid/typeorm-store"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, BigIntColumn as BigIntColumn_, Index as Index_, IntColumn as IntColumn_, StringColumn as StringColumn_, DateTimeColumn as DateTimeColumn_} from "@subsquid/typeorm-store"
 import {BridgeTransferStatus} from "./_bridgeTransferStatus"
 
 @Entity_()
@@ -21,8 +21,8 @@ export class BridgeTransfer {
     feePaid!: bigint
 
     @Index_()
-    @BigIntColumn_({nullable: false})
-    sourceChainId!: bigint
+    @IntColumn_({nullable: false})
+    sourceChainId!: number
 
     @Index_()
     @BigIntColumn_({nullable: false})
@@ -33,8 +33,8 @@ export class BridgeTransfer {
     sourceAccount!: string
 
     @Index_()
-    @BigIntColumn_({nullable: false})
-    destChainId!: bigint
+    @IntColumn_({nullable: false})
+    destChainId!: number
 
     @Index_()
     @StringColumn_({nullable: false})

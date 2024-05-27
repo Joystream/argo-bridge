@@ -28,7 +28,7 @@ export const getTimelockCallsQueryDocument = graphql(/* GraphQL */ `
   }
 `)
 
-export const getEvmBridgeConfig = graphql(/* GraphQL */ `
+export const getEvmBridgeConfigDocument = graphql(/* GraphQL */ `
   query GetEvmBridgeConfig($chainId: String!) {
     evmBridgeConfigs(where: { id_eq: $chainId }) {
       id
@@ -42,6 +42,25 @@ export const getEvmBridgeConfig = graphql(/* GraphQL */ `
       }
       totalMinted
       totalBurned
+    }
+  }
+`)
+
+export const getJoyBridgeConfigDocument = graphql(/* GraphQL */ `
+  query GetJoyBridgeConfig($chainId: String!) {
+    joyBridgeConfigs(where: { id_eq: $chainId }) {
+      id
+      status
+      bridgingFee
+      operatorAccount
+      pauserAccounts
+      mintAllowance
+      feesBurned
+      supportedRemoteChainIds
+      thawnDurationBlocks
+      thawnEndsAtBlock
+      totalBurned
+      totalMinted
     }
   }
 `)

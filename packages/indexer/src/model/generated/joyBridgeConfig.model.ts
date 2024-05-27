@@ -14,7 +14,7 @@ export class JoyBridgeConfig {
     status!: JoyBridgeStatus
 
     @IntColumn_({nullable: true})
-    thawnStartedAtBlock!: number | undefined | null
+    thawnEndsAtBlock!: number | undefined | null
 
     @BigIntColumn_({nullable: false})
     bridgingFee!: bigint
@@ -39,4 +39,7 @@ export class JoyBridgeConfig {
 
     @BigIntColumn_({nullable: false})
     feesBurned!: bigint
+
+    @IntColumn_({array: true, nullable: false})
+    supportedRemoteChainIds!: (number)[]
 }

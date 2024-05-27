@@ -5,6 +5,7 @@
     "build": "sqd build",
     "run": "sqd run .",
     "process:eth": "sqd process:eth",
+    "process:joy": "sqd process:joy",
     "serve": "sqd serve",
     "codegen": "sqd codegen",
     "typegen:eth": "sqd typegen:eth",

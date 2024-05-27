@@ -65,19 +65,30 @@ export async function handleEvmBridgeEvents(
   }
 
   // load existing transfers from the database
-  const transferIds = new Set(
-    parsedEvents
-      .filter(
-        (event): event is EvmBridgeTransferToEthCompletedEvent =>
-          event instanceof EvmBridgeTransferToEthCompletedEvent,
-      )
-      .map((event) => joyTransferId(event.joyTransferId)),
-  )
-  const transfers: Map<string, BridgeTransfer> = new Map(
+  const requestedTransferEvents: EvmBridgeTransferToJoystreamRequestedEvent[] =
+    []
+  const completedTransferEvents: EvmBridgeTransferToEthCompletedEvent[] = []
+  for (const event of parsedEvents) {
+    if (event instanceof EvmBridgeTransferToJoystreamRequestedEvent) {
+      requestedTransferEvents.push(event)
+    } else if (event instanceof EvmBridgeTransferToEthCompletedEvent) {
+      completedTransferEvents.push(event)
+    }
+  }
+  const transferIds = new Set([
+    ...requestedTransferEvents.map((event) =>
+      getEntityId(CHAIN_ID, event.ethTransferId),
+    ),
+    ...completedTransferEvents.map((event) =>
+      joyTransferId(event.joyTransferId),
+    ),
+  ])
+  const existingTransfers: Map<string, BridgeTransfer> = new Map(
     (await ctx.store.findBy(BridgeTransfer, { id: In([...transferIds]) })).map(
       (transfer) => [transfer.id, transfer],
     ),
   )
+  const newTransfers: BridgeTransfer[] = []
 
   const bridgeConfig =
     (await ctx.store.findOneBy(EvmBridgeConfig, {
@@ -110,7 +121,7 @@ export async function handleEvmBridgeEvents(
       const { bridgingFee } = bridgeConfig
 
       const transferId = getEntityId(CHAIN_ID, ethTransferId)
-      const transfer = transfers.get(transferId)
+      const transfer = existingTransfers.get(transferId)
 
       if (transfer) {
         // this could happen if the JOY processor processed the finalization event before the EVM processor processed the request event
@@ -141,7 +152,7 @@ export async function handleEvmBridgeEvents(
           createdAtTimestamp: timestamp,
           createdTxHash: txHash,
         })
-        transfers.set(transfer.id, transfer)
+        newTransfers.push(transfer)
       }
 
       bridgeConfig.totalBurned += event.amount
@@ -149,7 +160,7 @@ export async function handleEvmBridgeEvents(
       // update minting period if needed before processing the transfer
       updateMintingPeriod(bridgeConfig, event.block)
 
-      const transfer = transfers.get(joyTransferId(event.joyTransferId))
+      const transfer = existingTransfers.get(joyTransferId(event.joyTransferId))
       if (transfer) {
         transfer.status = BridgeTransferStatus.COMPLETED
         transfer.completedAtBlock = event.block
@@ -179,7 +190,7 @@ export async function handleEvmBridgeEvents(
           createdAtTimestamp: event.timestamp,
           createdTxHash: event.txHash,
         })
-        transfers.set(transfer.id, transfer)
+        newTransfers.push(transfer)
       }
 
       bridgeConfig.totalMinted += event.amount
@@ -213,12 +224,13 @@ export async function handleEvmBridgeEvents(
 
   const groupedEvents = groupByClass(parsedEvents)
   const eventsSavePromises = Object.values(groupedEvents).map((events) =>
-    ctx.store.save(events),
+    ctx.store.insert(events),
   )
 
   await Promise.all([
-    ctx.store.save([...transfers.values()]),
+    ctx.store.save([...existingTransfers.values()]),
     ctx.store.save(bridgeConfig),
+    ctx.store.insert(newTransfers),
     ...eventsSavePromises,
   ])
 }
@@ -354,7 +366,7 @@ function parseRawLogs(logs: EvmLog[]): EvmBridgeEvent[] {
   return parsedLogs
 }
 
-const getDefaultBridgeConfig = (chainId: bigint) =>
+const getDefaultBridgeConfig = (chainId: number) =>
   new EvmBridgeConfig({
     id: chainId.toString(),
     bridgingFee: 0n,

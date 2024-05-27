@@ -14,6 +14,9 @@ processor.run(
         }
       }
     }
-    await handleJoyBridgeEvents(bridgeEvents, ctx)
+
+    if (bridgeEvents.length > 0) {
+      await handleJoyBridgeEvents(bridgeEvents, ctx)
+    }
   },
 )

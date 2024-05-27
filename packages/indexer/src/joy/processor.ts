@@ -11,7 +11,7 @@ import {
   assertNotNull,
 } from "@subsquid/substrate-processor"
 
-const TARGET_CHAIN: ChainName = "joystreamDev"
+const TARGET_CHAIN: ChainName = "joystreamLocal"
 export const NETWORK = NETWORKS[TARGET_CHAIN]
 export const CHAIN_ID = NETWORK.chainId
 const RPC_ENDPOINT = assertNotNull(NETWORK.rpc.url)

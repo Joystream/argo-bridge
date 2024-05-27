@@ -1,10 +1,10 @@
 import { ChainName, NETWORKS } from "./config"
 
 export function getEntityId(
-  chainOrId: ChainName | bigint,
+  chainOrId: ChainName | number,
   entityId: bigint | string,
 ): string {
   const chainId =
-    typeof chainOrId === "bigint" ? chainOrId : NETWORKS[chainOrId].chainId
+    typeof chainOrId === "number" ? chainOrId : NETWORKS[chainOrId].chainId
   return `${chainId}-${entityId}`
 }

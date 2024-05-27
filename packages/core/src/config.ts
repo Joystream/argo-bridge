@@ -1,17 +1,8 @@
-// export const CHAIN_IDS = {
-//   joystream: 0n,
-//   // ethereum: 1,
-//   sepolia: 11155111n,
-//   hardhat: 31337n,
-//   // base: 8453,
-//   // baseSepolia: 84532,
-// }
-
 import { Hex } from "viem"
 
 type NetworkConfig = {
   name: string
-  chainId: bigint
+  chainId: number
   rpc: {
     url: string
     rateLimit: number
@@ -28,24 +19,23 @@ type NetworkConfig = {
 export const NETWORKS: Record<string, NetworkConfig> = {
   joystream: {
     name: "Joystream",
-    chainId: 0n,
+    chainId: 0,
     rpc: {
       url: "wss://rpc.joystream.org",
       rateLimit: 500,
     },
   },
-  joystreamDev: {
-    name: "Joystream Dev",
-    chainId: 0n,
+  joystreamLocal: {
+    name: "Joystream Local",
+    chainId: 0,
     rpc: {
-      url: "wss://135.181.195.172.nip.io/ws-rpc",
-      rateLimit: 100,
+      url: "ws://localhost:9944",
+      rateLimit: 1000,
     },
-    startBlock: 10_000,
   },
   sepolia: {
     name: "Sepolia",
-    chainId: 11155111n,
+    chainId: 11155111,
     archiveName: "eth-sepolia",
     rpc: {
       url: "https://rpc.ankr.com/eth_sepolia/abc1ed712dcea03c2de5b71da89b9ad17341eea8d87a65dbff6cd668e7e65bf8",
@@ -60,7 +50,7 @@ export const NETWORKS: Record<string, NetworkConfig> = {
   },
   hardhat: {
     name: "Hardhat",
-    chainId: 31337n,
+    chainId: 31337,
     rpc: {
       url: "http://127.0.0.1:8545",
       rateLimit: 1000,

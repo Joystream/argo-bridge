@@ -1,8 +1,8 @@
 # noinspection GraphQLUnresolvedReference,GraphQLMissingType
 interface Event {
   id: ID! # chainId-blockNumber-indexInBlock
-  chainId: BigInt!
-  txHash: String!
+  chainId: Int!
+  txHash: String
   block: Int!
   timestamp: DateTime!
 }
@@ -18,11 +18,11 @@ type BridgeTransfer @entity {
   amount: BigInt!
   status: BridgeTransferStatus! @index
   feePaid: BigInt! # fee paid in source chain token
-  sourceChainId: BigInt! @index
+  sourceChainId: Int! @index
   sourceTransferId: BigInt! @index
   sourceAccount: String! @index
 
-  destChainId: BigInt! @index
+  destChainId: Int! @index
   destAccount: String! @index
 
   createdAtBlock: Int!
@@ -62,7 +62,7 @@ type EvmBridgeConfig @entity {
 
 type EvmBridgeTransferToJoystreamRequestedEvent implements Event @entity {
   id: ID!
-  chainId: BigInt! @index
+  chainId: Int! @index
   txHash: String!
   block: Int!
   timestamp: DateTime!
@@ -74,7 +74,7 @@ type EvmBridgeTransferToJoystreamRequestedEvent implements Event @entity {
 
 type EvmBridgeTransferToEthCompletedEvent implements Event @entity {
   id: ID!
-  chainId: BigInt! @index
+  chainId: Int! @index
   txHash: String!
   block: Int!
   timestamp: DateTime!
@@ -85,7 +85,7 @@ type EvmBridgeTransferToEthCompletedEvent implements Event @entity {
 
 type EvmBridgeFeeChangedEvent implements Event @entity {
   id: ID!
-  chainId: BigInt! @index
+  chainId: Int! @index
   txHash: String!
   block: Int!
   timestamp: DateTime!
@@ -94,7 +94,7 @@ type EvmBridgeFeeChangedEvent implements Event @entity {
 
 type EvmBridgeFeesWithdrawnEvent implements Event @entity {
   id: ID!
-  chainId: BigInt! @index
+  chainId: Int! @index
   txHash: String!
   block: Int!
   timestamp: DateTime!
@@ -104,7 +104,7 @@ type EvmBridgeFeesWithdrawnEvent implements Event @entity {
 
 type EvmBridgeStatusChangedEvent implements Event @entity {
   id: ID!
-  chainId: BigInt! @index
+  chainId: Int! @index
   txHash: String!
   block: Int!
   timestamp: DateTime!
@@ -113,7 +113,7 @@ type EvmBridgeStatusChangedEvent implements Event @entity {
 
 type EvmBridgeMintingLimitsUpdatedEvent implements Event @entity {
   id: ID!
-  chainId: BigInt! @index
+  chainId: Int! @index
   txHash: String!
   block: Int!
   timestamp: DateTime!
@@ -123,7 +123,7 @@ type EvmBridgeMintingLimitsUpdatedEvent implements Event @entity {
 
 type EvmBridgeRoleGrantedEvent implements Event @entity {
   id: ID!
-  chainId: BigInt! @index
+  chainId: Int! @index
   txHash: String!
   block: Int!
   timestamp: DateTime!
@@ -133,7 +133,7 @@ type EvmBridgeRoleGrantedEvent implements Event @entity {
 
 type EvmBridgeRoleRevokedEvent implements Event @entity {
   id: ID!
-  chainId: BigInt! @index
+  chainId: Int! @index
   txHash: String!
   block: Int!
   timestamp: DateTime!
@@ -151,7 +151,7 @@ enum EvmTimelockCallStatus {
 
 type EvmTimelockCall @entity {
   id: ID! # chainId-callId
-  chainId: BigInt! @index
+  chainId: Int! @index
   callId: String! @index
 
   status: EvmTimelockCallStatus!
@@ -180,7 +180,7 @@ type EvmTimelockCall @entity {
 
 #type EvmTimelockCallScheduledEvent implements Event @entity {
 #  id: ID!
-#  chainId: BigInt! @index
+#  chainId: Int! @index
 #  txHash: String!
 #  block: Int!
 #  timestamp: DateTime!
@@ -191,16 +191,20 @@ type EvmTimelockCall @entity {
 
 type JoyBridgeConfigUpdatedEvent implements Event @entity {
   id: ID!
-  chainId: BigInt!
-  txHash: String!
+  chainId: Int!
+  txHash: String
   block: Int!
   timestamp: DateTime!
-  # TODO: add fields
+  newOperatorAccount: String
+  newPauserAccounts: [String!]
+  newBridgingFee: BigInt
+  newThawnDuration: Int
+  newRemoteChains: [Int!]
 }
 
 type JoyBridgeThawnStartedEvent implements Event @entity {
   id: ID!
-  chainId: BigInt!
+  chainId: Int!
   txHash: String!
   block: Int!
   timestamp: DateTime!
@@ -209,7 +213,7 @@ type JoyBridgeThawnStartedEvent implements Event @entity {
 
 type JoyBridgeThawnFinishedEvent implements Event @entity {
   id: ID!
-  chainId: BigInt!
+  chainId: Int!
   txHash: String!
   block: Int!
   timestamp: DateTime!
@@ -217,7 +221,7 @@ type JoyBridgeThawnFinishedEvent implements Event @entity {
 
 type JoyBridgePausedEvent implements Event @entity {
   id: ID!
-  chainId: BigInt!
+  chainId: Int!
   txHash: String!
   block: Int!
   timestamp: DateTime!
@@ -226,26 +230,26 @@ type JoyBridgePausedEvent implements Event @entity {
 
 type JoyBridgeOutboundTransferRequestedEvent implements Event @entity {
   id: ID!
-  chainId: BigInt!
+  chainId: Int!
   txHash: String!
   block: Int!
   timestamp: DateTime!
   joyRequester: String!
   joyTransferId: BigInt!
   destAccount: String!
-  destChainId: BigInt!
+  destChainId: Int!
   amount: BigInt!
   feePaid: BigInt!
 }
 
 type JoyBridgeInboundTransferFinalizedEvent implements Event @entity {
   id: ID!
-  chainId: BigInt!
+  chainId: Int!
   txHash: String!
   block: Int!
   timestamp: DateTime!
   remoteTransferId: BigInt!
-  remoteChainId: BigInt!
+  remoteChainId: Int!
   joyDestAccount: String!
   amount: BigInt!
 }
@@ -259,7 +263,7 @@ enum JoyBridgeStatus {
 type JoyBridgeConfig @entity {
   id: ID!
   status: JoyBridgeStatus!
-  thawnStartedAtBlock: Int
+  thawnEndsAtBlock: Int
   bridgingFee: BigInt!
   thawnDurationBlocks: Int!
   mintAllowance: BigInt!
@@ -268,4 +272,5 @@ type JoyBridgeConfig @entity {
   totalMinted: BigInt!
   totalBurned: BigInt!
   feesBurned: BigInt!
+  supportedRemoteChainIds: [Int!]!
 }

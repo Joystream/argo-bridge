@@ -45,6 +45,6 @@ export const bridgeConfigUpdated =  {
     name: 'ArgoBridge.BridgeConfigUpdated',
     v2003: new EventType(
         'ArgoBridge.BridgeConfigUpdated',
-        sts.unit()
+        v2003.BridgeConstraints
     ),
 }

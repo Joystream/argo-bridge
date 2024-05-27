@@ -54,11 +54,12 @@ export async function handleJoyBridgeEvents(
       getEntityId(event.remoteChainId, event.remoteTransferId),
     ),
   ])
-  const transfers: Map<string, BridgeTransfer> = new Map(
+  const existingTransfers: Map<string, BridgeTransfer> = new Map(
     (await ctx.store.findBy(BridgeTransfer, { id: In([...transferIds]) })).map(
       (transfer) => [transfer.id, transfer],
     ),
   )
+  const newTransfers: BridgeTransfer[] = []
 
   const bridgeConfig =
     (await ctx.store.findOneBy(JoyBridgeConfig, {
@@ -68,15 +69,37 @@ export async function handleJoyBridgeEvents(
   for (const event of parsedEvents) {
     if (event instanceof JoyBridgePausedEvent) {
       bridgeConfig.status = JoyBridgeStatus.PAUSED
-      bridgeConfig.thawnStartedAtBlock = null
+      bridgeConfig.thawnEndsAtBlock = null
     } else if (event instanceof JoyBridgeThawnStartedEvent) {
       bridgeConfig.status = JoyBridgeStatus.THAWN
-      bridgeConfig.thawnStartedAtBlock = event.block
+      bridgeConfig.thawnEndsAtBlock =
+        event.block + bridgeConfig.thawnDurationBlocks
     } else if (event instanceof JoyBridgeThawnFinishedEvent) {
       bridgeConfig.status = JoyBridgeStatus.ACTIVE
-      bridgeConfig.thawnStartedAtBlock = null
+      bridgeConfig.thawnEndsAtBlock = null
     } else if (event instanceof JoyBridgeConfigUpdatedEvent) {
-      // TODO: update bridge config
+      const {
+        newBridgingFee,
+        newOperatorAccount,
+        newPauserAccounts,
+        newThawnDuration,
+        newRemoteChains,
+      } = event
+      if (newBridgingFee != null) {
+        bridgeConfig.bridgingFee = newBridgingFee
+      }
+      if (newOperatorAccount != null) {
+        bridgeConfig.operatorAccount = newOperatorAccount
+      }
+      if (newPauserAccounts != null) {
+        bridgeConfig.pauserAccounts = newPauserAccounts
+      }
+      if (newThawnDuration != null) {
+        bridgeConfig.thawnDurationBlocks = newThawnDuration
+      }
+      if (newRemoteChains != null) {
+        bridgeConfig.supportedRemoteChainIds = newRemoteChains
+      }
     } else if (event instanceof JoyBridgeOutboundTransferRequestedEvent) {
       const {
         amount,
@@ -87,7 +110,7 @@ export async function handleJoyBridgeEvents(
         joyTransferId,
       } = event
       const transferId = getEntityId(CHAIN_ID, joyTransferId)
-      const transfer = transfers.get(transferId)
+      const transfer = existingTransfers.get(transferId)
 
       if (transfer) {
         // this could happen if the EVM processor processed the finalization event before the JOY processor processed the request event
@@ -118,15 +141,16 @@ export async function handleJoyBridgeEvents(
           createdAtTimestamp: event.timestamp,
           createdTxHash: event.txHash,
         })
-        transfers.set(transfer.id, transfer)
+        newTransfers.push(transfer)
       }
 
       bridgeConfig.totalBurned += amount
       bridgeConfig.feesBurned += feePaid
+      bridgeConfig.mintAllowance += amount
     } else if (event instanceof JoyBridgeInboundTransferFinalizedEvent) {
       const { amount, remoteChainId, remoteTransferId, joyDestAccount } = event
       const transferId = getEntityId(remoteChainId, remoteTransferId)
-      const transfer = transfers.get(transferId)
+      const transfer = existingTransfers.get(transferId)
       if (transfer) {
         transfer.status = BridgeTransferStatus.COMPLETED
         transfer.completedAtBlock = event.block
@@ -156,19 +180,21 @@ export async function handleJoyBridgeEvents(
           createdAtTimestamp: event.timestamp,
           createdTxHash: event.txHash,
         })
-        transfers.set(transfer.id, transfer)
+        newTransfers.push(transfer)
       }
 
       bridgeConfig.totalMinted += amount
+      bridgeConfig.mintAllowance -= amount
     }
   }
 
   const groupedEvents = groupByClass(parsedEvents)
   const eventsSavePromises = Object.values(groupedEvents).map((events) =>
-    ctx.store.save(events),
+    ctx.store.insert(events),
   )
   await Promise.all([
-    ctx.store.save([...transfers.values()]),
+    ctx.store.save([...existingTransfers.values()]),
+    ctx.store.insert(newTransfers),
     ctx.store.save(bridgeConfig),
     ...eventsSavePromises,
   ])
@@ -183,19 +209,33 @@ async function parseRawEvents(
   for (const event of events) {
     assert(event.block.height)
     assert(event.block.timestamp)
-    assert(event.extrinsic?.hash)
+
+    if (event.name !== argoBridge.bridgeConfigUpdated.name) {
+      // bridgeConfigUpdated event is emitted as part of proposal execution so will not have an associated extrinsic
+      assert(event.extrinsic?.hash)
+    }
     const baseEvent = {
       id: `${CHAIN_ID}-${event.block.height}-${event.index}`,
       chainId: CHAIN_ID,
-      txHash: event.extrinsic.hash,
+      txHash: event.extrinsic?.hash,
       block: event.block.height,
       timestamp: new Date(event.block.timestamp),
     }
     switch (event.name) {
       case argoBridge.bridgeConfigUpdated.name:
+        const config = argoBridge.bridgeConfigUpdated.v2003.decode(event)
         parsedEvents.push(
           new JoyBridgeConfigUpdatedEvent({
             ...baseEvent,
+            newBridgingFee: config.bridgingFee,
+            newOperatorAccount: config.operatorAccount
+              ? joyAccountCodec.encode(config.operatorAccount)
+              : null,
+            newPauserAccounts: config.pauserAccounts
+              ? config.pauserAccounts.map((acc) => joyAccountCodec.encode(acc))
+              : null,
+            newThawnDuration: config.thawnDuration,
+            newRemoteChains: config.remoteChains,
           }),
         )
         break
@@ -230,14 +270,15 @@ async function parseRawEvents(
       case argoBridge.outboundTransferRequested.name:
         const [
           joyTransferId,
-          joyRequester,
+          joyRequesterRaw,
           destRemoteAccount,
           burntAmount,
           feePaid,
         ] = argoBridge.outboundTransferRequested.v2003.decode(event)
-        const { account: destAccountRaw, chainId: destChainIdNum } =
+        const { account: destAccountRaw, chainId: destChainId } =
           destRemoteAccount
 
+        const joyRequester = joyAccountCodec.encode(joyRequesterRaw)
         const destAccount = tryDecodeEthereumAddress(destAccountRaw)
 
         parsedEvents.push(
@@ -246,7 +287,7 @@ async function parseRawEvents(
             joyTransferId,
             joyRequester,
             destAccount: destAccount ? destAccount : destAccountRaw,
-            destChainId: BigInt(destChainIdNum),
+            destChainId,
             amount: burntAmount,
             feePaid,
           }),
@@ -254,15 +295,17 @@ async function parseRawEvents(
         break
 
       case argoBridge.inboundTransferFinalized.name:
-        const [remoteTransfer, joyDestAccount, mintedAmount] =
+        const [remoteTransfer, joyDestAccountRaw, mintedAmount] =
           argoBridge.inboundTransferFinalized.v2003.decode(event)
         const { id: remoteTransferId, chainId: remoteChainId } = remoteTransfer
+
+        const joyDestAccount = joyAccountCodec.encode(joyDestAccountRaw)
 
         parsedEvents.push(
           new JoyBridgeInboundTransferFinalizedEvent({
             ...baseEvent,
             remoteTransferId,
-            remoteChainId: BigInt(remoteChainId),
+            remoteChainId,
             joyDestAccount,
             amount: mintedAmount,
           }),
@@ -276,14 +319,15 @@ async function parseRawEvents(
   return parsedEvents
 }
 
-const getDefaultBridgeConfig = (chainId: bigint) =>
+const getDefaultBridgeConfig = (chainId: number) =>
   new JoyBridgeConfig({
     id: chainId.toString(),
     bridgingFee: 0n,
     operatorAccount: "",
     pauserAccounts: [],
     status: JoyBridgeStatus.PAUSED,
-    thawnStartedAtBlock: null,
+    thawnEndsAtBlock: null,
+    supportedRemoteChainIds: [],
     thawnDurationBlocks: 100,
     mintAllowance: 0n,
     totalMinted: 0n,

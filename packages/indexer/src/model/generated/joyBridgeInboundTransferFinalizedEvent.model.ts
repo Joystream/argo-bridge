@@ -1,4 +1,4 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, BigIntColumn as BigIntColumn_, StringColumn as StringColumn_, IntColumn as IntColumn_, DateTimeColumn as DateTimeColumn_} from "@subsquid/typeorm-store"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, IntColumn as IntColumn_, StringColumn as StringColumn_, DateTimeColumn as DateTimeColumn_, BigIntColumn as BigIntColumn_} from "@subsquid/typeorm-store"
 
 @Entity_()
 export class JoyBridgeInboundTransferFinalizedEvent {
@@ -9,8 +9,8 @@ export class JoyBridgeInboundTransferFinalizedEvent {
     @PrimaryColumn_()
     id!: string
 
-    @BigIntColumn_({nullable: false})
-    chainId!: bigint
+    @IntColumn_({nullable: false})
+    chainId!: number
 
     @StringColumn_({nullable: false})
     txHash!: string
@@ -24,8 +24,8 @@ export class JoyBridgeInboundTransferFinalizedEvent {
     @BigIntColumn_({nullable: false})
     remoteTransferId!: bigint
 
-    @BigIntColumn_({nullable: false})
-    remoteChainId!: bigint
+    @IntColumn_({nullable: false})
+    remoteChainId!: number
 
     @StringColumn_({nullable: false})
     joyDestAccount!: string
