@@ -54,7 +54,7 @@ const keyring = new Keyring({ type: "sr25519", ss58Format: 126 })
 
 const toHapi = (joy: number) => BigInt(joy) * 10n ** 10n
 
-const VERBOSE = false
+const VERBOSE = true
 const debug = (msg: string) => {
   if (VERBOSE) {
     console.log(msg)

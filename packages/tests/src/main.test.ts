@@ -12,7 +12,6 @@ import {
   API_URL,
   cleanup,
   councilAccounts,
-  electCouncil,
   getEvmConfig,
   getEvmDeploymentParams,
   joyApi,
@@ -21,9 +20,9 @@ import {
   retry,
   sendExtrinsic,
   setup,
-  setupJoyApi,
   waitUntilBlock,
 } from "./setup"
+import { increaseTime, scheduleTimelockCall } from "./utils"
 import {
   BridgeAbi,
   Erc20Abi,
@@ -34,14 +33,7 @@ import { KeyringPair } from "@polkadot/keyring/types"
 import * as ss58 from "@subsquid/ss58"
 import { afterAll, beforeAll, expect, test } from "bun:test"
 import request from "graphql-request"
-import {
-  type Hex,
-  bytesToHex,
-  encodeFunctionData,
-  maxUint256,
-  pad,
-  zeroHash,
-} from "viem"
+import { type Hex, encodeFunctionData, maxUint256, pad, zeroHash } from "viem"
 
 process.on("SIGINT", async () => {
   console.log("SIGINT received")
@@ -190,7 +182,7 @@ test("Cancel EVM timelock call", async () => {
 })
 
 test("Unpause EVM bridge", async () => {
-  const { publicClient, walletClient, otherAccount } = evmConfig
+  const { publicClient, walletClient, testClient, otherAccount } = evmConfig
 
   const callData = encodeFunctionData({
     abi: BridgeAbi,
@@ -212,7 +204,7 @@ test("Unpause EVM bridge", async () => {
   expect(firstCall.status).toBe(EvmTimelockCallStatus.Pending)
   const delayDoneTimestamp = new Date(firstCall.delayDoneTimestamp)
 
-  await increaseTime(delayDoneTimestamp)
+  await increaseTime(testClient, delayDoneTimestamp)
   const executeTxHash = await walletClient.writeContract({
     abi: TimelockAbi,
     address: timelock,
@@ -815,12 +807,6 @@ async function waitForSquid<TData>(
   )
 }
 
-async function increaseTime(newDate: Date) {
-  return await evmConfig.testClient.setNextBlockTimestamp({
-    timestamp: BigInt(newDate.getTime() / 1000),
-  })
-}
-
 async function getEvmBridgeConfig() {
   const bridgeConfigs = await request(API_URL, GetEvmBridgeConfigDocument, {
     chainId: evmChainId.toString(),
@@ -839,31 +825,4 @@ async function getJoyBridgeConfig() {
 
 function randomAmount() {
   return BigInt(Math.floor(Math.random() * 100) + 1)
-}
-
-async function scheduleTimelockCall(callTarget: Hex, callData: Hex) {
-  const { walletClient, adminAccount, publicClient } = evmConfig
-
-  const salt = bytesToHex(crypto.getRandomValues(new Uint8Array(32)))
-  const delay = BigInt(deploymentParams.timelockDelay)
-  const txHash = await walletClient.writeContract({
-    abi: TimelockAbi,
-    address: timelock,
-    account: adminAccount,
-    functionName: "schedule",
-    args: [callTarget, 0n, callData, zeroHash, salt, delay],
-  })
-  const result = await publicClient.waitForTransactionReceipt({
-    hash: txHash,
-  })
-  expect(result.status).toBe("success")
-  const block = await publicClient.getBlock({
-    blockNumber: result.blockNumber,
-  })
-  return {
-    salt,
-    txHash,
-    block,
-    delay,
-  }
 }
