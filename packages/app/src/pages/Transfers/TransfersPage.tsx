@@ -22,6 +22,7 @@ import { useTransaction } from '@/providers/transaction'
 import { buildFinalizeTransferExtrinsic } from '@/lib/joyExtrinsics'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
 import { useJoyWallets } from '@/providers/joyWallet'
+import { TypographyH2 } from '@/components/ui/typography'
 
 export const TransfersPage: FC = () => {
   const { data } = useQuery({
@@ -30,11 +31,9 @@ export const TransfersPage: FC = () => {
   })
   const transfers = data?.bridgeTransfers.map(parseTransfer)
 
-  const { writeContract } = useWriteContract()
-
   return (
     <div>
-      <h1>Transfers</h1>
+      <TypographyH2>Transfers</TypographyH2>
       <Table>
         <TableHeader>
           <TableRow>
@@ -102,13 +101,15 @@ const TransferRow: FC<{ transfer: BridgeTransfer }> = ({ transfer }) => {
   }
 
   const renderAction = () => {
-    if (!evmOperators || !joyOperator || !joyAccounts) {
+    if (!evmOperators || !joyOperator) {
       return null
     }
-    const isJoyOperator = joyAccounts.some(
+    const isJoyOperator = joyAccounts?.some(
       (account) => account.address === joyOperator
     )
-    const isEvmOperator = evmOperators.some((address) => address === evmAddress)
+    const isEvmOperator = evmOperators.some(
+      (address) => address === evmAddress?.toLowerCase()
+    )
 
     if (transfer.status === BridgeTransferStatus.Requested) {
       if (transfer.type === BridgeTransferType.EvmToJoy) {

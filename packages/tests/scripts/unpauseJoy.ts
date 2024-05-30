@@ -48,14 +48,15 @@ async function main() {
     proposerAccount,
   )
 
-  // we only need 3 votes to approve
+  await new Promise((resolve) => setTimeout(resolve, 1000))
+
   for (let i = 0; i < 3; i++) {
     const voteKind = joyApi.createType(
       "PalletProposalsEngineVoteKind",
       "Approve",
     )
     await sendExtrinsic(
-      joyApi.tx.proposalsEngine.vote(i, 1, voteKind, "0x0"),
+      joyApi.tx.proposalsEngine.vote(i, 0, voteKind, "0x0"),
       councilAccounts[i],
     )
   }

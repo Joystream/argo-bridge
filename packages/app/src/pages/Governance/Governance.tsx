@@ -1,6 +1,10 @@
 import { TimelockCall } from './TimelockCall'
 import { BRIDGE_ADDRESS, TIMELOCK_ADDRESS } from '@/config'
-import { EvmTimelockCallOrderByInput } from '@/gql/graphql'
+import {
+  EvmBridgeStatus,
+  EvmTimelockCallOrderByInput,
+  JoyBridgeStatus,
+} from '@/gql/graphql'
 import { getTimelockCallsQueryDocument } from '@/queries/timelockCalls'
 import { BridgeAbi, TimelockAbi } from '@joystream/argo-core'
 import { useQuery } from '@tanstack/react-query'
@@ -19,6 +23,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
+import { useTransaction } from '@/providers/transaction'
+import { useJoyWallets } from '@/providers/joyWallet'
+import { toast } from 'sonner'
 
 export const GovernancePage: FC = () => {
   const { address } = useAccount()
@@ -31,15 +38,65 @@ export const GovernancePage: FC = () => {
         orderBy: EvmTimelockCallOrderByInput.CreatedAtBlockDesc,
       }),
   })
-  const { data: bridgeConfigs } = useBridgeConfigs()
+  const { data: bridgeConfigs, refetch: refetchBridgeConfigs } =
+    useBridgeConfigs()
+  const { walletAccounts: joyAccounts } = useJoyWallets()
+  const { submitJoyTx } = useTransaction()
 
-  const proposeBridgeUnpause = async () => {
+  const proposeEvmBridgeUnpause = async () => {
     const calldata = encodeFunctionData({
       abi: BridgeAbi,
       functionName: 'unpauseBridge',
     })
 
     await scheduleCall(BRIDGE_ADDRESS, calldata)
+  }
+
+  const initJoyBridgeUnpause = async () => {
+    const userAddresses = joyAccounts.map((a) => a.address)
+    const unpauserAccounts = bridgeConfigs?.joy.pauserAccounts
+    const unpauserAccountsMap = unpauserAccounts?.reduce(
+      (acc, a) => {
+        acc[a] = true
+        return acc
+      },
+      {} as Record<string, boolean>
+    )
+    const userUnpauserAddress =
+      unpauserAccountsMap && userAddresses.find((a) => unpauserAccountsMap[a])
+    if (!userUnpauserAddress || !submitJoyTx) {
+      toast.error('Missing pauser account')
+      return
+    }
+
+    await submitJoyTx(
+      async (api) => api.tx.argoBridge.initUnpauseBridge(),
+      userUnpauserAddress
+    )
+    new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+      refetchBridgeConfigs()
+    )
+  }
+  const finishJoyBridgeUnpause = async () => {
+    const userAddresses = joyAccounts.map((a) => a.address)
+    const operatorAccount = bridgeConfigs?.joy.operatorAccount
+    if (
+      !operatorAccount ||
+      !userAddresses.includes(operatorAccount) ||
+      !submitJoyTx
+    ) {
+      toast.error('Missing operator account')
+      return
+    }
+
+    await submitJoyTx(
+      async (api) => api.tx.argoBridge.finishUnpauseBridge(),
+      operatorAccount
+    )
+
+    new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+      refetchBridgeConfigs()
+    )
   }
 
   if (!address) {
@@ -49,7 +106,15 @@ export const GovernancePage: FC = () => {
   return (
     <div className="space-y-2">
       <TypographyH2>Governance</TypographyH2>
-      <Button onClick={proposeBridgeUnpause}>Propose Bridge Unpause</Button>
+      {bridgeConfigs?.evm.status === EvmBridgeStatus.Paused && (
+        <Button onClick={proposeEvmBridgeUnpause}>Start EVM unpause</Button>
+      )}
+      {bridgeConfigs?.joy.status === JoyBridgeStatus.Paused && (
+        <Button onClick={initJoyBridgeUnpause}>Start Joy unpause</Button>
+      )}
+      {bridgeConfigs?.joy.status === JoyBridgeStatus.Thawn && (
+        <Button onClick={finishJoyBridgeUnpause}>Finish Joy unpause</Button>
+      )}
       <ChangeEvmLimits />
 
       <Collapsible>

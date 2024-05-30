@@ -215,6 +215,7 @@ type JoyBridgeThawnStartedEvent implements Event @entity {
   block: Int!
   timestamp: DateTime!
   account: String!
+  thawnEndsAtBlock: Int!
 }
 
 type JoyBridgeThawnFinishedEvent implements Event @entity {

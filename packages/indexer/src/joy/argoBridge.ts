@@ -73,8 +73,7 @@ export async function handleJoyBridgeEvents(
       bridgeConfig.thawnEndsAtBlock = null
     } else if (event instanceof JoyBridgeThawnStartedEvent) {
       bridgeConfig.status = JoyBridgeStatus.THAWN
-      bridgeConfig.thawnEndsAtBlock =
-        event.block + bridgeConfig.thawnDurationBlocks
+      bridgeConfig.thawnEndsAtBlock = event.thawnEndsAtBlock
     } else if (event instanceof JoyBridgeThawnFinishedEvent) {
       bridgeConfig.status = JoyBridgeStatus.ACTIVE
       bridgeConfig.thawnEndsAtBlock = null
@@ -226,7 +225,7 @@ async function parseRawEvents(
     }
     switch (event.name) {
       case argoBridge.bridgeConfigUpdated.name:
-        const config = argoBridge.bridgeConfigUpdated.v2003.decode(event)
+        const config = argoBridge.bridgeConfigUpdated.v2004.decode(event)
         parsedEvents.push(
           new JoyBridgeConfigUpdatedEvent({
             ...baseEvent,
@@ -244,7 +243,7 @@ async function parseRawEvents(
         break
 
       case argoBridge.bridgePaused.name:
-        const [pauserAccountRaw] = argoBridge.bridgePaused.v2003.decode(event)
+        const [pauserAccountRaw] = argoBridge.bridgePaused.v2004.decode(event)
         const pauserAccount = joyAccountCodec.encode(pauserAccountRaw)
         parsedEvents.push(
           new JoyBridgePausedEvent({
@@ -255,13 +254,14 @@ async function parseRawEvents(
         break
 
       case argoBridge.bridgeThawnStarted.name:
-        const unpauserAccountRaw =
-          argoBridge.bridgeThawnStarted.v2003.decode(event)
+        const [unpauserAccountRaw, thawnEndsAtBlock] =
+          argoBridge.bridgeThawnStarted.v2004.decode(event)
         const unpauserAccount = joyAccountCodec.encode(unpauserAccountRaw)
         parsedEvents.push(
           new JoyBridgeThawnStartedEvent({
             ...baseEvent,
             account: unpauserAccount,
+            thawnEndsAtBlock,
           }),
         )
         break
@@ -277,7 +277,7 @@ async function parseRawEvents(
           destRemoteAccount,
           burntAmount,
           feePaid,
-        ] = argoBridge.outboundTransferRequested.v2003.decode(event)
+        ] = argoBridge.outboundTransferRequested.v2004.decode(event)
         const { account: destAccountRaw, chainId: destChainId } =
           destRemoteAccount
 
@@ -299,7 +299,7 @@ async function parseRawEvents(
 
       case argoBridge.inboundTransferFinalized.name:
         const [remoteTransfer, joyDestAccountRaw, mintedAmount] =
-          argoBridge.inboundTransferFinalized.v2003.decode(event)
+          argoBridge.inboundTransferFinalized.v2004.decode(event)
         const { id: remoteTransferId, chainId: remoteChainId } = remoteTransfer
 
         const joyDestAccount = joyAccountCodec.encode(joyDestAccountRaw)

@@ -23,4 +23,7 @@ export class JoyBridgeThawnStartedEvent {
 
     @StringColumn_({nullable: false})
     account!: string
+
+    @IntColumn_({nullable: false})
+    thawnEndsAtBlock!: number
 }
