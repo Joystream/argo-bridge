@@ -37,6 +37,7 @@ export type BridgeTransfer = {
   sourceChainId: Scalars['Int']['output'];
   sourceTransferId: Scalars['BigInt']['output'];
   status: BridgeTransferStatus;
+  type: BridgeTransferType;
 };
 
 export type BridgeTransferEdge = {
@@ -135,13 +136,24 @@ export enum BridgeTransferOrderByInput {
   StatusAscNullsLast = 'status_ASC_NULLS_LAST',
   StatusDesc = 'status_DESC',
   StatusDescNullsFirst = 'status_DESC_NULLS_FIRST',
-  StatusDescNullsLast = 'status_DESC_NULLS_LAST'
+  StatusDescNullsLast = 'status_DESC_NULLS_LAST',
+  TypeAsc = 'type_ASC',
+  TypeAscNullsFirst = 'type_ASC_NULLS_FIRST',
+  TypeAscNullsLast = 'type_ASC_NULLS_LAST',
+  TypeDesc = 'type_DESC',
+  TypeDescNullsFirst = 'type_DESC_NULLS_FIRST',
+  TypeDescNullsLast = 'type_DESC_NULLS_LAST'
 }
 
 export enum BridgeTransferStatus {
   Completed = 'COMPLETED',
   MaybeCompleted = 'MAYBE_COMPLETED',
   Requested = 'REQUESTED'
+}
+
+export enum BridgeTransferType {
+  EvmToJoy = 'EVM_TO_JOY',
+  JoyToEvm = 'JOY_TO_EVM'
 }
 
 export type BridgeTransferWhereInput = {
@@ -318,6 +330,11 @@ export type BridgeTransferWhereInput = {
   status_isNull?: InputMaybe<Scalars['Boolean']['input']>;
   status_not_eq?: InputMaybe<BridgeTransferStatus>;
   status_not_in?: InputMaybe<Array<BridgeTransferStatus>>;
+  type_eq?: InputMaybe<BridgeTransferType>;
+  type_in?: InputMaybe<Array<BridgeTransferType>>;
+  type_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  type_not_eq?: InputMaybe<BridgeTransferType>;
+  type_not_in?: InputMaybe<Array<BridgeTransferType>>;
 };
 
 export type BridgeTransfersConnection = {
@@ -4107,6 +4124,14 @@ export type WhereIdInput = {
   id: Scalars['String']['input'];
 };
 
+export type GetConfigsQueryVariables = Exact<{
+  evmChainId: Scalars['String']['input'];
+  joyChainId: Scalars['String']['input'];
+}>;
+
+
+export type GetConfigsQuery = { __typename?: 'Query', evmBridgeConfigs: Array<{ __typename?: 'EvmBridgeConfig', id: string, status: EvmBridgeStatus, operatorAccounts: Array<string>, pauserAccounts: Array<string>, bridgingFee: any, adminAccounts: Array<string>, totalBurned: any, totalMinted: any, mintingLimits: { __typename?: 'EvmBridgeMintingLimits', periodLength: number, periodLimit: any, currentPeriodMinted: any, currentPeriodEndBlock: number } }>, joyBridgeConfigs: Array<{ __typename?: 'JoyBridgeConfig', id: string, status: JoyBridgeStatus, operatorAccount: string, pauserAccounts: Array<string>, mintAllowance: any, feesBurned: any, bridgingFee: any, supportedRemoteChainIds: Array<number>, thawnDurationBlocks: number, thawnEndsAtBlock?: number | null, totalBurned: any, totalMinted: any }> };
+
 export type GetTimelockCallsQueryVariables = Exact<{
   where?: InputMaybe<EvmTimelockCallWhereInput>;
   orderBy?: InputMaybe<Array<EvmTimelockCallOrderByInput> | EvmTimelockCallOrderByInput>;
@@ -4123,8 +4148,9 @@ export type GetTransfersQueryVariables = Exact<{
 }>;
 
 
-export type GetTransfersQuery = { __typename?: 'Query', bridgeTransfers: Array<{ __typename?: 'BridgeTransfer', id: string, status: BridgeTransferStatus, sourceAccount: string, sourceChainId: number, sourceTransferId: any, destAccount: string, destChainId: number, createdTxHash: string, createdAtTimestamp: any, createdAtBlock: number, completedTxHash?: string | null, completedAtTimestamp?: any | null, completedAtBlock?: number | null, amount: any, feePaid: any }> };
+export type GetTransfersQuery = { __typename?: 'Query', bridgeTransfers: Array<{ __typename?: 'BridgeTransfer', id: string, status: BridgeTransferStatus, type: BridgeTransferType, sourceAccount: string, sourceChainId: number, sourceTransferId: any, destAccount: string, destChainId: number, createdTxHash: string, createdAtTimestamp: any, createdAtBlock: number, completedTxHash?: string | null, completedAtTimestamp?: any | null, completedAtBlock?: number | null, amount: any, feePaid: any }> };
 
 
+export const GetConfigsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetConfigs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"evmChainId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"joyChainId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"evmBridgeConfigs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"evmChainId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"operatorAccounts"}},{"kind":"Field","name":{"kind":"Name","value":"pauserAccounts"}},{"kind":"Field","name":{"kind":"Name","value":"mintingLimits"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"periodLength"}},{"kind":"Field","name":{"kind":"Name","value":"periodLimit"}},{"kind":"Field","name":{"kind":"Name","value":"currentPeriodMinted"}},{"kind":"Field","name":{"kind":"Name","value":"currentPeriodEndBlock"}}]}},{"kind":"Field","name":{"kind":"Name","value":"bridgingFee"}},{"kind":"Field","name":{"kind":"Name","value":"adminAccounts"}},{"kind":"Field","name":{"kind":"Name","value":"totalBurned"}},{"kind":"Field","name":{"kind":"Name","value":"totalMinted"}}]}},{"kind":"Field","name":{"kind":"Name","value":"joyBridgeConfigs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"joyChainId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"operatorAccount"}},{"kind":"Field","name":{"kind":"Name","value":"pauserAccounts"}},{"kind":"Field","name":{"kind":"Name","value":"mintAllowance"}},{"kind":"Field","name":{"kind":"Name","value":"feesBurned"}},{"kind":"Field","name":{"kind":"Name","value":"bridgingFee"}},{"kind":"Field","name":{"kind":"Name","value":"supportedRemoteChainIds"}},{"kind":"Field","name":{"kind":"Name","value":"thawnDurationBlocks"}},{"kind":"Field","name":{"kind":"Name","value":"thawnEndsAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"totalBurned"}},{"kind":"Field","name":{"kind":"Name","value":"totalMinted"}}]}}]}}]} as unknown as DocumentNode<GetConfigsQuery, GetConfigsQueryVariables>;
 export const GetTimelockCallsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTimelockCalls"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"EvmTimelockCallWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EvmTimelockCallOrderByInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"evmTimelockCalls"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"callArgs"}},{"kind":"Field","name":{"kind":"Name","value":"callData"}},{"kind":"Field","name":{"kind":"Name","value":"callSignature"}},{"kind":"Field","name":{"kind":"Name","value":"callTarget"}},{"kind":"Field","name":{"kind":"Name","value":"callValue"}},{"kind":"Field","name":{"kind":"Name","value":"cancelledAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"cancelledAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"cancelledTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"createdTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"delayDoneTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"executedAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"executedAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"executedTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"predecessor"}},{"kind":"Field","name":{"kind":"Name","value":"salt"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<GetTimelockCallsQuery, GetTimelockCallsQueryVariables>;
-export const GetTransfersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTransfers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"BridgeTransferWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BridgeTransferOrderByInput"}}}},"defaultValue":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"createdAtTimestamp_DESC"}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bridgeTransfers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"sourceAccount"}},{"kind":"Field","name":{"kind":"Name","value":"sourceChainId"}},{"kind":"Field","name":{"kind":"Name","value":"sourceTransferId"}},{"kind":"Field","name":{"kind":"Name","value":"destAccount"}},{"kind":"Field","name":{"kind":"Name","value":"destChainId"}},{"kind":"Field","name":{"kind":"Name","value":"createdTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"completedTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"completedAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"completedAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"feePaid"}}]}}]}}]} as unknown as DocumentNode<GetTransfersQuery, GetTransfersQueryVariables>;
+export const GetTransfersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTransfers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"BridgeTransferWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BridgeTransferOrderByInput"}}}},"defaultValue":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"createdAtTimestamp_DESC"}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bridgeTransfers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"sourceAccount"}},{"kind":"Field","name":{"kind":"Name","value":"sourceChainId"}},{"kind":"Field","name":{"kind":"Name","value":"sourceTransferId"}},{"kind":"Field","name":{"kind":"Name","value":"destAccount"}},{"kind":"Field","name":{"kind":"Name","value":"destChainId"}},{"kind":"Field","name":{"kind":"Name","value":"createdTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"completedTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"completedAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"completedAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"feePaid"}}]}}]}}]} as unknown as DocumentNode<GetTransfersQuery, GetTransfersQueryVariables>;

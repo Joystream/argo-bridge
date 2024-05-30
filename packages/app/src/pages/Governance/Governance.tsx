@@ -6,18 +6,23 @@ import { BridgeAbi, TimelockAbi } from '@joystream/argo-core'
 import { useQuery } from '@tanstack/react-query'
 import request from 'graphql-request'
 import { FC } from 'react'
-import { bytesToHex, encodeFunctionData, zeroHash } from 'viem'
+import { Address, bytesToHex, encodeFunctionData, Hex, zeroHash } from 'viem'
 import { useAccount, useReadContract, useWriteContract } from 'wagmi'
 import { ARGO_INDEXER_URL } from '@/config'
+import { TypographyH2 } from '@/components/ui/typography'
+import { Button } from '@/components/ui/button'
+import { useScheduleCall } from './governance.utils'
+import { ChangeEvmLimits } from './ChangeEvmLimits'
+import { useBridgeConfigs } from '@/lib/bridgeConfig'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
 
 export const GovernancePage: FC = () => {
   const { address } = useAccount()
-  const { writeContract } = useWriteContract()
-  const { data: timelockMinDelay } = useReadContract({
-    abi: TimelockAbi,
-    address: TIMELOCK_ADDRESS,
-    functionName: 'getMinDelay',
-  })
+  const scheduleCall = useScheduleCall()
 
   const { data } = useQuery({
     queryKey: ['timelockCalls'],
@@ -26,43 +31,15 @@ export const GovernancePage: FC = () => {
         orderBy: EvmTimelockCallOrderByInput.CreatedAtBlockDesc,
       }),
   })
+  const { data: bridgeConfigs } = useBridgeConfigs()
 
   const proposeBridgeUnpause = async () => {
-    console.log('TimelockMinDelay:', timelockMinDelay)
-    if (timelockMinDelay === undefined) {
-      return
-    }
-
     const calldata = encodeFunctionData({
       abi: BridgeAbi,
       functionName: 'unpauseBridge',
     })
 
-    const saltBytes = crypto.getRandomValues(new Uint8Array(32))
-    writeContract(
-      {
-        abi: TimelockAbi,
-        address: TIMELOCK_ADDRESS,
-        functionName: 'schedule',
-        args: [
-          BRIDGE_ADDRESS,
-          0n,
-          calldata,
-          zeroHash,
-          bytesToHex(saltBytes),
-          timelockMinDelay,
-        ],
-      },
-      {
-        onSettled: (data, error) => {
-          if (error) {
-            console.error('Error:', error)
-          } else {
-            console.log('Data:', data)
-          }
-        },
-      }
-    )
+    await scheduleCall(BRIDGE_ADDRESS, calldata)
   }
 
   if (!address) {
@@ -70,13 +47,42 @@ export const GovernancePage: FC = () => {
   }
 
   return (
-    <div>
-      <h1>Governance</h1>
-      <button onClick={proposeBridgeUnpause}>Propose Bridge Unpause</button>
-      <h2>Timelock Calls</h2>
-      {(data ? data.evmTimelockCalls : []).map((call) => (
-        <TimelockCall key={call.id} call={call} />
-      ))}
+    <div className="space-y-2">
+      <TypographyH2>Governance</TypographyH2>
+      <Button onClick={proposeBridgeUnpause}>Propose Bridge Unpause</Button>
+      <ChangeEvmLimits />
+
+      <Collapsible>
+        <CollapsibleTrigger>Timelock Calls</CollapsibleTrigger>
+        <CollapsibleContent>
+          {(data ? data.evmTimelockCalls : []).map((call) => (
+            <TimelockCall key={call.id} call={call} />
+          ))}
+        </CollapsibleContent>
+      </Collapsible>
+
+      <div className="grid grid-cols-2 gap-2">
+        <pre>
+          <code>
+            {JSON.stringify(
+              bridgeConfigs?.evm,
+              (key, value) =>
+                typeof value === 'bigint' ? value.toString() + 'n' : value,
+              2
+            )}
+          </code>
+        </pre>
+        <pre>
+          <code>
+            {JSON.stringify(
+              bridgeConfigs?.joy,
+              (key, value) =>
+                typeof value === 'bigint' ? value.toString() + 'n' : value,
+              2
+            )}
+          </code>
+        </pre>
+      </div>
     </div>
   )
 }

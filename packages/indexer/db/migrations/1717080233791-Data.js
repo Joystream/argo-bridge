@@ -1,8 +1,8 @@
-module.exports = class Data1716812659784 {
-    name = 'Data1716812659784'
+module.exports = class Data1717080233791 {
+    name = 'Data1717080233791'
 
     async up(db) {
-        await db.query(`CREATE TABLE "bridge_transfer" ("id" character varying NOT NULL, "amount" numeric NOT NULL, "status" character varying(15) NOT NULL, "fee_paid" numeric NOT NULL, "source_chain_id" integer NOT NULL, "source_transfer_id" numeric NOT NULL, "source_account" text NOT NULL, "dest_chain_id" integer NOT NULL, "dest_account" text NOT NULL, "created_at_block" integer NOT NULL, "created_at_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "created_tx_hash" text NOT NULL, "completed_at_block" integer, "completed_at_timestamp" TIMESTAMP WITH TIME ZONE, "completed_tx_hash" text, CONSTRAINT "PK_fab0727701656a3e6c320fca6e9" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE TABLE "bridge_transfer" ("id" character varying NOT NULL, "amount" numeric NOT NULL, "status" character varying(15) NOT NULL, "type" character varying(10) NOT NULL, "fee_paid" numeric NOT NULL, "source_chain_id" integer NOT NULL, "source_transfer_id" numeric NOT NULL, "source_account" text NOT NULL, "dest_chain_id" integer NOT NULL, "dest_account" text NOT NULL, "created_at_block" integer NOT NULL, "created_at_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "created_tx_hash" text NOT NULL, "completed_at_block" integer, "completed_at_timestamp" TIMESTAMP WITH TIME ZONE, "completed_tx_hash" text, CONSTRAINT "PK_fab0727701656a3e6c320fca6e9" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_53080eeff656a11a055951f0e8" ON "bridge_transfer" ("status") `)
         await db.query(`CREATE INDEX "IDX_67f37b0f93276ecd918dc3af86" ON "bridge_transfer" ("source_chain_id") `)
         await db.query(`CREATE INDEX "IDX_9d02e5753f5052271ff370c1f6" ON "bridge_transfer" ("source_transfer_id") `)

@@ -8,6 +8,7 @@ export const getTransfersDocument = graphql(/* GraphQL */ `
     bridgeTransfers(where: $where, orderBy: $orderBy) {
       id
       status
+      type
       sourceAccount
       sourceChainId
       sourceTransferId

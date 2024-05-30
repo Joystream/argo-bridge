@@ -8,31 +8,18 @@ type NetworkConfig = {
     rateLimit: number
   }
   startBlock?: number
-  contracts?: {
+  archiveName?: string
+}
+
+type EvmNetworkConfig = NetworkConfig & {
+  contracts: {
     erc20: Hex
     bridge: Hex
     timelock: Hex
   }
-  archiveName?: string
 }
 
-export const NETWORKS = {
-  joystream: {
-    name: "Joystream",
-    chainId: 0,
-    rpc: {
-      url: "wss://rpc.joystream.org",
-      rateLimit: 500,
-    },
-  },
-  joystreamLocal: {
-    name: "Joystream Local",
-    chainId: 0,
-    rpc: {
-      url: "ws://localhost:9944",
-      rateLimit: 1000,
-    },
-  },
+const _EVM_NETWORKS = {
   sepolia: {
     name: "Sepolia",
     chainId: 11155111,
@@ -64,10 +51,33 @@ export const NETWORKS = {
   },
 } as const
 
-const _networkAsserted: Record<string, NetworkConfig> = NETWORKS
+const _JOY_NETWORKS = {
+  mainnet: {
+    name: "Joystream",
+    chainId: 0,
+    rpc: {
+      url: "wss://rpc.joystream.org",
+      rateLimit: 500,
+    },
+  },
+  local: {
+    name: "Joystream Local",
+    chainId: 0,
+    rpc: {
+      url: "ws://localhost:9944",
+      rateLimit: 1000,
+    },
+  },
+} as const
 
-export type ChainName = keyof typeof NETWORKS
-export type EvmChainName = Exclude<ChainName, "joystream">
+export type EvmChainName = keyof typeof _EVM_NETWORKS
+export type JoyChainName = keyof typeof _JOY_NETWORKS
+export type ChainName = EvmChainName | JoyChainName
+
+export const EVM_NETWORKS: Record<EvmChainName, EvmNetworkConfig> =
+  _EVM_NETWORKS
+export const JOY_NETWORKS: Record<JoyChainName, NetworkConfig> = _JOY_NETWORKS
+export const ALL_NETWORKS = { ...EVM_NETWORKS, ...JOY_NETWORKS }
 
 export const Erc20Abi = [
   {

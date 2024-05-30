@@ -1,6 +1,9 @@
 import { SubmittableExtrinsic } from "@polkadot/api/types"
 import { KeyringPair } from "@polkadot/keyring/types"
 import { Signer } from "@polkadot/types/types"
+import * as ss58 from "@subsquid/ss58"
+
+export const joyAddressCodec = ss58.codec("joystream")
 
 export enum ExtrinsicStatus {
   Unsigned,

@@ -14,6 +14,11 @@ import { JoyHapiInput } from '@/components/JoyHapiInput'
 import { Button } from '@/components/ui/button'
 import { useJoyWalletStore } from '@/providers/joyWallet/joyWallet.store'
 import { TypographyH2, TypographyH3 } from '@/components/ui/typography'
+import { useTransaction } from '@/providers/transaction'
+import { buildRequestTransferExtrinsic } from '@/lib/joyExtrinsics'
+import { EVM_NETWORK } from '@/config'
+import { toast } from 'sonner'
+import { isHex } from 'viem'
 
 const formSchema = z.object({
   targetEvmAddress: z
@@ -25,6 +30,7 @@ type FormSchema = z.infer<typeof formSchema>
 
 export const JoyToEvmTransfer: FC = () => {
   const joyAccount = useJoyWalletStore((s) => s.selectedAccount)
+  const { submitJoyTx } = useTransaction()
 
   const form = useForm<FormSchema>({
     defaultValues: {
@@ -34,10 +40,20 @@ export const JoyToEvmTransfer: FC = () => {
     resolver: zodResolver(formSchema),
   })
 
-  const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!joyAccount || !submitJoyTx || !isHex(values.targetEvmAddress)) {
+      toast.error('Error')
+      console.error('Missing joyAccount or submitJoyTx')
+      return
+    }
+    await submitJoyTx(
+      await buildRequestTransferExtrinsic(
+        EVM_NETWORK.chainId,
+        values.targetEvmAddress,
+        values.amount
+      ),
+      joyAccount.address
+    )
   }
 
   const wrapContent = (content: ReactNode) => (

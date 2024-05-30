@@ -1,4 +1,4 @@
-import { NETWORKS } from '@joystream/argo-core'
+import { EVM_NETWORKS, JOY_NETWORKS } from '@joystream/argo-core'
 
 // export const RPC_URL = 'wss://rpc.joyutils.org'
 export const ARGO_INDEXER_URL = 'http://localhost:4350/graphql'
@@ -19,8 +19,8 @@ export const WC_METADATA = {
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
-export const EVM_NETWORK = NETWORKS.hardhat
-export const JOY_NETWORK = NETWORKS.joystreamLocal
+export const EVM_NETWORK = EVM_NETWORKS.hardhat
+export const JOY_NETWORK = JOY_NETWORKS.local
 export const BRIDGE_ADDRESS = EVM_NETWORK.contracts.bridge
 export const TIMELOCK_ADDRESS = EVM_NETWORK.contracts.timelock
 export const ERC20_ADDRESS = EVM_NETWORK.contracts.erc20

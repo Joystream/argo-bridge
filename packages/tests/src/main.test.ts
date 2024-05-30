@@ -25,8 +25,9 @@ import {
 import { increaseTime, scheduleTimelockCall } from "./utils"
 import {
   BridgeAbi,
+  EVM_NETWORKS,
   Erc20Abi,
-  NETWORKS,
+  JOY_NETWORKS,
   TimelockAbi,
 } from "@joystream/argo-core"
 import { KeyringPair } from "@polkadot/keyring/types"
@@ -74,8 +75,8 @@ beforeAll(async () => {
 
 afterAll(async () => await cleanup())
 
-const { chainId: evmChainId, contracts: _contracts } = NETWORKS.hardhat
-const joyChainId = NETWORKS.joystream.chainId
+const { chainId: evmChainId, contracts: _contracts } = EVM_NETWORKS.hardhat
+const joyChainId = JOY_NETWORKS.local.chainId
 const joyTransferId = (id: bigint) => `${joyChainId}-${id}`
 const evmTransferId = (id: bigint) => `${evmChainId}-${id}`
 
@@ -346,7 +347,7 @@ test("Unpause JOY bridge", async () => {
 })
 
 test("Mint EVM tokens to test account", async () => {
-  const { publicClient, walletClient, otherAccount } = evmConfig
+  const { publicClient, walletClient, testClient, otherAccount } = evmConfig
   const mintAmount = 10000n
 
   const minterRole = await publicClient.readContract({
@@ -363,7 +364,7 @@ test("Mint EVM tokens to test account", async () => {
   const { salt, block, delay } = await scheduleTimelockCall(erc20, calldata)
 
   const delayDoneTimestamp = Number(block.timestamp + delay)
-  await increaseTime(new Date(delayDoneTimestamp * 1000))
+  await increaseTime(testClient, new Date(delayDoneTimestamp * 1000))
 
   const executeTxHash = await walletClient.writeContract({
     abi: TimelockAbi,

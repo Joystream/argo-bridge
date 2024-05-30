@@ -13,10 +13,16 @@ enum BridgeTransferStatus {
   COMPLETED
 }
 
+enum BridgeTransferType {
+  EVM_TO_JOY
+  JOY_TO_EVM
+}
+
 type BridgeTransfer @entity {
   id: ID! # sourceChainId-sourceTransferId
   amount: BigInt!
   status: BridgeTransferStatus! @index
+  type: BridgeTransferType!
   feePaid: BigInt! # fee paid in source chain token
   sourceChainId: Int! @index
   sourceTransferId: BigInt! @index

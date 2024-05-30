@@ -7,12 +7,12 @@ import {
   setupJoyApi,
   waitUntilBlock,
 } from "../src/setup"
-import { NETWORKS } from "@joystream/argo-core"
+import { EVM_NETWORKS } from "@joystream/argo-core"
 
 async function main() {
   await setupJoyApi()
 
-  const evmChainId = NETWORKS.hardhat.chainId
+  const evmChainId = EVM_NETWORKS.hardhat.chainId
   const joyBridgeOperator = councilAccounts[0]
   const joyBridgePauser = councilAccounts[1]
 

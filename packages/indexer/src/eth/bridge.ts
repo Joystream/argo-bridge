@@ -1,6 +1,7 @@
 import {
   BridgeTransfer,
   BridgeTransferStatus,
+  BridgeTransferType,
   EvmBridgeConfig,
   EvmBridgeFeeChangedEvent,
   EvmBridgeFeesWithdrawnEvent,
@@ -17,7 +18,7 @@ import { groupByClass } from "../shared"
 import * as argoBridgeAbi from "./abi/argoBridgeV1"
 import { ARGO_ADDRESS, CHAIN_ID, Context } from "./processor"
 import { EvmLog } from "./types"
-import { NETWORKS, getEntityId } from "@joystream/argo-core"
+import { JOY_NETWORKS, getEntityId } from "@joystream/argo-core"
 import * as ss58 from "@subsquid/ss58"
 import assert from "assert"
 import { In } from "typeorm"
@@ -30,11 +31,12 @@ type EvmBridgeEvent =
   | EvmBridgeStatusChangedEvent
   | EvmBridgeMintingLimitsUpdatedEvent
   | EvmBridgeRoleGrantedEvent
-  | EvmBridgeRoleGrantedEvent
+  | EvmBridgeRoleRevokedEvent
 
 const addressCodec = ss58.codec("joystream")
 
-const joyTransferId = (id: bigint) => getEntityId("joystream", id)
+const joyTransferId = (id: bigint) =>
+  getEntityId(JOY_NETWORKS.mainnet.chainId, id)
 
 let BRIDGE_ADMIN_ROLE: string
 let BRIDGE_OPERATOR_ROLE: string
@@ -142,11 +144,12 @@ export async function handleEvmBridgeEvents(
           id: transferId,
           amount: amount,
           status: BridgeTransferStatus.REQUESTED,
+          type: BridgeTransferType.EVM_TO_JOY,
           feePaid: bridgingFee,
           sourceChainId: CHAIN_ID,
           sourceTransferId: ethTransferId,
           sourceAccount: ethRequester,
-          destChainId: NETWORKS.joystream.chainId,
+          destChainId: JOY_NETWORKS.mainnet.chainId,
           destAccount: joyDestAccount,
           createdAtBlock: block,
           createdAtTimestamp: timestamp,
@@ -176,7 +179,8 @@ export async function handleEvmBridgeEvents(
           id: joyTransferId(event.joyTransferId),
           amount: event.amount,
           status: BridgeTransferStatus.MAYBE_COMPLETED,
-          sourceChainId: NETWORKS.joystream.chainId,
+          type: BridgeTransferType.JOY_TO_EVM,
+          sourceChainId: JOY_NETWORKS.mainnet.chainId,
           sourceTransferId: event.joyTransferId,
           destChainId: CHAIN_ID,
           destAccount: event.ethDestAddress,

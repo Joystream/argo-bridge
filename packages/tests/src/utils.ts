@@ -1,13 +1,13 @@
 import { getEvmConfig, getEvmDeploymentParams } from "./setup"
-import { NETWORKS, TimelockAbi } from "@joystream/argo-core"
+import { EVM_NETWORKS, TimelockAbi } from "@joystream/argo-core"
 import { expect } from "bun:test"
 import { type Hex, TestClient, bytesToHex, zeroHash } from "viem"
 
-const { timelock } = NETWORKS.hardhat.contracts!
+const { timelock } = EVM_NETWORKS.hardhat.contracts
 
 export async function increaseTime(testClient: TestClient, newDate: Date) {
   return await testClient.setNextBlockTimestamp({
-    timestamp: BigInt(Math.floor(newDate.getTime())),
+    timestamp: BigInt(Math.floor(newDate.getTime() / 1000)),
   })
 }
 

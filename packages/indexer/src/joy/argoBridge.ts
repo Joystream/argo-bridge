@@ -1,6 +1,7 @@
 import {
   BridgeTransfer,
   BridgeTransferStatus,
+  BridgeTransferType,
   JoyBridgeConfig,
   JoyBridgeConfigUpdatedEvent,
   JoyBridgeInboundTransferFinalizedEvent,
@@ -131,6 +132,7 @@ export async function handleJoyBridgeEvents(
           id: getEntityId(CHAIN_ID, joyTransferId),
           amount: event.amount,
           status: BridgeTransferStatus.REQUESTED,
+          type: BridgeTransferType.JOY_TO_EVM,
           feePaid,
           sourceChainId: CHAIN_ID,
           sourceTransferId: joyTransferId,
@@ -166,6 +168,7 @@ export async function handleJoyBridgeEvents(
           id: getEntityId(remoteChainId, remoteTransferId),
           amount,
           status: BridgeTransferStatus.MAYBE_COMPLETED,
+          type: BridgeTransferType.EVM_TO_JOY,
           sourceChainId: remoteChainId,
           sourceTransferId: remoteTransferId,
           destChainId: CHAIN_ID,

@@ -1,5 +1,5 @@
 import { events } from "./generated"
-import { ChainName, NETWORKS } from "@joystream/argo-core"
+import { JOY_NETWORKS } from "@joystream/argo-core"
 import {
   BlockHeader,
   DataHandlerContext,
@@ -11,8 +11,7 @@ import {
   assertNotNull,
 } from "@subsquid/substrate-processor"
 
-const TARGET_CHAIN: ChainName = "joystreamLocal"
-export const NETWORK = NETWORKS[TARGET_CHAIN]
+export const NETWORK = JOY_NETWORKS.local
 export const CHAIN_ID = NETWORK.chainId
 const RPC_ENDPOINT = assertNotNull(NETWORK.rpc.url)
 

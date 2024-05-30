@@ -1,5 +1,6 @@
 export * from "./bridgeTransfer.model"
 export * from "./_bridgeTransferStatus"
+export * from "./_bridgeTransferType"
 export * from "./evmBridgeConfig.model"
 export * from "./_evmBridgeStatus"
 export * from "./_evmBridgeMintingLimits"

@@ -10,6 +10,8 @@ import {
   TypographyH2,
   TypographyP,
 } from '@/components/ui/typography'
+import { EvmToJoyTransfer } from '@/pages/NewTransfer/EvmToJoyTransfer'
+import { Dnum } from 'dnum'
 
 export const NewTransferPage: FC = () => {
   const { address: evmAddress } = useAccount()
@@ -20,9 +22,9 @@ export const NewTransferPage: FC = () => {
     address: evmAddress,
     token: ERC20_ADDRESS,
   })
-  const evmBalance =
-    _evmBalance.data &&
-    dn.from(_evmBalance.data.value, _evmBalance.data.decimals)
+  const evmBalance: Dnum | null = _evmBalance.data
+    ? [_evmBalance.data.value, _evmBalance.data.decimals]
+    : null
 
   const [joyBalance, setJoyBalance] = useState<dn.Dnum | null>(null)
 
@@ -31,10 +33,9 @@ export const NewTransferPage: FC = () => {
 
     let unsub: () => void
 
-    console.log('subscribing to JOY balance')
     joyApi.query.system
       .account(joyAddress, (account) => {
-        setJoyBalance(dn.from(account.data.free.toBigInt(), 10))
+        setJoyBalance([account.data.free.toBigInt(), 10])
       })
       .then((unsubFn) => {
         unsub = unsubFn
@@ -60,7 +61,10 @@ export const NewTransferPage: FC = () => {
           <span>JOY balance: {dn.format(joyBalance, { compact: true })}</span>
         ) : null}
       </TypographyP>
-      <JoyToEvmTransfer />
+      <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
+        <JoyToEvmTransfer />
+        <EvmToJoyTransfer />
+      </div>
     </div>
   )
 }

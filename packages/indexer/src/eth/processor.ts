@@ -1,6 +1,6 @@
 import * as argoBridgeAbi from "./abi/argoBridgeV1"
 import * as timelockControllerAbi from "./abi/timelockController"
-import { ChainName, NETWORKS } from "@joystream/argo-core"
+import { EVM_NETWORKS, EvmChainName } from "@joystream/argo-core"
 import { lookupArchive } from "@subsquid/archive-registry"
 import {
   BlockHeader,
@@ -13,12 +13,12 @@ import {
 import { Store } from "@subsquid/typeorm-store"
 import { assertNotNull } from "@subsquid/util-internal"
 
-const TARGET_CHAIN: ChainName = "hardhat"
-export const NETWORK = NETWORKS[TARGET_CHAIN]
+const TARGET_CHAIN: EvmChainName = "hardhat"
+export const NETWORK = EVM_NETWORKS[TARGET_CHAIN]
 
 export const CHAIN_ID = NETWORK.chainId
-export const ARGO_ADDRESS = NETWORK.contracts!.bridge.toLowerCase()
-export const TIMELOCK_ADDRESS = NETWORK.contracts!.timelock.toLowerCase()
+export const ARGO_ADDRESS = NETWORK.contracts.bridge.toLowerCase()
+export const TIMELOCK_ADDRESS = NETWORK.contracts.timelock.toLowerCase()
 
 export const processor = new EvmBatchProcessor()
   .setRpcEndpoint({
