@@ -16,7 +16,7 @@ type NetworkConfig = {
   archiveName?: string
 }
 
-export const NETWORKS: Record<string, NetworkConfig> = {
+export const NETWORKS = {
   joystream: {
     name: "Joystream",
     chainId: 0,
@@ -62,7 +62,9 @@ export const NETWORKS: Record<string, NetworkConfig> = {
       timelock: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
     },
   },
-}
+} as const
+
+const _networkAsserted: Record<string, NetworkConfig> = NETWORKS
 
 export type ChainName = keyof typeof NETWORKS
 export type EvmChainName = Exclude<ChainName, "joystream">

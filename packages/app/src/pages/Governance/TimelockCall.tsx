@@ -1,11 +1,11 @@
-import { contracts } from "./config"
-import { EvmTimelockCallStatus, GetTimelockCallsQuery } from "./gql/graphql"
-import { BridgeAbi, TimelockAbi } from "@joystream/argo-core"
-import { FC } from "react"
-import { encodeFunctionData, zeroHash } from "viem"
-import { useWriteContract } from "wagmi"
+import { EvmTimelockCallStatus, GetTimelockCallsQuery } from '@/gql/graphql'
+import { BridgeAbi, TimelockAbi } from '@joystream/argo-core'
+import { FC } from 'react'
+import { encodeFunctionData, zeroHash } from 'viem'
+import { useWriteContract } from 'wagmi'
+import { TIMELOCK_ADDRESS } from '@/config'
 
-type TimelockCall = GetTimelockCallsQuery["evmTimelockCalls"][number]
+type TimelockCall = GetTimelockCallsQuery['evmTimelockCalls'][number]
 
 export type TimelockCallProps = {
   call: TimelockCall
@@ -18,8 +18,8 @@ export const TimelockCall: FC<TimelockCallProps> = ({ call }) => {
     writeContract(
       {
         abi: TimelockAbi,
-        address: contracts.timelock,
-        functionName: "execute",
+        address: TIMELOCK_ADDRESS,
+        functionName: 'execute',
         args: [
           call.callTarget as `0x{string}`,
           call.callValue,
@@ -31,51 +31,51 @@ export const TimelockCall: FC<TimelockCallProps> = ({ call }) => {
       {
         onSettled: (data, error) => {
           if (error) {
-            console.error("Error:", error)
+            console.error('Error:', error)
           } else {
-            console.log("Data:", data)
+            console.log('Data:', data)
           }
         },
-      },
+      }
     )
   }
 
   const executedNode =
     call.status === EvmTimelockCallStatus.Executed ? (
       <div>
-        Executed: {call.executedAtTimestamp} #{call.executedAtBlock}{" "}
+        Executed: {call.executedAtTimestamp} #{call.executedAtBlock}{' '}
         {call.executedTxHash}
       </div>
     ) : null
   const cancelledNode =
     call.status === EvmTimelockCallStatus.Cancelled ? (
       <div>
-        Cancelled: {call.cancelledAtTimestamp} #{call.cancelledAtBlock}{" "}
+        Cancelled: {call.cancelledAtTimestamp} #{call.cancelledAtBlock}{' '}
         {call.cancelledTxHash}
       </div>
     ) : null
 
   const prettyStatus =
     call.status === EvmTimelockCallStatus.Executed
-      ? "Executed"
+      ? 'Executed'
       : call.status === EvmTimelockCallStatus.Cancelled
-        ? "Cancelled"
+        ? 'Cancelled'
         : call.delayDoneTimestamp < Date.now() / 1000
-          ? "Ready"
-          : "Pending"
+          ? 'Ready'
+          : 'Pending'
 
   return (
     <div
       style={{
-        padding: "10px",
-        border: "1px solid #ccc",
-        marginBottom: "10px",
+        padding: '10px',
+        border: '1px solid #ccc',
+        marginBottom: '10px',
       }}
     >
       <div>Id: {call.id}</div>
       <div>Status: {prettyStatus}</div>
       <div>
-        Created: {call.createdAtTimestamp} #{call.createdAtBlock}{" "}
+        Created: {call.createdAtTimestamp} #{call.createdAtBlock}{' '}
         {call.createdTxHash}
       </div>
       {executedNode}

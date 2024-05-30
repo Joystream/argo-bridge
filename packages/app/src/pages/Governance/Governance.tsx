@@ -1,50 +1,51 @@
-import { TimelockCall } from "./TimelockCall"
-import { INDEXER_URL, contracts } from "./config"
-import { EvmTimelockCallOrderByInput } from "./gql/graphql"
-import { getTimelockCallsQueryDocument } from "./queries/timelockCalls"
-import { BridgeAbi, TimelockAbi } from "@joystream/argo-core"
-import { useQuery } from "@tanstack/react-query"
-import request from "graphql-request"
-import { FC } from "react"
-import { bytesToHex, encodeFunctionData, zeroHash } from "viem"
-import { useAccount, useReadContract, useWriteContract } from "wagmi"
+import { TimelockCall } from './TimelockCall'
+import { BRIDGE_ADDRESS, TIMELOCK_ADDRESS } from '@/config'
+import { EvmTimelockCallOrderByInput } from '@/gql/graphql'
+import { getTimelockCallsQueryDocument } from '@/queries/timelockCalls'
+import { BridgeAbi, TimelockAbi } from '@joystream/argo-core'
+import { useQuery } from '@tanstack/react-query'
+import request from 'graphql-request'
+import { FC } from 'react'
+import { bytesToHex, encodeFunctionData, zeroHash } from 'viem'
+import { useAccount, useReadContract, useWriteContract } from 'wagmi'
+import { ARGO_INDEXER_URL } from '@/config'
 
-export const GovernanceView: FC = () => {
+export const GovernancePage: FC = () => {
   const { address } = useAccount()
   const { writeContract } = useWriteContract()
   const { data: timelockMinDelay } = useReadContract({
     abi: TimelockAbi,
-    address: contracts.timelock,
-    functionName: "getMinDelay",
+    address: TIMELOCK_ADDRESS,
+    functionName: 'getMinDelay',
   })
 
   const { data } = useQuery({
-    queryKey: ["timelockCalls"],
+    queryKey: ['timelockCalls'],
     queryFn: async () =>
-      request(INDEXER_URL, getTimelockCallsQueryDocument, {
+      request(ARGO_INDEXER_URL, getTimelockCallsQueryDocument, {
         orderBy: EvmTimelockCallOrderByInput.CreatedAtBlockDesc,
       }),
   })
 
   const proposeBridgeUnpause = async () => {
-    console.log("TimelockMinDelay:", timelockMinDelay)
+    console.log('TimelockMinDelay:', timelockMinDelay)
     if (timelockMinDelay === undefined) {
       return
     }
 
     const calldata = encodeFunctionData({
       abi: BridgeAbi,
-      functionName: "unpauseBridge",
+      functionName: 'unpauseBridge',
     })
 
     const saltBytes = crypto.getRandomValues(new Uint8Array(32))
     writeContract(
       {
         abi: TimelockAbi,
-        address: contracts.timelock,
-        functionName: "schedule",
+        address: TIMELOCK_ADDRESS,
+        functionName: 'schedule',
         args: [
-          contracts.bridge,
+          BRIDGE_ADDRESS,
           0n,
           calldata,
           zeroHash,
@@ -55,12 +56,12 @@ export const GovernanceView: FC = () => {
       {
         onSettled: (data, error) => {
           if (error) {
-            console.error("Error:", error)
+            console.error('Error:', error)
           } else {
-            console.log("Data:", data)
+            console.log('Data:', data)
           }
         },
-      },
+      }
     )
   }
 

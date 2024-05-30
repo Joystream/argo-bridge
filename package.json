@@ -24,6 +24,7 @@
     "typescript-eslint": "^7.4.0"
   },
   "dependencies": {
+    "@rainbow-me/rainbowkit": "^2.1.1",
     "@tanstack/react-query": "^5.35.5",
     "viem": "^2.10.3",
     "wagmi": "^2.8.5"
