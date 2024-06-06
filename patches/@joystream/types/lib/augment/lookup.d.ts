@@ -1398,44 +1398,7 @@ declare const _default: {
         bloatBond: string;
     };
     /**
-     * Lookup206: pallet_argo_bridge::events::RawEvent<sp_core::crypto::AccountId32, Balance, pallet_argo_bridge::types::BridgeConstraints<sp_core::crypto::AccountId32, Balance, BlockNumber>>
-     **/
-    PalletArgoBridgeEventsRawEvent: {
-        _enum: {
-            OutboundTransferRequested: string;
-            InboundTransferFinalized: string;
-            BridgePaused: string;
-            BridgeThawnStarted: string;
-            BridgeThawnFinished: string;
-            BridgeConfigUpdated: string;
-        };
-    };
-    /**
-     * Lookup207: pallet_argo_bridge::types::BridgeConstraints<sp_core::crypto::AccountId32, Balance, BlockNumber>
-     **/
-    PalletArgoBridgeBridgeConstraints: {
-        operatorAccount: string;
-        pauserAccounts: string;
-        bridgingFee: string;
-        thawnDuration: string;
-        remoteChains: string;
-    };
-    /**
-     * Lookup213: pallet_argo_bridge::types::RemoteAccount
-     **/
-    PalletArgoBridgeRemoteAccount: {
-        account: string;
-        chainId: string;
-    };
-    /**
-     * Lookup214: pallet_argo_bridge::types::RemoteTransfer
-     **/
-    PalletArgoBridgeRemoteTransfer: {
-        id: string;
-        chainId: string;
-    };
-    /**
-     * Lookup215: pallet_proposals_engine::RawEvent<ProposalId, MemberId, BlockNumber>
+     * Lookup206: pallet_proposals_engine::RawEvent<ProposalId, MemberId, BlockNumber>
      **/
     PalletProposalsEngineRawEvent: {
         _enum: {
@@ -1448,7 +1411,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup216: pallet_proposals_engine::types::proposal_statuses::ProposalStatus<BlockNumber>
+     * Lookup207: pallet_proposals_engine::types::proposal_statuses::ProposalStatus<BlockNumber>
      **/
     PalletProposalsEngineProposalStatusesProposalStatus: {
         _enum: {
@@ -1458,7 +1421,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup217: pallet_proposals_engine::types::proposal_statuses::ProposalDecision
+     * Lookup208: pallet_proposals_engine::types::proposal_statuses::ProposalDecision
      **/
     PalletProposalsEngineProposalStatusesProposalDecision: {
         _enum: {
@@ -1472,13 +1435,13 @@ declare const _default: {
         };
     };
     /**
-     * Lookup218: pallet_proposals_engine::types::proposal_statuses::ApprovedProposalDecision
+     * Lookup209: pallet_proposals_engine::types::proposal_statuses::ApprovedProposalDecision
      **/
     PalletProposalsEngineProposalStatusesApprovedProposalDecision: {
         _enum: string[];
     };
     /**
-     * Lookup219: pallet_proposals_engine::types::proposal_statuses::ExecutionStatus
+     * Lookup210: pallet_proposals_engine::types::proposal_statuses::ExecutionStatus
      **/
     PalletProposalsEngineProposalStatusesExecutionStatus: {
         _enum: {
@@ -1489,13 +1452,13 @@ declare const _default: {
         };
     };
     /**
-     * Lookup220: pallet_proposals_engine::types::VoteKind
+     * Lookup211: pallet_proposals_engine::types::VoteKind
      **/
     PalletProposalsEngineVoteKind: {
         _enum: string[];
     };
     /**
-     * Lookup221: pallet_proposals_discussion::RawEvent<ThreadId, MemberId, PostId>
+     * Lookup212: pallet_proposals_discussion::RawEvent<ThreadId, MemberId, PostId>
      **/
     PalletProposalsDiscussionRawEvent: {
         _enum: {
@@ -1507,7 +1470,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup222: pallet_proposals_discussion::types::ThreadMode<BTreeSet<T>>
+     * Lookup213: pallet_proposals_discussion::types::ThreadMode<BTreeSet<T>>
      **/
     PalletProposalsDiscussionThreadModeBTreeSet: {
         _enum: {
@@ -1516,7 +1479,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup223: pallet_proposals_codex::RawEvent<pallet_proposals_codex::types::GeneralProposalParams<MemberId, sp_core::crypto::AccountId32, BlockNumber>, pallet_proposals_codex::types::ProposalDetails<Balance, BlockNumber, sp_core::crypto::AccountId32, WorkerId, OpeningId, ProposalId, pallet_content::types::UpdateChannelPayoutsParametersRecord<pallet_content::types::ChannelPayoutsPayloadParametersRecord<Balance>, Balance, primitive_types::H256>, pallet_project_token::types::TokenConstraints<Balance, BlockNumber, JoyBalance>, pallet_argo_bridge::types::BridgeConstraints<sp_core::crypto::AccountId32, Balance, BlockNumber>>, ProposalId, ThreadId>
+     * Lookup214: pallet_proposals_codex::RawEvent<pallet_proposals_codex::types::GeneralProposalParams<MemberId, sp_core::crypto::AccountId32, BlockNumber>, pallet_proposals_codex::types::ProposalDetails<Balance, BlockNumber, sp_core::crypto::AccountId32, WorkerId, OpeningId, ProposalId, pallet_content::types::UpdateChannelPayoutsParametersRecord<pallet_content::types::ChannelPayoutsPayloadParametersRecord<Balance>, Balance, primitive_types::H256>, pallet_project_token::types::TokenConstraints<Balance, BlockNumber, JoyBalance>, pallet_argo_bridge::types::BridgeConstraints<sp_core::crypto::AccountId32, Balance, BlockNumber>>, ProposalId, ThreadId>
      **/
     PalletProposalsCodexRawEvent: {
         _enum: {
@@ -1524,7 +1487,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup224: pallet_proposals_codex::types::GeneralProposalParams<MemberId, sp_core::crypto::AccountId32, BlockNumber>
+     * Lookup215: pallet_proposals_codex::types::GeneralProposalParams<MemberId, sp_core::crypto::AccountId32, BlockNumber>
      **/
     PalletProposalsCodexGeneralProposalParams: {
         memberId: string;
@@ -1534,7 +1497,7 @@ declare const _default: {
         exactExecutionBlock: string;
     };
     /**
-     * Lookup225: pallet_proposals_codex::types::ProposalDetails<Balance, BlockNumber, sp_core::crypto::AccountId32, WorkerId, OpeningId, ProposalId, pallet_content::types::UpdateChannelPayoutsParametersRecord<pallet_content::types::ChannelPayoutsPayloadParametersRecord<Balance>, Balance, primitive_types::H256>, pallet_project_token::types::TokenConstraints<Balance, BlockNumber, JoyBalance>, pallet_argo_bridge::types::BridgeConstraints<sp_core::crypto::AccountId32, Balance, BlockNumber>>
+     * Lookup216: pallet_proposals_codex::types::ProposalDetails<Balance, BlockNumber, sp_core::crypto::AccountId32, WorkerId, OpeningId, ProposalId, pallet_content::types::UpdateChannelPayoutsParametersRecord<pallet_content::types::ChannelPayoutsPayloadParametersRecord<Balance>, Balance, primitive_types::H256>, pallet_project_token::types::TokenConstraints<Balance, BlockNumber, JoyBalance>, pallet_argo_bridge::types::BridgeConstraints<sp_core::crypto::AccountId32, Balance, BlockNumber>>
      **/
     PalletProposalsCodexProposalDetails: {
         _enum: {
@@ -1569,14 +1532,24 @@ declare const _default: {
         };
     };
     /**
-     * Lookup227: pallet_common::FundingRequestParameters<Balance, sp_core::crypto::AccountId32>
+     * Lookup217: pallet_argo_bridge::types::BridgeConstraints<sp_core::crypto::AccountId32, Balance, BlockNumber>
+     **/
+    PalletArgoBridgeBridgeConstraints: {
+        operatorAccount: string;
+        pauserAccounts: string;
+        bridgingFee: string;
+        thawnDuration: string;
+        remoteChains: string;
+    };
+    /**
+     * Lookup224: pallet_common::FundingRequestParameters<Balance, sp_core::crypto::AccountId32>
      **/
     PalletCommonFundingRequestParameters: {
         account: string;
         amount: string;
     };
     /**
-     * Lookup228: pallet_proposals_codex::types::CreateOpeningParameters<BlockNumber, Balance>
+     * Lookup225: pallet_proposals_codex::types::CreateOpeningParameters<BlockNumber, Balance>
      **/
     PalletProposalsCodexCreateOpeningParameters: {
         description: string;
@@ -1585,14 +1558,14 @@ declare const _default: {
         group: string;
     };
     /**
-     * Lookup229: pallet_working_group::types::StakePolicy<BlockNumber, Balance>
+     * Lookup226: pallet_working_group::types::StakePolicy<BlockNumber, Balance>
      **/
     PalletWorkingGroupStakePolicy: {
         stakeAmount: string;
         leavingUnstakingPeriod: string;
     };
     /**
-     * Lookup230: pallet_proposals_codex::types::FillOpeningParameters
+     * Lookup227: pallet_proposals_codex::types::FillOpeningParameters
      **/
     PalletProposalsCodexFillOpeningParameters: {
         openingId: string;
@@ -1600,7 +1573,7 @@ declare const _default: {
         workingGroup: string;
     };
     /**
-     * Lookup231: pallet_proposals_codex::types::TerminateRoleParameters<WorkerId, Balance>
+     * Lookup228: pallet_proposals_codex::types::TerminateRoleParameters<WorkerId, Balance>
      **/
     PalletProposalsCodexTerminateRoleParameters: {
         workerId: string;
@@ -1608,13 +1581,13 @@ declare const _default: {
         group: string;
     };
     /**
-     * Lookup232: pallet_common::FreezablePallet
+     * Lookup229: pallet_common::FreezablePallet
      **/
     PalletCommonFreezablePallet: {
         _enum: string[];
     };
     /**
-     * Lookup233: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance1>
+     * Lookup230: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance1>
      **/
     PalletWorkingGroupRawEventInstance1: {
         _enum: {
@@ -1647,13 +1620,13 @@ declare const _default: {
         };
     };
     /**
-     * Lookup237: pallet_working_group::types::OpeningType
+     * Lookup234: pallet_working_group::types::OpeningType
      **/
     PalletWorkingGroupOpeningType: {
         _enum: string[];
     };
     /**
-     * Lookup238: pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>
+     * Lookup235: pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>
      **/
     PalletWorkingGroupApplyOnOpeningParams: {
         memberId: string;
@@ -1664,14 +1637,14 @@ declare const _default: {
         stakeParameters: string;
     };
     /**
-     * Lookup239: pallet_working_group::types::StakeParameters<sp_core::crypto::AccountId32, Balance>
+     * Lookup236: pallet_working_group::types::StakeParameters<sp_core::crypto::AccountId32, Balance>
      **/
     PalletWorkingGroupStakeParameters: {
         stake: string;
         stakingAccountId: string;
     };
     /**
-     * Lookup240: pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>
+     * Lookup237: pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>
      **/
     PalletVestingVestingInfo: {
         locked: string;
@@ -1679,17 +1652,17 @@ declare const _default: {
         startingBlock: string;
     };
     /**
-     * Lookup241: pallet_working_group::Instance1
+     * Lookup238: pallet_working_group::Instance1
      **/
     PalletWorkingGroupInstance1: string;
     /**
-     * Lookup242: pallet_working_group::types::RewardPaymentType
+     * Lookup239: pallet_working_group::types::RewardPaymentType
      **/
     PalletWorkingGroupRewardPaymentType: {
         _enum: string[];
     };
     /**
-     * Lookup243: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance2>
+     * Lookup240: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance2>
      **/
     PalletWorkingGroupRawEventInstance2: {
         _enum: {
@@ -1722,11 +1695,11 @@ declare const _default: {
         };
     };
     /**
-     * Lookup244: pallet_working_group::Instance2
+     * Lookup241: pallet_working_group::Instance2
      **/
     PalletWorkingGroupInstance2: string;
     /**
-     * Lookup245: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance3>
+     * Lookup242: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance3>
      **/
     PalletWorkingGroupRawEventInstance3: {
         _enum: {
@@ -1759,11 +1732,11 @@ declare const _default: {
         };
     };
     /**
-     * Lookup246: pallet_working_group::Instance3
+     * Lookup243: pallet_working_group::Instance3
      **/
     PalletWorkingGroupInstance3: string;
     /**
-     * Lookup247: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance4>
+     * Lookup244: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance4>
      **/
     PalletWorkingGroupRawEventInstance4: {
         _enum: {
@@ -1796,11 +1769,11 @@ declare const _default: {
         };
     };
     /**
-     * Lookup248: pallet_working_group::Instance4
+     * Lookup245: pallet_working_group::Instance4
      **/
     PalletWorkingGroupInstance4: string;
     /**
-     * Lookup249: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance5>
+     * Lookup246: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance5>
      **/
     PalletWorkingGroupRawEventInstance5: {
         _enum: {
@@ -1833,11 +1806,11 @@ declare const _default: {
         };
     };
     /**
-     * Lookup250: pallet_working_group::Instance5
+     * Lookup247: pallet_working_group::Instance5
      **/
     PalletWorkingGroupInstance5: string;
     /**
-     * Lookup251: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance6>
+     * Lookup248: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance6>
      **/
     PalletWorkingGroupRawEventInstance6: {
         _enum: {
@@ -1870,11 +1843,11 @@ declare const _default: {
         };
     };
     /**
-     * Lookup252: pallet_working_group::Instance6
+     * Lookup249: pallet_working_group::Instance6
      **/
     PalletWorkingGroupInstance6: string;
     /**
-     * Lookup253: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance7>
+     * Lookup250: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance7>
      **/
     PalletWorkingGroupRawEventInstance7: {
         _enum: {
@@ -1907,11 +1880,11 @@ declare const _default: {
         };
     };
     /**
-     * Lookup254: pallet_working_group::Instance7
+     * Lookup251: pallet_working_group::Instance7
      **/
     PalletWorkingGroupInstance7: string;
     /**
-     * Lookup255: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance8>
+     * Lookup252: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance8>
      **/
     PalletWorkingGroupRawEventInstance8: {
         _enum: {
@@ -1944,11 +1917,11 @@ declare const _default: {
         };
     };
     /**
-     * Lookup256: pallet_working_group::Instance8
+     * Lookup253: pallet_working_group::Instance8
      **/
     PalletWorkingGroupInstance8: string;
     /**
-     * Lookup257: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance9>
+     * Lookup254: pallet_working_group::RawEvent<OpeningId, ApplicationId, BTreeMap<K, V>, WorkerId, sp_core::crypto::AccountId32, Balance, pallet_working_group::types::OpeningType, pallet_working_group::types::StakePolicy<BlockNumber, Balance>, pallet_working_group::types::ApplyOnOpeningParams<MemberId, OpeningId, sp_core::crypto::AccountId32, Balance>, MemberId, primitive_types::H256, pallet_vesting::vesting_info::VestingInfo<Balance, BlockNumber>, pallet_working_group::Instance9>
      **/
     PalletWorkingGroupRawEventInstance9: {
         _enum: {
@@ -1981,11 +1954,11 @@ declare const _default: {
         };
     };
     /**
-     * Lookup258: pallet_working_group::Instance9
+     * Lookup255: pallet_working_group::Instance9
      **/
     PalletWorkingGroupInstance9: string;
     /**
-     * Lookup259: pallet_proxy::pallet::Event<T>
+     * Lookup256: pallet_proxy::pallet::Event<T>
      **/
     PalletProxyEvent: {
         _enum: {
@@ -2018,13 +1991,41 @@ declare const _default: {
         };
     };
     /**
-     * Lookup260: joystream_node_runtime::ProxyType
+     * Lookup257: joystream_node_runtime::ProxyType
      **/
     JoystreamNodeRuntimeProxyType: {
         _enum: string[];
     };
     /**
-     * Lookup262: frame_system::Phase
+     * Lookup259: pallet_argo_bridge::events::RawEvent<sp_core::crypto::AccountId32, Balance, pallet_argo_bridge::types::BridgeConstraints<sp_core::crypto::AccountId32, Balance, BlockNumber>, BlockNumber>
+     **/
+    PalletArgoBridgeEventsRawEvent: {
+        _enum: {
+            OutboundTransferRequested: string;
+            InboundTransferFinalized: string;
+            OutboundTransferReverted: string;
+            BridgePaused: string;
+            BridgeThawnStarted: string;
+            BridgeThawnFinished: string;
+            BridgeConfigUpdated: string;
+        };
+    };
+    /**
+     * Lookup260: pallet_argo_bridge::types::RemoteAccount
+     **/
+    PalletArgoBridgeRemoteAccount: {
+        account: string;
+        chainId: string;
+    };
+    /**
+     * Lookup261: pallet_argo_bridge::types::RemoteTransfer
+     **/
+    PalletArgoBridgeRemoteTransfer: {
+        id: string;
+        chainId: string;
+    };
+    /**
+     * Lookup263: frame_system::Phase
      **/
     FrameSystemPhase: {
         _enum: {
@@ -2034,14 +2035,14 @@ declare const _default: {
         };
     };
     /**
-     * Lookup266: frame_system::LastRuntimeUpgradeInfo
+     * Lookup267: frame_system::LastRuntimeUpgradeInfo
      **/
     FrameSystemLastRuntimeUpgradeInfo: {
         specVersion: string;
         specName: string;
     };
     /**
-     * Lookup269: frame_system::pallet::Call<T>
+     * Lookup270: frame_system::pallet::Call<T>
      **/
     FrameSystemCall: {
         _enum: {
@@ -2076,7 +2077,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup272: frame_system::limits::BlockWeights
+     * Lookup273: frame_system::limits::BlockWeights
      **/
     FrameSystemLimitsBlockWeights: {
         baseBlock: string;
@@ -2084,7 +2085,7 @@ declare const _default: {
         perClass: string;
     };
     /**
-     * Lookup273: frame_support::dispatch::PerDispatchClass<frame_system::limits::WeightsPerClass>
+     * Lookup274: frame_support::dispatch::PerDispatchClass<frame_system::limits::WeightsPerClass>
      **/
     FrameSupportDispatchPerDispatchClassWeightsPerClass: {
         normal: string;
@@ -2092,7 +2093,7 @@ declare const _default: {
         mandatory: string;
     };
     /**
-     * Lookup274: frame_system::limits::WeightsPerClass
+     * Lookup275: frame_system::limits::WeightsPerClass
      **/
     FrameSystemLimitsWeightsPerClass: {
         baseExtrinsic: string;
@@ -2101,13 +2102,13 @@ declare const _default: {
         reserved: string;
     };
     /**
-     * Lookup276: frame_system::limits::BlockLength
+     * Lookup277: frame_system::limits::BlockLength
      **/
     FrameSystemLimitsBlockLength: {
         max: string;
     };
     /**
-     * Lookup277: frame_support::dispatch::PerDispatchClass<T>
+     * Lookup278: frame_support::dispatch::PerDispatchClass<T>
      **/
     FrameSupportDispatchPerDispatchClassU32: {
         normal: string;
@@ -2115,14 +2116,14 @@ declare const _default: {
         mandatory: string;
     };
     /**
-     * Lookup278: sp_weights::RuntimeDbWeight
+     * Lookup279: sp_weights::RuntimeDbWeight
      **/
     SpWeightsRuntimeDbWeight: {
         read: string;
         write: string;
     };
     /**
-     * Lookup279: sp_version::RuntimeVersion
+     * Lookup280: sp_version::RuntimeVersion
      **/
     SpVersionRuntimeVersion: {
         specName: string;
@@ -2135,13 +2136,13 @@ declare const _default: {
         stateVersion: string;
     };
     /**
-     * Lookup284: frame_system::pallet::Error<T>
+     * Lookup285: frame_system::pallet::Error<T>
      **/
     FrameSystemError: {
         _enum: string[];
     };
     /**
-     * Lookup285: pallet_utility::pallet::Call<T>
+     * Lookup286: pallet_utility::pallet::Call<T>
      **/
     PalletUtilityCall: {
         _enum: {
@@ -2169,7 +2170,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup288: pallet_babe::pallet::Call<T>
+     * Lookup289: pallet_babe::pallet::Call<T>
      **/
     PalletBabeCall: {
         _enum: {
@@ -2187,7 +2188,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup289: sp_consensus_slots::EquivocationProof<sp_runtime::generic::header::Header<Number, sp_runtime::traits::BlakeTwo256>, sp_consensus_babe::app::Public>
+     * Lookup290: sp_consensus_slots::EquivocationProof<sp_runtime::generic::header::Header<Number, sp_runtime::traits::BlakeTwo256>, sp_consensus_babe::app::Public>
      **/
     SpConsensusSlotsEquivocationProof: {
         offender: string;
@@ -2196,7 +2197,7 @@ declare const _default: {
         secondHeader: string;
     };
     /**
-     * Lookup290: sp_runtime::generic::header::Header<Number, sp_runtime::traits::BlakeTwo256>
+     * Lookup291: sp_runtime::generic::header::Header<Number, sp_runtime::traits::BlakeTwo256>
      **/
     SpRuntimeHeader: {
         parentHash: string;
@@ -2206,15 +2207,15 @@ declare const _default: {
         digest: string;
     };
     /**
-     * Lookup291: sp_runtime::traits::BlakeTwo256
+     * Lookup292: sp_runtime::traits::BlakeTwo256
      **/
     SpRuntimeBlakeTwo256: string;
     /**
-     * Lookup292: sp_consensus_babe::app::Public
+     * Lookup293: sp_consensus_babe::app::Public
      **/
     SpConsensusBabeAppPublic: string;
     /**
-     * Lookup294: sp_session::MembershipProof
+     * Lookup295: sp_session::MembershipProof
      **/
     SpSessionMembershipProof: {
         session: string;
@@ -2222,7 +2223,7 @@ declare const _default: {
         validatorCount: string;
     };
     /**
-     * Lookup295: sp_consensus_babe::digests::NextConfigDescriptor
+     * Lookup296: sp_consensus_babe::digests::NextConfigDescriptor
      **/
     SpConsensusBabeDigestsNextConfigDescriptor: {
         _enum: {
@@ -2234,13 +2235,13 @@ declare const _default: {
         };
     };
     /**
-     * Lookup296: sp_consensus_babe::AllowedSlots
+     * Lookup297: sp_consensus_babe::AllowedSlots
      **/
     SpConsensusBabeAllowedSlots: {
         _enum: string[];
     };
     /**
-     * Lookup297: pallet_timestamp::pallet::Call<T>
+     * Lookup298: pallet_timestamp::pallet::Call<T>
      **/
     PalletTimestampCall: {
         _enum: {
@@ -2250,7 +2251,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup298: pallet_balances::pallet::Call<T, I>
+     * Lookup299: pallet_balances::pallet::Call<T, I>
      **/
     PalletBalancesCall: {
         _enum: {
@@ -2283,7 +2284,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup299: pallet_election_provider_multi_phase::pallet::Call<T>
+     * Lookup300: pallet_election_provider_multi_phase::pallet::Call<T>
      **/
     PalletElectionProviderMultiPhaseCall: {
         _enum: {
@@ -2307,7 +2308,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup300: pallet_election_provider_multi_phase::RawSolution<joystream_node_runtime::NposSolution16>
+     * Lookup301: pallet_election_provider_multi_phase::RawSolution<joystream_node_runtime::NposSolution16>
      **/
     PalletElectionProviderMultiPhaseRawSolution: {
         solution: string;
@@ -2315,7 +2316,7 @@ declare const _default: {
         round: string;
     };
     /**
-     * Lookup301: joystream_node_runtime::NposSolution16
+     * Lookup302: joystream_node_runtime::NposSolution16
      **/
     JoystreamNodeRuntimeNposSolution16: {
         votes1: string;
@@ -2336,21 +2337,21 @@ declare const _default: {
         votes16: string;
     };
     /**
-     * Lookup352: pallet_election_provider_multi_phase::SolutionOrSnapshotSize
+     * Lookup353: pallet_election_provider_multi_phase::SolutionOrSnapshotSize
      **/
     PalletElectionProviderMultiPhaseSolutionOrSnapshotSize: {
         voters: string;
         targets: string;
     };
     /**
-     * Lookup356: sp_npos_elections::Support<sp_core::crypto::AccountId32>
+     * Lookup357: sp_npos_elections::Support<sp_core::crypto::AccountId32>
      **/
     SpNposElectionsSupport: {
         total: string;
         voters: string;
     };
     /**
-     * Lookup358: pallet_staking::pallet::pallet::Call<T>
+     * Lookup359: pallet_staking::pallet::pallet::Call<T>
      **/
     PalletStakingPalletCall: {
         _enum: {
@@ -2444,7 +2445,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup359: pallet_staking::RewardDestination<sp_core::crypto::AccountId32>
+     * Lookup360: pallet_staking::RewardDestination<sp_core::crypto::AccountId32>
      **/
     PalletStakingRewardDestination: {
         _enum: {
@@ -2456,7 +2457,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup360: pallet_staking::pallet::pallet::ConfigOp<T>
+     * Lookup361: pallet_staking::pallet::pallet::ConfigOp<T>
      **/
     PalletStakingPalletConfigOpU128: {
         _enum: {
@@ -2466,7 +2467,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup361: pallet_staking::pallet::pallet::ConfigOp<T>
+     * Lookup362: pallet_staking::pallet::pallet::ConfigOp<T>
      **/
     PalletStakingPalletConfigOpU32: {
         _enum: {
@@ -2476,7 +2477,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup362: pallet_staking::pallet::pallet::ConfigOp<sp_arithmetic::per_things::Percent>
+     * Lookup363: pallet_staking::pallet::pallet::ConfigOp<sp_arithmetic::per_things::Percent>
      **/
     PalletStakingPalletConfigOpPercent: {
         _enum: {
@@ -2486,7 +2487,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup363: pallet_staking::pallet::pallet::ConfigOp<sp_arithmetic::per_things::Perbill>
+     * Lookup364: pallet_staking::pallet::pallet::ConfigOp<sp_arithmetic::per_things::Perbill>
      **/
     PalletStakingPalletConfigOpPerbill: {
         _enum: {
@@ -2496,7 +2497,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup364: pallet_session::pallet::Call<T>
+     * Lookup365: pallet_session::pallet::Call<T>
      **/
     PalletSessionCall: {
         _enum: {
@@ -2511,7 +2512,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup365: joystream_node_runtime::SessionKeys
+     * Lookup366: joystream_node_runtime::SessionKeys
      **/
     JoystreamNodeRuntimeSessionKeys: {
         grandpa: string;
@@ -2520,11 +2521,11 @@ declare const _default: {
         authorityDiscovery: string;
     };
     /**
-     * Lookup366: sp_authority_discovery::app::Public
+     * Lookup367: sp_authority_discovery::app::Public
      **/
     SpAuthorityDiscoveryAppPublic: string;
     /**
-     * Lookup367: pallet_grandpa::pallet::Call<T>
+     * Lookup368: pallet_grandpa::pallet::Call<T>
      **/
     PalletGrandpaCall: {
         _enum: {
@@ -2543,14 +2544,14 @@ declare const _default: {
         };
     };
     /**
-     * Lookup368: sp_consensus_grandpa::EquivocationProof<primitive_types::H256, N>
+     * Lookup369: sp_consensus_grandpa::EquivocationProof<primitive_types::H256, N>
      **/
     SpConsensusGrandpaEquivocationProof: {
         setId: string;
         equivocation: string;
     };
     /**
-     * Lookup369: sp_consensus_grandpa::Equivocation<primitive_types::H256, N>
+     * Lookup370: sp_consensus_grandpa::Equivocation<primitive_types::H256, N>
      **/
     SpConsensusGrandpaEquivocation: {
         _enum: {
@@ -2559,7 +2560,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup370: finality_grandpa::Equivocation<sp_consensus_grandpa::app::Public, finality_grandpa::Prevote<primitive_types::H256, N>, sp_consensus_grandpa::app::Signature>
+     * Lookup371: finality_grandpa::Equivocation<sp_consensus_grandpa::app::Public, finality_grandpa::Prevote<primitive_types::H256, N>, sp_consensus_grandpa::app::Signature>
      **/
     FinalityGrandpaEquivocationPrevote: {
         roundNumber: string;
@@ -2568,22 +2569,22 @@ declare const _default: {
         second: string;
     };
     /**
-     * Lookup371: finality_grandpa::Prevote<primitive_types::H256, N>
+     * Lookup372: finality_grandpa::Prevote<primitive_types::H256, N>
      **/
     FinalityGrandpaPrevote: {
         targetHash: string;
         targetNumber: string;
     };
     /**
-     * Lookup372: sp_consensus_grandpa::app::Signature
+     * Lookup373: sp_consensus_grandpa::app::Signature
      **/
     SpConsensusGrandpaAppSignature: string;
     /**
-     * Lookup373: sp_core::ed25519::Signature
+     * Lookup374: sp_core::ed25519::Signature
      **/
     SpCoreEd25519Signature: string;
     /**
-     * Lookup376: finality_grandpa::Equivocation<sp_consensus_grandpa::app::Public, finality_grandpa::Precommit<primitive_types::H256, N>, sp_consensus_grandpa::app::Signature>
+     * Lookup377: finality_grandpa::Equivocation<sp_consensus_grandpa::app::Public, finality_grandpa::Precommit<primitive_types::H256, N>, sp_consensus_grandpa::app::Signature>
      **/
     FinalityGrandpaEquivocationPrecommit: {
         roundNumber: string;
@@ -2592,14 +2593,14 @@ declare const _default: {
         second: string;
     };
     /**
-     * Lookup377: finality_grandpa::Precommit<primitive_types::H256, N>
+     * Lookup378: finality_grandpa::Precommit<primitive_types::H256, N>
      **/
     FinalityGrandpaPrecommit: {
         targetHash: string;
         targetNumber: string;
     };
     /**
-     * Lookup379: pallet_im_online::pallet::Call<T>
+     * Lookup380: pallet_im_online::pallet::Call<T>
      **/
     PalletImOnlineCall: {
         _enum: {
@@ -2610,7 +2611,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup380: pallet_im_online::Heartbeat<BlockNumber>
+     * Lookup381: pallet_im_online::Heartbeat<BlockNumber>
      **/
     PalletImOnlineHeartbeat: {
         blockNumber: string;
@@ -2620,22 +2621,22 @@ declare const _default: {
         validatorsLen: string;
     };
     /**
-     * Lookup381: sp_core::offchain::OpaqueNetworkState
+     * Lookup382: sp_core::offchain::OpaqueNetworkState
      **/
     SpCoreOffchainOpaqueNetworkState: {
         peerId: string;
         externalAddresses: string;
     };
     /**
-     * Lookup385: pallet_im_online::sr25519::app_sr25519::Signature
+     * Lookup386: pallet_im_online::sr25519::app_sr25519::Signature
      **/
     PalletImOnlineSr25519AppSr25519Signature: string;
     /**
-     * Lookup386: sp_core::sr25519::Signature
+     * Lookup387: sp_core::sr25519::Signature
      **/
     SpCoreSr25519Signature: string;
     /**
-     * Lookup387: pallet_bags_list::pallet::Call<T, I>
+     * Lookup388: pallet_bags_list::pallet::Call<T, I>
      **/
     PalletBagsListCall: {
         _enum: {
@@ -2648,7 +2649,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup388: pallet_vesting::pallet::Call<T>
+     * Lookup389: pallet_vesting::pallet::Call<T>
      **/
     PalletVestingCall: {
         _enum: {
@@ -2672,7 +2673,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup389: pallet_multisig::pallet::Call<T>
+     * Lookup390: pallet_multisig::pallet::Call<T>
      **/
     PalletMultisigCall: {
         _enum: {
@@ -2703,7 +2704,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup391: pallet_council::Call<T>
+     * Lookup392: pallet_council::Call<T>
      **/
     PalletCouncilCall: {
         _enum: {
@@ -2760,7 +2761,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup392: pallet_referendum::Call<T, I>
+     * Lookup393: pallet_referendum::Call<T, I>
      **/
     PalletReferendumCall: {
         _enum: {
@@ -2777,7 +2778,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup393: pallet_membership::Call<T>
+     * Lookup394: pallet_membership::Call<T>
      **/
     PalletMembershipCall: {
         _enum: {
@@ -2846,7 +2847,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup394: pallet_forum::Call<T>
+     * Lookup395: pallet_forum::Call<T>
      **/
     PalletForumCall: {
         _enum: {
@@ -2943,7 +2944,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup395: pallet_constitution::Call<T>
+     * Lookup396: pallet_constitution::Call<T>
      **/
     PalletConstitutionCall: {
         _enum: {
@@ -2953,7 +2954,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup396: pallet_bounty::Call<T>
+     * Lookup397: pallet_bounty::Call<T>
      **/
     PalletBountyCall: {
         _enum: {
@@ -3029,7 +3030,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup397: pallet_joystream_utility::Call<T>
+     * Lookup398: pallet_joystream_utility::Call<T>
      **/
     PalletJoystreamUtilityCall: {
         _enum: {
@@ -3050,7 +3051,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup398: pallet_content::Call<T>
+     * Lookup399: pallet_content::Call<T>
      **/
     PalletContentCall: {
         _enum: {
@@ -3359,14 +3360,14 @@ declare const _default: {
         };
     };
     /**
-     * Lookup399: pallet_content::types::ChannelBagWitness
+     * Lookup400: pallet_content::types::ChannelBagWitness
      **/
     PalletContentChannelBagWitness: {
         storageBucketsNum: string;
         distributionBucketsNum: string;
     };
     /**
-     * Lookup401: pallet_common::merkle_tree::ProofElementRecord<primitive_types::H256, pallet_common::merkle_tree::Side>
+     * Lookup402: pallet_common::merkle_tree::ProofElementRecord<primitive_types::H256, pallet_common::merkle_tree::Side>
      **/
     PalletCommonMerkleTreeProofElementRecord: {
         _alias: {
@@ -3376,13 +3377,13 @@ declare const _default: {
         side: string;
     };
     /**
-     * Lookup402: pallet_common::merkle_tree::Side
+     * Lookup403: pallet_common::merkle_tree::Side
      **/
     PalletCommonMerkleTreeSide: {
         _enum: string[];
     };
     /**
-     * Lookup403: pallet_content::types::PullPaymentElement<ChannelId, Balance, primitive_types::H256>
+     * Lookup404: pallet_content::types::PullPaymentElement<ChannelId, Balance, primitive_types::H256>
      **/
     PalletContentPullPaymentElement: {
         channelId: string;
@@ -3390,7 +3391,7 @@ declare const _default: {
         reason: string;
     };
     /**
-     * Lookup404: pallet_content::types::InitTransferParameters<MemberId, CuratorGroupId, Balance>
+     * Lookup405: pallet_content::types::InitTransferParameters<MemberId, CuratorGroupId, Balance>
      **/
     PalletContentInitTransferParameters: {
         newCollaborators: string;
@@ -3398,7 +3399,7 @@ declare const _default: {
         newOwner: string;
     };
     /**
-     * Lookup405: pallet_project_token::types::TokenSaleParams<JoyBalance, Balance, BlockNumber, pallet_project_token::types::VestingScheduleParams<BlockNumber>>
+     * Lookup406: pallet_project_token::types::TokenSaleParams<JoyBalance, Balance, BlockNumber, pallet_project_token::types::VestingScheduleParams<BlockNumber>>
      **/
     PalletProjectTokenTokenSaleParams: {
         unitPrice: string;
@@ -3410,14 +3411,14 @@ declare const _default: {
         metadata: string;
     };
     /**
-     * Lookup409: pallet_project_token::types::AmmParams<Balance>
+     * Lookup410: pallet_project_token::types::AmmParams<Balance>
      **/
     PalletProjectTokenAmmParams: {
         slope: string;
         intercept: string;
     };
     /**
-     * Lookup410: pallet_storage::Call<T>
+     * Lookup411: pallet_storage::Call<T>
      **/
     PalletStorageCall: {
         _enum: {
@@ -3564,7 +3565,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup411: pallet_project_token::Call<T>
+     * Lookup412: pallet_project_token::Call<T>
      **/
     PalletProjectTokenCall: {
         _enum: {
@@ -3623,37 +3624,14 @@ declare const _default: {
         };
     };
     /**
-     * Lookup415: pallet_project_token::types::MerkleProof<sp_runtime::traits::BlakeTwo256>
+     * Lookup416: pallet_project_token::types::MerkleProof<sp_runtime::traits::BlakeTwo256>
      **/
     PalletProjectTokenMerkleProof: string;
     /**
-     * Lookup418: pallet_project_token::types::MerkleSide
+     * Lookup419: pallet_project_token::types::MerkleSide
      **/
     PalletProjectTokenMerkleSide: {
         _enum: string[];
-    };
-    /**
-     * Lookup421: pallet_argo_bridge::Call<T>
-     **/
-    PalletArgoBridgeCall: {
-        _enum: {
-            request_outbound_transfer: {
-                destAccount: string;
-                amount: string;
-                expectedFee: string;
-            };
-            finalize_inbound_transfer: {
-                remoteTransfer: string;
-                destAccount: string;
-                amount: string;
-            };
-            pause_bridge: string;
-            init_unpause_bridge: string;
-            finish_unpause_bridge: string;
-            update_bridge_constrains: {
-                parameters: string;
-            };
-        };
     };
     /**
      * Lookup422: pallet_proposals_engine::Call<T>
@@ -3862,7 +3840,36 @@ declare const _default: {
         };
     };
     /**
-     * Lookup436: joystream_node_runtime::OriginCaller
+     * Lookup436: pallet_argo_bridge::Call<T>
+     **/
+    PalletArgoBridgeCall: {
+        _enum: {
+            request_outbound_transfer: {
+                destAccount: string;
+                amount: string;
+                expectedFee: string;
+            };
+            finalize_inbound_transfer: {
+                remoteTransfer: string;
+                destAccount: string;
+                amount: string;
+            };
+            revert_outbound_transfer: {
+                transferId: string;
+                revertAccount: string;
+                revertAmount: string;
+                rationale: string;
+            };
+            pause_bridge: string;
+            init_unpause_bridge: string;
+            finish_unpause_bridge: string;
+            update_bridge_constrains: {
+                parameters: string;
+            };
+        };
+    };
+    /**
+     * Lookup437: joystream_node_runtime::OriginCaller
      **/
     JoystreamNodeRuntimeOriginCaller: {
         _enum: {
@@ -3871,7 +3878,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup437: frame_support::dispatch::RawOrigin<sp_core::crypto::AccountId32>
+     * Lookup438: frame_support::dispatch::RawOrigin<sp_core::crypto::AccountId32>
      **/
     FrameSupportDispatchRawOrigin: {
         _enum: {
@@ -3881,17 +3888,17 @@ declare const _default: {
         };
     };
     /**
-     * Lookup438: sp_core::Void
+     * Lookup439: sp_core::Void
      **/
     SpCoreVoid: string;
     /**
-     * Lookup439: pallet_utility::pallet::Error<T>
+     * Lookup440: pallet_utility::pallet::Error<T>
      **/
     PalletUtilityError: {
         _enum: string[];
     };
     /**
-     * Lookup446: sp_consensus_babe::digests::PreDigest
+     * Lookup447: sp_consensus_babe::digests::PreDigest
      **/
     SpConsensusBabeDigestsPreDigest: {
         _enum: {
@@ -3902,7 +3909,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup447: sp_consensus_babe::digests::PrimaryPreDigest
+     * Lookup448: sp_consensus_babe::digests::PrimaryPreDigest
      **/
     SpConsensusBabeDigestsPrimaryPreDigest: {
         authorityIndex: string;
@@ -3911,14 +3918,14 @@ declare const _default: {
         vrfProof: string;
     };
     /**
-     * Lookup448: sp_consensus_babe::digests::SecondaryPlainPreDigest
+     * Lookup449: sp_consensus_babe::digests::SecondaryPlainPreDigest
      **/
     SpConsensusBabeDigestsSecondaryPlainPreDigest: {
         authorityIndex: string;
         slot: string;
     };
     /**
-     * Lookup449: sp_consensus_babe::digests::SecondaryVRFPreDigest
+     * Lookup450: sp_consensus_babe::digests::SecondaryVRFPreDigest
      **/
     SpConsensusBabeDigestsSecondaryVRFPreDigest: {
         authorityIndex: string;
@@ -3927,20 +3934,20 @@ declare const _default: {
         vrfProof: string;
     };
     /**
-     * Lookup451: sp_consensus_babe::BabeEpochConfiguration
+     * Lookup452: sp_consensus_babe::BabeEpochConfiguration
      **/
     SpConsensusBabeBabeEpochConfiguration: {
         c: string;
         allowedSlots: string;
     };
     /**
-     * Lookup453: pallet_babe::pallet::Error<T>
+     * Lookup454: pallet_babe::pallet::Error<T>
      **/
     PalletBabeError: {
         _enum: string[];
     };
     /**
-     * Lookup455: pallet_balances::BalanceLock<Balance>
+     * Lookup456: pallet_balances::BalanceLock<Balance>
      **/
     PalletBalancesBalanceLock: {
         id: string;
@@ -3948,32 +3955,32 @@ declare const _default: {
         reasons: string;
     };
     /**
-     * Lookup456: pallet_balances::Reasons
+     * Lookup457: pallet_balances::Reasons
      **/
     PalletBalancesReasons: {
         _enum: string[];
     };
     /**
-     * Lookup459: pallet_balances::ReserveData<ReserveIdentifier, Balance>
+     * Lookup460: pallet_balances::ReserveData<ReserveIdentifier, Balance>
      **/
     PalletBalancesReserveData: {
         id: string;
         amount: string;
     };
     /**
-     * Lookup461: pallet_balances::pallet::Error<T, I>
+     * Lookup462: pallet_balances::pallet::Error<T, I>
      **/
     PalletBalancesError: {
         _enum: string[];
     };
     /**
-     * Lookup463: pallet_transaction_payment::Releases
+     * Lookup464: pallet_transaction_payment::Releases
      **/
     PalletTransactionPaymentReleases: {
         _enum: string[];
     };
     /**
-     * Lookup464: pallet_election_provider_multi_phase::ReadySolution<AccountId, MaxWinners>
+     * Lookup465: pallet_election_provider_multi_phase::ReadySolution<AccountId, MaxWinners>
      **/
     PalletElectionProviderMultiPhaseReadySolution: {
         supports: string;
@@ -3981,14 +3988,14 @@ declare const _default: {
         compute: string;
     };
     /**
-     * Lookup466: pallet_election_provider_multi_phase::RoundSnapshot<sp_core::crypto::AccountId32, DataProvider>
+     * Lookup467: pallet_election_provider_multi_phase::RoundSnapshot<sp_core::crypto::AccountId32, DataProvider>
      **/
     PalletElectionProviderMultiPhaseRoundSnapshot: {
         voters: string;
         targets: string;
     };
     /**
-     * Lookup473: pallet_election_provider_multi_phase::signed::SignedSubmission<sp_core::crypto::AccountId32, Balance, joystream_node_runtime::NposSolution16>
+     * Lookup474: pallet_election_provider_multi_phase::signed::SignedSubmission<sp_core::crypto::AccountId32, Balance, joystream_node_runtime::NposSolution16>
      **/
     PalletElectionProviderMultiPhaseSignedSignedSubmission: {
         who: string;
@@ -3997,13 +4004,13 @@ declare const _default: {
         callFee: string;
     };
     /**
-     * Lookup474: pallet_election_provider_multi_phase::pallet::Error<T>
+     * Lookup475: pallet_election_provider_multi_phase::pallet::Error<T>
      **/
     PalletElectionProviderMultiPhaseError: {
         _enum: string[];
     };
     /**
-     * Lookup475: pallet_staking::StakingLedger<T>
+     * Lookup476: pallet_staking::StakingLedger<T>
      **/
     PalletStakingStakingLedger: {
         stash: string;
@@ -4013,14 +4020,14 @@ declare const _default: {
         claimedRewards: string;
     };
     /**
-     * Lookup477: pallet_staking::UnlockChunk<Balance>
+     * Lookup478: pallet_staking::UnlockChunk<Balance>
      **/
     PalletStakingUnlockChunk: {
         value: string;
         era: string;
     };
     /**
-     * Lookup480: pallet_staking::Nominations<T>
+     * Lookup481: pallet_staking::Nominations<T>
      **/
     PalletStakingNominations: {
         targets: string;
@@ -4028,21 +4035,21 @@ declare const _default: {
         suppressed: string;
     };
     /**
-     * Lookup481: pallet_staking::ActiveEraInfo
+     * Lookup482: pallet_staking::ActiveEraInfo
      **/
     PalletStakingActiveEraInfo: {
         index: string;
         start: string;
     };
     /**
-     * Lookup483: pallet_staking::EraRewardPoints<sp_core::crypto::AccountId32>
+     * Lookup484: pallet_staking::EraRewardPoints<sp_core::crypto::AccountId32>
      **/
     PalletStakingEraRewardPoints: {
         total: string;
         individual: string;
     };
     /**
-     * Lookup488: pallet_staking::UnappliedSlash<sp_core::crypto::AccountId32, Balance>
+     * Lookup489: pallet_staking::UnappliedSlash<sp_core::crypto::AccountId32, Balance>
      **/
     PalletStakingUnappliedSlash: {
         validator: string;
@@ -4052,7 +4059,7 @@ declare const _default: {
         payout: string;
     };
     /**
-     * Lookup490: pallet_staking::slashing::SlashingSpans
+     * Lookup491: pallet_staking::slashing::SlashingSpans
      **/
     PalletStakingSlashingSlashingSpans: {
         spanIndex: string;
@@ -4061,30 +4068,30 @@ declare const _default: {
         prior: string;
     };
     /**
-     * Lookup491: pallet_staking::slashing::SpanRecord<Balance>
+     * Lookup492: pallet_staking::slashing::SpanRecord<Balance>
      **/
     PalletStakingSlashingSpanRecord: {
         slashed: string;
         paidOut: string;
     };
     /**
-     * Lookup494: pallet_staking::pallet::pallet::Error<T>
+     * Lookup495: pallet_staking::pallet::pallet::Error<T>
      **/
     PalletStakingPalletError: {
         _enum: string[];
     };
     /**
-     * Lookup498: sp_core::crypto::KeyTypeId
+     * Lookup499: sp_core::crypto::KeyTypeId
      **/
     SpCoreCryptoKeyTypeId: string;
     /**
-     * Lookup499: pallet_session::pallet::Error<T>
+     * Lookup500: pallet_session::pallet::Error<T>
      **/
     PalletSessionError: {
         _enum: string[];
     };
     /**
-     * Lookup501: pallet_grandpa::StoredState<N>
+     * Lookup502: pallet_grandpa::StoredState<N>
      **/
     PalletGrandpaStoredState: {
         _enum: {
@@ -4101,7 +4108,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup502: pallet_grandpa::StoredPendingChange<N, Limit>
+     * Lookup503: pallet_grandpa::StoredPendingChange<N, Limit>
      **/
     PalletGrandpaStoredPendingChange: {
         scheduledAt: string;
@@ -4110,33 +4117,33 @@ declare const _default: {
         forced: string;
     };
     /**
-     * Lookup504: pallet_grandpa::pallet::Error<T>
+     * Lookup505: pallet_grandpa::pallet::Error<T>
      **/
     PalletGrandpaError: {
         _enum: string[];
     };
     /**
-     * Lookup510: pallet_im_online::BoundedOpaqueNetworkState<PeerIdEncodingLimit, MultiAddrEncodingLimit, AddressesLimit>
+     * Lookup511: pallet_im_online::BoundedOpaqueNetworkState<PeerIdEncodingLimit, MultiAddrEncodingLimit, AddressesLimit>
      **/
     PalletImOnlineBoundedOpaqueNetworkState: {
         peerId: string;
         externalAddresses: string;
     };
     /**
-     * Lookup514: pallet_im_online::pallet::Error<T>
+     * Lookup515: pallet_im_online::pallet::Error<T>
      **/
     PalletImOnlineError: {
         _enum: string[];
     };
     /**
-     * Lookup515: sp_staking::offence::OffenceDetails<sp_core::crypto::AccountId32, Offender>
+     * Lookup516: sp_staking::offence::OffenceDetails<sp_core::crypto::AccountId32, Offender>
      **/
     SpStakingOffenceOffenceDetails: {
         offender: string;
         reporters: string;
     };
     /**
-     * Lookup518: pallet_bags_list::list::Node<T, I>
+     * Lookup519: pallet_bags_list::list::Node<T, I>
      **/
     PalletBagsListListNode: {
         id: string;
@@ -4146,14 +4153,14 @@ declare const _default: {
         score: string;
     };
     /**
-     * Lookup519: pallet_bags_list::list::Bag<T, I>
+     * Lookup520: pallet_bags_list::list::Bag<T, I>
      **/
     PalletBagsListListBag: {
         head: string;
         tail: string;
     };
     /**
-     * Lookup520: pallet_bags_list::pallet::Error<T, I>
+     * Lookup521: pallet_bags_list::pallet::Error<T, I>
      **/
     PalletBagsListError: {
         _enum: {
@@ -4161,25 +4168,25 @@ declare const _default: {
         };
     };
     /**
-     * Lookup521: pallet_bags_list::list::ListError
+     * Lookup522: pallet_bags_list::list::ListError
      **/
     PalletBagsListListListError: {
         _enum: string[];
     };
     /**
-     * Lookup524: pallet_vesting::Releases
+     * Lookup525: pallet_vesting::Releases
      **/
     PalletVestingReleases: {
         _enum: string[];
     };
     /**
-     * Lookup525: pallet_vesting::pallet::Error<T>
+     * Lookup526: pallet_vesting::pallet::Error<T>
      **/
     PalletVestingError: {
         _enum: string[];
     };
     /**
-     * Lookup527: pallet_multisig::Multisig<BlockNumber, Balance, sp_core::crypto::AccountId32, MaxApprovals>
+     * Lookup528: pallet_multisig::Multisig<BlockNumber, Balance, sp_core::crypto::AccountId32, MaxApprovals>
      **/
     PalletMultisigMultisig: {
         when: string;
@@ -4188,20 +4195,20 @@ declare const _default: {
         approvals: string;
     };
     /**
-     * Lookup529: pallet_multisig::pallet::Error<T>
+     * Lookup530: pallet_multisig::pallet::Error<T>
      **/
     PalletMultisigError: {
         _enum: string[];
     };
     /**
-     * Lookup530: pallet_council::CouncilStageUpdate<BlockNumber>
+     * Lookup531: pallet_council::CouncilStageUpdate<BlockNumber>
      **/
     PalletCouncilCouncilStageUpdate: {
         stage: string;
         changedAt: string;
     };
     /**
-     * Lookup531: pallet_council::CouncilStage<BlockNumber>
+     * Lookup532: pallet_council::CouncilStage<BlockNumber>
      **/
     PalletCouncilCouncilStage: {
         _enum: {
@@ -4211,26 +4218,26 @@ declare const _default: {
         };
     };
     /**
-     * Lookup532: pallet_council::CouncilStageAnnouncing<BlockNumber>
+     * Lookup533: pallet_council::CouncilStageAnnouncing<BlockNumber>
      **/
     PalletCouncilCouncilStageAnnouncing: {
         candidatesCount: string;
         endsAt: string;
     };
     /**
-     * Lookup533: pallet_council::CouncilStageElection
+     * Lookup534: pallet_council::CouncilStageElection
      **/
     PalletCouncilCouncilStageElection: {
         candidatesCount: string;
     };
     /**
-     * Lookup534: pallet_council::CouncilStageIdle<BlockNumber>
+     * Lookup535: pallet_council::CouncilStageIdle<BlockNumber>
      **/
     PalletCouncilCouncilStageIdle: {
         endsAt: string;
     };
     /**
-     * Lookup536: pallet_council::CouncilMember<sp_core::crypto::AccountId32, MemberId, Balance, BlockNumber>
+     * Lookup537: pallet_council::CouncilMember<sp_core::crypto::AccountId32, MemberId, Balance, BlockNumber>
      **/
     PalletCouncilCouncilMember: {
         stakingAccountId: string;
@@ -4241,7 +4248,7 @@ declare const _default: {
         unpaidReward: string;
     };
     /**
-     * Lookup538: pallet_council::Candidate<sp_core::crypto::AccountId32, Balance, primitive_types::H256, VotePower>
+     * Lookup539: pallet_council::Candidate<sp_core::crypto::AccountId32, Balance, primitive_types::H256, VotePower>
      **/
     PalletCouncilCandidate: {
         stakingAccountId: string;
@@ -4252,13 +4259,13 @@ declare const _default: {
         noteHash: string;
     };
     /**
-     * Lookup539: pallet_council::Error<T>
+     * Lookup540: pallet_council::Error<T>
      **/
     PalletCouncilError: {
         _enum: string[];
     };
     /**
-     * Lookup540: pallet_referendum::ReferendumStage<BlockNumber, bounded_collections::weak_bounded_vec::WeakBoundedVec<pallet_referendum::OptionResult<MemberId, VotePower>, S>>
+     * Lookup541: pallet_referendum::ReferendumStage<BlockNumber, bounded_collections::weak_bounded_vec::WeakBoundedVec<pallet_referendum::OptionResult<MemberId, VotePower>, S>>
      **/
     PalletReferendumReferendumStage: {
         _enum: {
@@ -4268,7 +4275,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup542: pallet_referendum::ReferendumStageVoting<BlockNumber>
+     * Lookup543: pallet_referendum::ReferendumStageVoting<BlockNumber>
      **/
     PalletReferendumReferendumStageVoting: {
         started: string;
@@ -4277,7 +4284,7 @@ declare const _default: {
         endsAt: string;
     };
     /**
-     * Lookup543: pallet_referendum::ReferendumStageRevealing<BlockNumber, bounded_collections::weak_bounded_vec::WeakBoundedVec<pallet_referendum::OptionResult<MemberId, VotePower>, S>>
+     * Lookup544: pallet_referendum::ReferendumStageRevealing<BlockNumber, bounded_collections::weak_bounded_vec::WeakBoundedVec<pallet_referendum::OptionResult<MemberId, VotePower>, S>>
      **/
     PalletReferendumReferendumStageRevealing: {
         started: string;
@@ -4287,7 +4294,7 @@ declare const _default: {
         endsAt: string;
     };
     /**
-     * Lookup544: pallet_referendum::CastVote<primitive_types::H256, Currency, MemberId>
+     * Lookup545: pallet_referendum::CastVote<primitive_types::H256, Currency, MemberId>
      **/
     PalletReferendumCastVote: {
         commitment: string;
@@ -4296,13 +4303,13 @@ declare const _default: {
         voteFor: string;
     };
     /**
-     * Lookup545: pallet_referendum::Error<T, I>
+     * Lookup546: pallet_referendum::Error<T, I>
      **/
     PalletReferendumError: {
         _enum: string[];
     };
     /**
-     * Lookup546: pallet_membership::MembershipObject<sp_core::crypto::AccountId32, primitive_types::H256>
+     * Lookup547: pallet_membership::MembershipObject<sp_core::crypto::AccountId32, primitive_types::H256>
      **/
     PalletMembershipMembershipObject: {
         handleHash: string;
@@ -4312,20 +4319,20 @@ declare const _default: {
         invites: string;
     };
     /**
-     * Lookup547: pallet_membership::StakingAccountMemberBinding<MemberId>
+     * Lookup548: pallet_membership::StakingAccountMemberBinding<MemberId>
      **/
     PalletMembershipStakingAccountMemberBinding: {
         memberId: string;
         confirmed: string;
     };
     /**
-     * Lookup548: pallet_membership::Error<T>
+     * Lookup549: pallet_membership::Error<T>
      **/
     PalletMembershipError: {
         _enum: string[];
     };
     /**
-     * Lookup549: pallet_forum::Category<CategoryId, primitive_types::H256, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
+     * Lookup550: pallet_forum::Category<CategoryId, primitive_types::H256, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
      **/
     PalletForumCategory: {
         titleHash: string;
@@ -4338,7 +4345,7 @@ declare const _default: {
         stickyThreadIds: string;
     };
     /**
-     * Lookup551: pallet_forum::Thread<ForumUserId, CategoryId, pallet_common::bloat_bond::RepayableBloatBond<sp_core::crypto::AccountId32, Balance>>
+     * Lookup552: pallet_forum::Thread<ForumUserId, CategoryId, pallet_common::bloat_bond::RepayableBloatBond<sp_core::crypto::AccountId32, Balance>>
      **/
     PalletForumThread: {
         categoryId: string;
@@ -4347,7 +4354,7 @@ declare const _default: {
         numberOfEditablePosts: string;
     };
     /**
-     * Lookup552: pallet_forum::Post<ForumUserId, ThreadId, primitive_types::H256, BlockNumber, pallet_common::bloat_bond::RepayableBloatBond<sp_core::crypto::AccountId32, Balance>>
+     * Lookup553: pallet_forum::Post<ForumUserId, ThreadId, primitive_types::H256, BlockNumber, pallet_common::bloat_bond::RepayableBloatBond<sp_core::crypto::AccountId32, Balance>>
      **/
     PalletForumPost: {
         threadId: string;
@@ -4357,19 +4364,19 @@ declare const _default: {
         lastEdited: string;
     };
     /**
-     * Lookup553: pallet_forum::Error<T>
+     * Lookup554: pallet_forum::Error<T>
      **/
     PalletForumError: {
         _enum: string[];
     };
     /**
-     * Lookup554: pallet_constitution::ConstitutionInfo<primitive_types::H256>
+     * Lookup555: pallet_constitution::ConstitutionInfo<primitive_types::H256>
      **/
     PalletConstitutionConstitutionInfo: {
         textHash: string;
     };
     /**
-     * Lookup555: pallet_bounty::BountyRecord<Balance, BlockNumber, MemberId, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
+     * Lookup556: pallet_bounty::BountyRecord<Balance, BlockNumber, MemberId, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
      **/
     PalletBountyBountyRecord: {
         creationParams: string;
@@ -4379,7 +4386,7 @@ declare const _default: {
         hasUnpaidOracleReward: string;
     };
     /**
-     * Lookup557: pallet_bounty::BountyParameters<Balance, BlockNumber, MemberId, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
+     * Lookup558: pallet_bounty::BountyParameters<Balance, BlockNumber, MemberId, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
      **/
     PalletBountyBountyParametersBoundedBTreeSet: {
         oracle: string;
@@ -4391,7 +4398,7 @@ declare const _default: {
         fundingType: string;
     };
     /**
-     * Lookup558: pallet_bounty::AssuranceContractType<bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
+     * Lookup559: pallet_bounty::AssuranceContractType<bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
      **/
     PalletBountyAssuranceContractTypeBoundedBTreeSet: {
         _enum: {
@@ -4400,7 +4407,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup559: pallet_bounty::BountyMilestone<BlockNumber>
+     * Lookup560: pallet_bounty::BountyMilestone<BlockNumber>
      **/
     PalletBountyBountyMilestone: {
         _enum: {
@@ -4417,14 +4424,14 @@ declare const _default: {
         };
     };
     /**
-     * Lookup561: pallet_bounty::Contribution<T>
+     * Lookup562: pallet_bounty::Contribution<T>
      **/
     PalletBountyContribution: {
         amount: string;
         funderStateBloatBondAmount: string;
     };
     /**
-     * Lookup562: pallet_bounty::EntryRecord<sp_core::crypto::AccountId32, MemberId, BlockNumber>
+     * Lookup563: pallet_bounty::EntryRecord<sp_core::crypto::AccountId32, MemberId, BlockNumber>
      **/
     PalletBountyEntryRecord: {
         memberId: string;
@@ -4433,19 +4440,19 @@ declare const _default: {
         workSubmitted: string;
     };
     /**
-     * Lookup563: pallet_bounty::Error<T>
+     * Lookup564: pallet_bounty::Error<T>
      **/
     PalletBountyError: {
         _enum: string[];
     };
     /**
-     * Lookup564: pallet_joystream_utility::Error<T>
+     * Lookup565: pallet_joystream_utility::Error<T>
      **/
     PalletJoystreamUtilityError: {
         _enum: string[];
     };
     /**
-     * Lookup565: pallet_content::types::VideoRecord<ChannelId, pallet_content::nft::types::OwnedNft<pallet_content::nft::types::TransactionalStatusRecord<MemberId, Balance, pallet_content::nft::types::EnglishAuctionRecord<BlockNumber, Balance, MemberId, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>, pallet_content::nft::types::OpenAuctionRecord<BlockNumber, AuctionId, Balance, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>>, MemberId, AuctionId>, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>, pallet_common::bloat_bond::RepayableBloatBond<sp_core::crypto::AccountId32, Balance>>
+     * Lookup566: pallet_content::types::VideoRecord<ChannelId, pallet_content::nft::types::OwnedNft<pallet_content::nft::types::TransactionalStatusRecord<MemberId, Balance, pallet_content::nft::types::EnglishAuctionRecord<BlockNumber, Balance, MemberId, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>, pallet_content::nft::types::OpenAuctionRecord<BlockNumber, AuctionId, Balance, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>>, MemberId, AuctionId>, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>, pallet_common::bloat_bond::RepayableBloatBond<sp_core::crypto::AccountId32, Balance>>
      **/
     PalletContentVideoRecord: {
         inChannel: string;
@@ -4454,7 +4461,7 @@ declare const _default: {
         videoStateBloatBond: string;
     };
     /**
-     * Lookup566: pallet_content::nft::types::OwnedNft<pallet_content::nft::types::TransactionalStatusRecord<MemberId, Balance, pallet_content::nft::types::EnglishAuctionRecord<BlockNumber, Balance, MemberId, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>, pallet_content::nft::types::OpenAuctionRecord<BlockNumber, AuctionId, Balance, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>>, MemberId, AuctionId>
+     * Lookup567: pallet_content::nft::types::OwnedNft<pallet_content::nft::types::TransactionalStatusRecord<MemberId, Balance, pallet_content::nft::types::EnglishAuctionRecord<BlockNumber, Balance, MemberId, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>, pallet_content::nft::types::OpenAuctionRecord<BlockNumber, AuctionId, Balance, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>>, MemberId, AuctionId>
      **/
     PalletContentNftTypesOwnedNft: {
         owner: string;
@@ -4463,7 +4470,7 @@ declare const _default: {
         openAuctionsNonce: string;
     };
     /**
-     * Lookup567: pallet_content::nft::types::TransactionalStatusRecord<MemberId, Balance, pallet_content::nft::types::EnglishAuctionRecord<BlockNumber, Balance, MemberId, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>, pallet_content::nft::types::OpenAuctionRecord<BlockNumber, AuctionId, Balance, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>>
+     * Lookup568: pallet_content::nft::types::TransactionalStatusRecord<MemberId, Balance, pallet_content::nft::types::EnglishAuctionRecord<BlockNumber, Balance, MemberId, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>, pallet_content::nft::types::OpenAuctionRecord<BlockNumber, AuctionId, Balance, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>>
      **/
     PalletContentNftTypesTransactionalStatusRecord: {
         _enum: {
@@ -4475,7 +4482,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup568: pallet_content::nft::types::EnglishAuctionRecord<BlockNumber, Balance, MemberId, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
+     * Lookup569: pallet_content::nft::types::EnglishAuctionRecord<BlockNumber, Balance, MemberId, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
      **/
     PalletContentNftTypesEnglishAuctionRecord: {
         startingPrice: string;
@@ -4488,14 +4495,14 @@ declare const _default: {
         topBid: string;
     };
     /**
-     * Lookup571: pallet_content::nft::types::EnglishAuctionBid<Balance, MemberId>
+     * Lookup572: pallet_content::nft::types::EnglishAuctionBid<Balance, MemberId>
      **/
     PalletContentNftTypesEnglishAuctionBid: {
         amount: string;
         bidderId: string;
     };
     /**
-     * Lookup572: pallet_content::nft::types::OpenAuctionRecord<BlockNumber, AuctionId, Balance, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
+     * Lookup573: pallet_content::nft::types::OpenAuctionRecord<BlockNumber, AuctionId, Balance, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
      **/
     PalletContentNftTypesOpenAuctionRecord: {
         startingPrice: string;
@@ -4506,7 +4513,7 @@ declare const _default: {
         start: string;
     };
     /**
-     * Lookup573: pallet_content::nft::types::NftOwner<MemberId>
+     * Lookup574: pallet_content::nft::types::NftOwner<MemberId>
      **/
     PalletContentNftTypesNftOwner: {
         _enum: {
@@ -4515,7 +4522,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup576: pallet_content::permissions::curator_group::CuratorGroupRecord<bounded_collections::bounded_btree_map::BoundedBTreeMap<K, bounded_collections::bounded_btree_set::BoundedBTreeSet<pallet_content::types::iterable_enums::ChannelActionPermission, S>, S>, bounded_collections::bounded_btree_map::BoundedBTreeMap<K, bounded_collections::bounded_btree_set::BoundedBTreeSet<pallet_content::permissions::curator_group::iterable_enums::ContentModerationAction, S>, S>>
+     * Lookup577: pallet_content::permissions::curator_group::CuratorGroupRecord<bounded_collections::bounded_btree_map::BoundedBTreeMap<K, bounded_collections::bounded_btree_set::BoundedBTreeSet<pallet_content::types::iterable_enums::ChannelActionPermission, S>, S>, bounded_collections::bounded_btree_map::BoundedBTreeMap<K, bounded_collections::bounded_btree_set::BoundedBTreeSet<pallet_content::permissions::curator_group::iterable_enums::ContentModerationAction, S>, S>>
      **/
     PalletContentPermissionsCuratorGroupCuratorGroupRecord: {
         curators: string;
@@ -4523,7 +4530,7 @@ declare const _default: {
         permissionsByLevel: string;
     };
     /**
-     * Lookup583: pallet_content::nft::types::OpenAuctionBidRecord<Balance, BlockNumber, AuctionId>
+     * Lookup584: pallet_content::nft::types::OpenAuctionBidRecord<Balance, BlockNumber, AuctionId>
      **/
     PalletContentNftTypesOpenAuctionBidRecord: {
         amount: string;
@@ -4531,13 +4538,13 @@ declare const _default: {
         auctionId: string;
     };
     /**
-     * Lookup584: pallet_content::errors::Error<T>
+     * Lookup585: pallet_content::errors::Error<T>
      **/
     PalletContentErrorsError: {
         _enum: string[];
     };
     /**
-     * Lookup585: pallet_storage::BagRecord<bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>, bounded_collections::bounded_btree_set::BoundedBTreeSet<pallet_storage::DistributionBucketIdRecord<DistributionBucketFamilyId, DistributionBucketIndex>, S>>
+     * Lookup586: pallet_storage::BagRecord<bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>, bounded_collections::bounded_btree_set::BoundedBTreeSet<pallet_storage::DistributionBucketIdRecord<DistributionBucketFamilyId, DistributionBucketIndex>, S>>
      **/
     PalletStorageBagRecord: {
         storedBy: string;
@@ -4546,7 +4553,7 @@ declare const _default: {
         objectsNumber: string;
     };
     /**
-     * Lookup588: pallet_storage::StorageBucketRecord<WorkerId, sp_core::crypto::AccountId32>
+     * Lookup589: pallet_storage::StorageBucketRecord<WorkerId, sp_core::crypto::AccountId32>
      **/
     PalletStorageStorageBucketRecord: {
         operatorStatus: string;
@@ -4555,7 +4562,7 @@ declare const _default: {
         assignedBags: string;
     };
     /**
-     * Lookup589: pallet_storage::StorageBucketOperatorStatus<WorkerId, sp_core::crypto::AccountId32>
+     * Lookup590: pallet_storage::StorageBucketOperatorStatus<WorkerId, sp_core::crypto::AccountId32>
      **/
     PalletStorageStorageBucketOperatorStatus: {
         _enum: {
@@ -4565,14 +4572,14 @@ declare const _default: {
         };
     };
     /**
-     * Lookup591: pallet_storage::DynamicBagCreationPolicy<bounded_collections::bounded_btree_map::BoundedBTreeMap<K, V, S>>
+     * Lookup592: pallet_storage::DynamicBagCreationPolicy<bounded_collections::bounded_btree_map::BoundedBTreeMap<K, V, S>>
      **/
     PalletStorageDynamicBagCreationPolicy: {
         numberOfStorageBuckets: string;
         families: string;
     };
     /**
-     * Lookup594: pallet_storage::DataObject<pallet_common::bloat_bond::RepayableBloatBond<sp_core::crypto::AccountId32, Balance>>
+     * Lookup595: pallet_storage::DataObject<pallet_common::bloat_bond::RepayableBloatBond<sp_core::crypto::AccountId32, Balance>>
      **/
     PalletStorageDataObject: {
         _alias: {
@@ -4584,13 +4591,13 @@ declare const _default: {
         ipfsContentId: string;
     };
     /**
-     * Lookup595: pallet_storage::DistributionBucketFamilyRecord<DistributionBucketIndex>
+     * Lookup596: pallet_storage::DistributionBucketFamilyRecord<DistributionBucketIndex>
      **/
     PalletStorageDistributionBucketFamilyRecord: {
         nextDistributionBucketIndex: string;
     };
     /**
-     * Lookup596: pallet_storage::DistributionBucketRecord<bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
+     * Lookup597: pallet_storage::DistributionBucketRecord<bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
      **/
     PalletStorageDistributionBucketRecord: {
         acceptingNewBags: string;
@@ -4600,13 +4607,13 @@ declare const _default: {
         assignedBags: string;
     };
     /**
-     * Lookup599: pallet_storage::Error<T>
+     * Lookup600: pallet_storage::Error<T>
      **/
     PalletStorageError: {
         _enum: string[];
     };
     /**
-     * Lookup600: pallet_project_token::types::AccountData<Balance, pallet_project_token::types::StakingStatus<Balance>, pallet_common::bloat_bond::RepayableBloatBond<sp_core::crypto::AccountId32, Balance>, bounded_collections::bounded_btree_map::BoundedBTreeMap<pallet_project_token::types::VestingSource, pallet_project_token::types::VestingSchedule<BlockNumber, Balance>, S>>
+     * Lookup601: pallet_project_token::types::AccountData<Balance, pallet_project_token::types::StakingStatus<Balance>, pallet_common::bloat_bond::RepayableBloatBond<sp_core::crypto::AccountId32, Balance>, bounded_collections::bounded_btree_map::BoundedBTreeMap<pallet_project_token::types::VestingSource, pallet_project_token::types::VestingSchedule<BlockNumber, Balance>, S>>
      **/
     PalletProjectTokenAccountData: {
         vestingSchedules: string;
@@ -4617,14 +4624,14 @@ declare const _default: {
         lastSaleTotalPurchasedAmount: string;
     };
     /**
-     * Lookup601: pallet_project_token::types::StakingStatus<Balance>
+     * Lookup602: pallet_project_token::types::StakingStatus<Balance>
      **/
     PalletProjectTokenStakingStatus: {
         splitId: string;
         amount: string;
     };
     /**
-     * Lookup603: pallet_project_token::types::VestingSchedule<BlockNumber, Balance>
+     * Lookup604: pallet_project_token::types::VestingSchedule<BlockNumber, Balance>
      **/
     PalletProjectTokenVestingSchedule: {
         linearVestingStartBlock: string;
@@ -4634,7 +4641,7 @@ declare const _default: {
         burnedAmount: string;
     };
     /**
-     * Lookup610: pallet_project_token::types::TokenData<Balance, primitive_types::H256, BlockNumber, pallet_project_token::types::TokenSale<JoyBalance, Balance, BlockNumber, pallet_project_token::types::VestingScheduleParams<BlockNumber>, MemberId, sp_core::crypto::AccountId32>, pallet_project_token::types::RevenueSplitState<JoyBalance, BlockNumber>>
+     * Lookup611: pallet_project_token::types::TokenData<Balance, primitive_types::H256, BlockNumber, pallet_project_token::types::TokenSale<JoyBalance, Balance, BlockNumber, pallet_project_token::types::VestingScheduleParams<BlockNumber>, MemberId, sp_core::crypto::AccountId32>, pallet_project_token::types::RevenueSplitState<JoyBalance, BlockNumber>>
      **/
     PalletProjectTokenTokenData: {
         totalSupply: string;
@@ -4650,7 +4657,7 @@ declare const _default: {
         ammCurve: string;
     };
     /**
-     * Lookup611: pallet_project_token::types::RevenueSplitState<JoyBalance, BlockNumber>
+     * Lookup612: pallet_project_token::types::RevenueSplitState<JoyBalance, BlockNumber>
      **/
     PalletProjectTokenRevenueSplitState: {
         _enum: {
@@ -4659,7 +4666,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup612: pallet_project_token::types::RevenueSplitInfo<JoyBalance, BlockNumber>
+     * Lookup613: pallet_project_token::types::RevenueSplitInfo<JoyBalance, BlockNumber>
      **/
     PalletProjectTokenRevenueSplitInfo: {
         allocation: string;
@@ -4667,14 +4674,14 @@ declare const _default: {
         dividendsClaimed: string;
     };
     /**
-     * Lookup613: pallet_project_token::types::Timeline<BlockNumber>
+     * Lookup614: pallet_project_token::types::Timeline<BlockNumber>
      **/
     PalletProjectTokenTimeline: {
         start: string;
         duration: string;
     };
     /**
-     * Lookup615: pallet_project_token::types::PatronageData<Balance, BlockNumber>
+     * Lookup616: pallet_project_token::types::PatronageData<Balance, BlockNumber>
      **/
     PalletProjectTokenPatronageData: {
         rate: string;
@@ -4682,25 +4689,13 @@ declare const _default: {
         lastUnclaimedPatronageTallyBlock: string;
     };
     /**
-     * Lookup617: pallet_project_token::errors::Error<T>
+     * Lookup618: pallet_project_token::errors::Error<T>
      **/
     PalletProjectTokenErrorsError: {
         _enum: string[];
     };
     /**
-     * Lookup618: pallet_argo_bridge::types::BridgeStatus<BlockNumber>
-     **/
-    PalletArgoBridgeBridgeStatus: {
-        _enum: {
-            Active: string;
-            Paused: string;
-            Thawn: {
-                thawnEndedAt: string;
-            };
-        };
-    };
-    /**
-     * Lookup620: pallet_proposals_engine::types::Proposal<BlockNumber, ProposerId, Balance, sp_core::crypto::AccountId32>
+     * Lookup619: pallet_proposals_engine::types::Proposal<BlockNumber, ProposerId, Balance, sp_core::crypto::AccountId32>
      **/
     PalletProposalsEngineProposal: {
         parameters: string;
@@ -4713,7 +4708,7 @@ declare const _default: {
         stakingAccountId: string;
     };
     /**
-     * Lookup621: pallet_proposals_engine::types::ProposalParameters<BlockNumber, Balance>
+     * Lookup620: pallet_proposals_engine::types::ProposalParameters<BlockNumber, Balance>
      **/
     PalletProposalsEngineProposalParameters: {
         votingPeriod: string;
@@ -4726,7 +4721,7 @@ declare const _default: {
         constitutionality: string;
     };
     /**
-     * Lookup622: pallet_proposals_engine::types::VotingResults
+     * Lookup621: pallet_proposals_engine::types::VotingResults
      **/
     PalletProposalsEngineVotingResults: {
         abstentions: string;
@@ -4735,13 +4730,13 @@ declare const _default: {
         slashes: string;
     };
     /**
-     * Lookup625: pallet_proposals_engine::Error<T>
+     * Lookup624: pallet_proposals_engine::Error<T>
      **/
     PalletProposalsEngineError: {
         _enum: string[];
     };
     /**
-     * Lookup626: pallet_proposals_discussion::types::DiscussionThread<MemberId, BlockNumber, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
+     * Lookup625: pallet_proposals_discussion::types::DiscussionThread<MemberId, BlockNumber, bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
      **/
     PalletProposalsDiscussionDiscussionThread: {
         activatedAt: string;
@@ -4749,7 +4744,7 @@ declare const _default: {
         mode: string;
     };
     /**
-     * Lookup628: pallet_proposals_discussion::types::ThreadMode<bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
+     * Lookup627: pallet_proposals_discussion::types::ThreadMode<bounded_collections::bounded_btree_set::BoundedBTreeSet<T, S>>
      **/
     PalletProposalsDiscussionThreadModeBoundedBTreeSet: {
         _enum: {
@@ -4758,7 +4753,7 @@ declare const _default: {
         };
     };
     /**
-     * Lookup629: pallet_proposals_discussion::types::DiscussionPost<MemberId, BlockNumber, pallet_common::bloat_bond::RepayableBloatBond<sp_core::crypto::AccountId32, Balance>>
+     * Lookup628: pallet_proposals_discussion::types::DiscussionPost<MemberId, BlockNumber, pallet_common::bloat_bond::RepayableBloatBond<sp_core::crypto::AccountId32, Balance>>
      **/
     PalletProposalsDiscussionDiscussionPost: {
         authorId: string;
@@ -4766,19 +4761,19 @@ declare const _default: {
         lastEdited: string;
     };
     /**
-     * Lookup630: pallet_proposals_discussion::Error<T>
+     * Lookup629: pallet_proposals_discussion::Error<T>
      **/
     PalletProposalsDiscussionError: {
         _enum: string[];
     };
     /**
-     * Lookup631: pallet_proposals_codex::Error<T>
+     * Lookup630: pallet_proposals_codex::Error<T>
      **/
     PalletProposalsCodexError: {
         _enum: string[];
     };
     /**
-     * Lookup632: pallet_working_group::types::Opening<BlockNumber, Balance, primitive_types::H256>
+     * Lookup631: pallet_working_group::types::Opening<BlockNumber, Balance, primitive_types::H256>
      **/
     PalletWorkingGroupOpening: {
         openingType: string;
@@ -4789,7 +4784,7 @@ declare const _default: {
         creationStake: string;
     };
     /**
-     * Lookup633: pallet_working_group::types::JobApplication<sp_core::crypto::AccountId32, MemberId, primitive_types::H256>
+     * Lookup632: pallet_working_group::types::JobApplication<sp_core::crypto::AccountId32, MemberId, primitive_types::H256>
      **/
     PalletWorkingGroupJobApplication: {
         roleAccountId: string;
@@ -4800,7 +4795,7 @@ declare const _default: {
         openingId: string;
     };
     /**
-     * Lookup634: pallet_working_group::types::GroupWorker<sp_core::crypto::AccountId32, MemberId, BlockNumber, Balance>
+     * Lookup633: pallet_working_group::types::GroupWorker<sp_core::crypto::AccountId32, MemberId, BlockNumber, Balance>
      **/
     PalletWorkingGroupGroupWorker: {
         memberId: string;
@@ -4814,13 +4809,13 @@ declare const _default: {
         createdAt: string;
     };
     /**
-     * Lookup635: pallet_working_group::errors::Error<T, I>
+     * Lookup634: pallet_working_group::errors::Error<T, I>
      **/
     PalletWorkingGroupErrorsError: {
         _enum: string[];
     };
     /**
-     * Lookup646: pallet_proxy::ProxyDefinition<sp_core::crypto::AccountId32, joystream_node_runtime::ProxyType, BlockNumber>
+     * Lookup645: pallet_proxy::ProxyDefinition<sp_core::crypto::AccountId32, joystream_node_runtime::ProxyType, BlockNumber>
      **/
     PalletProxyProxyDefinition: {
         delegate: string;
@@ -4828,7 +4823,7 @@ declare const _default: {
         delay: string;
     };
     /**
-     * Lookup650: pallet_proxy::Announcement<sp_core::crypto::AccountId32, primitive_types::H256, BlockNumber>
+     * Lookup649: pallet_proxy::Announcement<sp_core::crypto::AccountId32, primitive_types::H256, BlockNumber>
      **/
     PalletProxyAnnouncement: {
         real: string;
@@ -4836,13 +4831,25 @@ declare const _default: {
         height: string;
     };
     /**
-     * Lookup652: pallet_proxy::pallet::Error<T>
+     * Lookup651: pallet_proxy::pallet::Error<T>
      **/
     PalletProxyError: {
         _enum: string[];
     };
     /**
-     * Lookup654: sp_runtime::MultiSignature
+     * Lookup652: pallet_argo_bridge::types::BridgeStatus<BlockNumber>
+     **/
+    PalletArgoBridgeBridgeStatus: {
+        _enum: {
+            Active: string;
+            Paused: string;
+            Thawn: {
+                thawnEndsAt: string;
+            };
+        };
+    };
+    /**
+     * Lookup655: sp_runtime::MultiSignature
      **/
     SpRuntimeMultiSignature: {
         _enum: {
@@ -4852,39 +4859,39 @@ declare const _default: {
         };
     };
     /**
-     * Lookup655: sp_core::ecdsa::Signature
+     * Lookup656: sp_core::ecdsa::Signature
      **/
     SpCoreEcdsaSignature: string;
     /**
-     * Lookup658: frame_system::extensions::check_non_zero_sender::CheckNonZeroSender<T>
+     * Lookup659: frame_system::extensions::check_non_zero_sender::CheckNonZeroSender<T>
      **/
     FrameSystemExtensionsCheckNonZeroSender: string;
     /**
-     * Lookup659: frame_system::extensions::check_spec_version::CheckSpecVersion<T>
+     * Lookup660: frame_system::extensions::check_spec_version::CheckSpecVersion<T>
      **/
     FrameSystemExtensionsCheckSpecVersion: string;
     /**
-     * Lookup660: frame_system::extensions::check_tx_version::CheckTxVersion<T>
+     * Lookup661: frame_system::extensions::check_tx_version::CheckTxVersion<T>
      **/
     FrameSystemExtensionsCheckTxVersion: string;
     /**
-     * Lookup661: frame_system::extensions::check_genesis::CheckGenesis<T>
+     * Lookup662: frame_system::extensions::check_genesis::CheckGenesis<T>
      **/
     FrameSystemExtensionsCheckGenesis: string;
     /**
-     * Lookup664: frame_system::extensions::check_nonce::CheckNonce<T>
+     * Lookup665: frame_system::extensions::check_nonce::CheckNonce<T>
      **/
     FrameSystemExtensionsCheckNonce: string;
     /**
-     * Lookup665: frame_system::extensions::check_weight::CheckWeight<T>
+     * Lookup666: frame_system::extensions::check_weight::CheckWeight<T>
      **/
     FrameSystemExtensionsCheckWeight: string;
     /**
-     * Lookup666: pallet_transaction_payment::ChargeTransactionPayment<T>
+     * Lookup667: pallet_transaction_payment::ChargeTransactionPayment<T>
      **/
     PalletTransactionPaymentChargeTransactionPayment: string;
     /**
-     * Lookup667: joystream_node_runtime::Runtime
+     * Lookup668: joystream_node_runtime::Runtime
      **/
     JoystreamNodeRuntimeRuntime: string;
 };

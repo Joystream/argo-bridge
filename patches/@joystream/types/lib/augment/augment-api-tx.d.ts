@@ -285,6 +285,19 @@ declare module '@polkadot/api-base/types/submittable' {
                 account?: any;
                 chainId?: any;
             } | string | Uint8Array, amount: u128 | AnyNumber | Uint8Array, expectedFee: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [PalletArgoBridgeRemoteAccount, u128, u128]>;
+            revertOutboundTransfer: AugmentedSubmittable<(transferId: u64 | AnyNumber | Uint8Array, revertAccount: AccountId32 | string | Uint8Array, revertAmount: u128 | AnyNumber | Uint8Array, rationale: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64, AccountId32, u128, Bytes]>;
+            /**
+             * Allow Governance to Set constraints
+             * Preconditions:
+             * - origin is signed by `root`
+             * PostConditions:
+             * - governance parameters storage value set to the provided values
+             * <weight>
+             *
+             * ## Weight
+             * `O (1)`
+             * # </weight>
+             **/
             updateBridgeConstrains: AugmentedSubmittable<(parameters: PalletArgoBridgeBridgeConstraints | {
                 operatorAccount?: any;
                 pauserAccounts?: any;
