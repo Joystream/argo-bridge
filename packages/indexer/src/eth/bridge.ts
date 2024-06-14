@@ -13,6 +13,7 @@ import {
   EvmBridgeStatusChangedEvent,
   EvmBridgeTransferToEthCompletedEvent,
   EvmBridgeTransferToJoystreamRequestedEvent,
+  EvmBridgeTransferToJoystreamRevertedEvent,
 } from "../model"
 import { groupByClass } from "../shared"
 import * as argoBridgeAbi from "./abi/argoBridgeV1"
@@ -26,6 +27,7 @@ import { In } from "typeorm"
 type EvmBridgeEvent =
   | EvmBridgeTransferToJoystreamRequestedEvent
   | EvmBridgeTransferToEthCompletedEvent
+  | EvmBridgeTransferToJoystreamRevertedEvent
   | EvmBridgeFeesWithdrawnEvent
   | EvmBridgeFeeChangedEvent
   | EvmBridgeStatusChangedEvent
@@ -67,24 +69,17 @@ export async function handleEvmBridgeEvents(
   }
 
   // load existing transfers from the database
-  const requestedTransferEvents: EvmBridgeTransferToJoystreamRequestedEvent[] =
-    []
-  const completedTransferEvents: EvmBridgeTransferToEthCompletedEvent[] = []
+  const transferIds = new Set<string>()
   for (const event of parsedEvents) {
     if (event instanceof EvmBridgeTransferToJoystreamRequestedEvent) {
-      requestedTransferEvents.push(event)
+      transferIds.add(getEntityId(CHAIN_ID, event.ethTransferId))
     } else if (event instanceof EvmBridgeTransferToEthCompletedEvent) {
-      completedTransferEvents.push(event)
+      transferIds.add(joyTransferId(event.joyTransferId))
+    } else if (event instanceof EvmBridgeTransferToJoystreamRevertedEvent) {
+      transferIds.add(getEntityId(CHAIN_ID, event.ethTransferId))
     }
   }
-  const transferIds = new Set([
-    ...requestedTransferEvents.map((event) =>
-      getEntityId(CHAIN_ID, event.ethTransferId),
-    ),
-    ...completedTransferEvents.map((event) =>
-      joyTransferId(event.joyTransferId),
-    ),
-  ])
+
   const existingTransfers: Map<string, BridgeTransfer> = new Map(
     (await ctx.store.findBy(BridgeTransfer, { id: In([...transferIds]) })).map(
       (transfer) => [transfer.id, transfer],
@@ -199,6 +194,34 @@ export async function handleEvmBridgeEvents(
 
       bridgeConfig.totalMinted += event.amount
       bridgeConfig.mintingLimits.currentPeriodMinted += event.amount
+    } else if (event instanceof EvmBridgeTransferToJoystreamRevertedEvent) {
+      // update minting period if needed before processing the transfer
+      updateMintingPeriod(bridgeConfig, event.block)
+
+      const { ethTransferId, revertAccount, revertAmount, rationale } = event
+
+      const transferId = getEntityId(CHAIN_ID, ethTransferId)
+
+      const transfer =
+        existingTransfers.get(transferId) ||
+        newTransfers.find((t) => t.id === transferId)
+
+      if (transfer) {
+        transfer.status = BridgeTransferStatus.REVERTED
+        transfer.revertedTxHash = event.txHash
+        transfer.revertedAtBlock = event.block
+        transfer.revertedAtTimestamp = event.timestamp
+        transfer.revertAccount = revertAccount
+        transfer.revertAmount = revertAmount
+        transfer.revertReason = rationale
+      } else {
+        ctx.log.error(
+          `Reverted unknown EVM outbound transfer with id ${ethTransferId}`,
+        )
+      }
+
+      bridgeConfig.totalMinted += revertAmount
+      bridgeConfig.mintingLimits.currentPeriodMinted += revertAmount
     } else if (event instanceof EvmBridgeRoleGrantedEvent) {
       const { account, role } = event
       if (role === BRIDGE_ADMIN_ROLE) {
@@ -336,6 +359,22 @@ function parseRawLogs(logs: EvmLog[]): EvmBridgeEvent[] {
             amount,
             ethDestAddress,
             joyTransferId,
+          }),
+        )
+        break
+      }
+
+      case argoBridgeAbi.events.ArgoTransferToJoystreamReverted.topic: {
+        const { ethTransferId, revertAddress, revertAmount, rationale } =
+          argoBridgeAbi.events.ArgoTransferToJoystreamReverted.decode(log)
+
+        parsedLogs.push(
+          new EvmBridgeTransferToJoystreamRevertedEvent({
+            ...baseEvent,
+            ethTransferId,
+            revertAccount: revertAddress,
+            revertAmount,
+            rationale,
           }),
         )
         break

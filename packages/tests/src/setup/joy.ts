@@ -23,7 +23,7 @@ export async function deployJoy() {
     "9944:9944",
     "-p",
     "9933:9933",
-    "joystream/node:0f92f3adad6a9f070f626460dae671215010cac8",
+    "joystream/node:9bb9ac54b99d6988c5127046966916681dbb3ffa",
     "--chain",
     "dev",
     "--alice",

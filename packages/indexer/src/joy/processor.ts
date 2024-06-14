@@ -58,6 +58,10 @@ export const processor = new SubstrateBatchProcessor()
     name: [events.argoBridge.outboundTransferRequested.name],
     extrinsic: true,
   })
+  .addEvent({
+    name: [events.argoBridge.outboundTransferReverted.name],
+    extrinsic: true,
+  })
 
 if (NETWORK.startBlock) {
   processor.setBlockRange({

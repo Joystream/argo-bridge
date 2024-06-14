@@ -12,7 +12,8 @@
   },
   "scripts": {
     "codegen": "graphql-codegen --config codegen.ts",
-    "db-down": "cd ../indexer && docker compose down -v"
+    "db-down": "cd ../indexer && docker compose down -v",
+    "test": "bun test --timeout 150000 --bail"
   },
   "dependencies": {
     "@joystream/types": "^4.5.0",

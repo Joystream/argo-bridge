@@ -1,12 +1,15 @@
-import "@typechain/hardhat"
-import "@nomicfoundation/hardhat-ethers"
 import "@nomicfoundation/hardhat-chai-matchers"
-import { HardhatUserConfig, vars } from "hardhat/config"
+import "@nomicfoundation/hardhat-ethers"
 import "@nomicfoundation/hardhat-toolbox"
+import "@typechain/hardhat"
+import "hardhat-dependency-compiler"
+import { HardhatUserConfig, vars } from "hardhat/config"
 
 const ETHERSCAN_API_KEY = vars.get("ETHERSCAN_API_KEY")
 const INFURA_API_KEY = vars.get("INFURA_API_KEY")
 const SEPOLIA_PRIVATE_KEY = vars.get("SEPOLIA_PRIVATE_KEY")
+
+const UNIT_TESTS = process.env.UNIT_TESTS === "true"
 
 const config: HardhatUserConfig = {
   solidity: "0.8.24",
@@ -19,16 +22,25 @@ const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {
-      mining: {
-        auto: false,
-        interval: 200,
-      },
+      // unit tests expect automine to be enabled
+      // we use interval blocks for indexer in integration tests
+      ...(UNIT_TESTS
+        ? {}
+        : {
+            mining: {
+              auto: false,
+              interval: 1000,
+            },
+          }),
     },
     sepolia: {
       url: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
       accounts: [SEPOLIA_PRIVATE_KEY],
     },
   },
+  // dependencyCompiler: {
+  //   paths: ["@openzeppelin/contracts/governance/TimelockController.sol"],
+  // },
 }
 
 export default config

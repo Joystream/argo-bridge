@@ -2,3 +2,4 @@ semi: false
 plugins:
   - prettier-plugin-solidity
 printWidth: 120
+trailingComma: all

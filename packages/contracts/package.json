@@ -2,7 +2,8 @@
   "name": "@joystream/argo-contracts",
   "scripts": {
     "compile": "hardhat compile",
-    "test": "hardhat test",
+    "test": "UNIT_TESTS=true hardhat test",
+    "deploy:local": "hardhat ignition deploy ignition/modules/JoystreamEth.ts --network localhost --parameters ../tests/tmp/test-params.json",
     "format": "prettier --write ."
   },
   "dependencies": {
@@ -14,6 +15,7 @@
   "devDependencies": {
     "@typechain/ethers-v6": "^0.5.1",
     "@typechain/hardhat": "^9.1.0",
+    "hardhat-dependency-compiler": "^1.1.4",
     "prettier-plugin-solidity": "^1.3.1",
     "typechain": "^8.3.2"
   }

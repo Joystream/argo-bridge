@@ -1,5 +1,5 @@
 import * as p from '@subsquid/evm-codec'
-import { event, fun, indexed, ContractBase } from '@subsquid/evm-abi'
+import { event, fun, viewFun, indexed, ContractBase } from '@subsquid/evm-abi'
 import type { EventParams as EParams, FunctionArguments, FunctionReturn } from '@subsquid/evm-abi'
 
 export const events = {
@@ -9,33 +9,35 @@ export const events = {
     ArgoBridgeStatusChanged: event("0x674a79b744f31247a99ff1ed4a383c0c77299efbdb099b5f69a75077aa3872ae", {"newStatus": p.uint8}),
     ArgoTransferToEthCompleted: event("0x7e23ecf974046609d9a1de48d379cfca42f21df5a2a1a061dc97468705e44ec2", {"joyTransferId": indexed(p.uint256), "ethDestAddress": indexed(p.address), "amount": p.uint256}),
     ArgoTransferToJoystreamRequested: event("0x82faa25a69607faadf0963495313e5c2b60799b5c3a65e35d850b77e73b79f6d", {"ethTransferId": indexed(p.uint256), "ethRequester": indexed(p.address), "joyDestAccount": p.bytes32, "amount": p.uint256}),
+    ArgoTransferToJoystreamReverted: event("0xa25b21b9fa597e02e957bf452497316423b937661dfa0b53f2c89d5e43725d43", {"ethTransferId": indexed(p.uint256), "revertAddress": indexed(p.address), "revertAmount": p.uint256, "rationale": p.string}),
     RoleAdminChanged: event("0xbd79b86ffe0ab8e8776151514217cd7cacd52c909f66475c3af44e129f0b00ff", {"role": indexed(p.bytes32), "previousAdminRole": indexed(p.bytes32), "newAdminRole": indexed(p.bytes32)}),
     RoleGranted: event("0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d", {"role": indexed(p.bytes32), "account": indexed(p.address), "sender": indexed(p.address)}),
     RoleRevoked: event("0xf6391f5c32d9c69d2a47ea670b442974b53935d1edc7fd64eb21e047a839171b", {"role": indexed(p.bytes32), "account": indexed(p.address), "sender": indexed(p.address)}),
 }
 
 export const functions = {
-    DEFAULT_ADMIN_ROLE: fun("0xa217fddf", {}, p.bytes32),
-    OPERATOR_ROLE: fun("0xf5b541a6", {}, p.bytes32),
-    PAUSER_ROLE: fun("0xe63ab1e9", {}, p.bytes32),
-    bridgeFee: fun("0x82b12dd7", {}, p.uint256),
-    bridgeStatus: fun("0x865f87ac", {}, p.uint8),
+    DEFAULT_ADMIN_ROLE: viewFun("0xa217fddf", {}, p.bytes32),
+    OPERATOR_ROLE: viewFun("0xf5b541a6", {}, p.bytes32),
+    PAUSER_ROLE: viewFun("0xe63ab1e9", {}, p.bytes32),
+    bridgeFee: viewFun("0x82b12dd7", {}, p.uint256),
+    bridgeStatus: viewFun("0x865f87ac", {}, p.uint8),
     completeTransferToEth: fun("0xc194116f", {"joyTransferId": p.uint256, "ethDestAddress": p.address, "amount": p.uint256}, ),
-    currentMintingPeriodEndBlock: fun("0x447117b4", {}, p.uint256),
-    currentMintingPeriodMinted: fun("0x120da508", {}, p.uint256),
-    getRoleAdmin: fun("0x248a9ca3", {"role": p.bytes32}, p.bytes32),
+    currentMintingPeriodEndBlock: viewFun("0x447117b4", {}, p.uint256),
+    currentMintingPeriodMinted: viewFun("0x120da508", {}, p.uint256),
+    getRoleAdmin: viewFun("0x248a9ca3", {"role": p.bytes32}, p.bytes32),
     grantRole: fun("0x2f2ff15d", {"role": p.bytes32, "account": p.address}, ),
-    hasRole: fun("0x91d14854", {"role": p.bytes32, "account": p.address}, p.bool),
-    joystreamErc20: fun("0x890ef592", {}, p.address),
-    mintingLimitPerPeriod: fun("0x82ac7008", {}, p.uint256),
-    mintingLimitPeriodLengthBlocks: fun("0x5cfb2ad2", {}, p.uint256),
+    hasRole: viewFun("0x91d14854", {"role": p.bytes32, "account": p.address}, p.bool),
+    joystreamErc20: viewFun("0x890ef592", {}, p.address),
+    mintingLimitPerPeriod: viewFun("0x82ac7008", {}, p.uint256),
+    mintingLimitPeriodLengthBlocks: viewFun("0x5cfb2ad2", {}, p.uint256),
     pauseBridge: fun("0x7dd0480f", {}, ),
     renounceRole: fun("0x36568abe", {"role": p.bytes32, "callerConfirmation": p.address}, ),
     requestTransferToJoystream: fun("0xff926998", {"joyDestAccount": p.bytes32, "amount": p.uint256}, ),
+    revertTransferToJoystream: fun("0x22e4ca23", {"ethTransferId": p.uint256, "revertAddress": p.address, "revertAmount": p.uint256, "rationale": p.string}, ),
     revokeRole: fun("0xd547741f", {"role": p.bytes32, "account": p.address}, ),
     setBridgeFee: fun("0x998cdf83", {"newBridgeFee": p.uint256}, ),
     setMintingLimits: fun("0x84f302f1", {"newMintingLimitPeriodLengthBlocks": p.uint256, "newMintingLimitPerPeriod": p.uint256}, ),
-    supportsInterface: fun("0x01ffc9a7", {"interfaceId": p.bytes4}, p.bool),
+    supportsInterface: viewFun("0x01ffc9a7", {"interfaceId": p.bytes4}, p.bool),
     unpauseBridge: fun("0xa82f143c", {}, ),
     withdrawBridgeFees: fun("0xb4ed7145", {}, ),
 }
@@ -102,6 +104,7 @@ export type ArgoBridgeMintingLimitsUpdatedEventArgs = EParams<typeof events.Argo
 export type ArgoBridgeStatusChangedEventArgs = EParams<typeof events.ArgoBridgeStatusChanged>
 export type ArgoTransferToEthCompletedEventArgs = EParams<typeof events.ArgoTransferToEthCompleted>
 export type ArgoTransferToJoystreamRequestedEventArgs = EParams<typeof events.ArgoTransferToJoystreamRequested>
+export type ArgoTransferToJoystreamRevertedEventArgs = EParams<typeof events.ArgoTransferToJoystreamReverted>
 export type RoleAdminChangedEventArgs = EParams<typeof events.RoleAdminChanged>
 export type RoleGrantedEventArgs = EParams<typeof events.RoleGranted>
 export type RoleRevokedEventArgs = EParams<typeof events.RoleRevoked>
@@ -157,6 +160,9 @@ export type RenounceRoleReturn = FunctionReturn<typeof functions.renounceRole>
 
 export type RequestTransferToJoystreamParams = FunctionArguments<typeof functions.requestTransferToJoystream>
 export type RequestTransferToJoystreamReturn = FunctionReturn<typeof functions.requestTransferToJoystream>
+
+export type RevertTransferToJoystreamParams = FunctionArguments<typeof functions.revertTransferToJoystream>
+export type RevertTransferToJoystreamReturn = FunctionReturn<typeof functions.revertTransferToJoystream>
 
 export type RevokeRoleParams = FunctionArguments<typeof functions.revokeRole>
 export type RevokeRoleReturn = FunctionReturn<typeof functions.revokeRole>

@@ -19,6 +19,12 @@ contract ArgoBridgeV1 is AccessControl {
         uint256 amount
     );
     event ArgoTransferToEthCompleted(uint256 indexed joyTransferId, address indexed ethDestAddress, uint256 amount);
+    event ArgoTransferToJoystreamReverted(
+        uint256 indexed ethTransferId,
+        address indexed revertAddress,
+        uint256 revertAmount,
+        string rationale
+    );
     event ArgoBridgeStatusChanged(ArgoBridgeStatus newStatus);
     event ArgoBridgeFeeChanged(uint256 newFee);
     event ArgoBridgeFeesWithdrawn(address destination, uint256 amount);
@@ -106,6 +112,30 @@ contract ArgoBridgeV1 is AccessControl {
         currentMintingPeriodMinted += amount;
         joystreamErc20.mint(ethDestAddress, amount);
         emit ArgoTransferToEthCompleted(joyTransferId, ethDestAddress, amount);
+    }
+
+    function revertTransferToJoystream(
+        uint256 ethTransferId,
+        address revertAddress,
+        uint256 revertAmount,
+        string memory rationale
+    ) public onlyRole(OPERATOR_ROLE) {
+        if (!_isActive()) {
+            revert ArgoBridgeNotActive();
+        }
+        if (revertAmount == 0) {
+            revert ArgoBridgeInvalidAmount(revertAmount);
+        }
+
+        _updateMintingPeriod();
+        uint256 mintingAllowance = mintingLimitPerPeriod - currentMintingPeriodMinted;
+        if (revertAmount > mintingAllowance) {
+            revert ArgoBridgeMintingLimitReached(revertAmount, mintingAllowance);
+        }
+
+        currentMintingPeriodMinted += revertAmount;
+        joystreamErc20.mint(revertAddress, revertAmount);
+        emit ArgoTransferToJoystreamReverted(ethTransferId, revertAddress, revertAmount, rationale);
     }
 
     /* === PAUSER FUNCTIONS === */

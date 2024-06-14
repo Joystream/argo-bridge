@@ -1,5 +1,5 @@
 import * as p from '@subsquid/evm-codec'
-import { event, fun, indexed, ContractBase } from '@subsquid/evm-abi'
+import { event, fun, viewFun, indexed, ContractBase } from '@subsquid/evm-abi'
 import type { EventParams as EParams, FunctionArguments, FunctionReturn } from '@subsquid/evm-abi'
 
 export const events = {
@@ -14,25 +14,25 @@ export const events = {
 }
 
 export const functions = {
-    CANCELLER_ROLE: fun("0xb08e51c0", {}, p.bytes32),
-    DEFAULT_ADMIN_ROLE: fun("0xa217fddf", {}, p.bytes32),
-    EXECUTOR_ROLE: fun("0x07bd0265", {}, p.bytes32),
-    PROPOSER_ROLE: fun("0x8f61f4f5", {}, p.bytes32),
+    CANCELLER_ROLE: viewFun("0xb08e51c0", {}, p.bytes32),
+    DEFAULT_ADMIN_ROLE: viewFun("0xa217fddf", {}, p.bytes32),
+    EXECUTOR_ROLE: viewFun("0x07bd0265", {}, p.bytes32),
+    PROPOSER_ROLE: viewFun("0x8f61f4f5", {}, p.bytes32),
     cancel: fun("0xc4d252f5", {"id": p.bytes32}, ),
     execute: fun("0x134008d3", {"target": p.address, "value": p.uint256, "payload": p.bytes, "predecessor": p.bytes32, "salt": p.bytes32}, ),
     executeBatch: fun("0xe38335e5", {"targets": p.array(p.address), "values": p.array(p.uint256), "payloads": p.array(p.bytes), "predecessor": p.bytes32, "salt": p.bytes32}, ),
-    getMinDelay: fun("0xf27a0c92", {}, p.uint256),
-    getOperationState: fun("0x7958004c", {"id": p.bytes32}, p.uint8),
-    getRoleAdmin: fun("0x248a9ca3", {"role": p.bytes32}, p.bytes32),
-    getTimestamp: fun("0xd45c4435", {"id": p.bytes32}, p.uint256),
+    getMinDelay: viewFun("0xf27a0c92", {}, p.uint256),
+    getOperationState: viewFun("0x7958004c", {"id": p.bytes32}, p.uint8),
+    getRoleAdmin: viewFun("0x248a9ca3", {"role": p.bytes32}, p.bytes32),
+    getTimestamp: viewFun("0xd45c4435", {"id": p.bytes32}, p.uint256),
     grantRole: fun("0x2f2ff15d", {"role": p.bytes32, "account": p.address}, ),
-    hasRole: fun("0x91d14854", {"role": p.bytes32, "account": p.address}, p.bool),
-    hashOperation: fun("0x8065657f", {"target": p.address, "value": p.uint256, "data": p.bytes, "predecessor": p.bytes32, "salt": p.bytes32}, p.bytes32),
-    hashOperationBatch: fun("0xb1c5f427", {"targets": p.array(p.address), "values": p.array(p.uint256), "payloads": p.array(p.bytes), "predecessor": p.bytes32, "salt": p.bytes32}, p.bytes32),
-    isOperation: fun("0x31d50750", {"id": p.bytes32}, p.bool),
-    isOperationDone: fun("0x2ab0f529", {"id": p.bytes32}, p.bool),
-    isOperationPending: fun("0x584b153e", {"id": p.bytes32}, p.bool),
-    isOperationReady: fun("0x13bc9f20", {"id": p.bytes32}, p.bool),
+    hasRole: viewFun("0x91d14854", {"role": p.bytes32, "account": p.address}, p.bool),
+    hashOperation: viewFun("0x8065657f", {"target": p.address, "value": p.uint256, "data": p.bytes, "predecessor": p.bytes32, "salt": p.bytes32}, p.bytes32),
+    hashOperationBatch: viewFun("0xb1c5f427", {"targets": p.array(p.address), "values": p.array(p.uint256), "payloads": p.array(p.bytes), "predecessor": p.bytes32, "salt": p.bytes32}, p.bytes32),
+    isOperation: viewFun("0x31d50750", {"id": p.bytes32}, p.bool),
+    isOperationDone: viewFun("0x2ab0f529", {"id": p.bytes32}, p.bool),
+    isOperationPending: viewFun("0x584b153e", {"id": p.bytes32}, p.bool),
+    isOperationReady: viewFun("0x13bc9f20", {"id": p.bytes32}, p.bool),
     onERC1155BatchReceived: fun("0xbc197c81", {"_0": p.address, "_1": p.address, "_2": p.array(p.uint256), "_3": p.array(p.uint256), "_4": p.bytes}, p.bytes4),
     onERC1155Received: fun("0xf23a6e61", {"_0": p.address, "_1": p.address, "_2": p.uint256, "_3": p.uint256, "_4": p.bytes}, p.bytes4),
     onERC721Received: fun("0x150b7a02", {"_0": p.address, "_1": p.address, "_2": p.uint256, "_3": p.bytes}, p.bytes4),
@@ -40,7 +40,7 @@ export const functions = {
     revokeRole: fun("0xd547741f", {"role": p.bytes32, "account": p.address}, ),
     schedule: fun("0x01d5062a", {"target": p.address, "value": p.uint256, "data": p.bytes, "predecessor": p.bytes32, "salt": p.bytes32, "delay": p.uint256}, ),
     scheduleBatch: fun("0x8f2a0bb0", {"targets": p.array(p.address), "values": p.array(p.uint256), "payloads": p.array(p.bytes), "predecessor": p.bytes32, "salt": p.bytes32, "delay": p.uint256}, ),
-    supportsInterface: fun("0x01ffc9a7", {"interfaceId": p.bytes4}, p.bool),
+    supportsInterface: viewFun("0x01ffc9a7", {"interfaceId": p.bytes4}, p.bool),
     updateDelay: fun("0x64d62353", {"newDelay": p.uint256}, ),
 }
 

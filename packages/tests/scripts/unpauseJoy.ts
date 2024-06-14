@@ -9,6 +9,8 @@ import {
 } from "../src/setup"
 import { EVM_NETWORKS } from "@joystream/argo-core"
 
+const PROPOSAL_ID = 1
+
 async function main() {
   await setupJoyApi()
 
@@ -56,7 +58,7 @@ async function main() {
       "Approve",
     )
     await sendExtrinsic(
-      joyApi.tx.proposalsEngine.vote(i, 0, voteKind, "0x0"),
+      joyApi.tx.proposalsEngine.vote(i, PROPOSAL_ID, voteKind, "0x0"),
       councilAccounts[i],
     )
   }

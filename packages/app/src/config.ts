@@ -20,7 +20,7 @@ export const WC_METADATA = {
 }
 
 export const EVM_NETWORK = EVM_NETWORKS.hardhat
-export const JOY_NETWORK = JOY_NETWORKS.local
+export const JOY_NETWORK = JOY_NETWORKS.petra
 export const BRIDGE_ADDRESS = EVM_NETWORK.contracts.bridge
 export const TIMELOCK_ADDRESS = EVM_NETWORK.contracts.timelock
 export const ERC20_ADDRESS = EVM_NETWORK.contracts.erc20

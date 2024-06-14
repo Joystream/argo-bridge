@@ -20,6 +20,8 @@ export interface BridgeConstraints {
 
 export type AccountId32 = Bytes
 
+export const BoundedVec = sts.bytes()
+
 export const RemoteTransfer: sts.Type<RemoteTransfer> = sts.struct(() => {
     return  {
         id: sts.bigint(),

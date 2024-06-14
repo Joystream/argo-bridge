@@ -11,6 +11,7 @@ enum BridgeTransferStatus {
   REQUESTED
   MAYBE_COMPLETED
   COMPLETED
+  REVERTED
 }
 
 enum BridgeTransferType {
@@ -38,6 +39,13 @@ type BridgeTransfer @entity {
   completedAtBlock: Int
   completedAtTimestamp: DateTime
   completedTxHash: String
+
+  revertedAtBlock: Int
+  revertedAtTimestamp: DateTime
+  revertedTxHash: String
+  revertReason: String
+  revertAccount: String
+  revertAmount: BigInt
 }
 
 ### EVM BRIDGE ###
@@ -87,6 +95,18 @@ type EvmBridgeTransferToEthCompletedEvent implements Event @entity {
   joyTransferId: BigInt!
   ethDestAddress: String!
   amount: BigInt!
+}
+
+type EvmBridgeTransferToJoystreamRevertedEvent implements Event @entity {
+  id: ID!
+  chainId: Int! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  ethTransferId: BigInt!
+  revertAccount: String!
+  revertAmount: BigInt!
+  rationale: String!
 }
 
 type EvmBridgeFeeChangedEvent implements Event @entity {
@@ -259,6 +279,18 @@ type JoyBridgeInboundTransferFinalizedEvent implements Event @entity {
   remoteChainId: Int!
   joyDestAccount: String!
   amount: BigInt!
+}
+
+type JoyBridgeOutboundTransferRevertedEvent implements Event @entity {
+  id: ID!
+  chainId: Int!
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  joyTransferId: BigInt!
+  revertAccount: String!
+  revertAmount: BigInt!
+  rationale: String!
 }
 
 enum JoyBridgeStatus {

@@ -1,6 +1,7 @@
 import { loadFixture, mine } from "@nomicfoundation/hardhat-toolbox/network-helpers"
 import { expect } from "chai"
 import hre from "hardhat"
+import { zeroAddress } from "viem"
 
 const INITIAL_BRIDGE_FEE = 100n
 const INITIAL_MINTING_LIMIT_PERIOD_LENGTH_BLOCKS = 200n
@@ -319,6 +320,55 @@ describe("ArgoBridgeV1", function () {
 
       await expect(requestTx).to.changeTokenBalance(erc20, targetAddress, amount)
       await expect(requestTx).to.emit(bridge, "ArgoTransferToEthCompleted").withArgs(transferId, targetAddress, amount)
+
+      expect(await erc20.totalSupply()).to.equal(totalSupplyBefore + amount)
+    })
+  })
+
+  describe("Reverting transfer to Joystream", function () {
+    it("Should not allow reverting transfer if bridge is paused", async function () {
+      const { bridge, bridgeAsOperator } = await loadFixture(deployArgoBridge)
+
+      await expect(
+        bridgeAsOperator.revertTransferToJoystream(1n, zeroAddress, 1n, "test"),
+      ).to.be.revertedWithCustomError(bridge, "ArgoBridgeNotActive")
+    })
+
+    it("Should not allow reverting transfer by non-operator", async function () {
+      const { bridge, otherAccount } = await loadFixture(deployArgoBridgeUnpausedWithPauser)
+
+      await expect(
+        bridge.connect(otherAccount).revertTransferToJoystream(1n, zeroAddress, 1n, "test"),
+      ).to.be.revertedWithCustomError(bridge, "AccessControlUnauthorizedAccount")
+    })
+
+    it("Should not allow reverting transfer of 0 tokens", async function () {
+      const { bridge, bridgeAsOperator } = await loadFixture(deployArgoBridgeUnpausedWithPauser)
+
+      await expect(
+        bridgeAsOperator.revertTransferToJoystream(1n, zeroAddress, 0n, "test"),
+      ).to.be.revertedWithCustomError(bridge, "ArgoBridgeInvalidAmount")
+    })
+
+    it("Should allow reverting transfer with the correct arguments", async function () {
+      const { bridge, erc20, bridgeAsOperator, otherAccount } = await loadFixture(deployArgoBridgeUnpausedWithPauser)
+
+      const targetAddress = otherAccount.address
+
+      const totalSupplyBefore = await erc20.totalSupply()
+      const currentMintingPeriodMintedBefore = await bridge.currentMintingPeriodMinted()
+
+      const transferId = 5n
+      const amount = 2n
+      const rationale = "test"
+
+      const requestTx = bridgeAsOperator.revertTransferToJoystream(transferId, targetAddress, amount, rationale)
+
+      await expect(requestTx).to.changeTokenBalance(erc20, targetAddress, amount)
+      await expect(requestTx)
+        .to.emit(bridge, "ArgoTransferToJoystreamReverted")
+        .withArgs(transferId, targetAddress, amount, rationale)
+      expect(await bridge.currentMintingPeriodMinted()).to.equal(currentMintingPeriodMintedBefore + amount)
 
       expect(await erc20.totalSupply()).to.equal(totalSupplyBefore + amount)
     })

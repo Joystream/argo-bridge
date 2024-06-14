@@ -25,6 +25,19 @@ export const finalizeInboundTransfer =  {
     ),
 }
 
+export const revertOutboundTransfer =  {
+    name: 'ArgoBridge.revert_outbound_transfer',
+    v2004: new CallType(
+        'ArgoBridge.revert_outbound_transfer',
+        sts.struct({
+            transferId: sts.bigint(),
+            revertAccount: v2004.AccountId32,
+            revertAmount: sts.bigint(),
+            rationale: v2004.BoundedVec,
+        })
+    ),
+}
+
 export const pauseBridge =  {
     name: 'ArgoBridge.pause_bridge',
     v2004: new CallType(

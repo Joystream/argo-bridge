@@ -1,8 +1,8 @@
-module.exports = class Data1717091093713 {
-    name = 'Data1717091093713'
+module.exports = class Data1718360633966 {
+    name = 'Data1718360633966'
 
     async up(db) {
-        await db.query(`CREATE TABLE "bridge_transfer" ("id" character varying NOT NULL, "amount" numeric NOT NULL, "status" character varying(15) NOT NULL, "type" character varying(10) NOT NULL, "fee_paid" numeric NOT NULL, "source_chain_id" integer NOT NULL, "source_transfer_id" numeric NOT NULL, "source_account" text NOT NULL, "dest_chain_id" integer NOT NULL, "dest_account" text NOT NULL, "created_at_block" integer NOT NULL, "created_at_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "created_tx_hash" text NOT NULL, "completed_at_block" integer, "completed_at_timestamp" TIMESTAMP WITH TIME ZONE, "completed_tx_hash" text, CONSTRAINT "PK_fab0727701656a3e6c320fca6e9" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE TABLE "bridge_transfer" ("id" character varying NOT NULL, "amount" numeric NOT NULL, "status" character varying(15) NOT NULL, "type" character varying(10) NOT NULL, "fee_paid" numeric NOT NULL, "source_chain_id" integer NOT NULL, "source_transfer_id" numeric NOT NULL, "source_account" text NOT NULL, "dest_chain_id" integer NOT NULL, "dest_account" text NOT NULL, "created_at_block" integer NOT NULL, "created_at_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "created_tx_hash" text NOT NULL, "completed_at_block" integer, "completed_at_timestamp" TIMESTAMP WITH TIME ZONE, "completed_tx_hash" text, "reverted_at_block" integer, "reverted_at_timestamp" TIMESTAMP WITH TIME ZONE, "reverted_tx_hash" text, "revert_reason" text, "revert_account" text, "revert_amount" numeric, CONSTRAINT "PK_fab0727701656a3e6c320fca6e9" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_53080eeff656a11a055951f0e8" ON "bridge_transfer" ("status") `)
         await db.query(`CREATE INDEX "IDX_67f37b0f93276ecd918dc3af86" ON "bridge_transfer" ("source_chain_id") `)
         await db.query(`CREATE INDEX "IDX_9d02e5753f5052271ff370c1f6" ON "bridge_transfer" ("source_transfer_id") `)
@@ -14,6 +14,8 @@ module.exports = class Data1717091093713 {
         await db.query(`CREATE INDEX "IDX_6474e195d55d75012dc425fcdd" ON "evm_bridge_transfer_to_joystream_requested_event" ("chain_id") `)
         await db.query(`CREATE TABLE "evm_bridge_transfer_to_eth_completed_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "joy_transfer_id" numeric NOT NULL, "eth_dest_address" text NOT NULL, "amount" numeric NOT NULL, CONSTRAINT "PK_17d82808f00d758405c32193bff" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_2a9089ddd5c529a71c2239b5a0" ON "evm_bridge_transfer_to_eth_completed_event" ("chain_id") `)
+        await db.query(`CREATE TABLE "evm_bridge_transfer_to_joystream_reverted_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "eth_transfer_id" numeric NOT NULL, "revert_account" text NOT NULL, "revert_amount" numeric NOT NULL, "rationale" text NOT NULL, CONSTRAINT "PK_0fa030640ad82ee9dc424713594" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE INDEX "IDX_10e9185fbf9a3413869b2b5908" ON "evm_bridge_transfer_to_joystream_reverted_event" ("chain_id") `)
         await db.query(`CREATE TABLE "evm_bridge_fee_changed_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "fee" numeric NOT NULL, CONSTRAINT "PK_b623b6f450af34bb80e45d7aed1" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_6b3c523b750926a0c948d2caea" ON "evm_bridge_fee_changed_event" ("chain_id") `)
         await db.query(`CREATE TABLE "evm_bridge_fees_withdrawn_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "amount" numeric NOT NULL, "destination" text NOT NULL, CONSTRAINT "PK_5f026884f13b1e93e4e4447963e" PRIMARY KEY ("id"))`)
@@ -35,6 +37,7 @@ module.exports = class Data1717091093713 {
         await db.query(`CREATE TABLE "joy_bridge_paused_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "account" text NOT NULL, CONSTRAINT "PK_fa67d7dfc7ec938621f29a7c1c6" PRIMARY KEY ("id"))`)
         await db.query(`CREATE TABLE "joy_bridge_outbound_transfer_requested_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "joy_requester" text NOT NULL, "joy_transfer_id" numeric NOT NULL, "dest_account" text NOT NULL, "dest_chain_id" integer NOT NULL, "amount" numeric NOT NULL, "fee_paid" numeric NOT NULL, CONSTRAINT "PK_26f201e24f3fae31343c1aec328" PRIMARY KEY ("id"))`)
         await db.query(`CREATE TABLE "joy_bridge_inbound_transfer_finalized_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "remote_transfer_id" numeric NOT NULL, "remote_chain_id" integer NOT NULL, "joy_dest_account" text NOT NULL, "amount" numeric NOT NULL, CONSTRAINT "PK_1d7f32a00a93419463b078ebda8" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE TABLE "joy_bridge_outbound_transfer_reverted_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "joy_transfer_id" numeric NOT NULL, "revert_account" text NOT NULL, "revert_amount" numeric NOT NULL, "rationale" text NOT NULL, CONSTRAINT "PK_1d76b2110eabc76f42336517168" PRIMARY KEY ("id"))`)
         await db.query(`CREATE TABLE "joy_bridge_config" ("id" character varying NOT NULL, "status" character varying(6) NOT NULL, "thawn_ends_at_block" integer, "bridging_fee" numeric NOT NULL, "thawn_duration_blocks" integer NOT NULL, "mint_allowance" numeric NOT NULL, "operator_account" text NOT NULL, "pauser_accounts" text array NOT NULL, "total_minted" numeric NOT NULL, "total_burned" numeric NOT NULL, "fees_burned" numeric NOT NULL, "supported_remote_chain_ids" integer array NOT NULL, CONSTRAINT "PK_c1468e5ec004c72ea20b61889b5" PRIMARY KEY ("id"))`)
     }
 
@@ -51,6 +54,8 @@ module.exports = class Data1717091093713 {
         await db.query(`DROP INDEX "public"."IDX_6474e195d55d75012dc425fcdd"`)
         await db.query(`DROP TABLE "evm_bridge_transfer_to_eth_completed_event"`)
         await db.query(`DROP INDEX "public"."IDX_2a9089ddd5c529a71c2239b5a0"`)
+        await db.query(`DROP TABLE "evm_bridge_transfer_to_joystream_reverted_event"`)
+        await db.query(`DROP INDEX "public"."IDX_10e9185fbf9a3413869b2b5908"`)
         await db.query(`DROP TABLE "evm_bridge_fee_changed_event"`)
         await db.query(`DROP INDEX "public"."IDX_6b3c523b750926a0c948d2caea"`)
         await db.query(`DROP TABLE "evm_bridge_fees_withdrawn_event"`)
@@ -72,6 +77,7 @@ module.exports = class Data1717091093713 {
         await db.query(`DROP TABLE "joy_bridge_paused_event"`)
         await db.query(`DROP TABLE "joy_bridge_outbound_transfer_requested_event"`)
         await db.query(`DROP TABLE "joy_bridge_inbound_transfer_finalized_event"`)
+        await db.query(`DROP TABLE "joy_bridge_outbound_transfer_reverted_event"`)
         await db.query(`DROP TABLE "joy_bridge_config"`)
     }
 }

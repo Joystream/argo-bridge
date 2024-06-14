@@ -68,6 +68,14 @@ const _JOY_NETWORKS = {
       rateLimit: 1000,
     },
   },
+  petra: {
+    name: "Petra testnet",
+    chainId: 0,
+    rpc: {
+      url: "wss://135.181.195.172.nip.io/ws-rpc",
+      rateLimit: 500,
+    },
+  },
 } as const
 
 export type EvmChainName = keyof typeof _EVM_NETWORKS
@@ -1118,6 +1126,37 @@ export const BridgeAbi = [
     inputs: [
       {
         indexed: true,
+        internalType: "uint256",
+        name: "ethTransferId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "revertAddress",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "revertAmount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "rationale",
+        type: "string",
+      },
+    ],
+    name: "ArgoTransferToJoystreamReverted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "bytes32",
         name: "role",
         type: "bytes32",
@@ -1443,6 +1482,34 @@ export const BridgeAbi = [
     name: "requestTransferToJoystream",
     outputs: [],
     stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "ethTransferId",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "revertAddress",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "revertAmount",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "rationale",
+        type: "string",
+      },
+    ],
+    name: "revertTransferToJoystream",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {

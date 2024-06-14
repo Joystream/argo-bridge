@@ -13,12 +13,18 @@ import { Input } from '@/components/ui/input'
 import { JoyHapiInput } from '@/components/JoyHapiInput'
 import { Button } from '@/components/ui/button'
 import { useJoyWalletStore } from '@/providers/joyWallet/joyWallet.store'
-import { TypographyH2, TypographyH3 } from '@/components/ui/typography'
+import {
+  TypographyH2,
+  TypographyH3,
+  TypographyP,
+} from '@/components/ui/typography'
 import { useTransaction } from '@/providers/transaction'
 import { buildRequestTransferExtrinsic } from '@/lib/joyExtrinsics'
 import { EVM_NETWORK } from '@/config'
 import { toast } from 'sonner'
 import { isHex } from 'viem'
+import { formatEth, formatJoy } from '@/lib/utils'
+import { useBridgeConfigs } from '@/lib/bridgeConfig'
 
 const formSchema = z.object({
   targetEvmAddress: z
@@ -39,6 +45,9 @@ export const JoyToEvmTransfer: FC = () => {
     },
     resolver: zodResolver(formSchema),
   })
+
+  const { data: configsData } = useBridgeConfigs()
+  const joyConfig = configsData?.joy
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!joyAccount || !submitJoyTx || !isHex(values.targetEvmAddress)) {
@@ -97,6 +106,11 @@ export const JoyToEvmTransfer: FC = () => {
             </FormItem>
           )}
         />
+        <TypographyP>
+          Current bridging fee:{' '}
+          {joyConfig ? formatJoy(joyConfig.bridgingFee) : 'unknown'}
+        </TypographyP>
+        <Button type="submit">Transfer</Button>
         <Button type="submit">Transfer</Button>
       </form>
     </Form>

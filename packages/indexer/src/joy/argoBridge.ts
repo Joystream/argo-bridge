@@ -6,6 +6,7 @@ import {
   JoyBridgeConfigUpdatedEvent,
   JoyBridgeInboundTransferFinalizedEvent,
   JoyBridgeOutboundTransferRequestedEvent,
+  JoyBridgeOutboundTransferRevertedEvent,
   JoyBridgePausedEvent,
   JoyBridgeStatus,
   JoyBridgeThawnFinishedEvent,
@@ -19,6 +20,7 @@ import {
 import { argoBridge } from "./generated/events"
 import { CHAIN_ID, Event, ProcessorContext } from "./processor"
 import { getEntityId } from "@joystream/argo-core"
+import { hexToU8a, u8aToString } from "@polkadot/util"
 import { Store } from "@subsquid/typeorm-store"
 import assert from "assert"
 import { In } from "typeorm"
@@ -30,6 +32,7 @@ type JoyBridgeEvent =
   | JoyBridgeThawnFinishedEvent
   | JoyBridgeOutboundTransferRequestedEvent
   | JoyBridgeInboundTransferFinalizedEvent
+  | JoyBridgeOutboundTransferRevertedEvent
 
 export async function handleJoyBridgeEvents(
   events: Event[],
@@ -38,23 +41,16 @@ export async function handleJoyBridgeEvents(
   const parsedEvents = await parseRawEvents(events, ctx)
 
   // load existing transfers from the database
-  const requestedTransferEvents: JoyBridgeOutboundTransferRequestedEvent[] = []
-  const finalizedTransferEvents: JoyBridgeInboundTransferFinalizedEvent[] = []
+  const transferIds = new Set<string>()
   for (const event of parsedEvents) {
     if (event instanceof JoyBridgeOutboundTransferRequestedEvent) {
-      requestedTransferEvents.push(event)
+      transferIds.add(getEntityId(CHAIN_ID, event.joyTransferId))
     } else if (event instanceof JoyBridgeInboundTransferFinalizedEvent) {
-      finalizedTransferEvents.push(event)
+      transferIds.add(getEntityId(event.remoteChainId, event.remoteTransferId))
+    } else if (event instanceof JoyBridgeOutboundTransferRevertedEvent) {
+      transferIds.add(getEntityId(CHAIN_ID, event.joyTransferId))
     }
   }
-  const transferIds = new Set([
-    ...requestedTransferEvents.map((event) =>
-      getEntityId(CHAIN_ID, event.joyTransferId),
-    ),
-    ...finalizedTransferEvents.map((event) =>
-      getEntityId(event.remoteChainId, event.remoteTransferId),
-    ),
-  ])
   const existingTransfers: Map<string, BridgeTransfer> = new Map(
     (await ctx.store.findBy(BridgeTransfer, { id: In([...transferIds]) })).map(
       (transfer) => [transfer.id, transfer],
@@ -187,6 +183,28 @@ export async function handleJoyBridgeEvents(
 
       bridgeConfig.totalMinted += amount
       bridgeConfig.mintAllowance -= amount
+    } else if (event instanceof JoyBridgeOutboundTransferRevertedEvent) {
+      const { joyTransferId, revertAccount, revertAmount, rationale } = event
+      const transferId = getEntityId(CHAIN_ID, joyTransferId)
+      const transfer =
+        existingTransfers.get(transferId) ||
+        newTransfers.find((t) => t.id === transferId)
+      if (transfer) {
+        transfer.status = BridgeTransferStatus.REVERTED
+        transfer.revertedAtBlock = event.block
+        transfer.revertedAtTimestamp = event.timestamp
+        transfer.revertedTxHash = event.txHash
+        transfer.revertAccount = revertAccount
+        transfer.revertAmount = revertAmount
+        transfer.revertReason = u8aToString(hexToU8a(rationale))
+      } else {
+        ctx.log.error(
+          `Reverted unknown Joystream outbound transfer with id ${transferId} at block ${event.block}`,
+        )
+      }
+
+      bridgeConfig.totalMinted += revertAmount
+      bridgeConfig.mintAllowance -= revertAmount
     }
   }
 
@@ -243,7 +261,7 @@ async function parseRawEvents(
         break
 
       case argoBridge.bridgePaused.name:
-        const [pauserAccountRaw] = argoBridge.bridgePaused.v2004.decode(event)
+        const pauserAccountRaw = argoBridge.bridgePaused.v2004.decode(event)
         const pauserAccount = joyAccountCodec.encode(pauserAccountRaw)
         parsedEvents.push(
           new JoyBridgePausedEvent({
@@ -314,6 +332,23 @@ async function parseRawEvents(
           }),
         )
         break
+
+      case argoBridge.outboundTransferReverted.name:
+        const [joyTransferIdd, revertAccountRaw, revertAmount, rationale] =
+          argoBridge.outboundTransferReverted.v2004.decode(event)
+        const revertAccount = joyAccountCodec.encode(revertAccountRaw)
+
+        parsedEvents.push(
+          new JoyBridgeOutboundTransferRevertedEvent({
+            ...baseEvent,
+            joyTransferId: joyTransferIdd,
+            revertAmount,
+            revertAccount,
+            rationale,
+          }),
+        )
+        break
+
       default:
         ctx.log.warn(`Unsupported event: ${event.name}`)
     }

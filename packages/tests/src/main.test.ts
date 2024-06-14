@@ -12,6 +12,7 @@ import {
   API_URL,
   cleanup,
   councilAccounts,
+  electCouncil,
   getEvmConfig,
   getEvmDeploymentParams,
   joyApi,
@@ -20,6 +21,7 @@ import {
   retry,
   sendExtrinsic,
   setup,
+  setupJoyApi,
   waitUntilBlock,
 } from "./setup"
 import { increaseTime, scheduleTimelockCall } from "./utils"
@@ -612,6 +614,138 @@ test("Request previously maybe-completed EVM->JOY transfer", async () => {
   expect(transfer.createdAtBlock).toBe(Number(blockNumber))
   expect(transfer.sourceAccount).toBe(evmConfig.otherAccount.toLowerCase())
   expect(transfer.feePaid).toBe(bridgeConfig.bridgingFee.toString())
+})
+
+test("Revert JOY->EVM transfer", async () => {
+  const destAccount = evmConfig.otherAccount
+  const revertAccount = councilAccounts[1]
+
+  const amount = 15n
+  const rationale = "I don't like the requester"
+
+  const joyBridgeConfigBefore = await getJoyBridgeConfig()
+
+  const [requestTransfer, requestTxHash, expectedFee] =
+    await requestJoyTransfer(amount, evmChainId, destAccount, proposerAccount)
+
+  const { transactionHash: revertTxHash, blockHash: revertBlockHash } =
+    await sendExtrinsic(
+      joyApi.tx.argoBridge.revertOutboundTransfer(
+        requestTransfer.sourceTransferId,
+        revertAccount.address,
+        amount,
+        rationale,
+      ),
+      joyBridgeOperator,
+    )
+
+  const transfersResponse = await waitForSquid(
+    () =>
+      request(API_URL, GetBridgeTransfersDocument, {
+        where: {
+          revertedTxHash_eq: revertTxHash,
+        },
+      }),
+    (response) => response.bridgeTransfers.length > 0,
+  )
+  expect(transfersResponse.bridgeTransfers.length).toBeGreaterThan(0)
+  const revertedTransfer = transfersResponse.bridgeTransfers[0]
+
+  const joyBridgeConfigAfter = await getJoyBridgeConfig()
+
+  expect(revertedTransfer.status).toBe(BridgeTransferStatus.Reverted)
+  expect(revertedTransfer.createdTxHash).toBe(requestTxHash)
+  expect(revertedTransfer.feePaid).toBe(expectedFee.toString())
+  expect(revertedTransfer.sourceAccount).toBe(proposerAccount.address)
+  expect(revertedTransfer.sourceChainId).toBe(joyChainId)
+  expect(revertedTransfer.destChainId).toBe(evmChainId)
+  expect(revertedTransfer.destAccount).toBe(destAccount.toLowerCase())
+  expect(revertedTransfer.amount).toBe(amount.toString())
+  expect(revertedTransfer.completedTxHash).toBeNull()
+  expect(revertedTransfer.completedAtBlock).toBeNull()
+  expect(revertedTransfer.completedAtTimestamp).toBeNull()
+  expect(revertedTransfer.revertedTxHash).toBe(revertTxHash)
+  expect(revertedTransfer.revertedAtBlock).toBeGreaterThan(0)
+  expect(revertedTransfer.revertAccount).toBe(revertAccount.address)
+  expect(revertedTransfer.revertAmount).toBe(amount.toString())
+
+  expect(joyBridgeConfigAfter.totalBurned).toBe(
+    (BigInt(joyBridgeConfigBefore.totalBurned) + amount).toString(),
+  )
+  expect(joyBridgeConfigAfter.totalMinted).toBe(
+    (BigInt(joyBridgeConfigBefore.totalMinted) + amount).toString(),
+  )
+  expect(joyBridgeConfigAfter.mintAllowance).toBe(
+    joyBridgeConfigBefore.mintAllowance,
+  )
+})
+
+test("Revert EVM->JOY transfer", async () => {
+  const { walletClient, publicClient, operatorAccount, otherAccount } =
+    evmConfig
+
+  const bridgeConfigBefore = await getEvmBridgeConfig()
+
+  const ethRequester = otherAccount
+  const transferAmount = 133n
+  const rationale = "foobar"
+  const joyDestAccount = proposerAccount.address
+  const [requestedTransfer, requestedTxHash, requestedBlockNumber] =
+    await requestEvmTransfer(transferAmount, joyDestAccount, ethRequester)
+
+  const revertTxHash = await walletClient.writeContract({
+    abi: BridgeAbi,
+    address: contracts.bridge,
+    account: operatorAccount,
+    functionName: "revertTransferToJoystream",
+    args: [
+      BigInt(requestedTransfer.sourceTransferId),
+      ethRequester,
+      transferAmount,
+      rationale,
+    ],
+  })
+  const revertResult = await publicClient.waitForTransactionReceipt({
+    hash: revertTxHash,
+  })
+  expect(revertResult.status).toBe("success")
+
+  const transfersResponse = await waitForSquid(
+    () =>
+      request(API_URL, GetBridgeTransfersDocument, {
+        where: {
+          revertedTxHash_eq: revertTxHash,
+        },
+      }),
+    (response) => response.bridgeTransfers.length > 0,
+  )
+  const revertedTransfer = transfersResponse.bridgeTransfers[0]
+
+  const bridgeConfigAfter = await getEvmBridgeConfig()
+
+  expect(revertedTransfer.amount).toBe(transferAmount.toString())
+  expect(revertedTransfer.status).toBe(BridgeTransferStatus.Reverted)
+  expect(revertedTransfer.feePaid).toBe(bridgeConfigBefore.bridgingFee)
+  expect(revertedTransfer.sourceChainId).toBe(evmChainId)
+  expect(revertedTransfer.sourceAccount).toBe(ethRequester.toLowerCase())
+  expect(revertedTransfer.destChainId).toBe(joyChainId)
+  expect(revertedTransfer.destAccount).toBe(proposerAccount.address)
+  expect(revertedTransfer.createdAtBlock).toBe(Number(requestedBlockNumber))
+  expect(revertedTransfer.createdTxHash).toBe(requestedTxHash)
+  expect(revertedTransfer.revertedAtBlock).toBe(
+    Number(revertResult.blockNumber),
+  )
+  expect(revertedTransfer.revertedTxHash).toBe(revertTxHash)
+  expect(revertedTransfer.revertAccount).toBe(ethRequester.toLowerCase())
+  expect(revertedTransfer.revertAmount).toBe(transferAmount.toString())
+  expect(revertedTransfer.revertReason).toBe(rationale)
+
+  expect(bridgeConfigAfter.totalBurned).toBe(
+    (BigInt(bridgeConfigBefore.totalBurned) + transferAmount).toString(),
+  )
+  expect(bridgeConfigAfter.totalMinted).toBe(
+    (BigInt(bridgeConfigBefore.totalMinted) + transferAmount).toString(),
+  )
 })
 
 test("Check EVM minting periods", async () => {

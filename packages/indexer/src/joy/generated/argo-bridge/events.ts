@@ -17,6 +17,14 @@ export const inboundTransferFinalized =  {
     ),
 }
 
+export const outboundTransferReverted =  {
+    name: 'ArgoBridge.OutboundTransferReverted',
+    v2004: new EventType(
+        'ArgoBridge.OutboundTransferReverted',
+        sts.tuple([sts.bigint(), v2004.AccountId32, sts.bigint(), v2004.BoundedVec])
+    ),
+}
+
 export const bridgePaused =  {
     name: 'ArgoBridge.BridgePaused',
     v2004: new EventType(

@@ -83,6 +83,12 @@ export const getBridgeTransfersDocument = graphql(/* GraphQL */ `
       completedTxHash
       completedAtTimestamp
       completedAtBlock
+      revertedTxHash
+      revertedAtTimestamp
+      revertedAtBlock
+      revertReason
+      revertAccount
+      revertAmount
     }
   }
 `)

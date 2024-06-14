@@ -62,6 +62,10 @@ export const processor = new EvmBatchProcessor()
   })
   .addLog({
     address: [ARGO_ADDRESS],
+    topic0: [argoBridgeAbi.events.ArgoTransferToJoystreamReverted.topic],
+  })
+  .addLog({
+    address: [ARGO_ADDRESS],
     topic0: [argoBridgeAbi.events.RoleGranted.topic],
   })
   .addLog({

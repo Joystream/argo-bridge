@@ -61,4 +61,22 @@ export class BridgeTransfer {
 
     @StringColumn_({nullable: true})
     completedTxHash!: string | undefined | null
+
+    @IntColumn_({nullable: true})
+    revertedAtBlock!: number | undefined | null
+
+    @DateTimeColumn_({nullable: true})
+    revertedAtTimestamp!: Date | undefined | null
+
+    @StringColumn_({nullable: true})
+    revertedTxHash!: string | undefined | null
+
+    @StringColumn_({nullable: true})
+    revertReason!: string | undefined | null
+
+    @StringColumn_({nullable: true})
+    revertAccount!: string | undefined | null
+
+    @BigIntColumn_({nullable: true})
+    revertAmount!: bigint | undefined | null
 }
