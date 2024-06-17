@@ -38,7 +38,7 @@ const _EVM_NETWORKS = {
   baseSepolia: {
     name: "Base Sepolia",
     chainId: 84532,
-    archiveName: "eth-base-sepolia",
+    archiveName: "base-sepolia",
     rpc: {
       url: "https://rpc.ankr.com/base_sepolia/6d76d0ad0efdf7913347e739da8b5b349223e2dd8d6d3a385e16bdf8b9bc7390",
       rateLimit: 30,
