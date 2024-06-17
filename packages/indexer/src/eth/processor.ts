@@ -13,8 +13,15 @@ import {
 import { Store } from "@subsquid/typeorm-store"
 import { assertNotNull } from "@subsquid/util-internal"
 
-const TARGET_CHAIN: EvmChainName = "hardhat"
-export const NETWORK = EVM_NETWORKS[TARGET_CHAIN]
+const EVM_NETWORK = process.env.EVM_NETWORK as EvmChainName
+if (!EVM_NETWORK) {
+  throw new Error("EVM_NETWORK is not set")
+}
+if (!EVM_NETWORKS[EVM_NETWORK]) {
+  throw new Error(`Unknown EVM_NETWORK: ${EVM_NETWORK}`)
+}
+
+export const NETWORK = EVM_NETWORKS[EVM_NETWORK]
 
 export const CHAIN_ID = NETWORK.chainId
 export const ARGO_ADDRESS = NETWORK.contracts.bridge.toLowerCase()

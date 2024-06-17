@@ -35,6 +35,21 @@ const _EVM_NETWORKS = {
       timelock: "0xe070f47bf2849593f9745e448b2723C57B7E5292",
     },
   },
+  baseSepolia: {
+    name: "Base Sepolia",
+    chainId: 84532,
+    archiveName: "eth-base-sepolia",
+    rpc: {
+      url: "https://rpc.ankr.com/base_sepolia/6d76d0ad0efdf7913347e739da8b5b349223e2dd8d6d3a385e16bdf8b9bc7390",
+      rateLimit: 30,
+    },
+    startBlock: 5_861_090,
+    contracts: {
+      erc20: "0x0",
+      bridge: "0x0",
+      timelock: "0x0",
+    },
+  },
   hardhat: {
     name: "Hardhat",
     chainId: 31337,

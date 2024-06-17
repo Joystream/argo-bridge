@@ -1,3 +1,4 @@
+import { EVM_NETWORKS } from "@joystream/argo-core"
 import "@nomicfoundation/hardhat-chai-matchers"
 import "@nomicfoundation/hardhat-ethers"
 import "@nomicfoundation/hardhat-toolbox"
@@ -7,7 +8,7 @@ import { HardhatUserConfig, vars } from "hardhat/config"
 
 const ETHERSCAN_API_KEY = vars.get("ETHERSCAN_API_KEY")
 const INFURA_API_KEY = vars.get("INFURA_API_KEY")
-const SEPOLIA_PRIVATE_KEY = vars.get("SEPOLIA_PRIVATE_KEY")
+const DEPLOYER_PRIVATE_KEY = vars.get("SEPOLIA_PRIVATE_KEY")
 
 const UNIT_TESTS = process.env.UNIT_TESTS === "true"
 
@@ -34,8 +35,12 @@ const config: HardhatUserConfig = {
           }),
     },
     sepolia: {
-      url: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
-      accounts: [SEPOLIA_PRIVATE_KEY],
+      url: EVM_NETWORKS.sepolia.rpc.url,
+      accounts: [DEPLOYER_PRIVATE_KEY],
+    },
+    baseSepolia: {
+      url: EVM_NETWORKS.baseSepolia.rpc.url,
+      accounts: [DEPLOYER_PRIVATE_KEY],
     },
   },
   // dependencyCompiler: {

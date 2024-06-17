@@ -11,7 +11,17 @@ import {
   assertNotNull,
 } from "@subsquid/substrate-processor"
 
-export const NETWORK = JOY_NETWORKS.local
+const JOY_NETWORK = process.env.JOY_NETWORK as keyof typeof JOY_NETWORKS
+
+if (!JOY_NETWORK) {
+  throw new Error("JOY_NETWORK is not set")
+}
+
+if (!JOY_NETWORKS[JOY_NETWORK]) {
+  throw new Error(`Unknown JOY_NETWORK: ${JOY_NETWORK}`)
+}
+
+export const NETWORK = JOY_NETWORKS[JOY_NETWORK]
 export const CHAIN_ID = NETWORK.chainId
 const RPC_ENDPOINT = assertNotNull(NETWORK.rpc.url)
 
