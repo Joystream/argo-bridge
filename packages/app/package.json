@@ -1,6 +1,5 @@
 {
   "name": "@joystream/argo-app",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -12,7 +11,8 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@hookform/resolvers": "^3.4.2",
-    "@joystream/types": "^4.5.0",
+    "@joystream/argo-core": "*",
+    "@joystream/types": "^4.6.0",
     "@polkadot-onboard/core": "^1.1.0",
     "@polkadot-onboard/injected-wallets": "^1.1.0",
     "@polkadot-onboard/react": "^1.1.0",
@@ -26,6 +26,7 @@
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.0.7",
+    "@rainbow-me/rainbowkit": "^2.1.1",
     "@tanstack/react-query": "^5.40.0",
     "@walletconnect/modal": "^2.6.2",
     "@walletconnect/universal-provider": "^2.13.1",
@@ -68,5 +69,6 @@
     "typescript": "^5.4.5",
     "vite": "^5.2.12",
     "vite-plugin-node-polyfills": "^0.22.0"
-  }
+  },
+  "packageManager": "npm@8.19.2"
 }

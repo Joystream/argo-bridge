@@ -8,7 +8,7 @@
     "dev": "bun run src/index.ts"
   },
   "dependencies": {
-    "@joystream/types": "^4.5.0",
+    "@joystream/types": "^4.6.0",
     "@safe-global/api-kit": "^2.2.0",
     "@safe-global/protocol-kit": "^3.0.1",
     "@safe-global/safe-core-sdk-types": "^4.0.1",
@@ -21,5 +21,6 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
-  }
+  },
+  "packageManager": "npm@8.19.2"
 }

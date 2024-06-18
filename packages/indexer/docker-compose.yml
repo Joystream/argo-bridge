@@ -1,12 +1,54 @@
-version: "3"
-
 services:
   db:
     image: postgres:15
+    container_name: argo-db
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: squid
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_PASSWORD: ${DB_PASS}
     ports:
       - "${DB_PORT}:5432"
       # command: ["postgres", "-c", "log_statement=all"]
+    volumes:
+      - argo-db-data:/var/lib/postgresql/data
     shm_size: 1gb
+
+  indexer-eth:
+    image: joystream/argo-indexer
+    container_name: argo-indexer-eth
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - EVM_NETWORK=baseSepolia
+    depends_on:
+      - db
+    command: ["sqd", "process:prod:eth"]
+
+  indexer-joy:
+    image: joystream/argo-indexer
+    container_name: argo-indexer-joy
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=db
+    depends_on:
+        - db
+    command: ["sqd", "process:prod:joy"]
+
+  graphql:
+    image: joystream/argo-indexer
+    container_name: argo-graphql
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=db
+    depends_on:
+      - db
+    ports:
+      - "${GQL_PORT}:${GQL_PORT}"
+    command: ["sqd", "serve:prod"]
+
+volumes:
+  argo-db-data:

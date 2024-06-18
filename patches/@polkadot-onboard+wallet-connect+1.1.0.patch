@@ -1,0 +1,13 @@
+diff --git a/node_modules/@polkadot-onboard/wallet-connect/dist/wallet-connect.js b/node_modules/@polkadot-onboard/wallet-connect/dist/wallet-connect.js
+index 948064a..188083c 100644
+--- a/node_modules/@polkadot-onboard/wallet-connect/dist/wallet-connect.js
++++ b/node_modules/@polkadot-onboard/wallet-connect/dist/wallet-connect.js
+@@ -2,7 +2,7 @@ import { WalletType } from '@polkadot-onboard/core';
+ import { WalletConnectModal } from '@walletconnect/modal';
+ import { SignClient } from '@walletconnect/sign-client';
+ import { WalletConnectSigner } from './signer.js';
+-export const POLKADOT_CHAIN_ID = 'polkadot:91b171bb158e2d3848fa23a9f1c25182';
++export const POLKADOT_CHAIN_ID = 'polkadot:6b5e488e0fa8f9821110d5c13f4c468a';
+ export const WC_VERSION = '2.0';
+ const toWalletAccount = (wcAccount) => ({ address: wcAccount.split(':')[2] });
+ class WalletConnectWallet {

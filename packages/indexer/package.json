@@ -2,7 +2,7 @@
   "name": "@joystream/argo-indexer",
   "private": true,
   "scripts": {
-    "build": "sqd build",
+    "build": "rm -rf lib && tsc",
     "run": "sqd run .",
     "process:eth": "sqd process:eth",
     "process:joy": "sqd process:joy",
@@ -13,7 +13,7 @@
     "metadata:joy": "sqd metadata:joy"
   },
   "dependencies": {
-    "@joystream/argo-core": "workspace:*",
+    "@joystream/argo-core": "*",
     "@subsquid/archive-registry": "^3.3.2",
     "@subsquid/evm-processor": "^1.18.1",
     "@subsquid/graphql-server": "^4.6.0",
@@ -33,5 +33,6 @@
     "@subsquid/substrate-typegen": "^8.1.0",
     "@types/node": "^20.12.7",
     "typescript": "~5.4.5"
-  }
+  },
+  "packageManager": "npm@8.19.2"
 }

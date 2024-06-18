@@ -16,7 +16,8 @@
     "test": "bun test --timeout 150000 --bail"
   },
   "dependencies": {
-    "@joystream/types": "^4.5.0",
+    "@joystream/types": "^4.6.0",
     "graphql-request": "5"
-  }
+  },
+  "packageManager": "npm@8.19.2"
 }
