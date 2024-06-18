@@ -2,13 +2,13 @@ import '@rainbow-me/rainbowkit/styles.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { FC, PropsWithChildren } from 'react'
 import { WagmiProvider } from 'wagmi'
-import { hardhat } from 'wagmi/chains'
+import { baseSepolia } from 'wagmi/chains'
 import { WC_METADATA, WC_PROJECT_ID } from '@/config'
 import { RainbowKitProvider, getDefaultConfig } from '@rainbow-me/rainbowkit'
 
 const queryClient = new QueryClient()
 
-const chains = [hardhat] as const
+const chains = [baseSepolia] as const
 
 const config = getDefaultConfig({
   appName: WC_METADATA.name,
