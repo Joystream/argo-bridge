@@ -4,7 +4,11 @@ import { SubmittableExtrinsic } from '@polkadot/api/types'
 import { RawExtrinsicResult } from '@joystream/argo-core'
 
 export type SubmitJoyTx = (
-  buildTx: (api: ApiPromise) => Promise<SubmittableExtrinsic<'promise'>>,
+  buildTx: (
+    api: ApiPromise
+  ) =>
+    | Promise<SubmittableExtrinsic<'promise'>>
+    | SubmittableExtrinsic<'promise'>,
   sender?: string
 ) => Promise<RawExtrinsicResult | undefined>
 

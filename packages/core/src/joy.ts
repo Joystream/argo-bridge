@@ -22,6 +22,7 @@ export type RawExtrinsicResult = {
 export function submitExtrinsic(
   tx: SubmittableExtrinsic<"promise">,
   accountId: string,
+  rpcUrl: string,
   signer: Signer,
   cb?: ExtrinsicStatusCallbackFn,
 ): Promise<RawExtrinsicResult>
@@ -29,11 +30,13 @@ export function submitExtrinsic(
 export function submitExtrinsic(
   tx: SubmittableExtrinsic<"promise">,
   account: KeyringPair,
+  rpcUrl: string,
   cb?: ExtrinsicStatusCallbackFn,
 ): Promise<RawExtrinsicResult>
 export function submitExtrinsic(
   tx: SubmittableExtrinsic<"promise">,
   account: string | KeyringPair,
+  rpcUrl: string,
   signerOrCb?: Signer | ExtrinsicStatusCallbackFn,
   cb?: ExtrinsicStatusCallbackFn,
 ): Promise<RawExtrinsicResult> {
@@ -67,7 +70,13 @@ export function submitExtrinsic(
         })
 
         if (events.includes("system.ExtrinsicFailed")) {
-          reject(new Error(`ExtrinsicFailed in block ${status.asInBlock}`))
+          reject(
+            new Error(
+              `ExtrinsicFailed: https://polkadot.js.org/apps/?rpc=${encodeURI(
+                rpcUrl,
+              )}#/explorer/query/${status.asInBlock.toHex()}`,
+            ),
+          )
           return
         }
 

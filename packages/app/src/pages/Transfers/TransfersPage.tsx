@@ -34,6 +34,7 @@ export const TransfersPage: FC = () => {
             <TableHead>Target chain</TableHead>
             <TableHead>Target account</TableHead>
             <TableHead className="text-right">Amount</TableHead>
+            <TableHead>Approvals</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>

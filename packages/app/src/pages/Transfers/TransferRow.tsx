@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import { BridgeTransfer } from '@/lib/transfer'
 import { useAccount, useWriteContract } from 'wagmi'
 import { useTransaction } from '@/providers/transaction'
@@ -12,15 +12,65 @@ import { BridgeTransferStatus, BridgeTransferType } from '@/gql/graphql'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { formatJoy, truncateAddress } from '@/lib/utils'
+import { useJoyApiContext } from '@/providers/joyApi'
+import { useQuery } from '@tanstack/react-query'
+
+const multisig = 'j4UJK4dg51HZcJ9nTh8epDCKzGDaNss4DkGdaa622GYVqLSqJ'
+
+const signatories = [
+  'j4W7rVcUCxi2crhhjRq46fNDRbVHTjJrz6bKxZwehEMQxZeSf',
+  'j4UYhDYJ4pz2ihhDDzu69v2JTVeGaGmTebmBdWaX2ANVinXyE',
+]
+const threshold = 2
 
 export const TransferRow: FC<{ transfer: BridgeTransfer }> = ({ transfer }) => {
   const { writeContractAsync } = useWriteContract()
+  const { api } = useJoyApiContext()
   const { addTxPromise, submitJoyTx } = useTransaction()
   const { data: bridgeConfigs } = useBridgeConfigs()
   const evmOperators = bridgeConfigs?.evm.operatorAccounts
   const joyOperator = bridgeConfigs?.joy.operatorAccount
   const { walletAccounts: joyAccounts } = useJoyWallets()
   const { address: evmAddress } = useAccount()
+
+  const joyCompleteCall = useMemo(() => {
+    if (
+      transfer.type !== BridgeTransferType.EvmToJoy ||
+      transfer.status !== BridgeTransferStatus.Requested
+    ) {
+      return
+    }
+
+    if (!api) {
+      return
+    }
+
+    const call = api.tx.argoBridge.finalizeInboundTransfer(
+      api.createType('PalletArgoBridgeRemoteTransfer', {
+        id: transfer.sourceTransferId,
+        chain_id: transfer.sourceChainId,
+      }),
+      transfer.destAccount,
+      transfer.amount
+    )
+
+    return call
+  }, [api, transfer])
+
+  const { data: joyApprovalsCount } = useQuery({
+    queryKey: ['joyApprovalStatus', joyCompleteCall],
+    queryFn: async () => {
+      if (!joyCompleteCall || !api) return
+      const result = await api.query.multisig.multisigs(
+        multisig,
+        joyCompleteCall.method.hash.toHex()
+      )
+      if (!result.isSome) return 0
+      const { approvals } = result.unwrap()
+      return approvals.length
+    },
+    enabled: !!joyCompleteCall,
+  })
 
   const completeTransferToEvm = () => {
     if (!addTxPromise) {
@@ -41,18 +91,39 @@ export const TransferRow: FC<{ transfer: BridgeTransfer }> = ({ transfer }) => {
   }
 
   const completeTransferToJoy = async () => {
-    if (!submitJoyTx || !joyOperator) {
+    if (!submitJoyTx || !joyOperator || !joyCompleteCall || !api) {
+      console.error({
+        submitJoyTx,
+        joyOperator,
+        joyCompleteCall,
+      })
       console.error('submitJoyTx not available')
       return
     }
+    const userAccount = joyAccounts?.find((account) =>
+      signatories.includes(account.address)
+    )
+    if (!userAccount) {
+      console.error('User account not found')
+      return
+    }
+    const otherSignatories = signatories.filter(
+      (address) => address !== userAccount.address
+    )
+    const callDispatchInfo = await api.call.transactionPaymentApi.queryInfo(
+      joyCompleteCall.toHex(),
+      joyCompleteCall.length
+    )
     await submitJoyTx(
-      await buildFinalizeTransferExtrinsic({
-        sourceTransferId: transfer.sourceTransferId,
-        sourceChainId: transfer.sourceChainId,
-        destAccount: transfer.destAccount as Hex,
-        amount: transfer.amount,
-      }),
-      joyOperator
+      (api) =>
+        api.tx.multisig.approveAsMulti(
+          threshold,
+          otherSignatories,
+          null,
+          joyCompleteCall.method.hash.toHex(),
+          callDispatchInfo.weight
+        ),
+      userAccount.address
     )
   }
 
@@ -60,14 +131,12 @@ export const TransferRow: FC<{ transfer: BridgeTransfer }> = ({ transfer }) => {
     if (!evmOperators || !joyOperator) {
       return null
     }
-    console.log(joyAccounts)
     const isJoyOperator = joyAccounts?.some(
       (account) => account.address === joyOperator
     )
     const isEvmOperator = evmOperators.some(
       (address) => address === evmAddress?.toLowerCase()
     )
-    console.log({ isJoyOperator, isEvmOperator })
 
     if (transfer.status === BridgeTransferStatus.Requested) {
       if (transfer.type === BridgeTransferType.EvmToJoy && isJoyOperator) {
@@ -96,10 +165,17 @@ export const TransferRow: FC<{ transfer: BridgeTransfer }> = ({ transfer }) => {
       <TableCell>{transfer.id}</TableCell>
       <TableCell>{transfer.status}</TableCell>
       <TableCell>{transfer.sourceChainId}</TableCell>
-      <TableCell>{truncateAddress(transfer.sourceAccount)}</TableCell>
+      <TableCell className="max-w-[160px]  overflow-ellipsis overflow-hidden">
+        {transfer.sourceAccount}
+      </TableCell>
       <TableCell>{transfer.destChainId}</TableCell>
-      <TableCell>{truncateAddress(transfer.destAccount)}</TableCell>
+      <TableCell className="max-w-[160px] overflow-ellipsis overflow-hidden">
+        {transfer.destAccount}
+      </TableCell>
       <TableCell className="text-right">{formatJoy(transfer.amount)}</TableCell>
+      <TableCell>
+        {joyApprovalsCount}/{threshold}
+      </TableCell>
       <TableCell>{renderAction()}</TableCell>
     </TableRow>
   )

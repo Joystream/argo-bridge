@@ -5,6 +5,7 @@ import { useJoyApiContext } from '@/providers/joyApi'
 import { toast } from 'sonner'
 import { SubmitJoyTx, TransactionContext } from './transaction.types'
 import { Account, BaseWallet } from '@polkadot-onboard/core'
+import { JOY_NETWORK } from '@/config'
 
 export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
   const { api: joyApi } = useJoyApiContext()
@@ -50,7 +51,12 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
 
       try {
         const tx = await buildTx(joyApi)
-        const submitPromise = submitExtrinsic(tx, sender, signer)
+        const submitPromise = submitExtrinsic(
+          tx,
+          sender,
+          JOY_NETWORK.rpc.url,
+          signer
+        )
         addTxPromise(submitPromise)
         // @ts-ignore
         const txInfo = `${tx.method.section}.${tx.method.method}(${JSON.stringify(tx.method.toHuman()?.args)})`

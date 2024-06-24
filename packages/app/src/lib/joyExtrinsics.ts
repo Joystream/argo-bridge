@@ -21,7 +21,7 @@ export async function buildRequestTransferExtrinsic(
   }
 }
 
-export async function buildFinalizeTransferExtrinsic({
+export function buildFinalizeTransferExtrinsic({
   sourceChainId,
   sourceTransferId,
   destAccount,
@@ -29,10 +29,10 @@ export async function buildFinalizeTransferExtrinsic({
 }: {
   sourceChainId: number
   sourceTransferId: bigint
-  destAccount: Hex
+  destAccount: string
   amount: bigint
 }) {
-  return async (api: ApiPromise) => {
+  return (api: ApiPromise) => {
     const remoteTransfer = api.createType('PalletArgoBridgeRemoteTransfer', {
       id: sourceTransferId,
       chain_id: sourceChainId,
