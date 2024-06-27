@@ -6,8 +6,6 @@ services:
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_PASSWORD: ${DB_PASS}
-    ports:
-      - "${DB_PORT}:5432"
       # command: ["postgres", "-c", "log_statement=all"]
     volumes:
       - argo-db-data:/var/lib/postgresql/data
@@ -20,7 +18,6 @@ services:
       - .env
     environment:
       - DB_HOST=db
-      - DB_PORT=5432
       - EVM_NETWORK=baseSepolia
     depends_on:
       - db
@@ -33,6 +30,7 @@ services:
       - .env
     environment:
       - DB_HOST=db
+      - JOY_NETWORK=petra
     depends_on:
         - db
     command: ["sqd", "process:prod:joy"]
