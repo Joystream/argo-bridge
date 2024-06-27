@@ -26,12 +26,11 @@ async function create() {
   console.log("Your Safe has been deployed:")
   console.log(`https://sepolia.basescan.org/address/${safeAddress}`)
   console.log(`https://app.safe.global/basesep:${safeAddress}`)
+
+  const apiKit = new SafeApiKit({
+    chainId: 1n,
+  })
+  const r = await apiKit.getPendingTransactions("0x0")
 }
-
-const apiKit = new SafeApiKit({
-  chainId: 1n,
-})
-
-const r = await apiKit.getPendingTransactions("0x0")
 
 create().catch(console.error)
