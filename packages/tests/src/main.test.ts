@@ -1,11 +1,11 @@
 import {
   BridgeTransferStatus,
   EvmBridgeStatus,
-  EvmTimelockCallStatus,
+  EvmTimelockOperationStatus,
   GetBridgeTransfersDocument,
   GetEvmBridgeConfigDocument,
   GetJoyBridgeConfigDocument,
-  GetTimelockCallsDocument,
+  GetTimelockOperationsDocument,
   JoyBridgeStatus,
 } from "./gql/graphql"
 import {
@@ -66,13 +66,16 @@ let joyBridgePauser: KeyringPair
 const addressCodec = ss58.codec("joystream")
 
 beforeAll(async () => {
-  await setup()
+  // await setup()
   // await electCouncil()
-  // await setupJoyApi()
+  await setupJoyApi()
   joyBridgeOperator = councilAccounts[0]
   joyBridgePauser = councilAccounts[1]
   evmConfig = await getEvmConfig()
-  deploymentParams = getEvmDeploymentParams("", "").JoystreamEth
+  deploymentParams = getEvmDeploymentParams(
+    evmConfig.adminAccount,
+    evmConfig.operatorAccount,
+  ).JoystreamEth
 })
 
 afterAll(async () => await cleanup())
@@ -107,22 +110,30 @@ test("Squid available", async () => {
 })
 
 test("Initial squid state", async () => {
-  const { bridgeFee, mintingLimitPeriodLengthBlocks, mintingLimitPerPeriod } =
-    deploymentParams
+  const {
+    bridgeFee,
+    mintingLimitPeriodLengthBlocks,
+    mintingLimitPerPeriod,
+    timelockProposer,
+    bridgeOperator,
+  } = deploymentParams
 
   const timelocksResponse = await waitForSquid(
     () =>
-      request(API_URL, GetTimelockCallsDocument, {
+      request(API_URL, GetTimelockOperationsDocument, {
         where: {
-          callSignature_eq: "updateDelay",
+          calls_some: {
+            callSignature_eq: "updateDelay",
+          },
         },
       }),
     (response) =>
-      response.evmTimelockCalls?.[0].status === EvmTimelockCallStatus.Executed,
+      response.evmTimelockOperations?.[0].status ===
+      EvmTimelockOperationStatus.Executed,
   )
-  expect(timelocksResponse.evmTimelockCalls.length).toBeGreaterThan(0)
-  const firstCall = timelocksResponse.evmTimelockCalls[0]
-  expect(firstCall.status).toBe(EvmTimelockCallStatus.Executed)
+  expect(timelocksResponse.evmTimelockOperations.length).toBeGreaterThan(0)
+  const firstCall = timelocksResponse.evmTimelockOperations[0]
+  expect(firstCall.status).toBe(EvmTimelockOperationStatus.Executed)
 
   const bridgeConfig = await getEvmBridgeConfig()
   expect(bridgeConfig.id).toBe(evmChainId.toString())
@@ -137,6 +148,16 @@ test("Initial squid state", async () => {
   expect(bridgeConfig.mintingLimits.currentPeriodMinted).toBe("0")
   expect(bridgeConfig.totalMinted).toBe("0")
   expect(bridgeConfig.totalBurned).toBe("0")
+
+  expect(bridgeConfig.bridgeOperatorAccounts).toEqual([
+    bridgeOperator.toLowerCase(),
+  ])
+  expect(bridgeConfig.bridgeAdminAccounts).toEqual([
+    contracts.timelock.toLowerCase(),
+  ])
+  expect(bridgeConfig.timelockAdminAccounts).toEqual([
+    timelockProposer.toLowerCase(),
+  ])
 })
 
 test("Cancel EVM timelock call", async () => {
@@ -169,16 +190,17 @@ test("Cancel EVM timelock call", async () => {
 
   const timelocksResponse = await waitForSquid(
     () =>
-      request(API_URL, GetTimelockCallsDocument, {
+      request(API_URL, GetTimelockOperationsDocument, {
         where: {
-          callId_eq: operationHash,
+          operationId_eq: operationHash,
         },
       }),
     (response) =>
-      response.evmTimelockCalls[0].status === EvmTimelockCallStatus.Cancelled,
+      response?.evmTimelockOperations[0].status ===
+      EvmTimelockOperationStatus.Cancelled,
   )
-  const call = timelocksResponse.evmTimelockCalls[0]
-  expect(call.status).toBe(EvmTimelockCallStatus.Cancelled)
+  const call = timelocksResponse.evmTimelockOperations[0]
+  expect(call.status).toBe(EvmTimelockOperationStatus.Cancelled)
   expect(call.chainId).toBe(evmChainId)
   expect(call.cancelledAtBlock).toBe(Number(cancelResult.blockNumber))
   expect(call.cancelledTxHash).toBe(cancelTxHash)
@@ -195,16 +217,18 @@ test("Unpause EVM bridge", async () => {
 
   const timelocksResponse = await waitForSquid(
     () =>
-      request(API_URL, GetTimelockCallsDocument, {
+      request(API_URL, GetTimelockOperationsDocument, {
         where: {
-          callSignature_eq: "unpauseBridge",
+          calls_some: {
+            callSignature_eq: "unpauseBridge",
+          },
         },
       }),
-    (response) => response.evmTimelockCalls.length > 0,
+    (response) => response?.evmTimelockOperations.length > 0,
   )
-  expect(timelocksResponse.evmTimelockCalls.length).toBeGreaterThan(0)
-  const firstCall = timelocksResponse.evmTimelockCalls[0]
-  expect(firstCall.status).toBe(EvmTimelockCallStatus.Pending)
+  expect(timelocksResponse.evmTimelockOperations.length).toBeGreaterThan(0)
+  const firstCall = timelocksResponse.evmTimelockOperations[0]
+  expect(firstCall.status).toBe(EvmTimelockOperationStatus.Pending)
   const delayDoneTimestamp = new Date(firstCall.delayDoneTimestamp)
 
   await increaseTime(testClient, delayDoneTimestamp)
@@ -214,9 +238,9 @@ test("Unpause EVM bridge", async () => {
     account: otherAccount,
     functionName: "execute",
     args: [
-      firstCall.callTarget as Hex,
-      BigInt(firstCall.callValue),
-      firstCall.callData as Hex,
+      firstCall.calls[0].callTarget as Hex,
+      BigInt(firstCall.calls[0].callValue),
+      firstCall.calls[0].callData as Hex,
       firstCall.predecessor as Hex,
       firstCall.salt as Hex,
     ],
@@ -228,16 +252,17 @@ test("Unpause EVM bridge", async () => {
 
   const secondTimelocksResponse = await waitForSquid(
     () =>
-      request(API_URL, GetTimelockCallsDocument, {
+      request(API_URL, GetTimelockOperationsDocument, {
         where: {
           salt_eq: firstCall.salt,
         },
       }),
     (response) =>
-      response.evmTimelockCalls[0].status === EvmTimelockCallStatus.Executed,
+      response.evmTimelockOperations[0].status ===
+      EvmTimelockOperationStatus.Executed,
   )
-  expect(secondTimelocksResponse.evmTimelockCalls[0].status).toBe(
-    EvmTimelockCallStatus.Executed,
+  expect(secondTimelocksResponse.evmTimelockOperations[0].status).toBe(
+    EvmTimelockOperationStatus.Executed,
   )
 
   const bridgeConfigResponse = await waitForSquid(

@@ -23,6 +23,8 @@ if (!EVM_NETWORKS[EVM_NETWORK]) {
 
 export const NETWORK = EVM_NETWORKS[EVM_NETWORK]
 
+console.log(`Connecting to RPC endpoint: ${NETWORK.rpc.url}`)
+
 export const CHAIN_ID = NETWORK.chainId
 export const ARGO_ADDRESS = NETWORK.contracts.bridge.toLowerCase()
 export const TIMELOCK_ADDRESS = NETWORK.contracts.timelock.toLowerCase()
@@ -98,6 +100,14 @@ export const processor = new EvmBatchProcessor()
   .addLog({
     address: [TIMELOCK_ADDRESS],
     topic0: [timelockControllerAbi.events.MinDelayChange.topic],
+  })
+  .addLog({
+    address: [TIMELOCK_ADDRESS],
+    topic0: [timelockControllerAbi.events.RoleGranted.topic],
+  })
+  .addLog({
+    address: [TIMELOCK_ADDRESS],
+    topic0: [timelockControllerAbi.events.RoleRevoked.topic],
   })
 
 if (NETWORK.archiveName) {

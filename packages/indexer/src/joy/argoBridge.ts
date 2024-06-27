@@ -13,8 +13,8 @@ import {
   JoyBridgeThawnStartedEvent,
 } from "../model"
 import {
-  groupByClass,
   joyAccountCodec,
+  saveEvents,
   tryDecodeEthereumAddress,
 } from "../shared"
 import { argoBridge } from "./generated/events"
@@ -208,15 +208,11 @@ export async function handleJoyBridgeEvents(
     }
   }
 
-  const groupedEvents = groupByClass(parsedEvents)
-  const eventsSavePromises = Object.values(groupedEvents).map((events) =>
-    ctx.store.insert(events),
-  )
   await Promise.all([
     ctx.store.save([...existingTransfers.values()]),
     ctx.store.insert(newTransfers),
     ctx.store.save(bridgeConfig),
-    ...eventsSavePromises,
+    saveEvents(ctx, parsedEvents),
   ])
 }
 

@@ -1,1 +1,1 @@
-{"JoystreamEth":{"timelockDelay":120,"bridgeAdmin":"0x70997970C51812dc3A010C7d01b50e0d17dc79C8","bridgeOperator":"0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC","bridgeFee":100,"mintingLimitPeriodLengthBlocks":20,"mintingLimitPerPeriod":1000}}
+{"JoystreamEth":{"timelockDelay":120,"timelockProposer":"0x70997970C51812dc3A010C7d01b50e0d17dc79C8","bridgeOperator":"0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC","bridgeFee":100,"mintingLimitPeriodLengthBlocks":20,"mintingLimitPerPeriod":1000}}

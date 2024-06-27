@@ -8,11 +8,16 @@ export const startedProcesses: { proc: Subprocess; cmd: string }[] = []
 type RunOptions = {
   cwd?: string
   background?: boolean
+  env?: Record<string, string>
 }
 export async function run(args: string[], opts?: RunOptions) {
   const proc = Bun.spawn(args, {
     cwd: opts?.cwd,
     stderr: "pipe",
+    env: {
+      ...process.env,
+      ...opts?.env,
+    },
   })
   const cmd = args.join(" ")
 

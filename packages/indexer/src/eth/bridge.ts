@@ -5,7 +5,6 @@ import {
   EvmBridgeConfig,
   EvmBridgeFeeChangedEvent,
   EvmBridgeFeesWithdrawnEvent,
-  EvmBridgeMintingLimits,
   EvmBridgeMintingLimitsUpdatedEvent,
   EvmBridgeRoleGrantedEvent,
   EvmBridgeRoleRevokedEvent,
@@ -15,9 +14,10 @@ import {
   EvmBridgeTransferToJoystreamRequestedEvent,
   EvmBridgeTransferToJoystreamRevertedEvent,
 } from "../model"
-import { groupByClass } from "../shared"
+import { groupByClass, saveEvents } from "../shared"
 import * as argoBridgeAbi from "./abi/argoBridgeV1"
-import { ARGO_ADDRESS, CHAIN_ID, Context } from "./processor"
+import { CHAIN_ID, Context } from "./processor"
+import { getBridgeRolesLookup, getEvmBridgeConfig } from "./shared"
 import { EvmLog } from "./types"
 import { JOY_NETWORKS, getEntityId } from "@joystream/argo-core"
 import * as ss58 from "@subsquid/ss58"
@@ -40,33 +40,12 @@ const addressCodec = ss58.codec("joystream")
 const joyTransferId = (id: bigint) =>
   getEntityId(JOY_NETWORKS.mainnet.chainId, id)
 
-let BRIDGE_ADMIN_ROLE: string
-let BRIDGE_OPERATOR_ROLE: string
-let BRIDGE_PAUSER_ROLE: string
-let rolesSet = false
-
 export async function handleEvmBridgeEvents(
   logs: EvmLog[],
   ctx: Context,
 ): Promise<void> {
   const parsedEvents = parseRawLogs(logs)
-  if (!rolesSet && logs.length > 0) {
-    const ArgoContract = new argoBridgeAbi.Contract(
-      ctx,
-      logs[0].block,
-      ARGO_ADDRESS,
-    )
-    const results = await Promise.all([
-      ArgoContract.DEFAULT_ADMIN_ROLE(),
-      ArgoContract.OPERATOR_ROLE(),
-      ArgoContract.PAUSER_ROLE(),
-    ])
-    BRIDGE_ADMIN_ROLE = results[0]
-    BRIDGE_OPERATOR_ROLE = results[1]
-    BRIDGE_PAUSER_ROLE = results[2]
-
-    rolesSet = true
-  }
+  const rolesLookup = await getBridgeRolesLookup(ctx, logs)
 
   // load existing transfers from the database
   const transferIds = new Set<string>()
@@ -87,10 +66,7 @@ export async function handleEvmBridgeEvents(
   )
   const newTransfers: BridgeTransfer[] = []
 
-  const bridgeConfig =
-    (await ctx.store.findOneBy(EvmBridgeConfig, {
-      id: CHAIN_ID.toString(),
-    })) || getDefaultBridgeConfig(CHAIN_ID)
+  const bridgeConfig = await getEvmBridgeConfig(ctx, CHAIN_ID)
 
   for (const event of parsedEvents) {
     if (event instanceof EvmBridgeFeeChangedEvent) {
@@ -223,25 +199,29 @@ export async function handleEvmBridgeEvents(
       bridgeConfig.totalMinted += revertAmount
       bridgeConfig.mintingLimits.currentPeriodMinted += revertAmount
     } else if (event instanceof EvmBridgeRoleGrantedEvent) {
+      if (!rolesLookup) {
+        throw new Error("Roles lookup is not available")
+      }
       const { account, role } = event
-      if (role === BRIDGE_ADMIN_ROLE) {
-        bridgeConfig.adminAccounts.push(account)
-      } else if (role === BRIDGE_OPERATOR_ROLE) {
-        bridgeConfig.operatorAccounts.push(account)
-      } else if (role === BRIDGE_PAUSER_ROLE) {
+      if (role === rolesLookup.bridgeAdmin) {
+        bridgeConfig.bridgeAdminAccounts.push(account)
+      } else if (role === rolesLookup.bridgeOperator) {
+        bridgeConfig.bridgeOperatorAccounts.push(account)
+      } else if (role === rolesLookup.bridgePauser) {
         bridgeConfig.pauserAccounts.push(account)
       }
     } else if (event instanceof EvmBridgeRoleRevokedEvent) {
+      if (!rolesLookup) {
+        throw new Error("Roles lookup is not available")
+      }
       const { account, role } = event
-      if (role === BRIDGE_ADMIN_ROLE) {
-        bridgeConfig.adminAccounts = bridgeConfig.adminAccounts.filter(
-          (a) => a !== account,
-        )
-      } else if (role === BRIDGE_OPERATOR_ROLE) {
-        bridgeConfig.operatorAccounts = bridgeConfig.operatorAccounts.filter(
-          (a) => a !== account,
-        )
-      } else if (role === BRIDGE_PAUSER_ROLE) {
+      if (role === rolesLookup.bridgeAdmin) {
+        bridgeConfig.bridgeAdminAccounts =
+          bridgeConfig.bridgeAdminAccounts.filter((a) => a !== account)
+      } else if (role === rolesLookup.bridgeOperator) {
+        bridgeConfig.bridgeOperatorAccounts =
+          bridgeConfig.bridgeOperatorAccounts.filter((a) => a !== account)
+      } else if (role === rolesLookup.bridgePauser) {
         bridgeConfig.pauserAccounts = bridgeConfig.pauserAccounts.filter(
           (a) => a !== account,
         )
@@ -249,16 +229,11 @@ export async function handleEvmBridgeEvents(
     }
   }
 
-  const groupedEvents = groupByClass(parsedEvents)
-  const eventsSavePromises = Object.values(groupedEvents).map((events) =>
-    ctx.store.insert(events),
-  )
-
   await Promise.all([
     ctx.store.save([...existingTransfers.values()]),
     ctx.store.save(bridgeConfig),
     ctx.store.insert(newTransfers),
-    ...eventsSavePromises,
+    saveEvents(ctx, parsedEvents),
   ])
 }
 
@@ -408,21 +383,3 @@ function parseRawLogs(logs: EvmLog[]): EvmBridgeEvent[] {
 
   return parsedLogs
 }
-
-const getDefaultBridgeConfig = (chainId: number) =>
-  new EvmBridgeConfig({
-    id: chainId.toString(),
-    bridgingFee: 0n,
-    adminAccounts: [],
-    operatorAccounts: [],
-    pauserAccounts: [],
-    status: EvmBridgeStatus.PAUSED,
-    totalMinted: 0n,
-    totalBurned: 0n,
-    mintingLimits: new EvmBridgeMintingLimits({
-      currentPeriodEndBlock: 0,
-      currentPeriodMinted: 0n,
-      periodLimit: 0n,
-      periodLength: 0,
-    }),
-  })

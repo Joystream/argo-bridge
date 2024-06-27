@@ -44,7 +44,7 @@ export function getEvmDeploymentParams(
   return {
     JoystreamEth: {
       timelockDelay: 120,
-      bridgeAdmin: adminAccount,
+      timelockProposer: adminAccount,
       bridgeOperator: operatorAccount,
       bridgeFee: 100,
       mintingLimitPeriodLengthBlocks: 20,

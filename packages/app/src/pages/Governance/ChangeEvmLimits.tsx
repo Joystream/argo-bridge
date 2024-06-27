@@ -42,7 +42,12 @@ export const ChangeEvmLimits: FC = () => {
       args: [BigInt(values.newMintingPeriod), values.newMintingAmount],
     })
 
-    await scheduleCall(BRIDGE_ADDRESS, calldata)
+    await scheduleCall([
+      {
+        target: BRIDGE_ADDRESS,
+        calldata,
+      },
+    ])
   }
 
   return (

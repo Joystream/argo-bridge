@@ -1,3 +1,5 @@
+import { Context } from "./eth/processor"
+import { ProcessorContext } from "./joy/processor"
 import { codec } from "@subsquid/ss58"
 import { Address, isAddress, isHex, trim } from "viem"
 
@@ -18,4 +20,15 @@ export function groupByClass(list: any[]) {
     acc[key].push(item)
     return acc
   }, {})
+}
+
+export function saveEvents(
+  ctx: Context | ProcessorContext<any>,
+  events: any[],
+) {
+  const groupedEvents = groupByClass(events)
+  const eventsSavePromises = Object.values(groupedEvents).map((events) =>
+    ctx.store.insert(events),
+  )
+  return Promise.all(eventsSavePromises)
 }

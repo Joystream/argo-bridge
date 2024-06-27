@@ -1,5 +1,5 @@
-module.exports = class Data1718360633966 {
-    name = 'Data1718360633966'
+module.exports = class Data1719482513442 {
+    name = 'Data1719482513442'
 
     async up(db) {
         await db.query(`CREATE TABLE "bridge_transfer" ("id" character varying NOT NULL, "amount" numeric NOT NULL, "status" character varying(15) NOT NULL, "type" character varying(10) NOT NULL, "fee_paid" numeric NOT NULL, "source_chain_id" integer NOT NULL, "source_transfer_id" numeric NOT NULL, "source_account" text NOT NULL, "dest_chain_id" integer NOT NULL, "dest_account" text NOT NULL, "created_at_block" integer NOT NULL, "created_at_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "created_tx_hash" text NOT NULL, "completed_at_block" integer, "completed_at_timestamp" TIMESTAMP WITH TIME ZONE, "completed_tx_hash" text, "reverted_at_block" integer, "reverted_at_timestamp" TIMESTAMP WITH TIME ZONE, "reverted_tx_hash" text, "revert_reason" text, "revert_account" text, "revert_amount" numeric, CONSTRAINT "PK_fab0727701656a3e6c320fca6e9" PRIMARY KEY ("id"))`)
@@ -9,7 +9,7 @@ module.exports = class Data1718360633966 {
         await db.query(`CREATE INDEX "IDX_bc5ac7a9e6d71f087e4812cc4e" ON "bridge_transfer" ("source_account") `)
         await db.query(`CREATE INDEX "IDX_edd947da57d507d8022cee1b08" ON "bridge_transfer" ("dest_chain_id") `)
         await db.query(`CREATE INDEX "IDX_ee5e279f57a10f2a713ace3ed5" ON "bridge_transfer" ("dest_account") `)
-        await db.query(`CREATE TABLE "evm_bridge_config" ("id" character varying NOT NULL, "status" character varying(6) NOT NULL, "bridging_fee" numeric NOT NULL, "admin_accounts" text array NOT NULL, "operator_accounts" text array NOT NULL, "pauser_accounts" text array NOT NULL, "minting_limits" jsonb NOT NULL, "total_minted" numeric NOT NULL, "total_burned" numeric NOT NULL, CONSTRAINT "PK_8d0d9be7b260dfb3aa0a9592efa" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE TABLE "evm_bridge_config" ("id" character varying NOT NULL, "status" character varying(6) NOT NULL, "bridging_fee" numeric NOT NULL, "bridge_admin_accounts" text array NOT NULL, "bridge_operator_accounts" text array NOT NULL, "timelock_admin_accounts" text array NOT NULL, "pauser_accounts" text array NOT NULL, "minting_limits" jsonb NOT NULL, "total_minted" numeric NOT NULL, "total_burned" numeric NOT NULL, CONSTRAINT "PK_8d0d9be7b260dfb3aa0a9592efa" PRIMARY KEY ("id"))`)
         await db.query(`CREATE TABLE "evm_bridge_transfer_to_joystream_requested_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "amount" numeric NOT NULL, "eth_requester" text NOT NULL, "eth_transfer_id" numeric NOT NULL, "joy_dest_account" text NOT NULL, CONSTRAINT "PK_3adaebf1da03f59222adfabf81f" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_6474e195d55d75012dc425fcdd" ON "evm_bridge_transfer_to_joystream_requested_event" ("chain_id") `)
         await db.query(`CREATE TABLE "evm_bridge_transfer_to_eth_completed_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "joy_transfer_id" numeric NOT NULL, "eth_dest_address" text NOT NULL, "amount" numeric NOT NULL, CONSTRAINT "PK_17d82808f00d758405c32193bff" PRIMARY KEY ("id"))`)
@@ -28,9 +28,24 @@ module.exports = class Data1718360633966 {
         await db.query(`CREATE INDEX "IDX_4bcacca015c8c19c473e4e52d3" ON "evm_bridge_role_granted_event" ("chain_id") `)
         await db.query(`CREATE TABLE "evm_bridge_role_revoked_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "role" text NOT NULL, "account" text NOT NULL, CONSTRAINT "PK_158673a16c149b0b8d71273c2c8" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_62ec0e1bdfb5b71a1d690a6154" ON "evm_bridge_role_revoked_event" ("chain_id") `)
-        await db.query(`CREATE TABLE "evm_timelock_call" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "call_id" text NOT NULL, "status" character varying(9) NOT NULL, "created_at_block" integer NOT NULL, "created_at_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "created_tx_hash" text NOT NULL, "executed_at_block" integer, "executed_at_timestamp" TIMESTAMP WITH TIME ZONE, "executed_tx_hash" text, "cancelled_at_block" integer, "cancelled_at_timestamp" TIMESTAMP WITH TIME ZONE, "cancelled_tx_hash" text, "call_target" text NOT NULL, "call_value" numeric NOT NULL, "call_data" text NOT NULL, "call_signature" text, "call_args" text, "predecessor" text, "salt" text, "delay_done_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, CONSTRAINT "PK_b396eb1dbdce864526244730a88" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE TABLE "evm_timelock_call_scheduled_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "operation_id" text NOT NULL, "call_index" integer NOT NULL, "call_target" text NOT NULL, "call_value" numeric NOT NULL, "call_data" text NOT NULL, "predecessor" text, "delay" numeric NOT NULL, CONSTRAINT "PK_4ab8f13d500dc3f6f4da89efe91" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE INDEX "IDX_6984190611ad026f41cb875b38" ON "evm_timelock_call_scheduled_event" ("chain_id") `)
+        await db.query(`CREATE TABLE "evm_timelock_call_salt_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "operation_id" text NOT NULL, "salt" text NOT NULL, CONSTRAINT "PK_49a0fa2fa52daa67330d53c0539" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE INDEX "IDX_82eb54de0e93d74c55739cc11c" ON "evm_timelock_call_salt_event" ("chain_id") `)
+        await db.query(`CREATE TABLE "evm_timelock_call_executed_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "operation_id" text NOT NULL, "call_index" integer NOT NULL, CONSTRAINT "PK_200ccf7b1939976421f57443826" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE INDEX "IDX_0b023d0096d9a9be632f8b2ec8" ON "evm_timelock_call_executed_event" ("chain_id") `)
+        await db.query(`CREATE TABLE "evm_timelock_operation_cancelled_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "operation_id" text NOT NULL, CONSTRAINT "PK_1974d974c7e3816bf06e7df3d3e" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE INDEX "IDX_e4bfb2da1e090984cafaa9a17e" ON "evm_timelock_operation_cancelled_event" ("chain_id") `)
+        await db.query(`CREATE TABLE "evm_timelock_role_granted_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "role" text NOT NULL, "account" text NOT NULL, CONSTRAINT "PK_997a1b5910d1b3a8e1ed0efbea6" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE INDEX "IDX_607e26dd56e206f1b72a0272fc" ON "evm_timelock_role_granted_event" ("chain_id") `)
+        await db.query(`CREATE TABLE "evm_timelock_role_revoked_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "role" text NOT NULL, "account" text NOT NULL, CONSTRAINT "PK_e33511c0f763c783b1d516a4566" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE INDEX "IDX_b1112b27daa4d99db4341d5ca1" ON "evm_timelock_role_revoked_event" ("chain_id") `)
+        await db.query(`CREATE TABLE "evm_timelock_operation" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "operation_id" text NOT NULL, "status" character varying(9) NOT NULL, "created_at_block" integer NOT NULL, "created_at_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "created_tx_hash" text NOT NULL, "executed_at_block" integer, "executed_at_timestamp" TIMESTAMP WITH TIME ZONE, "executed_tx_hash" text, "cancelled_at_block" integer, "cancelled_at_timestamp" TIMESTAMP WITH TIME ZONE, "cancelled_tx_hash" text, "predecessor" text, "salt" text, "delay_done_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, CONSTRAINT "PK_e824f6c4000c834d1c1e887d5e7" PRIMARY KEY ("id"))`)
+        await db.query(`CREATE INDEX "IDX_462058dfdeb5e5817852c470ad" ON "evm_timelock_operation" ("chain_id") `)
+        await db.query(`CREATE INDEX "IDX_63c77f60a53e82c5fe9d7e7a30" ON "evm_timelock_operation" ("operation_id") `)
+        await db.query(`CREATE TABLE "evm_timelock_call" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "call_index" integer NOT NULL, "call_target" text NOT NULL, "call_value" numeric NOT NULL, "call_data" text NOT NULL, "call_signature" text, "call_args" text, "operation_id" character varying, CONSTRAINT "PK_b396eb1dbdce864526244730a88" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_f852e8a783fa16355763fd26b0" ON "evm_timelock_call" ("chain_id") `)
-        await db.query(`CREATE INDEX "IDX_4105b818ff699d64882f3dfa82" ON "evm_timelock_call" ("call_id") `)
+        await db.query(`CREATE INDEX "IDX_5ba0e5edd664f66b5d46ba4c12" ON "evm_timelock_call" ("operation_id") `)
         await db.query(`CREATE TABLE "joy_bridge_config_updated_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "new_operator_account" text, "new_pauser_accounts" text array, "new_bridging_fee" numeric, "new_thawn_duration" integer, "new_remote_chains" integer array, CONSTRAINT "PK_1fe1b5d975ae75b9bd5e224751a" PRIMARY KEY ("id"))`)
         await db.query(`CREATE TABLE "joy_bridge_thawn_started_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "account" text NOT NULL, "thawn_ends_at_block" integer NOT NULL, CONSTRAINT "PK_974e0a081368c06240277bd96e2" PRIMARY KEY ("id"))`)
         await db.query(`CREATE TABLE "joy_bridge_thawn_finished_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, CONSTRAINT "PK_fc157e53361378c8d0fe139a871" PRIMARY KEY ("id"))`)
@@ -39,6 +54,7 @@ module.exports = class Data1718360633966 {
         await db.query(`CREATE TABLE "joy_bridge_inbound_transfer_finalized_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "remote_transfer_id" numeric NOT NULL, "remote_chain_id" integer NOT NULL, "joy_dest_account" text NOT NULL, "amount" numeric NOT NULL, CONSTRAINT "PK_1d7f32a00a93419463b078ebda8" PRIMARY KEY ("id"))`)
         await db.query(`CREATE TABLE "joy_bridge_outbound_transfer_reverted_event" ("id" character varying NOT NULL, "chain_id" integer NOT NULL, "tx_hash" text NOT NULL, "block" integer NOT NULL, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "joy_transfer_id" numeric NOT NULL, "revert_account" text NOT NULL, "revert_amount" numeric NOT NULL, "rationale" text NOT NULL, CONSTRAINT "PK_1d76b2110eabc76f42336517168" PRIMARY KEY ("id"))`)
         await db.query(`CREATE TABLE "joy_bridge_config" ("id" character varying NOT NULL, "status" character varying(6) NOT NULL, "thawn_ends_at_block" integer, "bridging_fee" numeric NOT NULL, "thawn_duration_blocks" integer NOT NULL, "mint_allowance" numeric NOT NULL, "operator_account" text NOT NULL, "pauser_accounts" text array NOT NULL, "total_minted" numeric NOT NULL, "total_burned" numeric NOT NULL, "fees_burned" numeric NOT NULL, "supported_remote_chain_ids" integer array NOT NULL, CONSTRAINT "PK_c1468e5ec004c72ea20b61889b5" PRIMARY KEY ("id"))`)
+        await db.query(`ALTER TABLE "evm_timelock_call" ADD CONSTRAINT "FK_5ba0e5edd664f66b5d46ba4c12e" FOREIGN KEY ("operation_id") REFERENCES "evm_timelock_operation"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
     }
 
     async down(db) {
@@ -68,9 +84,24 @@ module.exports = class Data1718360633966 {
         await db.query(`DROP INDEX "public"."IDX_4bcacca015c8c19c473e4e52d3"`)
         await db.query(`DROP TABLE "evm_bridge_role_revoked_event"`)
         await db.query(`DROP INDEX "public"."IDX_62ec0e1bdfb5b71a1d690a6154"`)
+        await db.query(`DROP TABLE "evm_timelock_call_scheduled_event"`)
+        await db.query(`DROP INDEX "public"."IDX_6984190611ad026f41cb875b38"`)
+        await db.query(`DROP TABLE "evm_timelock_call_salt_event"`)
+        await db.query(`DROP INDEX "public"."IDX_82eb54de0e93d74c55739cc11c"`)
+        await db.query(`DROP TABLE "evm_timelock_call_executed_event"`)
+        await db.query(`DROP INDEX "public"."IDX_0b023d0096d9a9be632f8b2ec8"`)
+        await db.query(`DROP TABLE "evm_timelock_operation_cancelled_event"`)
+        await db.query(`DROP INDEX "public"."IDX_e4bfb2da1e090984cafaa9a17e"`)
+        await db.query(`DROP TABLE "evm_timelock_role_granted_event"`)
+        await db.query(`DROP INDEX "public"."IDX_607e26dd56e206f1b72a0272fc"`)
+        await db.query(`DROP TABLE "evm_timelock_role_revoked_event"`)
+        await db.query(`DROP INDEX "public"."IDX_b1112b27daa4d99db4341d5ca1"`)
+        await db.query(`DROP TABLE "evm_timelock_operation"`)
+        await db.query(`DROP INDEX "public"."IDX_462058dfdeb5e5817852c470ad"`)
+        await db.query(`DROP INDEX "public"."IDX_63c77f60a53e82c5fe9d7e7a30"`)
         await db.query(`DROP TABLE "evm_timelock_call"`)
         await db.query(`DROP INDEX "public"."IDX_f852e8a783fa16355763fd26b0"`)
-        await db.query(`DROP INDEX "public"."IDX_4105b818ff699d64882f3dfa82"`)
+        await db.query(`DROP INDEX "public"."IDX_5ba0e5edd664f66b5d46ba4c12"`)
         await db.query(`DROP TABLE "joy_bridge_config_updated_event"`)
         await db.query(`DROP TABLE "joy_bridge_thawn_started_event"`)
         await db.query(`DROP TABLE "joy_bridge_thawn_finished_event"`)
@@ -79,5 +110,6 @@ module.exports = class Data1718360633966 {
         await db.query(`DROP TABLE "joy_bridge_inbound_transfer_finalized_event"`)
         await db.query(`DROP TABLE "joy_bridge_outbound_transfer_reverted_event"`)
         await db.query(`DROP TABLE "joy_bridge_config"`)
+        await db.query(`ALTER TABLE "evm_timelock_call" DROP CONSTRAINT "FK_5ba0e5edd664f66b5d46ba4c12e"`)
     }
 }

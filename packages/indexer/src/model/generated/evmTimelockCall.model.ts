@@ -1,5 +1,5 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, IntColumn as IntColumn_, Index as Index_, StringColumn as StringColumn_, DateTimeColumn as DateTimeColumn_, BigIntColumn as BigIntColumn_} from "@subsquid/typeorm-store"
-import {EvmTimelockCallStatus} from "./_evmTimelockCallStatus"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, IntColumn as IntColumn_, Index as Index_, ManyToOne as ManyToOne_, StringColumn as StringColumn_, BigIntColumn as BigIntColumn_} from "@subsquid/typeorm-store"
+import {EvmTimelockOperation} from "./evmTimelockOperation.model"
 
 @Entity_()
 export class EvmTimelockCall {
@@ -15,38 +15,11 @@ export class EvmTimelockCall {
     chainId!: number
 
     @Index_()
-    @StringColumn_({nullable: false})
-    callId!: string
-
-    @Column_("varchar", {length: 9, nullable: false})
-    status!: EvmTimelockCallStatus
+    @ManyToOne_(() => EvmTimelockOperation, {nullable: true})
+    operation!: EvmTimelockOperation
 
     @IntColumn_({nullable: false})
-    createdAtBlock!: number
-
-    @DateTimeColumn_({nullable: false})
-    createdAtTimestamp!: Date
-
-    @StringColumn_({nullable: false})
-    createdTxHash!: string
-
-    @IntColumn_({nullable: true})
-    executedAtBlock!: number | undefined | null
-
-    @DateTimeColumn_({nullable: true})
-    executedAtTimestamp!: Date | undefined | null
-
-    @StringColumn_({nullable: true})
-    executedTxHash!: string | undefined | null
-
-    @IntColumn_({nullable: true})
-    cancelledAtBlock!: number | undefined | null
-
-    @DateTimeColumn_({nullable: true})
-    cancelledAtTimestamp!: Date | undefined | null
-
-    @StringColumn_({nullable: true})
-    cancelledTxHash!: string | undefined | null
+    callIndex!: number
 
     @StringColumn_({nullable: false})
     callTarget!: string
@@ -62,13 +35,4 @@ export class EvmTimelockCall {
 
     @StringColumn_({nullable: true})
     callArgs!: string | undefined | null
-
-    @StringColumn_({nullable: true})
-    predecessor!: string | undefined | null
-
-    @StringColumn_({nullable: true})
-    salt!: string | undefined | null
-
-    @DateTimeColumn_({nullable: false})
-    delayDoneTimestamp!: Date
 }

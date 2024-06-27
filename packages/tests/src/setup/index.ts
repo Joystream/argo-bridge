@@ -55,6 +55,9 @@ export async function setup(): Promise<void> {
     await run(["bunx", "sqd", "process:prod:eth"], {
       cwd: "../indexer",
       background: true,
+      env: {
+        EVM_NETWORK: "hardhat",
+      },
     })
     printDone()
 
@@ -62,6 +65,9 @@ export async function setup(): Promise<void> {
     await run(["bunx", "sqd", "process:prod:joy"], {
       cwd: "../indexer",
       background: true,
+      env: {
+        JOY_NETWORK: "local",
+      },
     })
     printDone()
 

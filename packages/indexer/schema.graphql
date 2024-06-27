@@ -66,8 +66,9 @@ type EvmBridgeConfig @entity {
   id: ID!
   status: EvmBridgeStatus!
   bridgingFee: BigInt!
-  adminAccounts: [String!]!
-  operatorAccounts: [String!]!
+  bridgeAdminAccounts: [String!]!
+  bridgeOperatorAccounts: [String!]!
+  timelockAdminAccounts: [String!]!
   pauserAccounts: [String!]!
   mintingLimits: EvmBridgeMintingLimits!
   totalMinted: BigInt!
@@ -169,18 +170,97 @@ type EvmBridgeRoleRevokedEvent implements Event @entity {
 
 ### TIMELOCK ###
 
-enum EvmTimelockCallStatus {
+type EvmTimelockCallScheduledEvent implements Event @entity {
+  id: ID!
+  chainId: Int! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  operationId: String!
+  callIndex: Int!
+  callTarget: String!
+  callValue: BigInt!
+  callData: String!
+  predecessor: String
+  delay: BigInt!
+}
+
+type EvmTimelockCallSaltEvent implements Event @entity {
+  id: ID!
+  chainId: Int! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  operationId: String!
+  salt: String!
+}
+
+type EvmTimelockCallExecutedEvent implements Event @entity {
+  id: ID!
+  chainId: Int! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  operationId: String!
+  callIndex: Int!
+}
+
+type EvmTimelockOperationCancelledEvent implements Event @entity {
+  id: ID!
+  chainId: Int! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  operationId: String!
+}
+
+type EvmTimelockRoleGrantedEvent implements Event @entity {
+  id: ID!
+  chainId: Int! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  role: String!
+  account: String!
+}
+
+type EvmTimelockRoleRevokedEvent implements Event @entity {
+  id: ID!
+  chainId: Int! @index
+  txHash: String!
+  block: Int!
+  timestamp: DateTime!
+  role: String!
+  account: String!
+}
+
+enum EvmTimelockOperationStatus {
   PENDING
   EXECUTED
   CANCELLED
 }
 
 type EvmTimelockCall @entity {
-  id: ID! # chainId-callId
+  id: ID! # chainId-operationId-callIndex
   chainId: Int! @index
-  callId: String! @index
+  operation: EvmTimelockOperation!
+  callIndex: Int!
 
-  status: EvmTimelockCallStatus!
+  callTarget: String!
+  callValue: BigInt!
+  callData: String!
+  callSignature: String
+  callArgs: String
+}
+
+type EvmTimelockOperation @entity {
+  id: ID! # chainId-operationId
+  chainId: Int! @index
+  operationId: String! @index
+
+  calls: [EvmTimelockCall!] @derivedFrom(field: "operation")
+
+  status: EvmTimelockOperationStatus!
   createdAtBlock: Int!
   createdAtTimestamp: DateTime!
   createdTxHash: String!
@@ -192,26 +272,11 @@ type EvmTimelockCall @entity {
   cancelledAtTimestamp: DateTime
   cancelledTxHash: String
 
-  callTarget: String!
-  callValue: BigInt!
-  callData: String!
-  callSignature: String
-  callArgs: String
-
   predecessor: String
   salt: String
 
   delayDoneTimestamp: DateTime!
 }
-
-#type EvmTimelockCallScheduledEvent implements Event @entity {
-#  id: ID!
-#  chainId: Int! @index
-#  txHash: String!
-#  block: Int!
-#  timestamp: DateTime!
-#  callId: ID!
-#}
 
 ### JOYSTREAM ARGO PALLET ###
 

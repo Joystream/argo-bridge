@@ -12,7 +12,9 @@ import { useQuery } from '@tanstack/react-query'
 export type EvmBridgeConfig = {
   id: string
   status: EvmBridgeStatus
-  operatorAccounts: Address[]
+  bridgeOperatorAccounts: Address[]
+  bridgeAdminAccounts: Address[]
+  timelockAdminAccounts: Address[]
   pauserAccounts: Address[]
   mintingLimits: {
     periodLength: number
@@ -21,7 +23,6 @@ export type EvmBridgeConfig = {
     currentPeriodEndBlock: number
   }
   bridgingFee: bigint
-  adminAccounts: Address[]
   totalBurned: bigint
   totalMinted: bigint
 }
@@ -47,7 +48,9 @@ function parseEvmBridgeConfig(
   return {
     id: raw.id,
     status: raw.status,
-    operatorAccounts: raw.operatorAccounts as Address[],
+    bridgeOperatorAccounts: raw.bridgeOperatorAccounts as Address[],
+    bridgeAdminAccounts: raw.bridgeAdminAccounts as Address[],
+    timelockAdminAccounts: raw.timelockAdminAccounts as Address[],
     pauserAccounts: raw.pauserAccounts as Address[],
     mintingLimits: {
       periodLength: raw.mintingLimits.periodLength,
@@ -56,7 +59,6 @@ function parseEvmBridgeConfig(
       currentPeriodEndBlock: raw.mintingLimits.currentPeriodEndBlock,
     },
     bridgingFee: BigInt(raw.bridgingFee),
-    adminAccounts: raw.adminAccounts as Address[],
     totalBurned: BigInt(raw.totalBurned),
     totalMinted: BigInt(raw.totalMinted),
   }

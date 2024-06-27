@@ -475,13 +475,14 @@ export type Event = {
 
 export type EvmBridgeConfig = {
   __typename?: 'EvmBridgeConfig';
-  adminAccounts: Array<Scalars['String']['output']>;
+  bridgeAdminAccounts: Array<Scalars['String']['output']>;
+  bridgeOperatorAccounts: Array<Scalars['String']['output']>;
   bridgingFee: Scalars['BigInt']['output'];
   id: Scalars['String']['output'];
   mintingLimits: EvmBridgeMintingLimits;
-  operatorAccounts: Array<Scalars['String']['output']>;
   pauserAccounts: Array<Scalars['String']['output']>;
   status: EvmBridgeStatus;
+  timelockAdminAccounts: Array<Scalars['String']['output']>;
   totalBurned: Scalars['BigInt']['output'];
   totalMinted: Scalars['BigInt']['output'];
 };
@@ -552,10 +553,14 @@ export enum EvmBridgeConfigOrderByInput {
 export type EvmBridgeConfigWhereInput = {
   AND?: InputMaybe<Array<EvmBridgeConfigWhereInput>>;
   OR?: InputMaybe<Array<EvmBridgeConfigWhereInput>>;
-  adminAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
-  adminAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
-  adminAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;
-  adminAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  bridgeAdminAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
+  bridgeAdminAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
+  bridgeAdminAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;
+  bridgeAdminAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  bridgeOperatorAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
+  bridgeOperatorAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
+  bridgeOperatorAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;
+  bridgeOperatorAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>;
   bridgingFee_eq?: InputMaybe<Scalars['BigInt']['input']>;
   bridgingFee_gt?: InputMaybe<Scalars['BigInt']['input']>;
   bridgingFee_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -584,10 +589,6 @@ export type EvmBridgeConfigWhereInput = {
   id_startsWith?: InputMaybe<Scalars['String']['input']>;
   mintingLimits?: InputMaybe<EvmBridgeMintingLimitsWhereInput>;
   mintingLimits_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  operatorAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
-  operatorAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
-  operatorAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;
-  operatorAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>;
   pauserAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
   pauserAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
   pauserAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -597,6 +598,10 @@ export type EvmBridgeConfigWhereInput = {
   status_isNull?: InputMaybe<Scalars['Boolean']['input']>;
   status_not_eq?: InputMaybe<EvmBridgeStatus>;
   status_not_in?: InputMaybe<Array<EvmBridgeStatus>>;
+  timelockAdminAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
+  timelockAdminAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
+  timelockAdminAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;
+  timelockAdminAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>;
   totalBurned_eq?: InputMaybe<Scalars['BigInt']['input']>;
   totalBurned_gt?: InputMaybe<Scalars['BigInt']['input']>;
   totalBurned_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -2181,31 +2186,180 @@ export type EvmTimelockCall = {
   __typename?: 'EvmTimelockCall';
   callArgs?: Maybe<Scalars['String']['output']>;
   callData: Scalars['String']['output'];
-  callId: Scalars['String']['output'];
+  callIndex: Scalars['Int']['output'];
   callSignature?: Maybe<Scalars['String']['output']>;
   callTarget: Scalars['String']['output'];
   callValue: Scalars['BigInt']['output'];
-  cancelledAtBlock?: Maybe<Scalars['Int']['output']>;
-  cancelledAtTimestamp?: Maybe<Scalars['DateTime']['output']>;
-  cancelledTxHash?: Maybe<Scalars['String']['output']>;
   chainId: Scalars['Int']['output'];
-  createdAtBlock: Scalars['Int']['output'];
-  createdAtTimestamp: Scalars['DateTime']['output'];
-  createdTxHash: Scalars['String']['output'];
-  delayDoneTimestamp: Scalars['DateTime']['output'];
-  executedAtBlock?: Maybe<Scalars['Int']['output']>;
-  executedAtTimestamp?: Maybe<Scalars['DateTime']['output']>;
-  executedTxHash?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
-  predecessor?: Maybe<Scalars['String']['output']>;
-  salt?: Maybe<Scalars['String']['output']>;
-  status: EvmTimelockCallStatus;
+  operation: EvmTimelockOperation;
 };
 
 export type EvmTimelockCallEdge = {
   __typename?: 'EvmTimelockCallEdge';
   cursor: Scalars['String']['output'];
   node: EvmTimelockCall;
+};
+
+export type EvmTimelockCallExecutedEvent = Event & {
+  __typename?: 'EvmTimelockCallExecutedEvent';
+  block: Scalars['Int']['output'];
+  callIndex: Scalars['Int']['output'];
+  chainId: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  operationId: Scalars['String']['output'];
+  timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
+};
+
+export type EvmTimelockCallExecutedEventEdge = {
+  __typename?: 'EvmTimelockCallExecutedEventEdge';
+  cursor: Scalars['String']['output'];
+  node: EvmTimelockCallExecutedEvent;
+};
+
+export enum EvmTimelockCallExecutedEventOrderByInput {
+  BlockAsc = 'block_ASC',
+  BlockAscNullsFirst = 'block_ASC_NULLS_FIRST',
+  BlockAscNullsLast = 'block_ASC_NULLS_LAST',
+  BlockDesc = 'block_DESC',
+  BlockDescNullsFirst = 'block_DESC_NULLS_FIRST',
+  BlockDescNullsLast = 'block_DESC_NULLS_LAST',
+  CallIndexAsc = 'callIndex_ASC',
+  CallIndexAscNullsFirst = 'callIndex_ASC_NULLS_FIRST',
+  CallIndexAscNullsLast = 'callIndex_ASC_NULLS_LAST',
+  CallIndexDesc = 'callIndex_DESC',
+  CallIndexDescNullsFirst = 'callIndex_DESC_NULLS_FIRST',
+  CallIndexDescNullsLast = 'callIndex_DESC_NULLS_LAST',
+  ChainIdAsc = 'chainId_ASC',
+  ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
+  ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
+  ChainIdDesc = 'chainId_DESC',
+  ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
+  ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  OperationIdAsc = 'operationId_ASC',
+  OperationIdAscNullsFirst = 'operationId_ASC_NULLS_FIRST',
+  OperationIdAscNullsLast = 'operationId_ASC_NULLS_LAST',
+  OperationIdDesc = 'operationId_DESC',
+  OperationIdDescNullsFirst = 'operationId_DESC_NULLS_FIRST',
+  OperationIdDescNullsLast = 'operationId_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+}
+
+export type EvmTimelockCallExecutedEventWhereInput = {
+  AND?: InputMaybe<Array<EvmTimelockCallExecutedEventWhereInput>>;
+  OR?: InputMaybe<Array<EvmTimelockCallExecutedEventWhereInput>>;
+  block_eq?: InputMaybe<Scalars['Int']['input']>;
+  block_gt?: InputMaybe<Scalars['Int']['input']>;
+  block_gte?: InputMaybe<Scalars['Int']['input']>;
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  block_lt?: InputMaybe<Scalars['Int']['input']>;
+  block_lte?: InputMaybe<Scalars['Int']['input']>;
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  callIndex_eq?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_gt?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_gte?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  callIndex_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  callIndex_lt?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_lte?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_contains?: InputMaybe<Scalars['String']['input']>;
+  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  operationId_endsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_eq?: InputMaybe<Scalars['String']['input']>;
+  operationId_gt?: InputMaybe<Scalars['String']['input']>;
+  operationId_gte?: InputMaybe<Scalars['String']['input']>;
+  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  operationId_lt?: InputMaybe<Scalars['String']['input']>;
+  operationId_lte?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_eq?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_startsWith?: InputMaybe<Scalars['String']['input']>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type EvmTimelockCallExecutedEventsConnection = {
+  __typename?: 'EvmTimelockCallExecutedEventsConnection';
+  edges: Array<EvmTimelockCallExecutedEventEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
 };
 
 export enum EvmTimelockCallOrderByInput {
@@ -2221,12 +2375,12 @@ export enum EvmTimelockCallOrderByInput {
   CallDataDesc = 'callData_DESC',
   CallDataDescNullsFirst = 'callData_DESC_NULLS_FIRST',
   CallDataDescNullsLast = 'callData_DESC_NULLS_LAST',
-  CallIdAsc = 'callId_ASC',
-  CallIdAscNullsFirst = 'callId_ASC_NULLS_FIRST',
-  CallIdAscNullsLast = 'callId_ASC_NULLS_LAST',
-  CallIdDesc = 'callId_DESC',
-  CallIdDescNullsFirst = 'callId_DESC_NULLS_FIRST',
-  CallIdDescNullsLast = 'callId_DESC_NULLS_LAST',
+  CallIndexAsc = 'callIndex_ASC',
+  CallIndexAscNullsFirst = 'callIndex_ASC_NULLS_FIRST',
+  CallIndexAscNullsLast = 'callIndex_ASC_NULLS_LAST',
+  CallIndexDesc = 'callIndex_DESC',
+  CallIndexDescNullsFirst = 'callIndex_DESC_NULLS_FIRST',
+  CallIndexDescNullsLast = 'callIndex_DESC_NULLS_LAST',
   CallSignatureAsc = 'callSignature_ASC',
   CallSignatureAscNullsFirst = 'callSignature_ASC_NULLS_FIRST',
   CallSignatureAscNullsLast = 'callSignature_ASC_NULLS_LAST',
@@ -2245,6 +2399,857 @@ export enum EvmTimelockCallOrderByInput {
   CallValueDesc = 'callValue_DESC',
   CallValueDescNullsFirst = 'callValue_DESC_NULLS_FIRST',
   CallValueDescNullsLast = 'callValue_DESC_NULLS_LAST',
+  ChainIdAsc = 'chainId_ASC',
+  ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
+  ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
+  ChainIdDesc = 'chainId_DESC',
+  ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
+  ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  OperationCancelledAtBlockAsc = 'operation_cancelledAtBlock_ASC',
+  OperationCancelledAtBlockAscNullsFirst = 'operation_cancelledAtBlock_ASC_NULLS_FIRST',
+  OperationCancelledAtBlockAscNullsLast = 'operation_cancelledAtBlock_ASC_NULLS_LAST',
+  OperationCancelledAtBlockDesc = 'operation_cancelledAtBlock_DESC',
+  OperationCancelledAtBlockDescNullsFirst = 'operation_cancelledAtBlock_DESC_NULLS_FIRST',
+  OperationCancelledAtBlockDescNullsLast = 'operation_cancelledAtBlock_DESC_NULLS_LAST',
+  OperationCancelledAtTimestampAsc = 'operation_cancelledAtTimestamp_ASC',
+  OperationCancelledAtTimestampAscNullsFirst = 'operation_cancelledAtTimestamp_ASC_NULLS_FIRST',
+  OperationCancelledAtTimestampAscNullsLast = 'operation_cancelledAtTimestamp_ASC_NULLS_LAST',
+  OperationCancelledAtTimestampDesc = 'operation_cancelledAtTimestamp_DESC',
+  OperationCancelledAtTimestampDescNullsFirst = 'operation_cancelledAtTimestamp_DESC_NULLS_FIRST',
+  OperationCancelledAtTimestampDescNullsLast = 'operation_cancelledAtTimestamp_DESC_NULLS_LAST',
+  OperationCancelledTxHashAsc = 'operation_cancelledTxHash_ASC',
+  OperationCancelledTxHashAscNullsFirst = 'operation_cancelledTxHash_ASC_NULLS_FIRST',
+  OperationCancelledTxHashAscNullsLast = 'operation_cancelledTxHash_ASC_NULLS_LAST',
+  OperationCancelledTxHashDesc = 'operation_cancelledTxHash_DESC',
+  OperationCancelledTxHashDescNullsFirst = 'operation_cancelledTxHash_DESC_NULLS_FIRST',
+  OperationCancelledTxHashDescNullsLast = 'operation_cancelledTxHash_DESC_NULLS_LAST',
+  OperationChainIdAsc = 'operation_chainId_ASC',
+  OperationChainIdAscNullsFirst = 'operation_chainId_ASC_NULLS_FIRST',
+  OperationChainIdAscNullsLast = 'operation_chainId_ASC_NULLS_LAST',
+  OperationChainIdDesc = 'operation_chainId_DESC',
+  OperationChainIdDescNullsFirst = 'operation_chainId_DESC_NULLS_FIRST',
+  OperationChainIdDescNullsLast = 'operation_chainId_DESC_NULLS_LAST',
+  OperationCreatedAtBlockAsc = 'operation_createdAtBlock_ASC',
+  OperationCreatedAtBlockAscNullsFirst = 'operation_createdAtBlock_ASC_NULLS_FIRST',
+  OperationCreatedAtBlockAscNullsLast = 'operation_createdAtBlock_ASC_NULLS_LAST',
+  OperationCreatedAtBlockDesc = 'operation_createdAtBlock_DESC',
+  OperationCreatedAtBlockDescNullsFirst = 'operation_createdAtBlock_DESC_NULLS_FIRST',
+  OperationCreatedAtBlockDescNullsLast = 'operation_createdAtBlock_DESC_NULLS_LAST',
+  OperationCreatedAtTimestampAsc = 'operation_createdAtTimestamp_ASC',
+  OperationCreatedAtTimestampAscNullsFirst = 'operation_createdAtTimestamp_ASC_NULLS_FIRST',
+  OperationCreatedAtTimestampAscNullsLast = 'operation_createdAtTimestamp_ASC_NULLS_LAST',
+  OperationCreatedAtTimestampDesc = 'operation_createdAtTimestamp_DESC',
+  OperationCreatedAtTimestampDescNullsFirst = 'operation_createdAtTimestamp_DESC_NULLS_FIRST',
+  OperationCreatedAtTimestampDescNullsLast = 'operation_createdAtTimestamp_DESC_NULLS_LAST',
+  OperationCreatedTxHashAsc = 'operation_createdTxHash_ASC',
+  OperationCreatedTxHashAscNullsFirst = 'operation_createdTxHash_ASC_NULLS_FIRST',
+  OperationCreatedTxHashAscNullsLast = 'operation_createdTxHash_ASC_NULLS_LAST',
+  OperationCreatedTxHashDesc = 'operation_createdTxHash_DESC',
+  OperationCreatedTxHashDescNullsFirst = 'operation_createdTxHash_DESC_NULLS_FIRST',
+  OperationCreatedTxHashDescNullsLast = 'operation_createdTxHash_DESC_NULLS_LAST',
+  OperationDelayDoneTimestampAsc = 'operation_delayDoneTimestamp_ASC',
+  OperationDelayDoneTimestampAscNullsFirst = 'operation_delayDoneTimestamp_ASC_NULLS_FIRST',
+  OperationDelayDoneTimestampAscNullsLast = 'operation_delayDoneTimestamp_ASC_NULLS_LAST',
+  OperationDelayDoneTimestampDesc = 'operation_delayDoneTimestamp_DESC',
+  OperationDelayDoneTimestampDescNullsFirst = 'operation_delayDoneTimestamp_DESC_NULLS_FIRST',
+  OperationDelayDoneTimestampDescNullsLast = 'operation_delayDoneTimestamp_DESC_NULLS_LAST',
+  OperationExecutedAtBlockAsc = 'operation_executedAtBlock_ASC',
+  OperationExecutedAtBlockAscNullsFirst = 'operation_executedAtBlock_ASC_NULLS_FIRST',
+  OperationExecutedAtBlockAscNullsLast = 'operation_executedAtBlock_ASC_NULLS_LAST',
+  OperationExecutedAtBlockDesc = 'operation_executedAtBlock_DESC',
+  OperationExecutedAtBlockDescNullsFirst = 'operation_executedAtBlock_DESC_NULLS_FIRST',
+  OperationExecutedAtBlockDescNullsLast = 'operation_executedAtBlock_DESC_NULLS_LAST',
+  OperationExecutedAtTimestampAsc = 'operation_executedAtTimestamp_ASC',
+  OperationExecutedAtTimestampAscNullsFirst = 'operation_executedAtTimestamp_ASC_NULLS_FIRST',
+  OperationExecutedAtTimestampAscNullsLast = 'operation_executedAtTimestamp_ASC_NULLS_LAST',
+  OperationExecutedAtTimestampDesc = 'operation_executedAtTimestamp_DESC',
+  OperationExecutedAtTimestampDescNullsFirst = 'operation_executedAtTimestamp_DESC_NULLS_FIRST',
+  OperationExecutedAtTimestampDescNullsLast = 'operation_executedAtTimestamp_DESC_NULLS_LAST',
+  OperationExecutedTxHashAsc = 'operation_executedTxHash_ASC',
+  OperationExecutedTxHashAscNullsFirst = 'operation_executedTxHash_ASC_NULLS_FIRST',
+  OperationExecutedTxHashAscNullsLast = 'operation_executedTxHash_ASC_NULLS_LAST',
+  OperationExecutedTxHashDesc = 'operation_executedTxHash_DESC',
+  OperationExecutedTxHashDescNullsFirst = 'operation_executedTxHash_DESC_NULLS_FIRST',
+  OperationExecutedTxHashDescNullsLast = 'operation_executedTxHash_DESC_NULLS_LAST',
+  OperationIdAsc = 'operation_id_ASC',
+  OperationIdAscNullsFirst = 'operation_id_ASC_NULLS_FIRST',
+  OperationIdAscNullsLast = 'operation_id_ASC_NULLS_LAST',
+  OperationIdDesc = 'operation_id_DESC',
+  OperationIdDescNullsFirst = 'operation_id_DESC_NULLS_FIRST',
+  OperationIdDescNullsLast = 'operation_id_DESC_NULLS_LAST',
+  OperationOperationIdAsc = 'operation_operationId_ASC',
+  OperationOperationIdAscNullsFirst = 'operation_operationId_ASC_NULLS_FIRST',
+  OperationOperationIdAscNullsLast = 'operation_operationId_ASC_NULLS_LAST',
+  OperationOperationIdDesc = 'operation_operationId_DESC',
+  OperationOperationIdDescNullsFirst = 'operation_operationId_DESC_NULLS_FIRST',
+  OperationOperationIdDescNullsLast = 'operation_operationId_DESC_NULLS_LAST',
+  OperationPredecessorAsc = 'operation_predecessor_ASC',
+  OperationPredecessorAscNullsFirst = 'operation_predecessor_ASC_NULLS_FIRST',
+  OperationPredecessorAscNullsLast = 'operation_predecessor_ASC_NULLS_LAST',
+  OperationPredecessorDesc = 'operation_predecessor_DESC',
+  OperationPredecessorDescNullsFirst = 'operation_predecessor_DESC_NULLS_FIRST',
+  OperationPredecessorDescNullsLast = 'operation_predecessor_DESC_NULLS_LAST',
+  OperationSaltAsc = 'operation_salt_ASC',
+  OperationSaltAscNullsFirst = 'operation_salt_ASC_NULLS_FIRST',
+  OperationSaltAscNullsLast = 'operation_salt_ASC_NULLS_LAST',
+  OperationSaltDesc = 'operation_salt_DESC',
+  OperationSaltDescNullsFirst = 'operation_salt_DESC_NULLS_FIRST',
+  OperationSaltDescNullsLast = 'operation_salt_DESC_NULLS_LAST',
+  OperationStatusAsc = 'operation_status_ASC',
+  OperationStatusAscNullsFirst = 'operation_status_ASC_NULLS_FIRST',
+  OperationStatusAscNullsLast = 'operation_status_ASC_NULLS_LAST',
+  OperationStatusDesc = 'operation_status_DESC',
+  OperationStatusDescNullsFirst = 'operation_status_DESC_NULLS_FIRST',
+  OperationStatusDescNullsLast = 'operation_status_DESC_NULLS_LAST'
+}
+
+export type EvmTimelockCallSaltEvent = Event & {
+  __typename?: 'EvmTimelockCallSaltEvent';
+  block: Scalars['Int']['output'];
+  chainId: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  operationId: Scalars['String']['output'];
+  salt: Scalars['String']['output'];
+  timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
+};
+
+export type EvmTimelockCallSaltEventEdge = {
+  __typename?: 'EvmTimelockCallSaltEventEdge';
+  cursor: Scalars['String']['output'];
+  node: EvmTimelockCallSaltEvent;
+};
+
+export enum EvmTimelockCallSaltEventOrderByInput {
+  BlockAsc = 'block_ASC',
+  BlockAscNullsFirst = 'block_ASC_NULLS_FIRST',
+  BlockAscNullsLast = 'block_ASC_NULLS_LAST',
+  BlockDesc = 'block_DESC',
+  BlockDescNullsFirst = 'block_DESC_NULLS_FIRST',
+  BlockDescNullsLast = 'block_DESC_NULLS_LAST',
+  ChainIdAsc = 'chainId_ASC',
+  ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
+  ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
+  ChainIdDesc = 'chainId_DESC',
+  ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
+  ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  OperationIdAsc = 'operationId_ASC',
+  OperationIdAscNullsFirst = 'operationId_ASC_NULLS_FIRST',
+  OperationIdAscNullsLast = 'operationId_ASC_NULLS_LAST',
+  OperationIdDesc = 'operationId_DESC',
+  OperationIdDescNullsFirst = 'operationId_DESC_NULLS_FIRST',
+  OperationIdDescNullsLast = 'operationId_DESC_NULLS_LAST',
+  SaltAsc = 'salt_ASC',
+  SaltAscNullsFirst = 'salt_ASC_NULLS_FIRST',
+  SaltAscNullsLast = 'salt_ASC_NULLS_LAST',
+  SaltDesc = 'salt_DESC',
+  SaltDescNullsFirst = 'salt_DESC_NULLS_FIRST',
+  SaltDescNullsLast = 'salt_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+}
+
+export type EvmTimelockCallSaltEventWhereInput = {
+  AND?: InputMaybe<Array<EvmTimelockCallSaltEventWhereInput>>;
+  OR?: InputMaybe<Array<EvmTimelockCallSaltEventWhereInput>>;
+  block_eq?: InputMaybe<Scalars['Int']['input']>;
+  block_gt?: InputMaybe<Scalars['Int']['input']>;
+  block_gte?: InputMaybe<Scalars['Int']['input']>;
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  block_lt?: InputMaybe<Scalars['Int']['input']>;
+  block_lte?: InputMaybe<Scalars['Int']['input']>;
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_contains?: InputMaybe<Scalars['String']['input']>;
+  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  operationId_endsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_eq?: InputMaybe<Scalars['String']['input']>;
+  operationId_gt?: InputMaybe<Scalars['String']['input']>;
+  operationId_gte?: InputMaybe<Scalars['String']['input']>;
+  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  operationId_lt?: InputMaybe<Scalars['String']['input']>;
+  operationId_lte?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_eq?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_startsWith?: InputMaybe<Scalars['String']['input']>;
+  salt_contains?: InputMaybe<Scalars['String']['input']>;
+  salt_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  salt_endsWith?: InputMaybe<Scalars['String']['input']>;
+  salt_eq?: InputMaybe<Scalars['String']['input']>;
+  salt_gt?: InputMaybe<Scalars['String']['input']>;
+  salt_gte?: InputMaybe<Scalars['String']['input']>;
+  salt_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  salt_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  salt_lt?: InputMaybe<Scalars['String']['input']>;
+  salt_lte?: InputMaybe<Scalars['String']['input']>;
+  salt_not_contains?: InputMaybe<Scalars['String']['input']>;
+  salt_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  salt_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  salt_not_eq?: InputMaybe<Scalars['String']['input']>;
+  salt_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  salt_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  salt_startsWith?: InputMaybe<Scalars['String']['input']>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type EvmTimelockCallSaltEventsConnection = {
+  __typename?: 'EvmTimelockCallSaltEventsConnection';
+  edges: Array<EvmTimelockCallSaltEventEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type EvmTimelockCallScheduledEvent = Event & {
+  __typename?: 'EvmTimelockCallScheduledEvent';
+  block: Scalars['Int']['output'];
+  callData: Scalars['String']['output'];
+  callIndex: Scalars['Int']['output'];
+  callTarget: Scalars['String']['output'];
+  callValue: Scalars['BigInt']['output'];
+  chainId: Scalars['Int']['output'];
+  delay: Scalars['BigInt']['output'];
+  id: Scalars['String']['output'];
+  operationId: Scalars['String']['output'];
+  predecessor?: Maybe<Scalars['String']['output']>;
+  timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
+};
+
+export type EvmTimelockCallScheduledEventEdge = {
+  __typename?: 'EvmTimelockCallScheduledEventEdge';
+  cursor: Scalars['String']['output'];
+  node: EvmTimelockCallScheduledEvent;
+};
+
+export enum EvmTimelockCallScheduledEventOrderByInput {
+  BlockAsc = 'block_ASC',
+  BlockAscNullsFirst = 'block_ASC_NULLS_FIRST',
+  BlockAscNullsLast = 'block_ASC_NULLS_LAST',
+  BlockDesc = 'block_DESC',
+  BlockDescNullsFirst = 'block_DESC_NULLS_FIRST',
+  BlockDescNullsLast = 'block_DESC_NULLS_LAST',
+  CallDataAsc = 'callData_ASC',
+  CallDataAscNullsFirst = 'callData_ASC_NULLS_FIRST',
+  CallDataAscNullsLast = 'callData_ASC_NULLS_LAST',
+  CallDataDesc = 'callData_DESC',
+  CallDataDescNullsFirst = 'callData_DESC_NULLS_FIRST',
+  CallDataDescNullsLast = 'callData_DESC_NULLS_LAST',
+  CallIndexAsc = 'callIndex_ASC',
+  CallIndexAscNullsFirst = 'callIndex_ASC_NULLS_FIRST',
+  CallIndexAscNullsLast = 'callIndex_ASC_NULLS_LAST',
+  CallIndexDesc = 'callIndex_DESC',
+  CallIndexDescNullsFirst = 'callIndex_DESC_NULLS_FIRST',
+  CallIndexDescNullsLast = 'callIndex_DESC_NULLS_LAST',
+  CallTargetAsc = 'callTarget_ASC',
+  CallTargetAscNullsFirst = 'callTarget_ASC_NULLS_FIRST',
+  CallTargetAscNullsLast = 'callTarget_ASC_NULLS_LAST',
+  CallTargetDesc = 'callTarget_DESC',
+  CallTargetDescNullsFirst = 'callTarget_DESC_NULLS_FIRST',
+  CallTargetDescNullsLast = 'callTarget_DESC_NULLS_LAST',
+  CallValueAsc = 'callValue_ASC',
+  CallValueAscNullsFirst = 'callValue_ASC_NULLS_FIRST',
+  CallValueAscNullsLast = 'callValue_ASC_NULLS_LAST',
+  CallValueDesc = 'callValue_DESC',
+  CallValueDescNullsFirst = 'callValue_DESC_NULLS_FIRST',
+  CallValueDescNullsLast = 'callValue_DESC_NULLS_LAST',
+  ChainIdAsc = 'chainId_ASC',
+  ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
+  ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
+  ChainIdDesc = 'chainId_DESC',
+  ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
+  ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  DelayAsc = 'delay_ASC',
+  DelayAscNullsFirst = 'delay_ASC_NULLS_FIRST',
+  DelayAscNullsLast = 'delay_ASC_NULLS_LAST',
+  DelayDesc = 'delay_DESC',
+  DelayDescNullsFirst = 'delay_DESC_NULLS_FIRST',
+  DelayDescNullsLast = 'delay_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  OperationIdAsc = 'operationId_ASC',
+  OperationIdAscNullsFirst = 'operationId_ASC_NULLS_FIRST',
+  OperationIdAscNullsLast = 'operationId_ASC_NULLS_LAST',
+  OperationIdDesc = 'operationId_DESC',
+  OperationIdDescNullsFirst = 'operationId_DESC_NULLS_FIRST',
+  OperationIdDescNullsLast = 'operationId_DESC_NULLS_LAST',
+  PredecessorAsc = 'predecessor_ASC',
+  PredecessorAscNullsFirst = 'predecessor_ASC_NULLS_FIRST',
+  PredecessorAscNullsLast = 'predecessor_ASC_NULLS_LAST',
+  PredecessorDesc = 'predecessor_DESC',
+  PredecessorDescNullsFirst = 'predecessor_DESC_NULLS_FIRST',
+  PredecessorDescNullsLast = 'predecessor_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+}
+
+export type EvmTimelockCallScheduledEventWhereInput = {
+  AND?: InputMaybe<Array<EvmTimelockCallScheduledEventWhereInput>>;
+  OR?: InputMaybe<Array<EvmTimelockCallScheduledEventWhereInput>>;
+  block_eq?: InputMaybe<Scalars['Int']['input']>;
+  block_gt?: InputMaybe<Scalars['Int']['input']>;
+  block_gte?: InputMaybe<Scalars['Int']['input']>;
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  block_lt?: InputMaybe<Scalars['Int']['input']>;
+  block_lte?: InputMaybe<Scalars['Int']['input']>;
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  callData_contains?: InputMaybe<Scalars['String']['input']>;
+  callData_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  callData_endsWith?: InputMaybe<Scalars['String']['input']>;
+  callData_eq?: InputMaybe<Scalars['String']['input']>;
+  callData_gt?: InputMaybe<Scalars['String']['input']>;
+  callData_gte?: InputMaybe<Scalars['String']['input']>;
+  callData_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  callData_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  callData_lt?: InputMaybe<Scalars['String']['input']>;
+  callData_lte?: InputMaybe<Scalars['String']['input']>;
+  callData_not_contains?: InputMaybe<Scalars['String']['input']>;
+  callData_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  callData_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  callData_not_eq?: InputMaybe<Scalars['String']['input']>;
+  callData_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  callData_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  callData_startsWith?: InputMaybe<Scalars['String']['input']>;
+  callIndex_eq?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_gt?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_gte?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  callIndex_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  callIndex_lt?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_lte?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  callTarget_contains?: InputMaybe<Scalars['String']['input']>;
+  callTarget_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  callTarget_endsWith?: InputMaybe<Scalars['String']['input']>;
+  callTarget_eq?: InputMaybe<Scalars['String']['input']>;
+  callTarget_gt?: InputMaybe<Scalars['String']['input']>;
+  callTarget_gte?: InputMaybe<Scalars['String']['input']>;
+  callTarget_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  callTarget_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  callTarget_lt?: InputMaybe<Scalars['String']['input']>;
+  callTarget_lte?: InputMaybe<Scalars['String']['input']>;
+  callTarget_not_contains?: InputMaybe<Scalars['String']['input']>;
+  callTarget_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  callTarget_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  callTarget_not_eq?: InputMaybe<Scalars['String']['input']>;
+  callTarget_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  callTarget_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  callTarget_startsWith?: InputMaybe<Scalars['String']['input']>;
+  callValue_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  callValue_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  callValue_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  callValue_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  callValue_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  callValue_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  callValue_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  callValue_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  callValue_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  delay_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  delay_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  delay_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  delay_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  delay_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  delay_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  delay_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  delay_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  delay_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_contains?: InputMaybe<Scalars['String']['input']>;
+  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  operationId_endsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_eq?: InputMaybe<Scalars['String']['input']>;
+  operationId_gt?: InputMaybe<Scalars['String']['input']>;
+  operationId_gte?: InputMaybe<Scalars['String']['input']>;
+  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  operationId_lt?: InputMaybe<Scalars['String']['input']>;
+  operationId_lte?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_eq?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_startsWith?: InputMaybe<Scalars['String']['input']>;
+  predecessor_contains?: InputMaybe<Scalars['String']['input']>;
+  predecessor_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  predecessor_endsWith?: InputMaybe<Scalars['String']['input']>;
+  predecessor_eq?: InputMaybe<Scalars['String']['input']>;
+  predecessor_gt?: InputMaybe<Scalars['String']['input']>;
+  predecessor_gte?: InputMaybe<Scalars['String']['input']>;
+  predecessor_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  predecessor_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  predecessor_lt?: InputMaybe<Scalars['String']['input']>;
+  predecessor_lte?: InputMaybe<Scalars['String']['input']>;
+  predecessor_not_contains?: InputMaybe<Scalars['String']['input']>;
+  predecessor_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  predecessor_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  predecessor_not_eq?: InputMaybe<Scalars['String']['input']>;
+  predecessor_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  predecessor_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  predecessor_startsWith?: InputMaybe<Scalars['String']['input']>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type EvmTimelockCallScheduledEventsConnection = {
+  __typename?: 'EvmTimelockCallScheduledEventsConnection';
+  edges: Array<EvmTimelockCallScheduledEventEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type EvmTimelockCallWhereInput = {
+  AND?: InputMaybe<Array<EvmTimelockCallWhereInput>>;
+  OR?: InputMaybe<Array<EvmTimelockCallWhereInput>>;
+  callArgs_contains?: InputMaybe<Scalars['String']['input']>;
+  callArgs_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  callArgs_endsWith?: InputMaybe<Scalars['String']['input']>;
+  callArgs_eq?: InputMaybe<Scalars['String']['input']>;
+  callArgs_gt?: InputMaybe<Scalars['String']['input']>;
+  callArgs_gte?: InputMaybe<Scalars['String']['input']>;
+  callArgs_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  callArgs_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  callArgs_lt?: InputMaybe<Scalars['String']['input']>;
+  callArgs_lte?: InputMaybe<Scalars['String']['input']>;
+  callArgs_not_contains?: InputMaybe<Scalars['String']['input']>;
+  callArgs_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  callArgs_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  callArgs_not_eq?: InputMaybe<Scalars['String']['input']>;
+  callArgs_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  callArgs_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  callArgs_startsWith?: InputMaybe<Scalars['String']['input']>;
+  callData_contains?: InputMaybe<Scalars['String']['input']>;
+  callData_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  callData_endsWith?: InputMaybe<Scalars['String']['input']>;
+  callData_eq?: InputMaybe<Scalars['String']['input']>;
+  callData_gt?: InputMaybe<Scalars['String']['input']>;
+  callData_gte?: InputMaybe<Scalars['String']['input']>;
+  callData_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  callData_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  callData_lt?: InputMaybe<Scalars['String']['input']>;
+  callData_lte?: InputMaybe<Scalars['String']['input']>;
+  callData_not_contains?: InputMaybe<Scalars['String']['input']>;
+  callData_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  callData_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  callData_not_eq?: InputMaybe<Scalars['String']['input']>;
+  callData_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  callData_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  callData_startsWith?: InputMaybe<Scalars['String']['input']>;
+  callIndex_eq?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_gt?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_gte?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  callIndex_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  callIndex_lt?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_lte?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  callIndex_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  callSignature_contains?: InputMaybe<Scalars['String']['input']>;
+  callSignature_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  callSignature_endsWith?: InputMaybe<Scalars['String']['input']>;
+  callSignature_eq?: InputMaybe<Scalars['String']['input']>;
+  callSignature_gt?: InputMaybe<Scalars['String']['input']>;
+  callSignature_gte?: InputMaybe<Scalars['String']['input']>;
+  callSignature_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  callSignature_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  callSignature_lt?: InputMaybe<Scalars['String']['input']>;
+  callSignature_lte?: InputMaybe<Scalars['String']['input']>;
+  callSignature_not_contains?: InputMaybe<Scalars['String']['input']>;
+  callSignature_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  callSignature_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  callSignature_not_eq?: InputMaybe<Scalars['String']['input']>;
+  callSignature_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  callSignature_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  callSignature_startsWith?: InputMaybe<Scalars['String']['input']>;
+  callTarget_contains?: InputMaybe<Scalars['String']['input']>;
+  callTarget_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  callTarget_endsWith?: InputMaybe<Scalars['String']['input']>;
+  callTarget_eq?: InputMaybe<Scalars['String']['input']>;
+  callTarget_gt?: InputMaybe<Scalars['String']['input']>;
+  callTarget_gte?: InputMaybe<Scalars['String']['input']>;
+  callTarget_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  callTarget_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  callTarget_lt?: InputMaybe<Scalars['String']['input']>;
+  callTarget_lte?: InputMaybe<Scalars['String']['input']>;
+  callTarget_not_contains?: InputMaybe<Scalars['String']['input']>;
+  callTarget_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  callTarget_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  callTarget_not_eq?: InputMaybe<Scalars['String']['input']>;
+  callTarget_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  callTarget_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  callTarget_startsWith?: InputMaybe<Scalars['String']['input']>;
+  callValue_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  callValue_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  callValue_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  callValue_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  callValue_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  callValue_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  callValue_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  callValue_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  callValue_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  operation?: InputMaybe<EvmTimelockOperationWhereInput>;
+  operation_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type EvmTimelockCallsConnection = {
+  __typename?: 'EvmTimelockCallsConnection';
+  edges: Array<EvmTimelockCallEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type EvmTimelockOperation = {
+  __typename?: 'EvmTimelockOperation';
+  calls: Array<EvmTimelockCall>;
+  cancelledAtBlock?: Maybe<Scalars['Int']['output']>;
+  cancelledAtTimestamp?: Maybe<Scalars['DateTime']['output']>;
+  cancelledTxHash?: Maybe<Scalars['String']['output']>;
+  chainId: Scalars['Int']['output'];
+  createdAtBlock: Scalars['Int']['output'];
+  createdAtTimestamp: Scalars['DateTime']['output'];
+  createdTxHash: Scalars['String']['output'];
+  delayDoneTimestamp: Scalars['DateTime']['output'];
+  executedAtBlock?: Maybe<Scalars['Int']['output']>;
+  executedAtTimestamp?: Maybe<Scalars['DateTime']['output']>;
+  executedTxHash?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  operationId: Scalars['String']['output'];
+  predecessor?: Maybe<Scalars['String']['output']>;
+  salt?: Maybe<Scalars['String']['output']>;
+  status: EvmTimelockOperationStatus;
+};
+
+
+export type EvmTimelockOperationCallsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EvmTimelockCallOrderByInput>>;
+  where?: InputMaybe<EvmTimelockCallWhereInput>;
+};
+
+export type EvmTimelockOperationCancelledEvent = Event & {
+  __typename?: 'EvmTimelockOperationCancelledEvent';
+  block: Scalars['Int']['output'];
+  chainId: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  operationId: Scalars['String']['output'];
+  timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
+};
+
+export type EvmTimelockOperationCancelledEventEdge = {
+  __typename?: 'EvmTimelockOperationCancelledEventEdge';
+  cursor: Scalars['String']['output'];
+  node: EvmTimelockOperationCancelledEvent;
+};
+
+export enum EvmTimelockOperationCancelledEventOrderByInput {
+  BlockAsc = 'block_ASC',
+  BlockAscNullsFirst = 'block_ASC_NULLS_FIRST',
+  BlockAscNullsLast = 'block_ASC_NULLS_LAST',
+  BlockDesc = 'block_DESC',
+  BlockDescNullsFirst = 'block_DESC_NULLS_FIRST',
+  BlockDescNullsLast = 'block_DESC_NULLS_LAST',
+  ChainIdAsc = 'chainId_ASC',
+  ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
+  ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
+  ChainIdDesc = 'chainId_DESC',
+  ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
+  ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  OperationIdAsc = 'operationId_ASC',
+  OperationIdAscNullsFirst = 'operationId_ASC_NULLS_FIRST',
+  OperationIdAscNullsLast = 'operationId_ASC_NULLS_LAST',
+  OperationIdDesc = 'operationId_DESC',
+  OperationIdDescNullsFirst = 'operationId_DESC_NULLS_FIRST',
+  OperationIdDescNullsLast = 'operationId_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+}
+
+export type EvmTimelockOperationCancelledEventWhereInput = {
+  AND?: InputMaybe<Array<EvmTimelockOperationCancelledEventWhereInput>>;
+  OR?: InputMaybe<Array<EvmTimelockOperationCancelledEventWhereInput>>;
+  block_eq?: InputMaybe<Scalars['Int']['input']>;
+  block_gt?: InputMaybe<Scalars['Int']['input']>;
+  block_gte?: InputMaybe<Scalars['Int']['input']>;
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  block_lt?: InputMaybe<Scalars['Int']['input']>;
+  block_lte?: InputMaybe<Scalars['Int']['input']>;
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_contains?: InputMaybe<Scalars['String']['input']>;
+  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  operationId_endsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_eq?: InputMaybe<Scalars['String']['input']>;
+  operationId_gt?: InputMaybe<Scalars['String']['input']>;
+  operationId_gte?: InputMaybe<Scalars['String']['input']>;
+  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  operationId_lt?: InputMaybe<Scalars['String']['input']>;
+  operationId_lte?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_eq?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_startsWith?: InputMaybe<Scalars['String']['input']>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type EvmTimelockOperationCancelledEventsConnection = {
+  __typename?: 'EvmTimelockOperationCancelledEventsConnection';
+  edges: Array<EvmTimelockOperationCancelledEventEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type EvmTimelockOperationEdge = {
+  __typename?: 'EvmTimelockOperationEdge';
+  cursor: Scalars['String']['output'];
+  node: EvmTimelockOperation;
+};
+
+export enum EvmTimelockOperationOrderByInput {
   CancelledAtBlockAsc = 'cancelledAtBlock_ASC',
   CancelledAtBlockAscNullsFirst = 'cancelledAtBlock_ASC_NULLS_FIRST',
   CancelledAtBlockAscNullsLast = 'cancelledAtBlock_ASC_NULLS_LAST',
@@ -2317,6 +3322,12 @@ export enum EvmTimelockCallOrderByInput {
   IdDesc = 'id_DESC',
   IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
   IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  OperationIdAsc = 'operationId_ASC',
+  OperationIdAscNullsFirst = 'operationId_ASC_NULLS_FIRST',
+  OperationIdAscNullsLast = 'operationId_ASC_NULLS_LAST',
+  OperationIdDesc = 'operationId_DESC',
+  OperationIdDescNullsFirst = 'operationId_DESC_NULLS_FIRST',
+  OperationIdDescNullsLast = 'operationId_DESC_NULLS_LAST',
   PredecessorAsc = 'predecessor_ASC',
   PredecessorAscNullsFirst = 'predecessor_ASC_NULLS_FIRST',
   PredecessorAscNullsLast = 'predecessor_ASC_NULLS_LAST',
@@ -2337,109 +3348,18 @@ export enum EvmTimelockCallOrderByInput {
   StatusDescNullsLast = 'status_DESC_NULLS_LAST'
 }
 
-export enum EvmTimelockCallStatus {
+export enum EvmTimelockOperationStatus {
   Cancelled = 'CANCELLED',
   Executed = 'EXECUTED',
   Pending = 'PENDING'
 }
 
-export type EvmTimelockCallWhereInput = {
-  AND?: InputMaybe<Array<EvmTimelockCallWhereInput>>;
-  OR?: InputMaybe<Array<EvmTimelockCallWhereInput>>;
-  callArgs_contains?: InputMaybe<Scalars['String']['input']>;
-  callArgs_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callArgs_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callArgs_eq?: InputMaybe<Scalars['String']['input']>;
-  callArgs_gt?: InputMaybe<Scalars['String']['input']>;
-  callArgs_gte?: InputMaybe<Scalars['String']['input']>;
-  callArgs_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callArgs_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callArgs_lt?: InputMaybe<Scalars['String']['input']>;
-  callArgs_lte?: InputMaybe<Scalars['String']['input']>;
-  callArgs_not_contains?: InputMaybe<Scalars['String']['input']>;
-  callArgs_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callArgs_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callArgs_not_eq?: InputMaybe<Scalars['String']['input']>;
-  callArgs_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callArgs_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callArgs_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callData_contains?: InputMaybe<Scalars['String']['input']>;
-  callData_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callData_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callData_eq?: InputMaybe<Scalars['String']['input']>;
-  callData_gt?: InputMaybe<Scalars['String']['input']>;
-  callData_gte?: InputMaybe<Scalars['String']['input']>;
-  callData_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callData_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callData_lt?: InputMaybe<Scalars['String']['input']>;
-  callData_lte?: InputMaybe<Scalars['String']['input']>;
-  callData_not_contains?: InputMaybe<Scalars['String']['input']>;
-  callData_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callData_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callData_not_eq?: InputMaybe<Scalars['String']['input']>;
-  callData_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callData_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callData_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callId_contains?: InputMaybe<Scalars['String']['input']>;
-  callId_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callId_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callId_eq?: InputMaybe<Scalars['String']['input']>;
-  callId_gt?: InputMaybe<Scalars['String']['input']>;
-  callId_gte?: InputMaybe<Scalars['String']['input']>;
-  callId_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callId_lt?: InputMaybe<Scalars['String']['input']>;
-  callId_lte?: InputMaybe<Scalars['String']['input']>;
-  callId_not_contains?: InputMaybe<Scalars['String']['input']>;
-  callId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callId_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callId_not_eq?: InputMaybe<Scalars['String']['input']>;
-  callId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callId_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callId_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callSignature_contains?: InputMaybe<Scalars['String']['input']>;
-  callSignature_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callSignature_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callSignature_eq?: InputMaybe<Scalars['String']['input']>;
-  callSignature_gt?: InputMaybe<Scalars['String']['input']>;
-  callSignature_gte?: InputMaybe<Scalars['String']['input']>;
-  callSignature_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callSignature_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callSignature_lt?: InputMaybe<Scalars['String']['input']>;
-  callSignature_lte?: InputMaybe<Scalars['String']['input']>;
-  callSignature_not_contains?: InputMaybe<Scalars['String']['input']>;
-  callSignature_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callSignature_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callSignature_not_eq?: InputMaybe<Scalars['String']['input']>;
-  callSignature_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callSignature_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callSignature_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callTarget_contains?: InputMaybe<Scalars['String']['input']>;
-  callTarget_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callTarget_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callTarget_eq?: InputMaybe<Scalars['String']['input']>;
-  callTarget_gt?: InputMaybe<Scalars['String']['input']>;
-  callTarget_gte?: InputMaybe<Scalars['String']['input']>;
-  callTarget_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callTarget_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callTarget_lt?: InputMaybe<Scalars['String']['input']>;
-  callTarget_lte?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_contains?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_eq?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callTarget_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callTarget_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callValue_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  callValue_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callValue_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+export type EvmTimelockOperationWhereInput = {
+  AND?: InputMaybe<Array<EvmTimelockOperationWhereInput>>;
+  OR?: InputMaybe<Array<EvmTimelockOperationWhereInput>>;
+  calls_every?: InputMaybe<EvmTimelockCallWhereInput>;
+  calls_none?: InputMaybe<EvmTimelockCallWhereInput>;
+  calls_some?: InputMaybe<EvmTimelockCallWhereInput>;
   cancelledAtBlock_eq?: InputMaybe<Scalars['Int']['input']>;
   cancelledAtBlock_gt?: InputMaybe<Scalars['Int']['input']>;
   cancelledAtBlock_gte?: InputMaybe<Scalars['Int']['input']>;
@@ -2580,6 +3500,23 @@ export type EvmTimelockCallWhereInput = {
   id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_contains?: InputMaybe<Scalars['String']['input']>;
+  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  operationId_endsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_eq?: InputMaybe<Scalars['String']['input']>;
+  operationId_gt?: InputMaybe<Scalars['String']['input']>;
+  operationId_gte?: InputMaybe<Scalars['String']['input']>;
+  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  operationId_lt?: InputMaybe<Scalars['String']['input']>;
+  operationId_lte?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_eq?: InputMaybe<Scalars['String']['input']>;
+  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  operationId_startsWith?: InputMaybe<Scalars['String']['input']>;
   predecessor_contains?: InputMaybe<Scalars['String']['input']>;
   predecessor_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   predecessor_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -2614,16 +3551,354 @@ export type EvmTimelockCallWhereInput = {
   salt_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   salt_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   salt_startsWith?: InputMaybe<Scalars['String']['input']>;
-  status_eq?: InputMaybe<EvmTimelockCallStatus>;
-  status_in?: InputMaybe<Array<EvmTimelockCallStatus>>;
+  status_eq?: InputMaybe<EvmTimelockOperationStatus>;
+  status_in?: InputMaybe<Array<EvmTimelockOperationStatus>>;
   status_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  status_not_eq?: InputMaybe<EvmTimelockCallStatus>;
-  status_not_in?: InputMaybe<Array<EvmTimelockCallStatus>>;
+  status_not_eq?: InputMaybe<EvmTimelockOperationStatus>;
+  status_not_in?: InputMaybe<Array<EvmTimelockOperationStatus>>;
 };
 
-export type EvmTimelockCallsConnection = {
-  __typename?: 'EvmTimelockCallsConnection';
-  edges: Array<EvmTimelockCallEdge>;
+export type EvmTimelockOperationsConnection = {
+  __typename?: 'EvmTimelockOperationsConnection';
+  edges: Array<EvmTimelockOperationEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type EvmTimelockRoleGrantedEvent = Event & {
+  __typename?: 'EvmTimelockRoleGrantedEvent';
+  account: Scalars['String']['output'];
+  block: Scalars['Int']['output'];
+  chainId: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  role: Scalars['String']['output'];
+  timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
+};
+
+export type EvmTimelockRoleGrantedEventEdge = {
+  __typename?: 'EvmTimelockRoleGrantedEventEdge';
+  cursor: Scalars['String']['output'];
+  node: EvmTimelockRoleGrantedEvent;
+};
+
+export enum EvmTimelockRoleGrantedEventOrderByInput {
+  AccountAsc = 'account_ASC',
+  AccountAscNullsFirst = 'account_ASC_NULLS_FIRST',
+  AccountAscNullsLast = 'account_ASC_NULLS_LAST',
+  AccountDesc = 'account_DESC',
+  AccountDescNullsFirst = 'account_DESC_NULLS_FIRST',
+  AccountDescNullsLast = 'account_DESC_NULLS_LAST',
+  BlockAsc = 'block_ASC',
+  BlockAscNullsFirst = 'block_ASC_NULLS_FIRST',
+  BlockAscNullsLast = 'block_ASC_NULLS_LAST',
+  BlockDesc = 'block_DESC',
+  BlockDescNullsFirst = 'block_DESC_NULLS_FIRST',
+  BlockDescNullsLast = 'block_DESC_NULLS_LAST',
+  ChainIdAsc = 'chainId_ASC',
+  ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
+  ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
+  ChainIdDesc = 'chainId_DESC',
+  ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
+  ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  RoleAsc = 'role_ASC',
+  RoleAscNullsFirst = 'role_ASC_NULLS_FIRST',
+  RoleAscNullsLast = 'role_ASC_NULLS_LAST',
+  RoleDesc = 'role_DESC',
+  RoleDescNullsFirst = 'role_DESC_NULLS_FIRST',
+  RoleDescNullsLast = 'role_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+}
+
+export type EvmTimelockRoleGrantedEventWhereInput = {
+  AND?: InputMaybe<Array<EvmTimelockRoleGrantedEventWhereInput>>;
+  OR?: InputMaybe<Array<EvmTimelockRoleGrantedEventWhereInput>>;
+  account_contains?: InputMaybe<Scalars['String']['input']>;
+  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  account_endsWith?: InputMaybe<Scalars['String']['input']>;
+  account_eq?: InputMaybe<Scalars['String']['input']>;
+  account_gt?: InputMaybe<Scalars['String']['input']>;
+  account_gte?: InputMaybe<Scalars['String']['input']>;
+  account_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  account_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  account_lt?: InputMaybe<Scalars['String']['input']>;
+  account_lte?: InputMaybe<Scalars['String']['input']>;
+  account_not_contains?: InputMaybe<Scalars['String']['input']>;
+  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  account_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  account_not_eq?: InputMaybe<Scalars['String']['input']>;
+  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  account_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  account_startsWith?: InputMaybe<Scalars['String']['input']>;
+  block_eq?: InputMaybe<Scalars['Int']['input']>;
+  block_gt?: InputMaybe<Scalars['Int']['input']>;
+  block_gte?: InputMaybe<Scalars['Int']['input']>;
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  block_lt?: InputMaybe<Scalars['Int']['input']>;
+  block_lte?: InputMaybe<Scalars['Int']['input']>;
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  role_contains?: InputMaybe<Scalars['String']['input']>;
+  role_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  role_endsWith?: InputMaybe<Scalars['String']['input']>;
+  role_eq?: InputMaybe<Scalars['String']['input']>;
+  role_gt?: InputMaybe<Scalars['String']['input']>;
+  role_gte?: InputMaybe<Scalars['String']['input']>;
+  role_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  role_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  role_lt?: InputMaybe<Scalars['String']['input']>;
+  role_lte?: InputMaybe<Scalars['String']['input']>;
+  role_not_contains?: InputMaybe<Scalars['String']['input']>;
+  role_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  role_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  role_not_eq?: InputMaybe<Scalars['String']['input']>;
+  role_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  role_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  role_startsWith?: InputMaybe<Scalars['String']['input']>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type EvmTimelockRoleGrantedEventsConnection = {
+  __typename?: 'EvmTimelockRoleGrantedEventsConnection';
+  edges: Array<EvmTimelockRoleGrantedEventEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type EvmTimelockRoleRevokedEvent = Event & {
+  __typename?: 'EvmTimelockRoleRevokedEvent';
+  account: Scalars['String']['output'];
+  block: Scalars['Int']['output'];
+  chainId: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  role: Scalars['String']['output'];
+  timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
+};
+
+export type EvmTimelockRoleRevokedEventEdge = {
+  __typename?: 'EvmTimelockRoleRevokedEventEdge';
+  cursor: Scalars['String']['output'];
+  node: EvmTimelockRoleRevokedEvent;
+};
+
+export enum EvmTimelockRoleRevokedEventOrderByInput {
+  AccountAsc = 'account_ASC',
+  AccountAscNullsFirst = 'account_ASC_NULLS_FIRST',
+  AccountAscNullsLast = 'account_ASC_NULLS_LAST',
+  AccountDesc = 'account_DESC',
+  AccountDescNullsFirst = 'account_DESC_NULLS_FIRST',
+  AccountDescNullsLast = 'account_DESC_NULLS_LAST',
+  BlockAsc = 'block_ASC',
+  BlockAscNullsFirst = 'block_ASC_NULLS_FIRST',
+  BlockAscNullsLast = 'block_ASC_NULLS_LAST',
+  BlockDesc = 'block_DESC',
+  BlockDescNullsFirst = 'block_DESC_NULLS_FIRST',
+  BlockDescNullsLast = 'block_DESC_NULLS_LAST',
+  ChainIdAsc = 'chainId_ASC',
+  ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
+  ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
+  ChainIdDesc = 'chainId_DESC',
+  ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
+  ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  RoleAsc = 'role_ASC',
+  RoleAscNullsFirst = 'role_ASC_NULLS_FIRST',
+  RoleAscNullsLast = 'role_ASC_NULLS_LAST',
+  RoleDesc = 'role_DESC',
+  RoleDescNullsFirst = 'role_DESC_NULLS_FIRST',
+  RoleDescNullsLast = 'role_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+}
+
+export type EvmTimelockRoleRevokedEventWhereInput = {
+  AND?: InputMaybe<Array<EvmTimelockRoleRevokedEventWhereInput>>;
+  OR?: InputMaybe<Array<EvmTimelockRoleRevokedEventWhereInput>>;
+  account_contains?: InputMaybe<Scalars['String']['input']>;
+  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  account_endsWith?: InputMaybe<Scalars['String']['input']>;
+  account_eq?: InputMaybe<Scalars['String']['input']>;
+  account_gt?: InputMaybe<Scalars['String']['input']>;
+  account_gte?: InputMaybe<Scalars['String']['input']>;
+  account_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  account_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  account_lt?: InputMaybe<Scalars['String']['input']>;
+  account_lte?: InputMaybe<Scalars['String']['input']>;
+  account_not_contains?: InputMaybe<Scalars['String']['input']>;
+  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  account_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  account_not_eq?: InputMaybe<Scalars['String']['input']>;
+  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  account_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  account_startsWith?: InputMaybe<Scalars['String']['input']>;
+  block_eq?: InputMaybe<Scalars['Int']['input']>;
+  block_gt?: InputMaybe<Scalars['Int']['input']>;
+  block_gte?: InputMaybe<Scalars['Int']['input']>;
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  block_lt?: InputMaybe<Scalars['Int']['input']>;
+  block_lte?: InputMaybe<Scalars['Int']['input']>;
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  role_contains?: InputMaybe<Scalars['String']['input']>;
+  role_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  role_endsWith?: InputMaybe<Scalars['String']['input']>;
+  role_eq?: InputMaybe<Scalars['String']['input']>;
+  role_gt?: InputMaybe<Scalars['String']['input']>;
+  role_gte?: InputMaybe<Scalars['String']['input']>;
+  role_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  role_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  role_lt?: InputMaybe<Scalars['String']['input']>;
+  role_lte?: InputMaybe<Scalars['String']['input']>;
+  role_not_contains?: InputMaybe<Scalars['String']['input']>;
+  role_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  role_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  role_not_eq?: InputMaybe<Scalars['String']['input']>;
+  role_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  role_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  role_startsWith?: InputMaybe<Scalars['String']['input']>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type EvmTimelockRoleRevokedEventsConnection = {
+  __typename?: 'EvmTimelockRoleRevokedEventsConnection';
+  edges: Array<EvmTimelockRoleRevokedEventEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
 };
@@ -4150,8 +5425,43 @@ export type Query = {
   evmTimelockCallById?: Maybe<EvmTimelockCall>;
   /** @deprecated Use evmTimelockCallById */
   evmTimelockCallByUniqueInput?: Maybe<EvmTimelockCall>;
+  evmTimelockCallExecutedEventById?: Maybe<EvmTimelockCallExecutedEvent>;
+  /** @deprecated Use evmTimelockCallExecutedEventById */
+  evmTimelockCallExecutedEventByUniqueInput?: Maybe<EvmTimelockCallExecutedEvent>;
+  evmTimelockCallExecutedEvents: Array<EvmTimelockCallExecutedEvent>;
+  evmTimelockCallExecutedEventsConnection: EvmTimelockCallExecutedEventsConnection;
+  evmTimelockCallSaltEventById?: Maybe<EvmTimelockCallSaltEvent>;
+  /** @deprecated Use evmTimelockCallSaltEventById */
+  evmTimelockCallSaltEventByUniqueInput?: Maybe<EvmTimelockCallSaltEvent>;
+  evmTimelockCallSaltEvents: Array<EvmTimelockCallSaltEvent>;
+  evmTimelockCallSaltEventsConnection: EvmTimelockCallSaltEventsConnection;
+  evmTimelockCallScheduledEventById?: Maybe<EvmTimelockCallScheduledEvent>;
+  /** @deprecated Use evmTimelockCallScheduledEventById */
+  evmTimelockCallScheduledEventByUniqueInput?: Maybe<EvmTimelockCallScheduledEvent>;
+  evmTimelockCallScheduledEvents: Array<EvmTimelockCallScheduledEvent>;
+  evmTimelockCallScheduledEventsConnection: EvmTimelockCallScheduledEventsConnection;
   evmTimelockCalls: Array<EvmTimelockCall>;
   evmTimelockCallsConnection: EvmTimelockCallsConnection;
+  evmTimelockOperationById?: Maybe<EvmTimelockOperation>;
+  /** @deprecated Use evmTimelockOperationById */
+  evmTimelockOperationByUniqueInput?: Maybe<EvmTimelockOperation>;
+  evmTimelockOperationCancelledEventById?: Maybe<EvmTimelockOperationCancelledEvent>;
+  /** @deprecated Use evmTimelockOperationCancelledEventById */
+  evmTimelockOperationCancelledEventByUniqueInput?: Maybe<EvmTimelockOperationCancelledEvent>;
+  evmTimelockOperationCancelledEvents: Array<EvmTimelockOperationCancelledEvent>;
+  evmTimelockOperationCancelledEventsConnection: EvmTimelockOperationCancelledEventsConnection;
+  evmTimelockOperations: Array<EvmTimelockOperation>;
+  evmTimelockOperationsConnection: EvmTimelockOperationsConnection;
+  evmTimelockRoleGrantedEventById?: Maybe<EvmTimelockRoleGrantedEvent>;
+  /** @deprecated Use evmTimelockRoleGrantedEventById */
+  evmTimelockRoleGrantedEventByUniqueInput?: Maybe<EvmTimelockRoleGrantedEvent>;
+  evmTimelockRoleGrantedEvents: Array<EvmTimelockRoleGrantedEvent>;
+  evmTimelockRoleGrantedEventsConnection: EvmTimelockRoleGrantedEventsConnection;
+  evmTimelockRoleRevokedEventById?: Maybe<EvmTimelockRoleRevokedEvent>;
+  /** @deprecated Use evmTimelockRoleRevokedEventById */
+  evmTimelockRoleRevokedEventByUniqueInput?: Maybe<EvmTimelockRoleRevokedEvent>;
+  evmTimelockRoleRevokedEvents: Array<EvmTimelockRoleRevokedEvent>;
+  evmTimelockRoleRevokedEventsConnection: EvmTimelockRoleRevokedEventsConnection;
   joyBridgeConfigById?: Maybe<JoyBridgeConfig>;
   /** @deprecated Use joyBridgeConfigById */
   joyBridgeConfigByUniqueInput?: Maybe<JoyBridgeConfig>;
@@ -4492,6 +5802,84 @@ export type QueryEvmTimelockCallByUniqueInputArgs = {
 };
 
 
+export type QueryEvmTimelockCallExecutedEventByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryEvmTimelockCallExecutedEventByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryEvmTimelockCallExecutedEventsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EvmTimelockCallExecutedEventOrderByInput>>;
+  where?: InputMaybe<EvmTimelockCallExecutedEventWhereInput>;
+};
+
+
+export type QueryEvmTimelockCallExecutedEventsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<EvmTimelockCallExecutedEventOrderByInput>;
+  where?: InputMaybe<EvmTimelockCallExecutedEventWhereInput>;
+};
+
+
+export type QueryEvmTimelockCallSaltEventByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryEvmTimelockCallSaltEventByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryEvmTimelockCallSaltEventsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EvmTimelockCallSaltEventOrderByInput>>;
+  where?: InputMaybe<EvmTimelockCallSaltEventWhereInput>;
+};
+
+
+export type QueryEvmTimelockCallSaltEventsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<EvmTimelockCallSaltEventOrderByInput>;
+  where?: InputMaybe<EvmTimelockCallSaltEventWhereInput>;
+};
+
+
+export type QueryEvmTimelockCallScheduledEventByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryEvmTimelockCallScheduledEventByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryEvmTimelockCallScheduledEventsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EvmTimelockCallScheduledEventOrderByInput>>;
+  where?: InputMaybe<EvmTimelockCallScheduledEventWhereInput>;
+};
+
+
+export type QueryEvmTimelockCallScheduledEventsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<EvmTimelockCallScheduledEventOrderByInput>;
+  where?: InputMaybe<EvmTimelockCallScheduledEventWhereInput>;
+};
+
+
 export type QueryEvmTimelockCallsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -4505,6 +5893,110 @@ export type QueryEvmTimelockCallsConnectionArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   orderBy: Array<EvmTimelockCallOrderByInput>;
   where?: InputMaybe<EvmTimelockCallWhereInput>;
+};
+
+
+export type QueryEvmTimelockOperationByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryEvmTimelockOperationByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryEvmTimelockOperationCancelledEventByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryEvmTimelockOperationCancelledEventByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryEvmTimelockOperationCancelledEventsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EvmTimelockOperationCancelledEventOrderByInput>>;
+  where?: InputMaybe<EvmTimelockOperationCancelledEventWhereInput>;
+};
+
+
+export type QueryEvmTimelockOperationCancelledEventsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<EvmTimelockOperationCancelledEventOrderByInput>;
+  where?: InputMaybe<EvmTimelockOperationCancelledEventWhereInput>;
+};
+
+
+export type QueryEvmTimelockOperationsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EvmTimelockOperationOrderByInput>>;
+  where?: InputMaybe<EvmTimelockOperationWhereInput>;
+};
+
+
+export type QueryEvmTimelockOperationsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<EvmTimelockOperationOrderByInput>;
+  where?: InputMaybe<EvmTimelockOperationWhereInput>;
+};
+
+
+export type QueryEvmTimelockRoleGrantedEventByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryEvmTimelockRoleGrantedEventByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryEvmTimelockRoleGrantedEventsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EvmTimelockRoleGrantedEventOrderByInput>>;
+  where?: InputMaybe<EvmTimelockRoleGrantedEventWhereInput>;
+};
+
+
+export type QueryEvmTimelockRoleGrantedEventsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<EvmTimelockRoleGrantedEventOrderByInput>;
+  where?: InputMaybe<EvmTimelockRoleGrantedEventWhereInput>;
+};
+
+
+export type QueryEvmTimelockRoleRevokedEventByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryEvmTimelockRoleRevokedEventByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryEvmTimelockRoleRevokedEventsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EvmTimelockRoleRevokedEventOrderByInput>>;
+  where?: InputMaybe<EvmTimelockRoleRevokedEventWhereInput>;
+};
+
+
+export type QueryEvmTimelockRoleRevokedEventsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<EvmTimelockRoleRevokedEventOrderByInput>;
+  where?: InputMaybe<EvmTimelockRoleRevokedEventWhereInput>;
 };
 
 
@@ -4725,19 +6217,22 @@ export type WhereIdInput = {
   id: Scalars['String']['input'];
 };
 
-export type GetTimelockCallsQueryVariables = Exact<{
-  where?: InputMaybe<EvmTimelockCallWhereInput>;
+export type GetTimelockOperationsQueryVariables = Exact<{
+  where?: InputMaybe<EvmTimelockOperationWhereInput>;
+  orderBy?: InputMaybe<Array<EvmTimelockOperationOrderByInput> | EvmTimelockOperationOrderByInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type GetTimelockCallsQuery = { __typename?: 'Query', evmTimelockCalls: Array<{ __typename?: 'EvmTimelockCall', id: string, callId: string, chainId: number, callArgs?: string | null, callData: string, callSignature?: string | null, callTarget: string, callValue: string, cancelledAtBlock?: number | null, cancelledAtTimestamp?: string | null, cancelledTxHash?: string | null, createdAtBlock: number, createdAtTimestamp: string, createdTxHash: string, delayDoneTimestamp: string, executedAtBlock?: number | null, executedAtTimestamp?: string | null, executedTxHash?: string | null, predecessor?: string | null, salt?: string | null, status: EvmTimelockCallStatus }> };
+export type GetTimelockOperationsQuery = { __typename?: 'Query', evmTimelockOperations: Array<{ __typename?: 'EvmTimelockOperation', id: string, chainId: number, operationId: string, cancelledAtBlock?: number | null, cancelledAtTimestamp?: string | null, cancelledTxHash?: string | null, createdAtBlock: number, createdAtTimestamp: string, createdTxHash: string, delayDoneTimestamp: string, executedAtBlock?: number | null, executedAtTimestamp?: string | null, executedTxHash?: string | null, predecessor?: string | null, salt?: string | null, status: EvmTimelockOperationStatus, calls: Array<{ __typename?: 'EvmTimelockCall', callIndex: number, callArgs?: string | null, callData: string, callSignature?: string | null, callTarget: string, callValue: string }> }> };
 
 export type GetEvmBridgeConfigQueryVariables = Exact<{
   chainId: Scalars['String']['input'];
 }>;
 
 
-export type GetEvmBridgeConfigQuery = { __typename?: 'Query', evmBridgeConfigs: Array<{ __typename?: 'EvmBridgeConfig', id: string, status: EvmBridgeStatus, bridgingFee: string, totalMinted: string, totalBurned: string, mintingLimits: { __typename?: 'EvmBridgeMintingLimits', periodLength: number, periodLimit: string, currentPeriodMinted: string, currentPeriodEndBlock: number } }> };
+export type GetEvmBridgeConfigQuery = { __typename?: 'Query', evmBridgeConfigs: Array<{ __typename?: 'EvmBridgeConfig', id: string, status: EvmBridgeStatus, bridgingFee: string, bridgeOperatorAccounts: Array<string>, bridgeAdminAccounts: Array<string>, timelockAdminAccounts: Array<string>, totalMinted: string, totalBurned: string, mintingLimits: { __typename?: 'EvmBridgeMintingLimits', periodLength: number, periodLimit: string, currentPeriodMinted: string, currentPeriodEndBlock: number } }> };
 
 export type GetJoyBridgeConfigQueryVariables = Exact<{
   chainId: Scalars['String']['input'];
@@ -4754,7 +6249,7 @@ export type GetBridgeTransfersQueryVariables = Exact<{
 export type GetBridgeTransfersQuery = { __typename?: 'Query', bridgeTransfers: Array<{ __typename?: 'BridgeTransfer', id: string, amount: string, status: BridgeTransferStatus, feePaid: string, sourceChainId: number, sourceTransferId: string, sourceAccount: string, destChainId: number, destAccount: string, createdAtBlock: number, createdAtTimestamp: string, createdTxHash: string, completedTxHash?: string | null, completedAtTimestamp?: string | null, completedAtBlock?: number | null, revertedTxHash?: string | null, revertedAtTimestamp?: string | null, revertedAtBlock?: number | null, revertReason?: string | null, revertAccount?: string | null, revertAmount?: string | null }> };
 
 
-export const GetTimelockCallsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTimelockCalls"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"EvmTimelockCallWhereInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"evmTimelockCalls"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"createdAtBlock_DESC"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"callId"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"callArgs"}},{"kind":"Field","name":{"kind":"Name","value":"callData"}},{"kind":"Field","name":{"kind":"Name","value":"callSignature"}},{"kind":"Field","name":{"kind":"Name","value":"callTarget"}},{"kind":"Field","name":{"kind":"Name","value":"callValue"}},{"kind":"Field","name":{"kind":"Name","value":"cancelledAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"cancelledAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"cancelledTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"createdTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"delayDoneTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"executedAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"executedAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"executedTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"predecessor"}},{"kind":"Field","name":{"kind":"Name","value":"salt"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<GetTimelockCallsQuery, GetTimelockCallsQueryVariables>;
-export const GetEvmBridgeConfigDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetEvmBridgeConfig"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"chainId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"evmBridgeConfigs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"chainId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"bridgingFee"}},{"kind":"Field","name":{"kind":"Name","value":"mintingLimits"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"periodLength"}},{"kind":"Field","name":{"kind":"Name","value":"periodLimit"}},{"kind":"Field","name":{"kind":"Name","value":"currentPeriodMinted"}},{"kind":"Field","name":{"kind":"Name","value":"currentPeriodEndBlock"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMinted"}},{"kind":"Field","name":{"kind":"Name","value":"totalBurned"}}]}}]}}]} as unknown as DocumentNode<GetEvmBridgeConfigQuery, GetEvmBridgeConfigQueryVariables>;
+export const GetTimelockOperationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTimelockOperations"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"EvmTimelockOperationWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EvmTimelockOperationOrderByInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"evmTimelockOperations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"operationId"}},{"kind":"Field","name":{"kind":"Name","value":"cancelledAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"cancelledAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"cancelledTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"createdTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"delayDoneTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"executedAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"executedAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"executedTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"predecessor"}},{"kind":"Field","name":{"kind":"Name","value":"salt"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"calls"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"callIndex"}},{"kind":"Field","name":{"kind":"Name","value":"callArgs"}},{"kind":"Field","name":{"kind":"Name","value":"callData"}},{"kind":"Field","name":{"kind":"Name","value":"callSignature"}},{"kind":"Field","name":{"kind":"Name","value":"callTarget"}},{"kind":"Field","name":{"kind":"Name","value":"callValue"}}]}}]}}]}}]} as unknown as DocumentNode<GetTimelockOperationsQuery, GetTimelockOperationsQueryVariables>;
+export const GetEvmBridgeConfigDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetEvmBridgeConfig"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"chainId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"evmBridgeConfigs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"chainId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"bridgingFee"}},{"kind":"Field","name":{"kind":"Name","value":"bridgeOperatorAccounts"}},{"kind":"Field","name":{"kind":"Name","value":"bridgeAdminAccounts"}},{"kind":"Field","name":{"kind":"Name","value":"timelockAdminAccounts"}},{"kind":"Field","name":{"kind":"Name","value":"mintingLimits"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"periodLength"}},{"kind":"Field","name":{"kind":"Name","value":"periodLimit"}},{"kind":"Field","name":{"kind":"Name","value":"currentPeriodMinted"}},{"kind":"Field","name":{"kind":"Name","value":"currentPeriodEndBlock"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalMinted"}},{"kind":"Field","name":{"kind":"Name","value":"totalBurned"}}]}}]}}]} as unknown as DocumentNode<GetEvmBridgeConfigQuery, GetEvmBridgeConfigQueryVariables>;
 export const GetJoyBridgeConfigDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetJoyBridgeConfig"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"chainId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"joyBridgeConfigs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"chainId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"bridgingFee"}},{"kind":"Field","name":{"kind":"Name","value":"operatorAccount"}},{"kind":"Field","name":{"kind":"Name","value":"pauserAccounts"}},{"kind":"Field","name":{"kind":"Name","value":"mintAllowance"}},{"kind":"Field","name":{"kind":"Name","value":"feesBurned"}},{"kind":"Field","name":{"kind":"Name","value":"supportedRemoteChainIds"}},{"kind":"Field","name":{"kind":"Name","value":"thawnDurationBlocks"}},{"kind":"Field","name":{"kind":"Name","value":"thawnEndsAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"totalBurned"}},{"kind":"Field","name":{"kind":"Name","value":"totalMinted"}}]}}]}}]} as unknown as DocumentNode<GetJoyBridgeConfigQuery, GetJoyBridgeConfigQueryVariables>;
 export const GetBridgeTransfersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetBridgeTransfers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"BridgeTransferWhereInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bridgeTransfers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"createdAtBlock_DESC"}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"feePaid"}},{"kind":"Field","name":{"kind":"Name","value":"sourceChainId"}},{"kind":"Field","name":{"kind":"Name","value":"sourceTransferId"}},{"kind":"Field","name":{"kind":"Name","value":"sourceAccount"}},{"kind":"Field","name":{"kind":"Name","value":"destChainId"}},{"kind":"Field","name":{"kind":"Name","value":"destAccount"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"createdTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"completedTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"completedAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"completedAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"revertedTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"revertedAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"revertedAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"revertReason"}},{"kind":"Field","name":{"kind":"Name","value":"revertAccount"}},{"kind":"Field","name":{"kind":"Name","value":"revertAmount"}}]}}]}}]} as unknown as DocumentNode<GetBridgeTransfersQuery, GetBridgeTransfersQueryVariables>;

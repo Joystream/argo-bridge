@@ -1,16 +1,16 @@
-
-import type { CodegenConfig } from '@graphql-codegen/cli';
+import type { CodegenConfig } from '@graphql-codegen/cli'
+import { ARGO_INDEXER_URL } from './src/config'
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: "http://localhost:4350/graphql",
-  documents: "src/queries/*.ts",
+  schema: ARGO_INDEXER_URL,
+  documents: 'src/queries/*.ts',
   generates: {
-    "src/gql/": {
-      preset: "client",
-      plugins: []
-    }
-  }
-};
+    'src/gql/': {
+      preset: 'client',
+      plugins: [],
+    },
+  },
+}
 
-export default config;
+export default config

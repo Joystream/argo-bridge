@@ -1,17 +1,16 @@
-import { TimelockCall } from './TimelockCall'
-import { BRIDGE_ADDRESS, TIMELOCK_ADDRESS } from '@/config'
+import { TimelockOperation } from './TimelockOperation'
+import { BRIDGE_ADDRESS } from '@/config'
 import {
   EvmBridgeStatus,
-  EvmTimelockCallOrderByInput,
+  EvmTimelockOperationOrderByInput,
   JoyBridgeStatus,
 } from '@/gql/graphql'
-import { getTimelockCallsQueryDocument } from '@/queries/timelockCalls'
-import { BridgeAbi, TimelockAbi } from '@joystream/argo-core'
+import { BridgeAbi } from '@joystream/argo-core'
 import { useQuery } from '@tanstack/react-query'
 import request from 'graphql-request'
 import { FC } from 'react'
-import { Address, bytesToHex, encodeFunctionData, Hex, zeroHash } from 'viem'
-import { useAccount, useReadContract, useWriteContract } from 'wagmi'
+import { encodeFunctionData } from 'viem'
+import { useAccount } from 'wagmi'
 import { ARGO_INDEXER_URL } from '@/config'
 import { TypographyH2 } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
@@ -26,6 +25,9 @@ import {
 import { useTransaction } from '@/providers/transaction'
 import { useJoyWallets } from '@/providers/joyWallet'
 import { toast } from 'sonner'
+import { SwapEvmOperator } from './SwapEvmOperator'
+import { getTimelockOperationsQueryDocument } from '@/queries/timelockOperations'
+import { SwapEvmAdmin } from '@/pages/Governance/SwapEvmAdmin'
 
 export const GovernancePage: FC = () => {
   const { address } = useAccount()
@@ -34,8 +36,8 @@ export const GovernancePage: FC = () => {
   const { data } = useQuery({
     queryKey: ['timelockCalls'],
     queryFn: async () =>
-      request(ARGO_INDEXER_URL, getTimelockCallsQueryDocument, {
-        orderBy: EvmTimelockCallOrderByInput.CreatedAtBlockDesc,
+      request(ARGO_INDEXER_URL, getTimelockOperationsQueryDocument, {
+        orderBy: EvmTimelockOperationOrderByInput.CreatedAtBlockDesc,
       }),
   })
   const { data: bridgeConfigs, refetch: refetchBridgeConfigs } =
@@ -49,7 +51,12 @@ export const GovernancePage: FC = () => {
       functionName: 'unpauseBridge',
     })
 
-    await scheduleCall(BRIDGE_ADDRESS, calldata)
+    await scheduleCall([
+      {
+        target: BRIDGE_ADDRESS,
+        calldata,
+      },
+    ])
   }
 
   const initJoyBridgeUnpause = async () => {
@@ -116,12 +123,14 @@ export const GovernancePage: FC = () => {
         <Button onClick={finishJoyBridgeUnpause}>Finish Joy unpause</Button>
       )}
       <ChangeEvmLimits />
+      <SwapEvmOperator />
+      <SwapEvmAdmin />
 
       <Collapsible>
-        <CollapsibleTrigger>Timelock Calls</CollapsibleTrigger>
+        <CollapsibleTrigger>Timelock Operations</CollapsibleTrigger>
         <CollapsibleContent>
-          {(data ? data.evmTimelockCalls : []).map((call) => (
-            <TimelockCall key={call.id} call={call} />
+          {(data ? data.evmTimelockOperations : []).map((operation) => (
+            <TimelockOperation key={operation.id} operation={operation} />
           ))}
         </CollapsibleContent>
       </Collapsible>

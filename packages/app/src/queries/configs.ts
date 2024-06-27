@@ -5,7 +5,9 @@ export const getConfigsDocument = graphql(/* GraphQL */ `
     evmBridgeConfigs(where: { id_eq: $evmChainId }) {
       id
       status
-      operatorAccounts
+      bridgeOperatorAccounts
+      bridgeAdminAccounts
+      timelockAdminAccounts
       pauserAccounts
       mintingLimits {
         periodLength
@@ -14,7 +16,6 @@ export const getConfigsDocument = graphql(/* GraphQL */ `
         currentPeriodEndBlock
       }
       bridgingFee
-      adminAccounts
       totalBurned
       totalMinted
     }

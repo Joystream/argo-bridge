@@ -19,10 +19,13 @@ export class EvmBridgeConfig {
     bridgingFee!: bigint
 
     @StringColumn_({array: true, nullable: false})
-    adminAccounts!: (string)[]
+    bridgeAdminAccounts!: (string)[]
 
     @StringColumn_({array: true, nullable: false})
-    operatorAccounts!: (string)[]
+    bridgeOperatorAccounts!: (string)[]
+
+    @StringColumn_({array: true, nullable: false})
+    timelockAdminAccounts!: (string)[]
 
     @StringColumn_({array: true, nullable: false})
     pauserAccounts!: (string)[]

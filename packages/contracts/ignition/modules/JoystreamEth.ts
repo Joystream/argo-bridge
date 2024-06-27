@@ -7,13 +7,13 @@ const JoystreamEthModule = buildModule("JoystreamEth", (m) => {
   const deployer = m.getAccount(0)
 
   // const timelockDelay = m.getParameter("timelockDelay")
-  const bridgeAdmin = m.getParameter("bridgeAdmin")
+  const timelockProposer = m.getParameter("timelockProposer")
   const bridgeOperator = m.getParameter("bridgeOperator")
   const bridgeFee = m.getParameter("bridgeFee")
   const mintingLimitPeriodLengthBlocks = m.getParameter("mintingLimitPeriodLengthBlocks")
   const mintingLimitPerPeriod = m.getParameter("mintingLimitPerPeriod")
 
-  // set deployer as the initial bridgeAdmin for the initial setup
+  // set deployer as the initial timelock proposer for the initial setup
   const joystreamErc20 = m.contract("JoystreamERC20", [deployer])
   const argoBridge = m.contract(
     "ArgoBridgeV1",
@@ -30,7 +30,7 @@ const JoystreamEthModule = buildModule("JoystreamEth", (m) => {
   const grantMinterCall = m.call(joystreamErc20, "grantRole", [erc20MinterRole, argoBridge], { after: [argoBridge] })
   const grantOperatorCall = m.call(argoBridge, "grantRole", [bridgeOperatorRole, bridgeOperator])
 
-  const timelockProposers = [deployer, bridgeAdmin] // temporarily allow bridgeAdmin to propose for the initial setup
+  const timelockProposers = [deployer, timelockProposer] // temporarily allow timelockProposer to propose for the initial setup
   const timelockExecutors = [ethers.ZeroAddress] // allow anyone to execute
   const timelockAdmin = deployer // set deployer as temporary admin for the initial setup
 

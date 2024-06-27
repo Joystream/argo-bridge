@@ -1,6 +1,22 @@
-import { EvmTimelockCall, EvmTimelockCallStatus } from "../model"
+import {
+  EvmTimelockCall,
+  EvmTimelockCallExecutedEvent,
+  EvmTimelockCallSaltEvent,
+  EvmTimelockCallScheduledEvent,
+  EvmTimelockOperation,
+  EvmTimelockOperationCancelledEvent,
+  EvmTimelockOperationStatus,
+  EvmTimelockRoleGrantedEvent,
+  EvmTimelockRoleRevokedEvent,
+} from "../model"
+import { saveEvents } from "../shared"
 import * as timelockControllerAbi from "./abi/timelockController"
 import { ARGO_ADDRESS, CHAIN_ID, TIMELOCK_ADDRESS } from "./processor"
+import {
+  getBridgeRolesLookup,
+  getEvmBridgeConfig,
+  getTimelockRolesLookup,
+} from "./shared"
 import { EvmLog } from "./types"
 import { BridgeAbi, TimelockAbi, getEntityId } from "@joystream/argo-core"
 import { DataHandlerContext } from "@subsquid/evm-processor"
@@ -8,188 +24,231 @@ import { Store } from "@subsquid/typeorm-store"
 import { In } from "typeorm"
 import { Hex, decodeFunctionData } from "viem"
 
-type BaseEvent = {
-  transactionHash: Hex
-  block: {
-    height: number
-    timestamp: number
-  }
-}
+type TimelockOperationEvent =
+  | EvmTimelockCallScheduledEvent
+  | EvmTimelockCallSaltEvent
+  | EvmTimelockCallExecutedEvent
+  | EvmTimelockOperationCancelledEvent
 
-type CallScheduledEvent = {
-  type: "CallScheduled"
-  localId: Hex
-  target: Hex
-  value: bigint
-  data: Hex
-  predecessor: Hex | null
-  delay: bigint
-}
-
-type CallSaltEvent = {
-  type: "CallSalt"
-  localId: Hex
-  salt: Hex
-}
-
-type CallExecutedEvent = {
-  type: "CallExecuted"
-  localId: Hex
-}
-
-type CancelledEvent = {
-  type: "Cancelled"
-  localId: Hex
-}
-
-type TimelockEvent = BaseEvent &
-  (CallExecutedEvent | CallSaltEvent | CallScheduledEvent | CancelledEvent)
+type TimelockRoleEvent =
+  | EvmTimelockRoleGrantedEvent
+  | EvmTimelockRoleRevokedEvent
 
 export async function handleTimelockEvents(
   logs: EvmLog[],
   ctx: DataHandlerContext<Store>,
 ): Promise<void> {
-  const parsedLogs = parseRawLogs(logs)
+  const [operationEvents, roleEvents] = parseRawLogs(logs)
 
-  const callIds = new Set()
-  for (const call of parsedLogs) {
-    callIds.add(getEntityId(CHAIN_ID, call.localId))
+  const operationIds = new Set()
+  for (const event of operationEvents) {
+    operationIds.add(getEntityId(CHAIN_ID, event.operationId))
   }
 
-  const calls: Map<string, EvmTimelockCall> = new Map(
-    (await ctx.store.findBy(EvmTimelockCall, { id: In([...callIds]) })).map(
-      (call) => [call.id, call],
-    ),
+  const operations: Map<string, EvmTimelockOperation> = new Map(
+    (
+      await ctx.store.find(EvmTimelockOperation, {
+        where: { id: In([...operationIds]) },
+        relations: {
+          calls: true,
+        },
+      })
+    ).map((call) => [call.id, call]),
   )
 
-  const getCall = (localId: string) => {
-    const id = getEntityId(CHAIN_ID, localId)
-    let call = calls.get(id)
-    if (!call) {
-      call = new EvmTimelockCall({ id })
-      calls.set(id, call)
+  const getOperation = (operationId: string) => {
+    const id = getEntityId(CHAIN_ID, operationId)
+    let operation = operations.get(id)
+    if (!operation) {
+      operation = new EvmTimelockOperation({ id })
+      operations.set(id, operation)
     }
-    return call
+    return operation
+  }
+  const newCalls: EvmTimelockCall[] = []
+
+  const rolesLookup = await getTimelockRolesLookup(ctx, logs)
+  const bridgeConfig = await getEvmBridgeConfig(ctx, CHAIN_ID)
+
+  for (const event of operationEvents) {
+    if (event instanceof EvmTimelockCallScheduledEvent) {
+      const operation = getOperation(event.operationId)
+      const decodedCall = decodeCall(event.callTarget, event.callData)
+
+      operation.operationId = event.operationId
+      operation.chainId = CHAIN_ID
+      operation.createdAtBlock = event.block
+      operation.createdAtTimestamp = event.timestamp
+      operation.createdTxHash = event.txHash
+      operation.status = EvmTimelockOperationStatus.PENDING
+
+      if (!operation.calls) {
+        operation.calls = []
+      }
+
+      const call = new EvmTimelockCall()
+      call.id = `${CHAIN_ID}-${event.operationId}-${event.callIndex}`
+      call.operation = operation
+      call.chainId = CHAIN_ID
+      call.callIndex = event.callIndex
+      call.callTarget = event.callTarget
+      call.callValue = event.callValue
+      call.callData = event.callData
+      call.callSignature = decodedCall[0]
+      call.callArgs = decodedCall[1]
+      operation.calls.push(call)
+      newCalls.push(call)
+
+      operation.predecessor = event.predecessor
+      operation.delayDoneTimestamp = new Date(
+        event.timestamp.getTime() + Number(event.delay) * 1000,
+      )
+    } else if (event instanceof EvmTimelockCallSaltEvent) {
+      const operation = getOperation(event.operationId)
+      operation.salt = event.salt
+    } else if (event instanceof EvmTimelockCallExecutedEvent) {
+      const operation = getOperation(event.operationId)
+      operation.executedAtBlock = event.block
+      operation.executedAtTimestamp = event.timestamp
+      operation.executedTxHash = event.txHash
+      operation.status = EvmTimelockOperationStatus.EXECUTED
+    } else if (event instanceof EvmTimelockOperationCancelledEvent) {
+      const operation = getOperation(event.operationId)
+      operation.cancelledAtBlock = event.block
+      operation.cancelledAtTimestamp = event.timestamp
+      operation.cancelledTxHash = event.txHash
+      operation.status = EvmTimelockOperationStatus.CANCELLED
+    }
   }
 
-  for (const log of parsedLogs) {
-    switch (log.type) {
-      case "CallScheduled": {
-        const call = getCall(log.localId)
-        const decodedCall = decodeCall(log.target, log.data)
-
-        call.callId = log.localId
-        call.chainId = CHAIN_ID
-        call.createdAtBlock = log.block.height
-        call.createdAtTimestamp = new Date(log.block.timestamp)
-        call.createdTxHash = log.transactionHash
-        call.status = EvmTimelockCallStatus.PENDING
-
-        call.callTarget = log.target
-        call.callValue = log.value
-        call.callData = log.data
-        call.callSignature = decodedCall[0]
-        call.callArgs = decodedCall[1]
-
-        call.predecessor = log.predecessor
-        call.delayDoneTimestamp = new Date(
-          log.block.timestamp + Number(log.delay) * 1000,
-        )
-        break
+  for (const event of roleEvents) {
+    if (event instanceof EvmTimelockRoleGrantedEvent) {
+      if (!rolesLookup) {
+        throw new Error("Roles lookup not initialized")
       }
-
-      case "CallSalt": {
-        const call = getCall(log.localId)
-        call.salt = log.salt
-        break
+      if (event.role === rolesLookup.timelockProposer) {
+        bridgeConfig.timelockAdminAccounts.push(event.account)
       }
-
-      case "CallExecuted": {
-        const call = getCall(log.localId)
-        call.executedAtBlock = log.block.height
-        call.executedAtTimestamp = new Date(log.block.timestamp)
-        call.executedTxHash = log.transactionHash
-        call.status = EvmTimelockCallStatus.EXECUTED
-        break
+    } else if (event instanceof EvmTimelockRoleRevokedEvent) {
+      if (!rolesLookup) {
+        throw new Error("Roles lookup not initialized")
       }
-
-      case "Cancelled": {
-        const call = getCall(log.localId)
-        call.cancelledAtBlock = log.block.height
-        call.cancelledAtTimestamp = new Date(log.block.timestamp)
-        call.cancelledTxHash = log.transactionHash
-        call.status = EvmTimelockCallStatus.CANCELLED
-        break
+      if (event.role === rolesLookup.timelockProposer) {
+        bridgeConfig.timelockAdminAccounts =
+          bridgeConfig.timelockAdminAccounts.filter(
+            (account) => account !== event.account,
+          )
       }
     }
   }
 
-  await ctx.store.save([...calls.values()])
+  await Promise.all([
+    ctx.store.save([...operations.values()]),
+    ctx.store.save(newCalls),
+    ctx.store.save(bridgeConfig),
+    saveEvents(ctx, [...operationEvents, ...roleEvents]),
+  ])
 }
 
-function parseRawLogs(logs: EvmLog[]): TimelockEvent[] {
-  const parsedLogs: TimelockEvent[] = []
+function parseRawLogs(
+  logs: EvmLog[],
+): [TimelockOperationEvent[], TimelockRoleEvent[]] {
+  const operationEvents: TimelockOperationEvent[] = []
+  const roleEvents: TimelockRoleEvent[] = []
 
   for (const log of logs) {
-    const baseEvent: BaseEvent = {
-      transactionHash: log.transactionHash as Hex,
-      block: {
-        height: log.block.height,
-        timestamp: log.block.timestamp,
-      },
+    const baseEvent = {
+      id: `${CHAIN_ID}-${log.block.height}-${log.logIndex}`,
+      chainId: CHAIN_ID,
+      txHash: log.transactionHash,
+      block: log.block.height,
+      timestamp: new Date(log.block.timestamp),
     }
 
     switch (log.topics[0]) {
       case timelockControllerAbi.events.CallScheduled.topic: {
-        const { id, target, value, data, predecessor, delay } =
+        const { id, index, target, value, data, predecessor, delay } =
           timelockControllerAbi.events.CallScheduled.decode(log)
-        parsedLogs.push({
-          type: "CallScheduled",
-          localId: id as Hex,
-          target: target as Hex,
-          value,
-          data: data as Hex,
-          predecessor: predecessor ? (predecessor as Hex) : null,
-          delay,
-          ...baseEvent,
-        })
+        operationEvents.push(
+          new EvmTimelockCallScheduledEvent({
+            ...baseEvent,
+            operationId: id as Hex,
+            callIndex: Number(index),
+            callTarget: target as Hex,
+            callValue: value,
+            callData: data as Hex,
+            predecessor: predecessor ? (predecessor as Hex) : null,
+            delay,
+          }),
+        )
         break
       }
 
       case timelockControllerAbi.events.CallSalt.topic: {
         const { id, salt } = timelockControllerAbi.events.CallSalt.decode(log)
-        parsedLogs.push({
-          type: "CallSalt",
-          localId: id as Hex,
-          salt: salt as Hex,
-          ...baseEvent,
-        })
+        operationEvents.push(
+          new EvmTimelockCallSaltEvent({
+            ...baseEvent,
+            operationId: id as Hex,
+            salt: salt as Hex,
+          }),
+        )
         break
       }
 
       case timelockControllerAbi.events.CallExecuted.topic: {
-        const { id } = timelockControllerAbi.events.CallExecuted.decode(log)
-        parsedLogs.push({
-          type: "CallExecuted",
-          localId: id as Hex,
-          ...baseEvent,
-        })
+        const { id, index } =
+          timelockControllerAbi.events.CallExecuted.decode(log)
+        operationEvents.push(
+          new EvmTimelockCallExecutedEvent({
+            ...baseEvent,
+            operationId: id as Hex,
+            callIndex: Number(index),
+          }),
+        )
         break
       }
 
       case timelockControllerAbi.events.Cancelled.topic: {
         const { id } = timelockControllerAbi.events.Cancelled.decode(log)
-        parsedLogs.push({
-          type: "Cancelled",
-          localId: id as Hex,
-          ...baseEvent,
-        })
+        operationEvents.push(
+          new EvmTimelockOperationCancelledEvent({
+            ...baseEvent,
+            operationId: id as Hex,
+          }),
+        )
+        break
+      }
+
+      case timelockControllerAbi.events.RoleGranted.topic: {
+        const { role, account } =
+          timelockControllerAbi.events.RoleGranted.decode(log)
+        roleEvents.push(
+          new EvmTimelockRoleGrantedEvent({
+            ...baseEvent,
+            role: role as Hex,
+            account: account as Hex,
+          }),
+        )
+        break
+      }
+
+      case timelockControllerAbi.events.RoleRevoked.topic: {
+        const { role, account } =
+          timelockControllerAbi.events.RoleRevoked.decode(log)
+        roleEvents.push(
+          new EvmTimelockRoleRevokedEvent({
+            ...baseEvent,
+            role: role as Hex,
+            account: account as Hex,
+          }),
+        )
         break
       }
     }
   }
 
-  return parsedLogs
+  return [operationEvents, roleEvents]
 }
 
 function decodeCall(

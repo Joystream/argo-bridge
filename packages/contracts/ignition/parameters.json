@@ -1,7 +1,7 @@
 {
   "JoystreamEth": {
     "timelockDelay": 120,
-    "bridgeAdmin": "0x45F2aBcE86a938Bb4d4633048dfA15bED7A5E310",
+    "timelockProposer": "0x45F2aBcE86a938Bb4d4633048dfA15bED7A5E310",
     "bridgeOperator": "0x45F2aBcE86a938Bb4d4633048dfA15bED7A5E310",
     "bridgeFee": 100,
     "mintingLimitPeriodLengthBlocks": 1000,

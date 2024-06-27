@@ -49,6 +49,11 @@ const _EVM_NETWORKS = {
       bridge: "0xdb696e892681A86f421c136F317496DcB5Cb3Ace",
       timelock: "0xe070f47bf2849593f9745e448b2723C57B7E5292",
     },
+    opMultiAddress: "0x6C0da65d7e8F1A75e7715F6b2e11a4d2388950bb",
+    opMultiSigners: [
+      "0x5a8f5ee896d5bb15C8916cA744dBF9bCDDa63413",
+      "0xb39f942c37f98A7fE59e5bdd06d82b70718c5f96",
+    ],
   },
   hardhat: {
     name: "Hardhat",

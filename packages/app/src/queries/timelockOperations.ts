@@ -1,24 +1,20 @@
-import { graphql } from "../gql"
+import { graphql } from '../gql'
 
-export const getTimelockCallsQueryDocument = graphql(/* GraphQL */ `
-  query GetTimelockCalls(
-    $where: EvmTimelockCallWhereInput
-    $orderBy: [EvmTimelockCallOrderByInput!]
+export const getTimelockOperationsQueryDocument = graphql(/* GraphQL */ `
+  query GetTimelockOperations(
+    $where: EvmTimelockOperationWhereInput
+    $orderBy: [EvmTimelockOperationOrderByInput!]
     $limit: Int
     $offset: Int
   ) {
-    evmTimelockCalls(
+    evmTimelockOperations(
       where: $where
       orderBy: $orderBy
       limit: $limit
       offset: $offset
     ) {
       id
-      callArgs
-      callData
-      callSignature
-      callTarget
-      callValue
+      operationId
       cancelledAtBlock
       cancelledAtTimestamp
       cancelledTxHash
@@ -32,6 +28,14 @@ export const getTimelockCallsQueryDocument = graphql(/* GraphQL */ `
       predecessor
       salt
       status
+      calls {
+        callIndex
+        callArgs
+        callData
+        callSignature
+        callTarget
+        callValue
+      }
     }
   }
 `)
