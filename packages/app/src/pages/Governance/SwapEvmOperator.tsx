@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { TypographyH4, TypographyP } from '@/components/ui/typography'
+import { TypographyH4 } from '@/components/ui/typography'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,13 +12,14 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useScheduleCall } from '@/pages/Governance/governance.utils'
+import { useScheduleCall } from './governance.utils'
 import { Address, encodeFunctionData } from 'viem'
 import { BridgeAbi } from '@joystream/argo-core'
 import { BRIDGE_ADDRESS } from '@/config'
 import { useReadContract } from 'wagmi'
 import { toast } from 'sonner'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
+import { AddressLabel } from '@/components/AddressLabel'
 
 const formSchema = z.object({
   newOperatorAddress: z
@@ -73,13 +74,14 @@ export const SwapEvmOperator: FC = () => {
   }
 
   return (
-    <div className="max-w-[500px] border-2 rounded border-primary px-3 py-2">
-      <TypographyH4>Swap bridge operator</TypographyH4>
+    <div>
+      <TypographyH4>Swap EVM bridge operator</TypographyH4>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-          <TypographyP>
-            Swap bridge operator from {evmConfig?.bridgeOperatorAccounts[0]} to:
-          </TypographyP>
+          <div>
+            Swap bridge operator from{' '}
+            <AddressLabel address={evmConfig!.bridgeOperatorAccounts[0]} /> to:
+          </div>
           <FormField
             control={form.control}
             name="newOperatorAddress"

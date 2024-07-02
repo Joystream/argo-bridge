@@ -1,7 +1,8 @@
 import { EVM_NETWORKS, JOY_NETWORKS } from '@joystream/argo-core'
 
 // export const RPC_URL = 'wss://rpc.joyutils.org'
-export const ARGO_INDEXER_URL = 'http://localhost:4350/graphql'
+// export const ARGO_INDEXER_URL = 'http://localhost:4350/graphql'
+export const ARGO_INDEXER_URL = 'https://argo.joyutils.org/graphql'
 
 export const JOYSTREAM_CHAIN_ID = 'polkadot:6b5e488e0fa8f9821110d5c13f4c468a'
 export const JOYSTREAM_SS58_PREFIX = 126

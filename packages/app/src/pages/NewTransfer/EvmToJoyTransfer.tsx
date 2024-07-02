@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { FC, ReactNode } from 'react'
+import { FC } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import {
@@ -12,18 +12,14 @@ import {
 import { Input } from '@/components/ui/input'
 import { JoyHapiInput } from '@/components/JoyHapiInput'
 import { Button } from '@/components/ui/button'
-import {
-  TypographyH2,
-  TypographyH3,
-  TypographyP,
-} from '@/components/ui/typography'
+import { TypographyH3, TypographyP } from '@/components/ui/typography'
 import { useTransaction } from '@/providers/transaction'
 import { BRIDGE_ADDRESS, ERC20_ADDRESS, EVM_NETWORK } from '@/config'
 import { toast } from 'sonner'
 import { Hex, isHex, maxUint256 } from 'viem'
 import { useAccount, useReadContract, useWriteContract } from 'wagmi'
 import { BridgeAbi, Erc20Abi, joyAddressCodec } from '@joystream/argo-core'
-import { formatEth, formatJoy } from '@/lib/utils'
+import { formatEth } from '@/lib/utils'
 
 const formSchema = z.object({
   targetJoyAddress: z

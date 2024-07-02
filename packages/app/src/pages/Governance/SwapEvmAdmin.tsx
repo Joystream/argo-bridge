@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { TypographyH4, TypographyP } from '@/components/ui/typography'
+import { TypographyH4 } from '@/components/ui/typography'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -19,6 +19,7 @@ import { TIMELOCK_ADDRESS } from '@/config'
 import { useReadContract } from 'wagmi'
 import { toast } from 'sonner'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
+import { AddressLabel } from '@/components/AddressLabel'
 
 const formSchema = z.object({
   newAdminAddress: z
@@ -73,13 +74,14 @@ export const SwapEvmAdmin: FC = () => {
   }
 
   return (
-    <div className="max-w-[500px] border-2 rounded border-primary px-3 py-2">
-      <TypographyH4>Swap timelock admin</TypographyH4>
+    <div>
+      <TypographyH4>Swap EVM timelock admin</TypographyH4>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-          <TypographyP>
-            Swap timelock admin from {evmConfig?.timelockAdminAccounts[0]} to:
-          </TypographyP>
+          <div>
+            Swap timelock admin from{' '}
+            <AddressLabel address={evmConfig!.timelockAdminAccounts[0]} /> to:
+          </div>
           <FormField
             control={form.control}
             name="newAdminAddress"

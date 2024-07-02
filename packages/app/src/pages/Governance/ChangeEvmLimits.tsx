@@ -51,7 +51,7 @@ export const ChangeEvmLimits: FC = () => {
   }
 
   return (
-    <div className="max-w-[300px] border-2 rounded border-primary px-3 py-2">
+    <div>
       <TypographyH4>Change EVM limits</TypographyH4>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">

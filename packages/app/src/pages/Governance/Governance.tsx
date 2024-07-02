@@ -25,9 +25,9 @@ import {
 import { useTransaction } from '@/providers/transaction'
 import { useJoyWallets } from '@/providers/joyWallet'
 import { toast } from 'sonner'
-import { SwapEvmOperator } from './SwapEvmOperator'
 import { getTimelockOperationsQueryDocument } from '@/queries/timelockOperations'
-import { SwapEvmAdmin } from '@/pages/Governance/SwapEvmAdmin'
+import { PendingAdminSafeTransactions } from './PendingAdminSafeTransactions'
+import { ProposeAdminAction } from './ProposeAdminAction'
 
 export const GovernancePage: FC = () => {
   const { address } = useAccount()
@@ -122,9 +122,8 @@ export const GovernancePage: FC = () => {
       {bridgeConfigs?.joy.status === JoyBridgeStatus.Thawn && (
         <Button onClick={finishJoyBridgeUnpause}>Finish Joy unpause</Button>
       )}
-      <ChangeEvmLimits />
-      <SwapEvmOperator />
-      <SwapEvmAdmin />
+      <ProposeAdminAction />
+      <PendingAdminSafeTransactions />
 
       <Collapsible>
         <CollapsibleTrigger>Timelock Operations</CollapsibleTrigger>

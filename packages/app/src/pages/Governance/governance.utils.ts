@@ -1,10 +1,16 @@
 import { useReadContract, useWriteContract } from 'wagmi'
 import { TimelockAbi } from '@joystream/argo-core'
-import { TIMELOCK_ADDRESS } from '@/config'
+import { EVM_NETWORK, TIMELOCK_ADDRESS } from '@/config'
 import { useTransaction } from '@/providers/transaction'
-import { Address, bytesToHex, Hex, zeroHash } from 'viem'
+import { Address, bytesToHex, encodeFunctionData, Hex, zeroHash } from 'viem'
 import { useCallback } from 'react'
 import { toast } from 'sonner'
+import {
+  MetaTransactionData,
+  OperationType,
+} from '@safe-global/safe-core-sdk-types'
+import { useUser } from '@/providers/user/user.hooks'
+import { useSafeStore } from '@/providers/safe/safe.store'
 
 type Call = {
   target: Address
@@ -12,76 +18,85 @@ type Call = {
 }
 
 export const useScheduleCall = () => {
-  const { writeContractAsync } = useWriteContract()
   const { data: timelockMinDelay } = useReadContract({
     abi: TimelockAbi,
     address: TIMELOCK_ADDRESS,
     functionName: 'getMinDelay',
   })
+  const { userEvmAdmin } = useUser()
   const { addTxPromise } = useTransaction()
+  const { adminSafe, safeApiKit } = useSafeStore()
 
   const scheduleCall = useCallback(
     async (calls: Call[]) => {
-      if (timelockMinDelay == null || !addTxPromise || !calls.length) {
-        toast.error('Timelock min delay not available')
+      const safeAddress = EVM_NETWORK.adminMulti?.address
+
+      if (
+        timelockMinDelay == null ||
+        !addTxPromise ||
+        !calls.length ||
+        !safeAddress ||
+        !userEvmAdmin ||
+        !adminSafe ||
+        !safeApiKit
+      ) {
+        toast.error('Unexpected error')
+        console.error({
+          timelockMinDelay,
+          addTxPromise,
+          calls,
+          safeAddress,
+          userEvmAdmin,
+          adminSafe,
+          safeApiKit,
+        })
         return
       }
 
       const saltBytes = crypto.getRandomValues(new Uint8Array(32))
 
-      let writePromise: Promise<Hex>
-      if (calls.length > 1) {
-        writePromise = writeContractAsync(
-          {
-            abi: TimelockAbi,
-            address: TIMELOCK_ADDRESS,
-            functionName: 'scheduleBatch',
-            args: [
-              calls.map((call) => call.target),
-              calls.map(() => 0n),
-              calls.map((call) => call.calldata),
-              zeroHash,
-              bytesToHex(saltBytes),
-              timelockMinDelay,
-            ],
-          },
-          {
-            onSettled: (data, error) => {
-              if (error) {
-                console.error('Error:', error)
-              } else {
-                console.log('Data:', data)
-              }
-            },
-          }
-        )
-      } else {
-        writePromise = writeContractAsync(
-          {
-            abi: TimelockAbi,
-            address: TIMELOCK_ADDRESS,
-            functionName: 'schedule',
-            args: [
-              calls[0].target,
-              0n,
-              calls[0].calldata,
-              zeroHash,
-              bytesToHex(saltBytes),
-              timelockMinDelay,
-            ],
-          },
-          {
-            onSettled: (data, error) => {
-              if (error) {
-                console.error('Error:', error)
-              } else {
-                console.log('Data:', data)
-              }
-            },
-          }
-        )
+      const calldata = encodeFunctionData({
+        abi: TimelockAbi,
+        functionName: calls.length > 1 ? 'scheduleBatch' : 'schedule',
+        args:
+          calls.length > 1
+            ? [
+                calls.map((call) => call.target),
+                calls.map(() => 0n),
+                calls.map((call) => call.calldata),
+                zeroHash,
+                bytesToHex(saltBytes),
+                timelockMinDelay,
+              ]
+            : [
+                calls[0].target,
+                0n,
+                calls[0].calldata,
+                zeroHash,
+                bytesToHex(saltBytes),
+                timelockMinDelay,
+              ],
+      })
+
+      const safeTransactionData: MetaTransactionData = {
+        to: TIMELOCK_ADDRESS,
+        value: '0',
+        operation: OperationType.Call,
+        data: calldata,
       }
-      addTxPromise(writePromise)
+      const safeTransaction = await adminSafe.createTransaction({
+        transactions: [safeTransactionData],
+      })
+      const safeTxHash = await adminSafe.getTransactionHash(safeTransaction)
+      const signature = await adminSafe.signHash(safeTxHash)
+
+      await safeApiKit.proposeTransaction({
+        safeAddress,
+        safeTransactionData: safeTransaction.data,
+        safeTxHash,
+        senderAddress: userEvmAdmin,
+        senderSignature: signature.data,
+      })
     },
     [timelockMinDelay, addTxPromise]
   )

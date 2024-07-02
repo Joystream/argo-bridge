@@ -1,6 +1,6 @@
 import { Hex } from "viem"
 
-type NetworkConfig = {
+export type NetworkConfig = {
   name: string
   chainId: number
   rpc: {
@@ -11,30 +11,48 @@ type NetworkConfig = {
   archiveName?: string
 }
 
-type EvmNetworkConfig = NetworkConfig & {
+export type JoyNetworkConfig = NetworkConfig & {
+  opMulti?: {
+    address: string
+    signers: readonly string[]
+    threshold: number
+  }
+}
+
+export type EvmNetworkConfig = NetworkConfig & {
   contracts: {
     erc20: Hex
     bridge: Hex
     timelock: Hex
   }
+  opMulti?: {
+    address: Hex
+    signers: readonly Hex[]
+    threshold: number
+  }
+  adminMulti?: {
+    address: Hex
+    signers: readonly Hex[]
+    threshold: number
+  }
 }
 
 const _EVM_NETWORKS = {
-  sepolia: {
-    name: "Sepolia",
-    chainId: 11155111,
-    archiveName: "eth-sepolia",
-    rpc: {
-      url: "https://rpc.ankr.com/eth_sepolia/abc1ed712dcea03c2de5b71da89b9ad17341eea8d87a65dbff6cd668e7e65bf8",
-      rateLimit: 30,
-    },
-    startBlock: 5_861_090,
-    contracts: {
-      erc20: "0xa2717A92FCE2Acb20F83AD9233709D2ce512752E",
-      bridge: "0xdb696e892681A86f421c136F317496DcB5Cb3Ace",
-      timelock: "0xe070f47bf2849593f9745e448b2723C57B7E5292",
-    },
-  },
+  // sepolia: {
+  //   name: "Sepolia",
+  //   chainId: 11155111,
+  //   archiveName: "eth-sepolia",
+  //   rpc: {
+  //     url: "https://rpc.ankr.com/eth_sepolia/abc1ed712dcea03c2de5b71da89b9ad17341eea8d87a65dbff6cd668e7e65bf8",
+  //     rateLimit: 30,
+  //   },
+  //   startBlock: 5_861_090,
+  //   contracts: {
+  //     erc20: "0xa2717A92FCE2Acb20F83AD9233709D2ce512752E",
+  //     bridge: "0xdb696e892681A86f421c136F317496DcB5Cb3Ace",
+  //     timelock: "0xe070f47bf2849593f9745e448b2723C57B7E5292",
+  //   },
+  // },
   baseSepolia: {
     name: "Base Sepolia",
     chainId: 84532,
@@ -49,11 +67,22 @@ const _EVM_NETWORKS = {
       bridge: "0xdb696e892681A86f421c136F317496DcB5Cb3Ace",
       timelock: "0xe070f47bf2849593f9745e448b2723C57B7E5292",
     },
-    opMultiAddress: "0x6C0da65d7e8F1A75e7715F6b2e11a4d2388950bb",
-    opMultiSigners: [
-      "0x5a8f5ee896d5bb15C8916cA744dBF9bCDDa63413",
-      "0xb39f942c37f98A7fE59e5bdd06d82b70718c5f96",
-    ],
+    opMulti: {
+      address: "0x6C0da65d7e8F1A75e7715F6b2e11a4d2388950bb",
+      signers: [
+        "0x5a8f5ee896d5bb15C8916cA744dBF9bCDDa63413",
+        "0xb39f942c37f98A7fE59e5bdd06d82b70718c5f96",
+      ],
+      threshold: 2,
+    },
+    adminMulti: {
+      address: "0x6C0da65d7e8F1A75e7715F6b2e11a4d2388950bb",
+      signers: [
+        "0x5a8f5ee896d5bb15C8916cA744dBF9bCDDa63413",
+        "0xb39f942c37f98A7fE59e5bdd06d82b70718c5f96",
+      ],
+      threshold: 2,
+    },
   },
   hardhat: {
     name: "Hardhat",
@@ -104,7 +133,8 @@ export type ChainName = EvmChainName | JoyChainName
 
 export const EVM_NETWORKS: Record<EvmChainName, EvmNetworkConfig> =
   _EVM_NETWORKS
-export const JOY_NETWORKS: Record<JoyChainName, NetworkConfig> = _JOY_NETWORKS
+export const JOY_NETWORKS: Record<JoyChainName, JoyNetworkConfig> =
+  _JOY_NETWORKS
 export const ALL_NETWORKS = { ...EVM_NETWORKS, ...JOY_NETWORKS }
 
 export const Erc20Abi = [

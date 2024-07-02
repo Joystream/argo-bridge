@@ -11,18 +11,14 @@ import {
 } from "../model"
 import { saveEvents } from "../shared"
 import * as timelockControllerAbi from "./abi/timelockController"
-import { ARGO_ADDRESS, CHAIN_ID, TIMELOCK_ADDRESS } from "./processor"
-import {
-  getBridgeRolesLookup,
-  getEvmBridgeConfig,
-  getTimelockRolesLookup,
-} from "./shared"
+import { CHAIN_ID, NETWORK } from "./processor"
+import { getEvmBridgeConfig, getTimelockRolesLookup } from "./shared"
 import { EvmLog } from "./types"
-import { BridgeAbi, TimelockAbi, getEntityId } from "@joystream/argo-core"
+import { decodeCall, getEntityId } from "@joystream/argo-core"
 import { DataHandlerContext } from "@subsquid/evm-processor"
 import { Store } from "@subsquid/typeorm-store"
 import { In } from "typeorm"
-import { Hex, decodeFunctionData } from "viem"
+import { Hex } from "viem"
 
 type TimelockOperationEvent =
   | EvmTimelockCallScheduledEvent
@@ -73,7 +69,19 @@ export async function handleTimelockEvents(
   for (const event of operationEvents) {
     if (event instanceof EvmTimelockCallScheduledEvent) {
       const operation = getOperation(event.operationId)
-      const decodedCall = decodeCall(event.callTarget, event.callData)
+      const [decodedFnName, decodedArgsRaw] = decodeCall(
+        NETWORK,
+        event.callTarget,
+        event.callData,
+      )
+      const decodedArgs = decodedArgsRaw
+        ? JSON.stringify(decodedArgsRaw, (_, value) => {
+            if (typeof value === "bigint") {
+              return value.toString()
+            }
+            return value
+          })
+        : null
 
       operation.operationId = event.operationId
       operation.chainId = CHAIN_ID
@@ -94,8 +102,8 @@ export async function handleTimelockEvents(
       call.callTarget = event.callTarget
       call.callValue = event.callValue
       call.callData = event.callData
-      call.callSignature = decodedCall[0]
-      call.callArgs = decodedCall[1]
+      call.callSignature = decodedFnName
+      call.callArgs = decodedArgs
       operation.calls.push(call)
       newCalls.push(call)
 
@@ -249,44 +257,4 @@ function parseRawLogs(
   }
 
   return [operationEvents, roleEvents]
-}
-
-function decodeCall(
-  callTarget: string,
-  callData: string,
-): [string | null, string | null] {
-  let functionName: string | null = null
-  let args: readonly any[] | null = null
-
-  if (callTarget.toLowerCase() === ARGO_ADDRESS) {
-    const decoded = decodeFunctionData({
-      abi: BridgeAbi,
-      data: callData as `0x${string}`,
-    })
-    if (decoded) {
-      functionName = decoded.functionName
-      args = decoded.args
-    }
-  } else if (callTarget.toLowerCase() === TIMELOCK_ADDRESS) {
-    const decoded = decodeFunctionData({
-      abi: TimelockAbi,
-      data: callData as `0x${string}`,
-    })
-    if (decoded) {
-      functionName = decoded.functionName
-      args = decoded.args
-    }
-  }
-
-  return [
-    functionName,
-    args
-      ? JSON.stringify(args, (_, value) => {
-          if (typeof value === "bigint") {
-            return value.toString()
-          }
-          return value
-        })
-      : null,
-  ]
 }
