@@ -15,17 +15,17 @@ import { Label } from '@/components/ui/label'
 
 const selectOptions = [
   {
-    label: 'Change EVM limits',
+    label: 'Change minting limits',
     value: 'change-evm-limits',
     component: ChangeEvmLimits,
   },
   {
-    label: 'Swap EVM operator',
+    label: 'Swap bridge operator',
     value: 'swap-evm-operator',
     component: SwapEvmOperator,
   },
   {
-    label: 'Swap EVM admin',
+    label: 'Swap timelock admin',
     value: 'swap-evm-admin',
     component: SwapEvmAdmin,
   },
@@ -39,7 +39,7 @@ export const ProposeAdminAction: FC = () => {
   return (
     <Card>
       <CardHeader>
-        <TypographyH3>Propose governance action</TypographyH3>
+        <TypographyH3>Propose EVM governance action</TypographyH3>
       </CardHeader>
       <CardContent>
         <Label>Choose action type</Label>

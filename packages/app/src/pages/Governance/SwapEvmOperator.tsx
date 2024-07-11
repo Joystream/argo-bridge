@@ -75,7 +75,7 @@ export const SwapEvmOperator: FC = () => {
 
   return (
     <div>
-      <TypographyH4>Swap EVM bridge operator</TypographyH4>
+      <TypographyH4>Swap bridge operator</TypographyH4>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           <div>
@@ -87,7 +87,7 @@ export const SwapEvmOperator: FC = () => {
             name="newOperatorAddress"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>New EVM bridge operator address</FormLabel>
+                <FormLabel>New bridge operator address</FormLabel>
                 <Input type="text" {...field} className="text-sm h-10" />
                 <FormMessage />
               </FormItem>

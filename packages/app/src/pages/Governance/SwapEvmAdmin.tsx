@@ -75,7 +75,7 @@ export const SwapEvmAdmin: FC = () => {
 
   return (
     <div>
-      <TypographyH4>Swap EVM timelock admin</TypographyH4>
+      <TypographyH4>Swap timelock admin</TypographyH4>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           <div>
@@ -87,7 +87,7 @@ export const SwapEvmAdmin: FC = () => {
             name="newAdminAddress"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>New EVM timelock admin address</FormLabel>
+                <FormLabel>New timelock admin address</FormLabel>
                 <Input type="text" {...field} className="text-sm h-10" />
                 <FormMessage />
               </FormItem>

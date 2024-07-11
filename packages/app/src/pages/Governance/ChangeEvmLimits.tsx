@@ -52,7 +52,7 @@ export const ChangeEvmLimits: FC = () => {
 
   return (
     <div>
-      <TypographyH4>Change EVM limits</TypographyH4>
+      <TypographyH4>Change minting limits</TypographyH4>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           <FormField

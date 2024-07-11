@@ -124,6 +124,14 @@ const _JOY_NETWORKS = {
       url: "wss://135.181.195.172.nip.io/ws-rpc",
       rateLimit: 500,
     },
+    opMulti: {
+      address: "j4UJK4dg51HZcJ9nTh8epDCKzGDaNss4DkGdaa622GYVqLSqJ",
+      signers: [
+        "j4W7rVcUCxi2crhhjRq46fNDRbVHTjJrz6bKxZwehEMQxZeSf",
+        "j4UYhDYJ4pz2ihhDDzu69v2JTVeGaGmTebmBdWaX2ANVinXyE",
+      ],
+      threshold: 2,
+    },
   },
 } as const
 

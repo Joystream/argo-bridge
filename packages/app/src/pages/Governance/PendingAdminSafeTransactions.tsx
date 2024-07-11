@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import { useSafeStore } from '@/providers/safe/safe.store'
 import { useQuery } from '@tanstack/react-query'
 import { EVM_NETWORK } from '@/config'
@@ -15,19 +15,12 @@ import { Button } from '@/components/ui/button'
 import { AddressLabel } from '@/components/AddressLabel'
 import { decodeCall } from '@joystream/argo-core'
 import { useTransaction } from '@/providers/transaction'
+import { usePendingAdminCallsQuery } from '@/providers/safe/safe.hooks'
 
 export const PendingAdminSafeTransactions: FC = () => {
   const { safeApiKit } = useSafeStore()
 
-  const { data } = useQuery({
-    queryKey: ['pendingAdminCalls'],
-    queryFn: async () => {
-      return safeApiKit?.getPendingTransactions(
-        EVM_NETWORK.adminMulti?.address || ''
-      )
-    },
-    enabled: !!safeApiKit && !!EVM_NETWORK.adminMulti,
-  })
+  const { data } = usePendingAdminCallsQuery(safeApiKit)
 
   return (
     <div>
@@ -71,42 +64,47 @@ const PendingAdminSafeTransaction: FC<{
     addTxPromise?.(txPromise)
   }
 
-  const [decodedFnName, decodedArgs] = decodeCall(
-    EVM_NETWORK,
-    transaction.to,
-    transaction.data || '0x'
-  )
-
-  const decodedCalls = []
-  if (decodedFnName === 'schedule' && decodedArgs) {
-    const [decodedCallFnName, decodedCallArgs] = decodeCall(
+  const getDecodedCalls = () => {
+    const decodedCalls = []
+    const [decodedFnName, decodedArgs] = decodeCall(
       EVM_NETWORK,
-      decodedArgs[0],
-      decodedArgs[2] || '0x'
+      transaction.to,
+      transaction.data || '0x'
     )
-    decodedCalls.push({
-      target: decodedArgs[0],
-      value: decodedArgs[1],
-      callFn: decodedCallFnName,
-      callArgs: decodedCallArgs,
-      formatted: `${decodedCallFnName}(${decodedCallArgs?.join(', ')})`,
-    })
-  } else if (decodedFnName === 'scheduleBatch' && decodedArgs) {
-    for (let i = 0; i < decodedArgs[0].length; i++) {
+
+    if (decodedFnName === 'schedule' && decodedArgs) {
       const [decodedCallFnName, decodedCallArgs] = decodeCall(
         EVM_NETWORK,
-        decodedArgs[0][i],
-        decodedArgs[2][i] || '0x'
+        decodedArgs[0],
+        decodedArgs[2] || '0x'
       )
       decodedCalls.push({
-        target: decodedArgs[0][i],
-        value: decodedArgs[1][i],
+        target: decodedArgs[0],
+        value: decodedArgs[1],
         callFn: decodedCallFnName,
         callArgs: decodedCallArgs,
         formatted: `${decodedCallFnName}(${decodedCallArgs?.join(', ')})`,
       })
+    } else if (decodedFnName === 'scheduleBatch' && decodedArgs) {
+      for (let i = 0; i < decodedArgs[0].length; i++) {
+        const [decodedCallFnName, decodedCallArgs] = decodeCall(
+          EVM_NETWORK,
+          decodedArgs[0][i],
+          decodedArgs[2][i] || '0x'
+        )
+        decodedCalls.push({
+          target: decodedArgs[0][i],
+          value: decodedArgs[1][i],
+          callFn: decodedCallFnName,
+          callArgs: decodedCallArgs,
+          formatted: `${decodedCallFnName}(${decodedCallArgs?.join(', ')})`,
+        })
+      }
     }
+    return decodedCalls
   }
+
+  const decodedCalls = getDecodedCalls()
 
   return (
     <Card>
