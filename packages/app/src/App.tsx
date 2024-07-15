@@ -15,13 +15,9 @@ const Layout: FC = () => (
   <>
     <Settings />
     <TopNav />
-    <div className="min-h-full">
-      <main>
-        <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8  mt-[50px]">
-          <Outlet />
-        </div>
-      </main>
-    </div>
+    <main className="px-4 pb-6 sm:px-6 lg:px-8 mt-[150px]">
+      <Outlet />
+    </main>
   </>
 )
 

@@ -4,6 +4,7 @@ import { decodeAddress, encodeAddress } from '@polkadot/util-crypto'
 import { JOYSTREAM_SS58_PREFIX } from '@/config'
 import { useSettingsStore } from '@/components/Settings'
 import { formatUnits, parseUnits } from 'ethers'
+import * as dn from 'dnum'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -18,7 +19,6 @@ export function hapiToJoy(hapi: string | bigint) {
   const asBigint = BigInt(hapi)
   return Number(formatUnits(asBigint, 10))
 }
-import * as dn from 'dnum'
 
 export function joyToHapi(joy: number) {
   return parseUnits(joy.toFixed(10), 10)
@@ -50,7 +50,7 @@ export function formatJoy(amount: bigint | string | dn.Dnum) {
     dnum = amount
   }
 
-  return `${dn.format(dnum, {})} JOY`
+  return `${dn.format(dnum, { compact: true, digits: 2 })} JOY`
 }
 
 export function formatEth(amount: bigint | string | dn.Dnum) {
@@ -63,9 +63,18 @@ export function formatEth(amount: bigint | string | dn.Dnum) {
     dnum = amount
   }
 
-  return `${dn.format(dnum, {})} ETH`
+  return `${dn.format(dnum, { compact: true, digits: 5 })} ETH`
 }
 
 export function truncateAddress(address: string, length = 6) {
   return `${address.slice(0, length)}...${address.slice(-length)}`
+}
+
+export function isJoyAddress(address: string) {
+  try {
+    formatJoystreamAddress(address)
+    return true
+  } catch {
+    return false
+  }
 }

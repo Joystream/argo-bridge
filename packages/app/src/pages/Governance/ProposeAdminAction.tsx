@@ -12,6 +12,7 @@ import {
   SelectItem,
 } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
+import { ChangeEvmFee } from '@/pages/Governance/ChangeEvmFee'
 
 const selectOptions = [
   {
@@ -28,6 +29,11 @@ const selectOptions = [
     label: 'Swap timelock admin',
     value: 'swap-evm-admin',
     component: SwapEvmAdmin,
+  },
+  {
+    label: 'Set bridging fee',
+    value: 'set-bridging-fee',
+    component: ChangeEvmFee,
   },
 ]
 

@@ -1,0 +1,4 @@
+[data-radix-collection-item] > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
