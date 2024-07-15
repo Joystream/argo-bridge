@@ -233,11 +233,15 @@ export const NewTransferForm: FC<NewTransferFormProps> = ({
               <FormDescription>
                 Balance:{' '}
                 {sourceBalance != null ? formatJoy(sourceBalance) : '—'}
-                {transferType === BridgeTransferType.EvmToJoy
-                  ? evmEthBalance != null
-                    ? ` | ${formatEth(evmEthBalance)}`
-                    : ''
-                  : null}
+                {transferType === BridgeTransferType.EvmToJoy ? (
+                  evmEthBalance != null ? (
+                    <span className="before:inline-block before:h-2.5 before:w-[1px] before:mx-1 before:bg-[currentColor] before:opacity-50">
+                      {formatEth(evmEthBalance)}
+                    </span>
+                  ) : (
+                    ''
+                  )
+                ) : null}
               </FormDescription>
               <FormMessage />
             </FormItem>
