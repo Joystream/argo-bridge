@@ -1,17 +1,14 @@
 import { FC } from 'react'
-import { Button } from '@/components/ui/button'
-import { useSettingsStore } from '@/components/Settings'
 import { Disclosure } from '@headlessui/react'
 import { cn } from '@/lib/utils'
-import { Menu, Settings, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { ROUTES } from '@/routes'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { JoyConnectButton } from '@/components/JoyConnectButton'
+import { EvmConnectButton } from '@/components/EvmConnectButton'
 
 export const TopNav: FC = () => {
-  const setSettingsOpen = useSettingsStore((s) => s.setSettingsOpen)
-
   return (
     <div className="bg-gray-800">
       <Disclosure as="nav" className="bg-gray-800">
@@ -46,15 +43,8 @@ export const TopNav: FC = () => {
                     </div>
                   </div>
                   <div className="ml-auto flex gap-x-3 items-center md:ml-6 mr-3 md:mr-0">
-                    <ConnectButton label="EVM wallet" />
+                    <EvmConnectButton />
                     <JoyConnectButton />
-                    <Button
-                      variant="nav"
-                      size="icon"
-                      onClick={() => setSettingsOpen(true)}
-                    >
-                      <Settings className="h-6 w-6" />
-                    </Button>
                   </div>
                   <div className="-mr-2 flex md:hidden">
                     {/* Mobile menu button */}

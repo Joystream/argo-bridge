@@ -26,6 +26,7 @@ import { NewTransferAllowance } from './NewTransferAllowance'
 import { NewTransferSummary } from './NewTransferSummary'
 import { JoyConnectButton } from '@/components/JoyConnectButton'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { EvmConnectButton } from '@/components/EvmConnectButton'
 
 const evmToJoyFormSchema = z.object({
   sourceAddress: z
@@ -246,7 +247,7 @@ export const NewTransferCard: FC = () => {
       } else {
         return (
           <CardFooter>
-            <ConnectButton />
+            <EvmConnectButton variant="default" fullWidth />
           </CardFooter>
         )
       }

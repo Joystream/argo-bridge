@@ -2,7 +2,6 @@ import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto'
 import { JOYSTREAM_SS58_PREFIX } from '@/config'
-import { useSettingsStore } from '@/components/Settings'
 import { formatUnits, parseUnits } from 'ethers'
 import * as dn from 'dnum'
 
@@ -22,12 +21,6 @@ export function hapiToJoy(hapi: string | bigint) {
 
 export function joyToHapi(joy: number) {
   return parseUnits(joy.toFixed(10), 10)
-}
-
-export function asJoyPerTerm(perBlock: string | bigint) {
-  const asBigint = BigInt(perBlock)
-  const termLength = BigInt(useSettingsStore.getState().termLength)
-  return hapiToJoy(asBigint * termLength)
 }
 
 const formatter = new Intl.NumberFormat('en-US', {

@@ -62,9 +62,7 @@ export const JoyConnectButton: FC<JoyConnectButtonProps> = ({
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="nav" size="icon">
-            <Wallet />
-          </Button>
+          <Button variant="outline">JOY wallet</Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>
