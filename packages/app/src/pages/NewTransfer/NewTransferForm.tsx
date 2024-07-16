@@ -21,7 +21,13 @@ import { useAccount, useBalance } from 'wagmi'
 import { ERC20_ADDRESS } from '@/config'
 import { Dnum } from 'dnum'
 import { Address, isAddress } from 'viem'
-import { cn, formatEth, formatJoy, joyToHapi } from '@/lib/utils'
+import {
+  cn,
+  formatEth,
+  formatJoy,
+  formatJoystreamAddress,
+  joyToHapi,
+} from '@/lib/utils'
 import { BridgeTransferType } from '@/gql/graphql'
 import { useJoyBalanceQuery } from '@/lib/hooks'
 import { Input } from '@/components/ui/input'
@@ -124,7 +130,10 @@ export const NewTransferForm: FC<NewTransferFormProps> = ({
 
     const parsedData: ParsedTransferFormData = {
       sourceAddress: data.sourceAddress,
-      targetAddress: data.targetAddress,
+      targetAddress:
+        transferType === BridgeTransferType.EvmToJoy
+          ? formatJoystreamAddress(data.targetAddress)
+          : data.targetAddress,
       hapiAmount: amountHapi,
     }
 
