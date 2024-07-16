@@ -106,10 +106,6 @@ export const GovernancePage: FC = () => {
     )
   }
 
-  if (!address) {
-    return <div>Connect wallet</div>
-  }
-
   return (
     <div className="space-y-2">
       <TypographyH2>Governance</TypographyH2>

@@ -52,6 +52,7 @@
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "ts-pattern": "^5.2.0",
     "viem": "^2.13.2",
     "wagmi": "^2.9.8",
     "zod": "^3.23.8",

@@ -164,7 +164,9 @@ export const TransferRowJoyCells: FC<{ transfer: BridgeTransfer }> = ({
   return (
     <>
       <TableCell>
-        {joyCallMultisigInfo?.approvals}/{threshold}
+        {transfer.status === 'REQUESTED'
+          ? `${joyCallMultisigInfo?.approvals ?? 0}/${threshold}`
+          : '—'}
       </TableCell>
       {renderAction()}
     </>

@@ -132,7 +132,9 @@ export const TransferRowEvmCells: FC<{ transfer: BridgeTransfer }> = ({
   return (
     <>
       <TableCell>
-        {approvals}/{threshold}
+        {transfer.status === 'REQUESTED'
+          ? `${approvals ?? 0}/${threshold}`
+          : '—'}
       </TableCell>
       {renderAction()}
     </>

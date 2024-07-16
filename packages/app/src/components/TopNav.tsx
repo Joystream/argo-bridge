@@ -1,95 +1,16 @@
 import { FC } from 'react'
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { toast } from 'sonner'
-import { useJoyWallets } from '@/providers/joyWallet'
 import { useSettingsStore } from '@/components/Settings'
 import { Disclosure } from '@headlessui/react'
 import { cn } from '@/lib/utils'
-import { Menu, Settings, Wallet, X } from 'lucide-react'
+import { Menu, Settings, X } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { ROUTES } from '@/routes'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { JoyConnectButton } from '@/components/JoyConnectButton'
 
 export const TopNav: FC = () => {
-  const {
-    connectToWallet,
-    disconnectWallet,
-    allWallets,
-    walletStatus,
-    wallet,
-  } = useJoyWallets()
-
   const setSettingsOpen = useSettingsStore((s) => s.setSettingsOpen)
-
-  const handleConnectWallet = async (walletId: string) => {
-    try {
-      const accounts = await connectToWallet(walletId)
-      toast.success(`Wallet connected with ${accounts?.length} accounts`)
-    } catch (error) {
-      toast.error('Failed to connect wallet')
-    }
-  }
-
-  const handleDisconnectWallet = async () => {
-    try {
-      await disconnectWallet()
-      toast.success('Wallet disconnected')
-    } catch (error) {
-      toast.error('Failed to disconnect wallet')
-    }
-  }
-
-  const joyWalletNode =
-    walletStatus === 'connected' ? (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="nav" size="icon">
-            <Wallet />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>
-            Connected to {wallet?.metadata.title}
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleDisconnectWallet}>
-            Disconnect wallet
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ) : walletStatus === 'pending' ? (
-      <Button disabled variant="outline">
-        Connecting...
-      </Button>
-    ) : (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline">JOY wallet</Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>Select wallet</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          {allWallets?.map((wallet) => (
-            <DropdownMenuItem
-              key={wallet.metadata.id}
-              onClick={() => handleConnectWallet(wallet.metadata.id)}
-            >
-              {wallet.type === 'WALLET_CONNECT'
-                ? 'WalletConnect'
-                : wallet.metadata.title}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    )
 
   return (
     <div className="bg-gray-800">
@@ -126,7 +47,7 @@ export const TopNav: FC = () => {
                   </div>
                   <div className="ml-auto flex gap-x-3 items-center md:ml-6 mr-3 md:mr-0">
                     <ConnectButton label="EVM wallet" />
-                    {joyWalletNode}
+                    <JoyConnectButton />
                     <Button
                       variant="nav"
                       size="icon"
