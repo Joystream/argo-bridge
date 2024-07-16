@@ -62,7 +62,6 @@ export const JoyHapiInput: FC<JoyHapiInputProps> = ({
     <div className="grid w-full items-center gap-2">
       <JoyInput
         label={label ? label : type === 'joy' ? 'JOY' : 'HAPI'}
-        copy
         placeholder="0"
         value={internalValue}
         onChange={(e) => handleChange(e.target.value)}

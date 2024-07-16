@@ -30,7 +30,7 @@ export const JoyInput: FC<JoyInputProps> = ({
           label
         )}
       </Label>
-      <Input id={id} {...props} isInvalid={isInvalid} className="w-full" />
+      <Input id={id} {...props} className="w-full" />
     </div>
   )
 }
