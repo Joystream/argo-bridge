@@ -4,12 +4,12 @@ import { NewTransferPage } from '@/pages/NewTransfer'
 
 export const ROUTES = [
   {
-    path: '/new',
+    path: '/',
     element: <NewTransferPage />,
     name: 'New transfer',
   },
   {
-    path: '/',
+    path: '/transfers',
     element: <TransfersPage />,
     name: 'Transfers',
   },
