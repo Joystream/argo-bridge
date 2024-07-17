@@ -9,6 +9,7 @@ import { FC } from 'react'
 import { TransactionProvider } from '@/providers/transaction'
 import { EvmProvider } from '@/providers/evm.provider'
 import { ROUTES } from '@/routes'
+import { ThemeProvider } from '@/providers/theme.provider'
 
 const Layout: FC = () => (
   <>
@@ -29,18 +30,20 @@ const router = createBrowserRouter([
 
 const App = () => {
   return (
-    <JoyApiProvider>
-      <JoyWalletProvider>
-        <EvmProvider>
-          <TooltipProvider delayDuration={300}>
-            <TransactionProvider>
-              <RouterProvider router={router} />
-              <Toaster />
-            </TransactionProvider>
-          </TooltipProvider>
-        </EvmProvider>
-      </JoyWalletProvider>
-    </JoyApiProvider>
+    <ThemeProvider>
+      <JoyApiProvider>
+        <JoyWalletProvider>
+          <EvmProvider>
+            <TooltipProvider delayDuration={300}>
+              <TransactionProvider>
+                <RouterProvider router={router} />
+                <Toaster />
+              </TransactionProvider>
+            </TooltipProvider>
+          </EvmProvider>
+        </JoyWalletProvider>
+      </JoyApiProvider>
+    </ThemeProvider>
   )
 }
 

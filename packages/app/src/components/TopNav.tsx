@@ -1,14 +1,23 @@
 import { FC } from 'react'
 import { Disclosure } from '@headlessui/react'
 import { cn } from '@/lib/utils'
-import { Menu, X } from 'lucide-react'
+import { Menu, Moon, Sun, X } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { ROUTES } from '@/routes'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { JoyConnectButton } from '@/components/JoyConnectButton'
 import { EvmConnectButton } from '@/components/EvmConnectButton'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
+import { useTheme } from '@/providers/theme.provider'
 
 export const TopNav: FC = () => {
+  const { setTheme } = useTheme()
+
   return (
     <div className="bg-gray-800">
       <Disclosure as="nav" className="bg-gray-800">
@@ -45,6 +54,26 @@ export const TopNav: FC = () => {
                   <div className="ml-auto flex gap-x-3 items-center md:ml-6 mr-3 md:mr-0">
                     <EvmConnectButton />
                     <JoyConnectButton />
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="icon">
+                          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                          <span className="sr-only">Toggle theme</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => setTheme('light')}>
+                          Light
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTheme('dark')}>
+                          Dark
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTheme('system')}>
+                          System
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                   <div className="-mr-2 flex md:hidden">
                     {/* Mobile menu button */}
