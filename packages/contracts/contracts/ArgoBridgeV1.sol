@@ -61,6 +61,7 @@ contract ArgoBridgeV1 is AccessControl {
     ) {
         _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
 
+        require(joystreamErc20Address != address(0), "Joystream ERC20 address is the zero address");
         joystreamErc20 = JoystreamERC20(joystreamErc20Address);
 
         _setBridgeFee(initialBridgeFee);
@@ -169,8 +170,9 @@ contract ArgoBridgeV1 is AccessControl {
 
     function withdrawBridgeFees() public onlyRole(DEFAULT_ADMIN_ROLE) {
         uint256 balance = address(this).balance;
-        payable(msg.sender).transfer(balance);
         emit ArgoBridgeFeesWithdrawn(msg.sender, balance);
+        (bool success, ) = payable(msg.sender).call{value: balance}("");
+        require(success, "Transfer failed");
     }
 
     /* === INTERNAL FUNCTIONS === */
@@ -188,7 +190,7 @@ contract ArgoBridgeV1 is AccessControl {
 
     function _updateMintingPeriod() internal {
         if (block.number >= currentMintingPeriodEndBlock) {
-            currentMintingPeriodEndBlock = block.number + mintingLimitPeriodLengthBlocks;
+            currentMintingPeriodEndBlock = block.number.add(mintingLimitPeriodLengthBlocks);
             currentMintingPeriodMinted = 0;
         }
     }
