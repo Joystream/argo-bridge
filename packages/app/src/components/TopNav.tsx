@@ -14,44 +14,49 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { useTheme } from '@/providers/theme.provider'
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from '@/components/ui/navigation-menu'
 
 export const TopNav: FC = () => {
   const { setTheme } = useTheme()
 
   return (
-    <div className="bg-gray-800">
-      <Disclosure as="nav" className="bg-gray-800">
+    <div>
+      <Disclosure as="nav">
         {({ open }) => (
           <>
-            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-              <div className="border-b border-gray-700">
-                <div className="flex h-16 items-center justify-between px-4 sm:px-0">
-                  <div className="flex items-center">
-                    <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl text-white">
-                      Argo
-                    </h1>
-                    <div className="hidden md:block">
-                      <div className="ml-10 flex items-baseline space-x-4">
-                        {ROUTES.map((item) => (
-                          <NavLink
-                            key={item.name}
-                            to={item.path}
-                            className={({ isActive }) =>
-                              cn(
-                                isActive
-                                  ? 'bg-gray-900 text-white'
-                                  : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                'rounded-md px-3 py-2 text-sm font-medium'
-                              )
-                            }
-                          >
-                            {item.name}
+            <div className="mx-auto sm:px-6 lg:px-8">
+              <div>
+                <div className="h-20 py-4 items-center justify-between grid grid-cols-[1fr_2fr_1fr] px-4 sm:px-0">
+                  <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl text-foreground">
+                    Argo
+                  </h1>
+                  <NavigationMenu className="place-self-center hidden md:block">
+                    <NavigationMenuList className="gap-4">
+                      {ROUTES.map((item) => (
+                        <NavigationMenuItem key={item.path}>
+                          <NavLink to={item.path}>
+                            {({ isActive }) => (
+                              <NavigationMenuLink
+                                className={navigationMenuTriggerStyle()}
+                                active={isActive}
+                              >
+                                {item.name}
+                              </NavigationMenuLink>
+                            )}
                           </NavLink>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="ml-auto flex gap-x-3 items-center md:ml-6 mr-3 md:mr-0">
+                        </NavigationMenuItem>
+                      ))}
+                    </NavigationMenuList>
+                  </NavigationMenu>
+                  <div className="flex gap-x-3 items-center justify-end">
                     <EvmConnectButton />
                     <JoyConnectButton />
                     <DropdownMenu>
@@ -77,7 +82,7 @@ export const TopNav: FC = () => {
                   </div>
                   <div className="-mr-2 flex md:hidden">
                     {/* Mobile menu button */}
-                    <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-0.5" />
                       <span className="sr-only">Open main menu</span>
                       {open ? (
@@ -98,51 +103,12 @@ export const TopNav: FC = () => {
                     key={item.name}
                     as={NavLink}
                     to={item.path}
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                    className="text-foreground hover:bg-primary-foreground block rounded-md px-3 py-2 text-base font-medium"
                   >
                     {item.name}
                   </Disclosure.Button>
                 ))}
               </div>
-              {/*<div className="border-t border-gray-700 pb-3 pt-4">*/}
-              {/*  <div className="flex items-center px-5">*/}
-              {/*    <div className="flex-shrink-0">*/}
-              {/*      <img*/}
-              {/*        className="h-10 w-10 rounded-full"*/}
-              {/*        src={user.imageUrl}*/}
-              {/*        alt=""*/}
-              {/*      />*/}
-              {/*    </div>*/}
-              {/*    <div className="ml-3">*/}
-              {/*      <div className="text-base font-medium leading-none text-white">*/}
-              {/*        {user.name}*/}
-              {/*      </div>*/}
-              {/*      <div className="text-sm font-medium leading-none text-gray-400">*/}
-              {/*        {user.email}*/}
-              {/*      </div>*/}
-              {/*    </div>*/}
-              {/*    <button*/}
-              {/*      type="button"*/}
-              {/*      className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"*/}
-              {/*    >*/}
-              {/*      <span className="absolute -inset-1.5" />*/}
-              {/*      <span className="sr-only">View notifications</span>*/}
-              {/*      <BellIcon className="h-6 w-6" aria-hidden="true" />*/}
-              {/*    </button>*/}
-              {/*  </div>*/}
-              {/*  <div className="mt-3 space-y-1 px-2">*/}
-              {/*    {userNavigation.map((item) => (*/}
-              {/*      <Disclosure.Button*/}
-              {/*        key={item.name}*/}
-              {/*        as="a"*/}
-              {/*        href={item.href}*/}
-              {/*        className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"*/}
-              {/*      >*/}
-              {/*        {item.name}*/}
-              {/*      </Disclosure.Button>*/}
-              {/*    ))}*/}
-              {/*  </div>*/}
-              {/*</div>*/}
             </Disclosure.Panel>
           </>
         )}
