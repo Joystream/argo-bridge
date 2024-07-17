@@ -170,9 +170,9 @@ contract ArgoBridgeV1 is AccessControl {
 
     function withdrawBridgeFees() public onlyRole(DEFAULT_ADMIN_ROLE) {
         uint256 balance = address(this).balance;
-        emit ArgoBridgeFeesWithdrawn(msg.sender, balance);
         (bool success, ) = payable(msg.sender).call{value: balance}("");
         require(success, "Transfer failed");
+        emit ArgoBridgeFeesWithdrawn(msg.sender, balance);
     }
 
     /* === INTERNAL FUNCTIONS === */
