@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { AddressLabel } from '@/components/AddressLabel'
+import { ContractAddressLabel } from '@/components/ContractAddressLabel'
 import { decodeCall } from '@joystream/argo-core'
 import { useTransaction } from '@/providers/transaction'
 import { usePendingAdminCallsQuery } from '@/providers/safe/safe.hooks'
@@ -123,7 +123,7 @@ const PendingAdminSafeTransaction: FC<{
           </ol>
         </div>
         <div>
-          Transaction target: <AddressLabel address={transaction.to} />
+          Transaction target: <ContractAddressLabel address={transaction.to} />
         </div>
         {decodedCalls.length > 0 ? (
           <div>
@@ -132,7 +132,7 @@ const PendingAdminSafeTransaction: FC<{
               {decodedCalls.map((call, index) => (
                 <li key={index}>
                   <div>
-                    Call target: <AddressLabel address={call.target} />
+                    Call target: <ContractAddressLabel address={call.target} />
                   </div>
                   <div className="">
                     Call: <pre>{call.formatted}</pre>

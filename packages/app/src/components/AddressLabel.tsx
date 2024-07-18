@@ -1,40 +1,28 @@
 import { FC } from 'react'
-import { Badge } from '@/components/ui/badge'
-import { EVM_NETWORK } from '@/config'
+import { truncateAddress } from '@/lib/utils'
+import { CopyIcon } from 'lucide-react'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { useChainId, useChains } from 'wagmi'
-import { truncateAddress } from '@/lib/utils'
-
-const knownAddresses = {
-  [EVM_NETWORK.contracts.timelock]: 'TimelockController',
-  [EVM_NETWORK.contracts.bridge]: 'ArgoBridgeV1',
-  [EVM_NETWORK.contracts.erc20]: 'JoystreamERC20',
-}
+import { toast } from 'sonner'
 
 export const AddressLabel: FC<{ address: string }> = ({ address }) => {
-  const knownName = knownAddresses[address]
-  const chains = useChains()
-  const chainId = useChainId()
-  const chain = chains.find((chain) => chain.id === chainId)
+  const truncated = truncateAddress(address, 10)
 
   const handleClick = () => {
-    const explorer = chain?.blockExplorers?.default
-    if (!explorer) return
-    window.open(`${explorer.url}/address/${address}`)
+    navigator.clipboard.writeText(address)
+    toast.info('Address copied to clipboard')
   }
-
-  const label = knownName || truncateAddress(address)
 
   return (
     <Tooltip>
-      <TooltipTrigger>
-        <Badge variant="outline" onClick={handleClick}>
-          {label}
-        </Badge>
+      <TooltipTrigger onClick={handleClick}>
+        <span className="flex items-center justify-between min-w-[205px]">
+          {truncated}
+          <CopyIcon className="h-4 w-4 ml-2" />
+        </span>
       </TooltipTrigger>
       <TooltipContent>{address}</TooltipContent>
     </Tooltip>

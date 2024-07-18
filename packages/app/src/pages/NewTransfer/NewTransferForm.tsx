@@ -114,19 +114,19 @@ export const NewTransferForm: FC<NewTransferFormProps> = ({
       }
     }
 
-    // if (transferType === BridgeTransferType.EvmToJoy) {
-    //   if (
-    //     evmEthBalance &&
-    //     evmConfig &&
-    //     evmConfig.bridgingFee > evmEthBalance[0]
-    //   ) {
-    //     form.setError('sourceAddress', {
-    //       type: 'fee',
-    //       message: `You don't have enough ETH to cover the bridging fee`,
-    //     })
-    //     return
-    //   }
-    // }
+    if (transferType === BridgeTransferType.EvmToJoy) {
+      if (
+        evmEthBalance &&
+        evmConfig &&
+        evmConfig.bridgingFee > evmEthBalance[0]
+      ) {
+        form.setError('sourceAddress', {
+          type: 'fee',
+          message: `You don't have enough ETH to cover the bridging fee`,
+        })
+        return
+      }
+    }
 
     const parsedData: ParsedTransferFormData = {
       sourceAddress: data.sourceAddress,

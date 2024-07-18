@@ -19,7 +19,7 @@ import { TIMELOCK_ADDRESS } from '@/config'
 import { useReadContract } from 'wagmi'
 import { toast } from 'sonner'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
-import { AddressLabel } from '@/components/AddressLabel'
+import { ContractAddressLabel } from '@/components/ContractAddressLabel'
 
 const formSchema = z.object({
   newAdminAddress: z
@@ -80,7 +80,7 @@ export const SwapEvmAdmin: FC = () => {
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           <div>
             Swap timelock admin from{' '}
-            <AddressLabel address={evmConfig!.timelockAdminAccounts[0]} /> to:
+            <ContractAddressLabel address={evmConfig!.timelockAdminAccounts[0]} /> to:
           </div>
           <FormField
             control={form.control}

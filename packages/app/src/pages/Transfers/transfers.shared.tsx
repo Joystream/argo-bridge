@@ -11,16 +11,37 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { EllipsisVertical } from 'lucide-react'
+import { NavLink } from 'react-router-dom'
+import { AddressLabel } from '@/components/AddressLabel'
 
 const columnHelper = createColumnHelper<BridgeTransfer>()
 
-const NETWORKS_NAME_LOOKUP = Object.values(ALL_NETWORKS).reduce(
+export const NETWORKS_NAME_LOOKUP = Object.values(ALL_NETWORKS).reduce(
   (acc, network) => {
     acc[network.chainId] = network.name
     return acc
   },
   {} as Record<number, string>
 )
+
+export const statusFilterOptions = [
+  {
+    value: BridgeTransferStatus.Requested,
+    label: 'Requested',
+  },
+  {
+    value: BridgeTransferStatus.Completed,
+    label: 'Completed',
+  },
+  {
+    value: BridgeTransferStatus.Reverted,
+    label: 'Reverted',
+  },
+  {
+    value: BridgeTransferStatus.MaybeCompleted,
+    label: 'Unknown',
+  },
+]
 
 export const transfersTableColumns = [
   columnHelper.accessor('id', {
@@ -50,11 +71,7 @@ export const transfersTableColumns = [
   columnHelper.accessor('sourceAccount', {
     header: 'From address',
     cell: ({ cell: { getValue } }) => {
-      return (
-        <div className="max-w-[160px] overflow-ellipsis overflow-hidden">
-          {getValue()}
-        </div>
-      )
+      return <AddressLabel address={getValue()} />
     },
   }),
   columnHelper.accessor('destChainId', {
@@ -67,11 +84,7 @@ export const transfersTableColumns = [
   columnHelper.accessor('destAccount', {
     header: 'To address',
     cell: ({ cell: { getValue } }) => {
-      return (
-        <div className="max-w-[160px] overflow-ellipsis overflow-hidden">
-          {getValue()}
-        </div>
-      )
+      return <AddressLabel address={getValue()} />
     },
   }),
   columnHelper.accessor('amount', {
@@ -84,7 +97,7 @@ export const transfersTableColumns = [
   columnHelper.display({
     id: 'more',
     header: () => <div className="text-right">More</div>,
-    cell: () => {
+    cell: ({ row }) => {
       return (
         <div className="flex justify-end">
           <DropdownMenu>
@@ -92,7 +105,9 @@ export const transfersTableColumns = [
               <EllipsisVertical className="w-4 h-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>View details</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <NavLink to={row.original.id}>View details</NavLink>
+              </DropdownMenuItem>
               <DropdownMenuItem disabled>Approve</DropdownMenuItem>
               <DropdownMenuItem disabled>Complete</DropdownMenuItem>
             </DropdownMenuContent>

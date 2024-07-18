@@ -7,7 +7,6 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-
 import {
   Table,
   TableBody,
@@ -18,46 +17,27 @@ import {
 } from '@/components/ui/table'
 import { DataTablePagination } from './Pagination'
 import { BridgeTransfer } from '@/lib/transfer'
-import { transfersTableColumns } from './transfers.columns'
+import { transfersTableColumns } from './transfers.shared'
 import { FC, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { EllipsisVertical, FilterIcon, XIcon } from 'lucide-react'
+import { FilterIcon, XIcon } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { BridgeTransferStatus } from '@/gql/graphql'
+import { statusFilterOptions } from '@/pages/Transfers/transfers.shared'
 
-interface TransfersTableProps {
+type TransfersTableProps = {
   transfers: BridgeTransfer[]
 }
 
-const statusFilterOptions = [
-  {
-    value: BridgeTransferStatus.Requested,
-    label: 'Requested',
-  },
-  {
-    value: BridgeTransferStatus.Completed,
-    label: 'Completed',
-  },
-  {
-    value: BridgeTransferStatus.Reverted,
-    label: 'Reverted',
-  },
-  {
-    value: BridgeTransferStatus.MaybeCompleted,
-    label: 'Unknown',
-  },
-]
-
-export function TransfersTable({ transfers }: TransfersTableProps) {
+export const TransfersTable: FC<TransfersTableProps> = ({ transfers }) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
   const table = useReactTable({
@@ -191,24 +171,6 @@ export function TransfersTable({ transfers }: TransfersTableProps) {
           </TableBody>
         </Table>
       </div>
-      {/*<div className="flex items-center justify-end space-x-2 py-4">*/}
-      {/*  <Button*/}
-      {/*    variant="outline"*/}
-      {/*    size="sm"*/}
-      {/*    onClick={() => table.previousPage()}*/}
-      {/*    disabled={!table.getCanPreviousPage()}*/}
-      {/*  >*/}
-      {/*    Previous*/}
-      {/*  </Button>*/}
-      {/*  <Button*/}
-      {/*    variant="outline"*/}
-      {/*    size="sm"*/}
-      {/*    onClick={() => table.nextPage()}*/}
-      {/*    disabled={!table.getCanNextPage()}*/}
-      {/*  >*/}
-      {/*    Next*/}
-      {/*  </Button>*/}
-      {/*</div>*/}
       <DataTablePagination table={table} />
     </div>
   )
