@@ -7,11 +7,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import request from 'graphql-request'
-import { ARGO_INDEXER_URL } from '@/config'
-import { getTransfersDocument } from '@/queries/transfers'
-import { parseTransfer } from '@/lib/transfer'
 import { formatEth, formatJoy } from '@/lib/utils'
 import { NETWORKS_NAME_LOOKUP, statusFilterOptions } from './transfers.shared'
 import { AddressLabel } from '@/components/AddressLabel'
@@ -19,17 +14,14 @@ import { BridgeTransferStatus, BridgeTransferType } from '@/gql/graphql'
 import { Button } from '@/components/ui/button'
 import { JoyTxLink } from '@/components/JoyTxLink'
 import { EvmTxLink } from '@/components/EvmTxLink'
+import { useTransfersQuery } from '@/lib/hooks'
 
 export const TransferDetails: FC = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['transfers'],
-    queryFn: () => request(ARGO_INDEXER_URL, getTransfersDocument, {}),
-  })
-  const transfers = data?.bridgeTransfers.map(parseTransfer)
-  const transfer = transfers?.find((t) => t.id === id)
+  const { data, isLoading } = useTransfersQuery()
+  const transfer = data?.find((t) => t.id === id)
 
   const getContent = () => {
     if (isLoading) return <span>Loading...</span>

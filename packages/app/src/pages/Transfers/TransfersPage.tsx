@@ -1,22 +1,20 @@
 import { FC } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import request from 'graphql-request'
-import { ARGO_INDEXER_URL } from '@/config'
-import { getTransfersDocument } from '@/queries/transfers'
-import { parseTransfer } from '@/lib/transfer'
-import { TransfersTable } from '@/pages/Transfers/TransfersTable'
+import { TransfersTable } from './TransfersTable'
 import { Outlet } from 'react-router-dom'
+import { useTransfersQuery } from '@/lib/hooks'
+import { useSafeStore } from '@/providers/safe/safe.store'
+import { usePendingOperatorCallsQuery } from '@/providers/safe/safe.hooks'
 
 export const TransfersPage: FC = () => {
-  const { data } = useQuery({
-    queryKey: ['transfers'],
-    queryFn: () => request(ARGO_INDEXER_URL, getTransfersDocument, {}),
-  })
-  const transfers = data?.bridgeTransfers.map(parseTransfer)
+  const { data } = useTransfersQuery()
+
+  const { safeApiKit } = useSafeStore()
+  // prefetch pending safe operations
+  usePendingOperatorCallsQuery(safeApiKit)
 
   return (
     <div>
-      <TransfersTable transfers={transfers || []} />
+      <TransfersTable transfers={data || []} />
       <Outlet />
     </div>
   )

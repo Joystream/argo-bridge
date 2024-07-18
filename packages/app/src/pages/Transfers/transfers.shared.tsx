@@ -2,7 +2,7 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { BridgeTransfer } from '@/lib/transfer'
 import { formatJoy } from '@/lib/utils'
 import { match } from 'ts-pattern'
-import { BridgeTransferStatus } from '@/gql/graphql'
+import { BridgeTransferStatus, BridgeTransferType } from '@/gql/graphql'
 import { ALL_NETWORKS } from '@joystream/argo-core'
 import {
   DropdownMenu,
@@ -13,6 +13,8 @@ import {
 import { EllipsisVertical } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { AddressLabel } from '@/components/AddressLabel'
+import { TransferToJoyActions } from './TransferToJoyActions'
+import { TransferToEvmActions } from './TransferToEvmActions'
 
 const columnHelper = createColumnHelper<BridgeTransfer>()
 
@@ -108,8 +110,11 @@ export const transfersTableColumns = [
               <DropdownMenuItem asChild>
                 <NavLink to={row.original.id}>View details</NavLink>
               </DropdownMenuItem>
-              <DropdownMenuItem disabled>Approve</DropdownMenuItem>
-              <DropdownMenuItem disabled>Complete</DropdownMenuItem>
+              {row.original.type === BridgeTransferType.EvmToJoy ? (
+                <TransferToJoyActions transfer={row.original} />
+              ) : (
+                <TransferToEvmActions transfer={row.original} />
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

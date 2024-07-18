@@ -11,7 +11,8 @@ import { buildRequestTransferExtrinsic } from '@/lib/joyExtrinsics'
 import { BRIDGE_ADDRESS, EVM_NETWORK } from '@/config'
 import { useTransaction } from '@/providers/transaction'
 import { BridgeAbi, joyAddressCodec } from '@joystream/argo-core'
-import { useWriteContract } from 'wagmi'
+import { usePublicClient, useWriteContract } from 'wagmi'
+import { waitForTransactionReceipt } from 'viem/actions'
 
 type NewTransferSummaryProps = {
   transferType: BridgeTransferType
@@ -27,6 +28,7 @@ export const NewTransferSummary: FC<NewTransferSummaryProps> = ({
   onSuccess,
 }) => {
   const isEvmToJoy = transferType === BridgeTransferType.EvmToJoy
+  const publicClient = usePublicClient()
 
   const { data: configsData } = useBridgeConfigs()
   const joyConfig = configsData?.joy
@@ -55,24 +57,35 @@ export const NewTransferSummary: FC<NewTransferSummaryProps> = ({
   const handleEvmSubmit = async () => {
     const encodedAccount = joyAddressCodec.decode(transferData.targetAddress)
 
-    if (!evmConfig || !addTxPromise || !isHex(encodedAccount)) {
+    if (
+      !evmConfig ||
+      !addTxPromise ||
+      !isHex(encodedAccount) ||
+      !publicClient
+    ) {
       toast.error('Unexpected error')
-      console.error({ evmConfig, addTxPromise, encodedAccount })
+      console.error({ evmConfig, addTxPromise, encodedAccount, publicClient })
       return
     }
 
-    const tx = writeContractAsync(
-      {
+    const doSubmit = async () => {
+      const txHash = await writeContractAsync({
         address: BRIDGE_ADDRESS,
         account: transferData.sourceAddress as Address,
         abi: BridgeAbi,
         functionName: 'requestTransferToJoystream',
         value: evmConfig.bridgingFee,
         args: [encodedAccount, transferData.hapiAmount],
-      },
-      { onSuccess: () => onSuccess() }
-    )
-    addTxPromise(tx)
+      })
+
+      await waitForTransactionReceipt(publicClient, {
+        hash: txHash,
+      })
+
+      onSuccess()
+    }
+
+    addTxPromise(doSubmit())
   }
 
   const handleSubmit = async () => {

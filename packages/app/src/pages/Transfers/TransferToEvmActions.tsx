@@ -15,13 +15,17 @@ import {
 import { BridgeTransferStatus } from '@/gql/graphql'
 import { TableCell } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
+import { Tooltip, TooltipTrigger } from '@/components/ui/tooltip'
+import { useTransfersQuery } from '@/lib/hooks'
 
-export const TransferRowEvmCells: FC<{ transfer: BridgeTransfer }> = ({
+export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
   transfer,
 }) => {
   const threshold = EVM_NETWORK.opMulti?.threshold || 0
   const { safeApiKit, operatorSafe } = useSafeStore()
-  const { data } = usePendingOperatorCallsQuery(safeApiKit)
+  const { data, refetch } = usePendingOperatorCallsQuery(safeApiKit)
+  const { refetch: refetchTransfers } = useTransfersQuery()
   const { addTxPromise } = useTransaction()
   const { userEvmOperator } = useUser()
 
@@ -39,9 +43,10 @@ export const TransferRowEvmCells: FC<{ transfer: BridgeTransfer }> = ({
     args: [transfer.sourceTransferId, transfer.destAccount, transfer.amount],
   })
 
-  const approvals =
-    pendingBridgeCalls.find((call) => call.data === completeTransferCalldata)
-      ?.confirmations?.length || 0
+  const approvals = pendingBridgeCalls.find(
+    (call) => call.data === completeTransferCalldata
+  )?.confirmations
+  const approvalsCount = approvals?.length ?? 0
 
   const approveTransfer = async () => {
     const safeAddress = EVM_NETWORK.opMulti?.address
@@ -64,25 +69,31 @@ export const TransferRowEvmCells: FC<{ transfer: BridgeTransfer }> = ({
       return
     }
 
-    const safeTransactionData: MetaTransactionData = {
-      to: BRIDGE_ADDRESS,
-      value: '0',
-      operation: OperationType.Call,
-      data: completeTransferCalldata,
-    }
-    const safeTransaction = await operatorSafe.createTransaction({
-      transactions: [safeTransactionData],
-    })
-    const safeTxHash = await operatorSafe.getTransactionHash(safeTransaction)
-    const signature = await operatorSafe.signHash(safeTxHash)
+    const doApprove = async () => {
+      const safeTransactionData: MetaTransactionData = {
+        to: BRIDGE_ADDRESS,
+        value: '0',
+        operation: OperationType.Call,
+        data: completeTransferCalldata,
+      }
+      const safeTransaction = await operatorSafe.createTransaction({
+        transactions: [safeTransactionData],
+      })
+      const safeTxHash = await operatorSafe.getTransactionHash(safeTransaction)
+      const signature = await operatorSafe.signHash(safeTxHash)
 
-    await safeApiKit.proposeTransaction({
-      safeAddress,
-      safeTransactionData: safeTransaction.data,
-      safeTxHash,
-      senderAddress: userEvmOperator,
-      senderSignature: signature.data,
-    })
+      await safeApiKit.proposeTransaction({
+        safeAddress,
+        safeTransactionData: safeTransaction.data,
+        safeTxHash,
+        senderAddress: userEvmOperator,
+        senderSignature: signature.data,
+      })
+
+      refetch()
+    }
+
+    addTxPromise(doApprove())
   }
 
   const completeTransfer = async () => {
@@ -103,40 +114,30 @@ export const TransferRowEvmCells: FC<{ transfer: BridgeTransfer }> = ({
         // @ts-ignore
         executeTxResponse.transactionResponse?.wait?.()
       )
+      .then(() => {
+        refetchTransfers()
+      })
     addTxPromise?.(txPromise)
   }
 
-  const renderAction = () => {
-    if (transfer.status !== BridgeTransferStatus.Requested || !userEvmOperator)
-      return null
+  if (transfer.status !== BridgeTransferStatus.Requested) return null
 
-    if (approvals >= threshold) {
-      return (
-        <TableCell>
-          <Button variant="ghost" size="sm" onClick={completeTransfer}>
-            Complete
-          </Button>
-        </TableCell>
-      )
-    }
+  const approvalsText = `${approvalsCount}/${threshold}`
 
+  if (approvalsCount >= threshold) {
     return (
-      <TableCell>
-        <Button variant="ghost" size="sm" onClick={approveTransfer}>
-          Approve
-        </Button>
-      </TableCell>
+      <DropdownMenuItem onClick={completeTransfer} disabled={!userEvmOperator}>
+        Complete ({approvalsText})
+      </DropdownMenuItem>
     )
   }
 
+  const canApprove =
+    userEvmOperator && !approvals?.some((a) => a.owner === userEvmOperator)
+
   return (
-    <>
-      <TableCell>
-        {transfer.status === 'REQUESTED'
-          ? `${approvals ?? 0}/${threshold}`
-          : '—'}
-      </TableCell>
-      {renderAction()}
-    </>
+    <DropdownMenuItem onClick={approveTransfer} disabled={!canApprove}>
+      Approve ({approvalsText})
+    </DropdownMenuItem>
   )
 }

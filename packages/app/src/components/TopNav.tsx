@@ -1,8 +1,7 @@
 import { FC } from 'react'
 import { Disclosure } from '@headlessui/react'
-import { cn } from '@/lib/utils'
 import { Menu, Moon, Sun, X } from 'lucide-react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { ROUTES } from '@/routes'
 import { JoyConnectButton } from '@/components/JoyConnectButton'
 import { EvmConnectButton } from '@/components/EvmConnectButton'
@@ -16,16 +15,15 @@ import { Button } from '@/components/ui/button'
 import { useTheme } from '@/providers/theme.provider'
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 
 export const TopNav: FC = () => {
   const { setTheme } = useTheme()
+  const { pathname } = useLocation()
 
   return (
     <div>
@@ -42,16 +40,13 @@ export const TopNav: FC = () => {
                     <NavigationMenuList className="gap-4">
                       {ROUTES.map((item) => (
                         <NavigationMenuItem key={item.path}>
-                          <NavLink to={item.path}>
-                            {({ isActive }) => (
-                              <NavigationMenuLink
-                                className={navigationMenuTriggerStyle()}
-                                active={isActive}
-                              >
-                                {item.name}
-                              </NavigationMenuLink>
-                            )}
-                          </NavLink>
+                          <NavigationMenuLink
+                            className={navigationMenuTriggerStyle()}
+                            asChild
+                            active={pathname === item.path}
+                          >
+                            <NavLink to={item.path}>{item.name}</NavLink>
+                          </NavigationMenuLink>
                         </NavigationMenuItem>
                       ))}
                     </NavigationMenuList>

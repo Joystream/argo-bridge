@@ -4,7 +4,7 @@ import { NewTransferPage } from '@/pages/NewTransfer'
 import { RouteObject } from 'react-router-dom'
 import { TransferDetails } from '@/pages/Transfers/TransferDetails'
 
-export const ROUTES: (RouteObject & { name: string })[] = [
+export const ROUTES: (RouteObject & { name: string; path: string })[] = [
   {
     path: '/',
     element: <NewTransferPage />,
