@@ -2,11 +2,15 @@ import { useJoyWallets } from '@/providers/joyWallet'
 import { useAccount } from 'wagmi'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
 import { EVM_NETWORK, JOY_NETWORK } from '@/config'
+import { useMemo } from 'react'
 
 export const useUser = () => {
   const { walletAccounts: joyAccounts } = useJoyWallets()
   const { addresses: evmAddresses } = useAccount()
-  const joyAddresses = joyAccounts?.map(({ address }) => address)
+  const joyAddresses = useMemo(
+    () => joyAccounts?.map(({ address }) => address),
+    [joyAccounts]
+  )
   const joyLookup = joyAddresses?.reduce(
     (acc, address) => ({ ...acc, [address]: true }),
     {} as Record<string, boolean>

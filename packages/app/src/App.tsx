@@ -14,7 +14,7 @@ import { ThemeProvider } from '@/providers/theme.provider'
 const Layout: FC = () => (
   <>
     <TopNav />
-    <main className="px-4 pb-6 sm:px-6 lg:px-8 mt-[120px]">
+    <main className="px-4 pb-6 sm:px-6 lg:px-8 mt-[20px] sm:mt-[40px] md:mt-[120px]">
       <Outlet />
     </main>
   </>

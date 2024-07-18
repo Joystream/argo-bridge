@@ -7,8 +7,15 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { toast } from 'sonner'
+import { getAddress, isAddress } from 'viem'
 
-export const AddressLabel: FC<{ address: string }> = ({ address }) => {
+export const AddressLabel: FC<{ address: string }> = ({
+  address: rawAddress,
+}) => {
+  const address = isAddress(rawAddress, { strict: false })
+    ? getAddress(rawAddress)
+    : rawAddress
+
   const truncated = truncateAddress(address, 10)
 
   const handleClick = () => {

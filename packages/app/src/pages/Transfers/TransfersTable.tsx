@@ -18,7 +18,7 @@ import {
 import { DataTablePagination } from './Pagination'
 import { BridgeTransfer } from '@/lib/transfer'
 import { transfersTableColumns } from './transfers.shared'
-import { FC, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { FilterIcon, XIcon } from 'lucide-react'
@@ -32,13 +32,42 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { BridgeTransferStatus } from '@/gql/graphql'
 import { statusFilterOptions } from '@/pages/Transfers/transfers.shared'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
+import { useUser } from '@/providers/user/user.hooks'
 
 type TransfersTableProps = {
   transfers: BridgeTransfer[]
 }
 
-export const TransfersTable: FC<TransfersTableProps> = ({ transfers }) => {
+export const TransfersTable: FC<TransfersTableProps> = ({
+  transfers: allTransfers,
+}) => {
+  const { joyAddresses, evmAddresses } = useUser()
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [showOnlyMyTransfers, setShowOnlyMyTransfers] = useState(false)
+
+  const transfers = useMemo(() => {
+    if (!showOnlyMyTransfers) return allTransfers
+
+    const userAddressesLookup = [
+      ...joyAddresses,
+      ...(evmAddresses || []),
+    ].reduce(
+      (acc, address) => {
+        acc[address.toLowerCase()] = true
+        return acc
+      },
+      {} as Record<string, boolean>
+    )
+
+    return allTransfers.filter((transfer) => {
+      return (
+        userAddressesLookup[transfer.sourceAccount.toLowerCase()] ||
+        userAddressesLookup[transfer.destAccount.toLowerCase()]
+      )
+    })
+  }, [allTransfers, showOnlyMyTransfers, joyAddresses, evmAddresses])
 
   const table = useReactTable({
     data: transfers,
@@ -60,66 +89,79 @@ export const TransfersTable: FC<TransfersTableProps> = ({ transfers }) => {
 
   return (
     <div>
-      <div className="flex items-center py-4 gap-2">
-        <Input
-          placeholder="Filter by address..."
-          value={tableState.globalFilter ?? ''}
-          onChange={(event) => {
-            table.setGlobalFilter(event.target.value)
-          }}
-          className="max-w-sm h-8"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="border-dashed h-8 text-xs"
-              size="sm"
-            >
-              <FilterIcon className="mr-2 h-4 w-4" />
-              Status
-              {statusFilterValue ? (
-                <>
-                  <span className="mx-2 h-4 w-[1px] bg-primary/20" />
-                  <span className="px-1 py-0.5 rounded bg-primary/20">
-                    {
-                      statusFilterOptions.find(
-                        (option) => option.value === statusFilterValue
-                      )?.label
-                    }
-                  </span>
-                </>
-              ) : null}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            <DropdownMenuLabel>Filter by status</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {statusFilterOptions.map((option) => (
-              <StatusDropdownItem
-                key={option.value}
-                column={statusColumn}
-                status={option.value}
-                displayText={option.label}
-              />
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        {tableState.columnFilters.length || tableState.globalFilter ? (
-          <Button
-            variant="ghost"
-            onClick={() => {
-              table.setGlobalFilter('')
-              setColumnFilters([])
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between py-4 gap-2">
+        <div className="flex-1 flex flex-col md:flex-row items-start md:items-center gap-2">
+          <Input
+            placeholder="Filter by address..."
+            value={tableState.globalFilter ?? ''}
+            onChange={(event) => {
+              table.setGlobalFilter(event.target.value)
             }}
-            size="sm"
-            className="h-8 text-xs"
-          >
-            Reset
-            <XIcon className="ml-2 h-4 w-4" />
-          </Button>
-        ) : null}
+            className="w-full max-w-sm h-8"
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="border-dashed h-8 text-xs"
+                size="sm"
+              >
+                <FilterIcon className="mr-2 h-4 w-4" />
+                Status
+                {statusFilterValue ? (
+                  <>
+                    <span className="mx-2 h-4 w-[1px] bg-primary/20" />
+                    <span className="px-1 py-0.5 rounded bg-primary/20">
+                      {
+                        statusFilterOptions.find(
+                          (option) => option.value === statusFilterValue
+                        )?.label
+                      }
+                    </span>
+                  </>
+                ) : null}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuLabel>Filter by status</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {statusFilterOptions.map((option) => (
+                <StatusDropdownItem
+                  key={option.value}
+                  column={statusColumn}
+                  status={option.value}
+                  displayText={option.label}
+                />
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {tableState.columnFilters.length || tableState.globalFilter ? (
+            <Button
+              variant="ghost"
+              onClick={() => {
+                table.setGlobalFilter('')
+                setColumnFilters([])
+              }}
+              size="sm"
+              className="h-8 text-xs"
+            >
+              Reset
+              <XIcon className="ml-2 h-4 w-4" />
+            </Button>
+          ) : null}
+        </div>
+        <div className="flex items-center space-x-2">
+          <span className="text-sm font-medium">All transactions</span>
+          <Switch
+            id="my-transactions-switch"
+            checked={showOnlyMyTransfers}
+            onCheckedChange={setShowOnlyMyTransfers}
+          />
+          <Label htmlFor="my-transactions-switch" className="text-sm">
+            My transactions
+          </Label>
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>
