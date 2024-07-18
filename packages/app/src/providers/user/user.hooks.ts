@@ -39,7 +39,7 @@ export const useUser = () => {
       false
   }
 
-  const userJoyPauser =
+  const userJoyPauser: string | false =
     joyConfig?.pauserAccounts.find((pauser) => joyLookup[pauser]) || false
 
   let userEvmAdmin: string | false = false
@@ -65,7 +65,7 @@ export const useUser = () => {
   }
 
   const userEvmPauser =
-    evmConfig?.pauserAccounts.some((pauser) => evmLookup?.[pauser]) || false
+    evmConfig?.pauserAccounts.find((pauser) => evmLookup?.[pauser]) || false
 
   return {
     userJoyOperator,

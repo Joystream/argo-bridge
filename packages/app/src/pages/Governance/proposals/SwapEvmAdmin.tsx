@@ -12,23 +12,24 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useScheduleCall } from './governance.utils'
+import { useScheduleCall } from './proposals.utils'
+
 import { Address, encodeFunctionData } from 'viem'
-import { BridgeAbi } from '@joystream/argo-core'
-import { BRIDGE_ADDRESS } from '@/config'
+import { TimelockAbi } from '@joystream/argo-core'
+import { TIMELOCK_ADDRESS } from '@/config'
 import { useReadContract } from 'wagmi'
 import { toast } from 'sonner'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
-import { ContractAddressLabel } from '@/components/ContractAddressLabel'
+import { AddressLink } from '@/components/AddressLink'
 
 const formSchema = z.object({
-  newOperatorAddress: z
+  newAdminAddress: z
     .string()
     .regex(/^0x[a-fA-F0-9]{40}$/, 'Invalid EVM address'),
 })
 type FormSchema = z.infer<typeof formSchema>
 
-export const SwapEvmOperator: FC = () => {
+export const SwapEvmAdmin: FC = () => {
   const { data } = useBridgeConfigs()
   const evmConfig = data?.evm
 
@@ -36,38 +37,38 @@ export const SwapEvmOperator: FC = () => {
     resolver: zodResolver(formSchema),
   })
 
-  const { data: operatorRole } = useReadContract({
-    abi: BridgeAbi,
-    address: BRIDGE_ADDRESS,
-    functionName: 'OPERATOR_ROLE',
+  const { data: proposerRole } = useReadContract({
+    abi: TimelockAbi,
+    address: TIMELOCK_ADDRESS,
+    functionName: 'PROPOSER_ROLE',
   })
 
   const scheduleCall = useScheduleCall()
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (!operatorRole || !evmConfig) {
-      console.error('Operator role not found')
+    if (!proposerRole || !evmConfig) {
+      console.error('Admin role not found')
       toast.error('Failed')
       return
     }
     const grantCalldata = encodeFunctionData({
-      abi: BridgeAbi,
+      abi: TimelockAbi,
       functionName: 'grantRole',
-      args: [operatorRole, values.newOperatorAddress as Address],
+      args: [proposerRole, values.newAdminAddress as Address],
     })
     const revokeCalldata = encodeFunctionData({
-      abi: BridgeAbi,
+      abi: TimelockAbi,
       functionName: 'revokeRole',
-      args: [operatorRole, evmConfig.bridgeOperatorAccounts[0] as Address],
+      args: [proposerRole, evmConfig.timelockAdminAccounts[0] as Address],
     })
 
     await scheduleCall([
       {
-        target: BRIDGE_ADDRESS,
+        target: TIMELOCK_ADDRESS,
         calldata: grantCalldata,
       },
       {
-        target: BRIDGE_ADDRESS,
+        target: TIMELOCK_ADDRESS,
         calldata: revokeCalldata,
       },
     ])
@@ -75,22 +76,19 @@ export const SwapEvmOperator: FC = () => {
 
   return (
     <div>
-      <TypographyH4>Swap bridge operator</TypographyH4>
+      <TypographyH4>Swap timelock admin</TypographyH4>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           <div>
-            Swap bridge operator from{' '}
-            <ContractAddressLabel
-              address={evmConfig!.bridgeOperatorAccounts[0]}
-            />{' '}
-            to:
+            Swap timelock admin from{' '}
+            <AddressLink address={evmConfig!.timelockAdminAccounts[0]} /> to:
           </div>
           <FormField
             control={form.control}
-            name="newOperatorAddress"
+            name="newAdminAddress"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>New bridge operator address</FormLabel>
+                <FormLabel>New timelock admin address</FormLabel>
                 <Input type="text" {...field} className="text-sm h-10" />
                 <FormMessage />
               </FormItem>

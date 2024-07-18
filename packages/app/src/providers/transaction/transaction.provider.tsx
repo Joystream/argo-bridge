@@ -4,11 +4,15 @@ import { submitExtrinsic } from '@joystream/argo-core'
 import { useJoyApiContext } from '@/providers/joyApi'
 import { toast } from 'sonner'
 import { SubmitJoyTx, TransactionContext } from './transaction.types'
-import { Account, BaseWallet } from '@polkadot-onboard/core'
+import { Account } from '@polkadot-onboard/core'
 import { JOY_NETWORK } from '@/config'
+import { usePublicClient } from 'wagmi'
+import { waitForTransactionReceipt } from 'viem/actions'
+import { isHex } from 'viem'
 
 export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
   const { api: joyApi } = useJoyApiContext()
+  const publicClient = usePublicClient()
 
   const selectedJoyAccountRef = useRef<Account | null>(null)
   useEffect(() => {
@@ -18,16 +22,27 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => unsub()
   }, [])
 
-  const addTxPromise = useCallback(async (txPromise: Promise<unknown>) => {
-    txPromise.catch((e) => {
-      console.error('Error sending transaction:', e)
-    })
-    toast.promise(txPromise, {
-      loading: 'Sending transaction...',
-      success: 'Transaction sent',
-      error: 'Failed to send transaction',
-    })
-  }, [])
+  const addTxPromise = useCallback(
+    async (txPromise: Promise<unknown>, onSuccess?: () => void) => {
+      const finalPromise = txPromise.then((result) => {
+        if (isHex(result) && publicClient) {
+          return waitForTransactionReceipt(publicClient, {
+            hash: result,
+          })
+        }
+      })
+      finalPromise.then(() => onSuccess?.())
+      finalPromise.catch((e) => {
+        console.error('Error sending transaction:', e)
+      })
+      toast.promise(txPromise, {
+        loading: 'Sending transaction...',
+        success: 'Transaction sent',
+        error: 'Failed to send transaction',
+      })
+    },
+    []
+  )
 
   const submitJoyTx = useCallback<SubmitJoyTx>(
     async (buildTx, sender) => {

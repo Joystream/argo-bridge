@@ -13,11 +13,7 @@ export type SubmitJoyTx = (
 ) => Promise<RawExtrinsicResult | undefined>
 
 export type TransactionContextType = {
-  // setTxForConfirmation: (
-  //   tx: SubmittableExtrinsic<'promise'>,
-  //   accountId: string
-  // ) => void
-  addTxPromise?: (txPromise: Promise<unknown>) => void
+  addTxPromise?: (txPromise: Promise<unknown>, onSuccess?: () => void) => void
   submitJoyTx?: SubmitJoyTx
 }
 export const TransactionContext = createContext<TransactionContextType>({})

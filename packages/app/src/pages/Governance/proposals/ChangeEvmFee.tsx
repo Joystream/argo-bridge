@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useScheduleCall } from '@/pages/Governance/governance.utils'
+import { useScheduleCall } from './proposals.utils'
 import { encodeFunctionData, parseEther } from 'viem'
 import { BridgeAbi } from '@joystream/argo-core'
 import { BRIDGE_ADDRESS } from '@/config'
