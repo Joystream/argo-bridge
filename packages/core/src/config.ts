@@ -72,6 +72,7 @@ const _EVM_NETWORKS = {
       signers: [
         "0x5a8f5ee896d5bb15C8916cA744dBF9bCDDa63413",
         "0xb39f942c37f98A7fE59e5bdd06d82b70718c5f96",
+        "0xb45f42a58faa3f971ad52f132f45814448b2ea08",
       ],
       threshold: 2,
     },
@@ -80,6 +81,7 @@ const _EVM_NETWORKS = {
       signers: [
         "0x5a8f5ee896d5bb15C8916cA744dBF9bCDDa63413",
         "0xb39f942c37f98A7fE59e5bdd06d82b70718c5f96",
+        "0xb45f42a58faa3f971ad52f132f45814448b2ea08",
       ],
       threshold: 2,
     },
