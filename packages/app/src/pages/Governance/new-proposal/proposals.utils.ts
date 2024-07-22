@@ -1,4 +1,4 @@
-import { useReadContract, useWriteContract } from 'wagmi'
+import { useReadContract } from 'wagmi'
 import { TimelockAbi } from '@joystream/argo-core'
 import { EVM_NETWORK, TIMELOCK_ADDRESS } from '@/config'
 import { useTransaction } from '@/providers/transaction'
@@ -17,7 +17,7 @@ type Call = {
   calldata: Hex
 }
 
-export const useScheduleCall = () => {
+export const useProposeCall = () => {
   const { data: timelockMinDelay } = useReadContract({
     abi: TimelockAbi,
     address: TIMELOCK_ADDRESS,
@@ -27,7 +27,7 @@ export const useScheduleCall = () => {
   const { addTxPromise } = useTransaction()
   const { adminSafe, safeApiKit } = useSafeStore()
 
-  const scheduleCall = useCallback(
+  return useCallback(
     async (calls: Call[]) => {
       const safeAddress = EVM_NETWORK.adminMulti?.address
 
@@ -53,53 +53,55 @@ export const useScheduleCall = () => {
         return
       }
 
-      const saltBytes = crypto.getRandomValues(new Uint8Array(32))
+      const doScheduleCall = async () => {
+        const saltBytes = crypto.getRandomValues(new Uint8Array(32))
 
-      const calldata = encodeFunctionData({
-        abi: TimelockAbi,
-        functionName: calls.length > 1 ? 'scheduleBatch' : 'schedule',
-        args:
-          calls.length > 1
-            ? [
-                calls.map((call) => call.target),
-                calls.map(() => 0n),
-                calls.map((call) => call.calldata),
-                zeroHash,
-                bytesToHex(saltBytes),
-                timelockMinDelay,
-              ]
-            : [
-                calls[0].target,
-                0n,
-                calls[0].calldata,
-                zeroHash,
-                bytesToHex(saltBytes),
-                timelockMinDelay,
-              ],
-      })
+        const calldata = encodeFunctionData({
+          abi: TimelockAbi,
+          functionName: calls.length > 1 ? 'scheduleBatch' : 'schedule',
+          args:
+            calls.length > 1
+              ? [
+                  calls.map((call) => call.target),
+                  calls.map(() => 0n),
+                  calls.map((call) => call.calldata),
+                  zeroHash,
+                  bytesToHex(saltBytes),
+                  timelockMinDelay,
+                ]
+              : [
+                  calls[0].target,
+                  0n,
+                  calls[0].calldata,
+                  zeroHash,
+                  bytesToHex(saltBytes),
+                  timelockMinDelay,
+                ],
+        })
 
-      const safeTransactionData: MetaTransactionData = {
-        to: TIMELOCK_ADDRESS,
-        value: '0',
-        operation: OperationType.Call,
-        data: calldata,
+        const safeTransactionData: MetaTransactionData = {
+          to: TIMELOCK_ADDRESS,
+          value: '0',
+          operation: OperationType.Call,
+          data: calldata,
+        }
+        const safeTransaction = await adminSafe.createTransaction({
+          transactions: [safeTransactionData],
+        })
+        const safeTxHash = await adminSafe.getTransactionHash(safeTransaction)
+        const signature = await adminSafe.signHash(safeTxHash)
+
+        await safeApiKit.proposeTransaction({
+          safeAddress,
+          safeTransactionData: safeTransaction.data,
+          safeTxHash,
+          senderAddress: userEvmAdmin,
+          senderSignature: signature.data,
+        })
       }
-      const safeTransaction = await adminSafe.createTransaction({
-        transactions: [safeTransactionData],
-      })
-      const safeTxHash = await adminSafe.getTransactionHash(safeTransaction)
-      const signature = await adminSafe.signHash(safeTxHash)
 
-      await safeApiKit.proposeTransaction({
-        safeAddress,
-        safeTransactionData: safeTransaction.data,
-        safeTxHash,
-        senderAddress: userEvmAdmin,
-        senderSignature: signature.data,
-      })
+      addTxPromise(doScheduleCall())
     },
     [timelockMinDelay, addTxPromise]
   )
-
-  return scheduleCall
 }

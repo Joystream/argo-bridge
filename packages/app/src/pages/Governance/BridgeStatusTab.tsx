@@ -334,7 +334,9 @@ export const BridgeStatusTab: FC = () => {
         </CardContent>
         {evmConfig.status === EvmBridgeStatus.Active && userEvmPauser && (
           <CardFooter>
-            <Button onClick={handleEvmPause}>Pause bridge</Button>
+            <Button onClick={handleEvmPause} className="w-full">
+              Pause bridge
+            </Button>
           </CardFooter>
         )}
       </Card>
@@ -342,7 +344,7 @@ export const BridgeStatusTab: FC = () => {
   }
 
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-6">
+    <div className="grid grid-cols-[1fr] lg:grid-cols-[1fr_1fr] gap-6">
       {renderJoyBridgeCard()}
       {renderEvmBridgeCard()}
     </div>

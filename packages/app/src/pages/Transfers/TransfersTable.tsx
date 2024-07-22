@@ -207,7 +207,7 @@ export const TransfersTable: FC<TransfersTableProps> = ({}) => {
                   colSpan={transfersTableColumns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {query.isLoading ? 'Loading...' : 'No results.'}
                 </TableCell>
               </TableRow>
             )}

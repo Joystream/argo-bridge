@@ -1,48 +1,57 @@
 import { FC } from 'react'
-import { TypographyH4 } from '@/components/ui/typography'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { JoyHapiInput } from '@/components/JoyHapiInput'
-import { Button } from '@/components/ui/button'
-import { useScheduleCall } from './proposals.utils'
+import { useProposeCall } from './proposals.utils'
 import { encodeFunctionData } from 'viem'
 import { BridgeAbi } from '@joystream/argo-core'
 import { BRIDGE_ADDRESS } from '@/config'
+import { rawAmountSchema } from '@/lib/forms'
+import { joyToHapi } from '@/lib/utils'
+import { NewProposalFields } from './NewProposalFields'
 
 const formSchema = z.object({
-  newMintingPeriod: z.number().int().positive(),
-  newMintingAmount: z.bigint().positive(),
+  newMintingPeriodRaw: z
+    .string()
+    .min(1, 'Period is required')
+    .regex(/^-?\d+$/, 'Period must be a positive integer')
+    .refine(
+      (v) => {
+        try {
+          const n = parseInt(v)
+          if (isNaN(n)) return false
+          return n > 0
+        } catch {
+          return false
+        }
+      },
+      { message: 'Period must be a positive integer' }
+    ),
+  newMintingAmountRaw: rawAmountSchema,
 })
 type FormSchema = z.infer<typeof formSchema>
 
 export const ChangeEvmLimits: FC = () => {
   const form = useForm<FormSchema>({
     defaultValues: {
-      newMintingPeriod: 0,
-      newMintingAmount: 0n,
+      newMintingPeriodRaw: '',
+      newMintingAmountRaw: '',
     },
     resolver: zodResolver(formSchema),
   })
 
-  const scheduleCall = useScheduleCall()
+  const proposeCall = useProposeCall()
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    const amountHapi = joyToHapi(parseFloat(values.newMintingAmountRaw))
+
     const calldata = encodeFunctionData({
       abi: BridgeAbi,
       functionName: 'setMintingLimits',
-      args: [BigInt(values.newMintingPeriod), values.newMintingAmount],
+      args: [BigInt(values.newMintingPeriodRaw), amountHapi],
     })
 
-    await scheduleCall([
+    await proposeCall([
       {
         target: BRIDGE_ADDRESS,
         calldata,
@@ -51,46 +60,20 @@ export const ChangeEvmLimits: FC = () => {
   }
 
   return (
-    <div>
-      <TypographyH4>Change minting limits</TypographyH4>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="newMintingPeriod"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>New minting limit period (blocks)</FormLabel>
-                <Input
-                  type="number"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(parseInt(e.target.value))
-                  }}
-                  className="text-sm h-10"
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="newMintingAmount"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <JoyHapiInput
-                  type="joy"
-                  label="New minting limit amount (JOY)"
-                  hapiValue={field.value}
-                  setHapiValue={field.onChange}
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Propose change</Button>
-        </form>
-      </Form>
-    </div>
+    <NewProposalFields
+      form={form}
+      description="Change how many JOY tokens can be minted in a given period of time (blocks)."
+      fields={[
+        {
+          name: 'newMintingPeriodRaw',
+          label: 'New minting limit period (blocks)',
+        },
+        {
+          name: 'newMintingAmountRaw',
+          label: 'New minting limit amount (JOY)',
+        },
+      ]}
+      onSubmit={handleSubmit}
+    />
   )
 }

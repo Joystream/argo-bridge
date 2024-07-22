@@ -1,22 +1,13 @@
 import { FC } from 'react'
-import { TypographyH4 } from '@/components/ui/typography'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { useScheduleCall } from './proposals.utils'
+import { useProposeCall } from './proposals.utils'
 import { encodeFunctionData, parseEther } from 'viem'
 import { BridgeAbi } from '@joystream/argo-core'
 import { BRIDGE_ADDRESS } from '@/config'
 import { rawAmountSchema } from '@/lib/forms'
+import { NewProposalFields } from './NewProposalFields'
 
 const formSchema = z.object({
   newFeeRaw: rawAmountSchema,
@@ -31,7 +22,7 @@ export const ChangeEvmFee: FC = () => {
     resolver: zodResolver(formSchema),
   })
 
-  const scheduleCall = useScheduleCall()
+  const scheduleCall = useProposeCall()
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const amountWei = parseEther(values.newFeeRaw)
@@ -50,24 +41,16 @@ export const ChangeEvmFee: FC = () => {
   }
 
   return (
-    <div>
-      <TypographyH4>Change brdiging fee</TypographyH4>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="newFeeRaw"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>New bridging fee (ETH)</FormLabel>
-                <Input {...field} />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Propose change</Button>
-        </form>
-      </Form>
-    </div>
+    <NewProposalFields
+      form={form}
+      description="Change the fee charged by the bridge for bridging transactions. Fees can be withdrawn by a governance proposal."
+      fields={[
+        {
+          name: 'newFeeRaw',
+          label: 'New bridging fee (ETH)',
+        },
+      ]}
+      onSubmit={handleSubmit}
+    />
   )
 }

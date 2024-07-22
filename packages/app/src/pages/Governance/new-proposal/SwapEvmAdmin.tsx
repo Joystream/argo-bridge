@@ -1,31 +1,21 @@
 import { FC } from 'react'
-import { TypographyH4 } from '@/components/ui/typography'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { useScheduleCall } from './proposals.utils'
+import { useProposeCall } from './proposals.utils'
 
-import { Address, encodeFunctionData } from 'viem'
+import { encodeFunctionData } from 'viem'
 import { TimelockAbi } from '@joystream/argo-core'
 import { TIMELOCK_ADDRESS } from '@/config'
 import { useReadContract } from 'wagmi'
 import { toast } from 'sonner'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
 import { AddressLink } from '@/components/AddressLink'
+import { NewProposalFields } from './NewProposalFields'
+import { evmAddressSchema } from '@/lib/forms'
 
 const formSchema = z.object({
-  newAdminAddress: z
-    .string()
-    .regex(/^0x[a-fA-F0-9]{40}$/, 'Invalid EVM address'),
+  newAdminAddress: evmAddressSchema,
 })
 type FormSchema = z.infer<typeof formSchema>
 
@@ -43,26 +33,28 @@ export const SwapEvmAdmin: FC = () => {
     functionName: 'PROPOSER_ROLE',
   })
 
-  const scheduleCall = useScheduleCall()
+  const proposeCall = useProposeCall()
+
+  const currentAdmin = evmConfig?.timelockAdminAccounts[0]
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (!proposerRole || !evmConfig) {
-      console.error('Admin role not found')
-      toast.error('Failed')
+    if (!proposerRole || !currentAdmin) {
+      toast.error('Unexpected error')
+      console.error({ proposerRole, currentAdmin })
       return
     }
     const grantCalldata = encodeFunctionData({
       abi: TimelockAbi,
       functionName: 'grantRole',
-      args: [proposerRole, values.newAdminAddress as Address],
+      args: [proposerRole, values.newAdminAddress],
     })
     const revokeCalldata = encodeFunctionData({
       abi: TimelockAbi,
       functionName: 'revokeRole',
-      args: [proposerRole, evmConfig.timelockAdminAccounts[0] as Address],
+      args: [proposerRole, currentAdmin],
     })
 
-    await scheduleCall([
+    await proposeCall([
       {
         target: TIMELOCK_ADDRESS,
         calldata: grantCalldata,
@@ -74,29 +66,25 @@ export const SwapEvmAdmin: FC = () => {
     ])
   }
 
+  if (!currentAdmin) {
+    return <div>Loading...</div>
+  }
+
   return (
-    <div>
-      <TypographyH4>Swap timelock admin</TypographyH4>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-          <div>
-            Swap timelock admin from{' '}
-            <AddressLink address={evmConfig!.timelockAdminAccounts[0]} /> to:
-          </div>
-          <FormField
-            control={form.control}
-            name="newAdminAddress"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>New timelock admin address</FormLabel>
-                <Input type="text" {...field} className="text-sm h-10" />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Propose change</Button>
-        </form>
-      </Form>
+    <div className="space-y-2">
+      <h5>
+        Swap timelock admin from <AddressLink address={currentAdmin} /> to:
+      </h5>
+      <NewProposalFields
+        form={form}
+        fields={[
+          {
+            name: 'newAdminAddress',
+            label: 'New timelock admin address',
+          },
+        ]}
+        onSubmit={handleSubmit}
+      />
     </div>
   )
 }

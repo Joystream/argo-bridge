@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { isAddress } from 'viem'
 
 export const rawAmountSchema = z
   .string()
@@ -15,3 +16,10 @@ export const rawAmountSchema = z
     },
     { message: 'Amount must be a positive number' }
   )
+
+export const evmAddressSchema = z
+  .string()
+  .min(1, 'Address is required')
+  .refine(isAddress, {
+    message: 'This is not a valid Base address (must be checksummed)',
+  })

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { ProposeAdminAction } from './new-proposal/ProposeAdminAction'
+import { NewProposalTab } from './new-proposal/NewProposalTab'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { BridgeStatusTab } from './BridgeStatusTab'
 import { useEvmProposalsQuery } from '@/lib/hooks'
@@ -25,7 +25,7 @@ export const GovernancePage: FC = () => {
           <ProposalsTab />
         </TabsContent>
         <TabsContent value="new-proposal">
-          <ProposeAdminAction />
+          <NewProposalTab />
         </TabsContent>
       </Tabs>
       <Outlet />

@@ -16,7 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Address, isAddress } from 'viem'
 import { isJoyAddress } from '@/lib/utils'
-import { rawAmountSchema } from '@/lib/forms'
+import { evmAddressSchema, rawAmountSchema } from '@/lib/forms'
 import { ParsedTransferFormData, TransferFormSchema } from './newTransfer.types'
 import { useUser } from '@/providers/user/user.hooks'
 import { toast } from 'sonner'
@@ -25,16 +25,10 @@ import { NewTransferDirectionSelector } from './NewTransferDirectionSelector'
 import { NewTransferAllowance } from './NewTransferAllowance'
 import { NewTransferSummary } from './NewTransferSummary'
 import { JoyConnectButton } from '@/components/JoyConnectButton'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { EvmConnectButton } from '@/components/EvmConnectButton'
 
 const evmToJoyFormSchema = z.object({
-  sourceAddress: z
-    .string()
-    .min(1, 'Source address is required')
-    .refine(isAddress, {
-      message: 'This is not a valid Base address',
-    }),
+  sourceAddress: evmAddressSchema,
   targetAddress: z
     .string()
     .min(1, 'Target address is required')
@@ -51,12 +45,7 @@ const joyToEvmFormSchema = z.object({
     .refine(isJoyAddress, {
       message: 'This is not a valid Joystream address',
     }),
-  targetAddress: z
-    .string()
-    .min(1, 'Target address is required')
-    .refine(isAddress, {
-      message: 'This is not a valid Base address',
-    }),
+  targetAddress: evmAddressSchema,
   amountRaw: rawAmountSchema,
 })
 

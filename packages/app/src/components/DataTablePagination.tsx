@@ -20,16 +20,17 @@ export function DataTablePagination<TData>({
   table,
   query,
 }: DataTablePaginationProps<TData>) {
+  const isLoading = query.isLoading || query.isFetching
   return (
     <div className="flex items-center justify-between px-2 mt-3">
       <Button
         variant="outline"
         size="icon"
         onClick={() => query.refetch()}
-        disabled={query.isRefetching}
+        disabled={isLoading}
       >
         <RefreshCcwIcon
-          className={cn('h-4 w-4', query.isRefetching && 'animate-spin')}
+          className={cn('h-4 w-4', isLoading && 'animate-spin')}
         />
       </Button>
       <div className="flex items-center space-x-6 lg:space-x-8">

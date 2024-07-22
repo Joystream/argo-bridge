@@ -1,5 +1,11 @@
-import { FC, useState } from 'react'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import React, { FC, useState } from 'react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { TypographyH3 } from '@/components/ui/typography'
 import { ChangeEvmLimits } from './ChangeEvmLimits'
 import { SwapEvmOperator } from './SwapEvmOperator'
@@ -13,12 +19,29 @@ import {
 } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { ChangeEvmFee } from './ChangeEvmFee'
+import { AddEvmPauser } from '@/pages/Governance/new-proposal/AddEvmPauser'
+import { RevokeEvmPauser } from '@/pages/Governance/new-proposal/RevokeEvmPauser'
 
 const selectOptions = [
+  {
+    label: 'Change bridging fee',
+    value: 'set-bridging-fee',
+    component: ChangeEvmFee,
+  },
   {
     label: 'Change minting limits',
     value: 'change-evm-limits',
     component: ChangeEvmLimits,
+  },
+  {
+    label: 'Add pauser role',
+    value: 'add-evm-pauser',
+    component: AddEvmPauser,
+  },
+  {
+    label: 'Revoke pauser role',
+    value: 'revoke-evm-pauser',
+    component: RevokeEvmPauser,
   },
   {
     label: 'Swap bridge operator',
@@ -30,25 +53,26 @@ const selectOptions = [
     value: 'swap-evm-admin',
     component: SwapEvmAdmin,
   },
-  {
-    label: 'Set bridging fee',
-    value: 'set-bridging-fee',
-    component: ChangeEvmFee,
-  },
 ]
 
-export const ProposeAdminAction: FC = () => {
+export const NewProposalTab: FC = () => {
   const [selected, setSelected] = useState(selectOptions[0].value)
   const Component = selectOptions.find(
     (option) => option.value === selected
   )!.component
   return (
-    <Card>
+    <Card className="max-w-[700px]">
       <CardHeader>
-        <TypographyH3>Propose EVM governance action</TypographyH3>
+        <CardTitle>Propose new EVM governance proposal</CardTitle>
+        <CardDescription>
+          For improved security, all EVM governance actions must be first
+          proposed and approved by the admin multisig. Once approved, the
+          proposal needs to go through the timelock grace period before it can
+          be executed.
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <Label>Choose action type</Label>
+        <Label>Proposal type</Label>
         <Select value={selected} onValueChange={setSelected}>
           <SelectTrigger>
             <SelectValue />
@@ -61,7 +85,7 @@ export const ProposeAdminAction: FC = () => {
             ))}
           </SelectContent>
         </Select>
-        <div className="pt-4">
+        <div className="pt-6">
           <Component />
         </div>
       </CardContent>
