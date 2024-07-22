@@ -9,7 +9,7 @@ import {
 import { useNavigate, useParams } from 'react-router-dom'
 import { formatEth, formatJoy } from '@/lib/utils'
 import { NETWORKS_NAME_LOOKUP, statusFilterOptions } from './transfers.shared'
-import { AddressLabel } from '@/components/AddressLabel'
+import { Truncated } from '@/components/Truncated'
 import { BridgeTransferStatus, BridgeTransferType } from '@/gql/graphql'
 import { Button } from '@/components/ui/button'
 import { JoyTxLink } from '@/components/JoyTxLink'
@@ -72,7 +72,7 @@ export const TransferDetails: FC = () => {
         />
         <TransferDetailsRow
           label="From address"
-          value={<AddressLabel address={transfer.sourceAccount} />}
+          value={<Truncated value={transfer.sourceAccount} />}
         />
         <TransferDetailsRow
           label="To chain"
@@ -80,7 +80,7 @@ export const TransferDetails: FC = () => {
         />
         <TransferDetailsRow
           label="To address"
-          value={<AddressLabel address={transfer.destAccount} />}
+          value={<Truncated value={transfer.destAccount} />}
         />
         <TransferDetailsRow
           label="Request date"

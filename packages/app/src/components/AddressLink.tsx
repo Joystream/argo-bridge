@@ -6,8 +6,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { useChainId, useChains } from 'wagmi'
-import { truncateAddress } from '@/lib/utils'
+import { useChainId, useConfig } from 'wagmi'
+import { truncateValue } from '@/lib/utils'
 import { isAddress } from 'viem'
 import { ExternalLinkIcon } from 'lucide-react'
 
@@ -19,10 +19,10 @@ const knownAddresses = {
 
 export const AddressLink: FC<{ address: string }> = ({ address }) => {
   const isEvm = isAddress(address, { strict: false })
-  const knownName = knownAddresses[address]
-  const chains = useChains()
+  const knownName = knownAddresses[address.toLowerCase()]
+  const { chains } = useConfig()
   const chainId = useChainId()
-  const chain = chains.find((chain) => chain.id === chainId)
+  const chain = chains.find((c) => c.id === chainId)
 
   const getUrl = () => {
     if (isEvm) {
@@ -34,7 +34,7 @@ export const AddressLink: FC<{ address: string }> = ({ address }) => {
     }
   }
 
-  const label = knownName || truncateAddress(address)
+  const label = knownName || truncateValue(address)
 
   return (
     <Tooltip>

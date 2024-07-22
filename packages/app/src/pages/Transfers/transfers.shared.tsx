@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { EllipsisVertical } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
-import { AddressLabel } from '@/components/AddressLabel'
+import { Truncated } from '@/components/Truncated'
 import { TransferToJoyActions } from './TransferToJoyActions'
 import { TransferToEvmActions } from './TransferToEvmActions'
 
@@ -73,7 +73,7 @@ export const transfersTableColumns = [
   columnHelper.accessor('sourceAccount', {
     header: 'From address',
     cell: ({ cell: { getValue } }) => {
-      return <AddressLabel address={getValue()} />
+      return <Truncated value={getValue()} />
     },
   }),
   columnHelper.accessor('destChainId', {
@@ -86,7 +86,7 @@ export const transfersTableColumns = [
   columnHelper.accessor('destAccount', {
     header: 'To address',
     cell: ({ cell: { getValue } }) => {
-      return <AddressLabel address={getValue()} />
+      return <Truncated value={getValue()} />
     },
   }),
   columnHelper.accessor('amount', {

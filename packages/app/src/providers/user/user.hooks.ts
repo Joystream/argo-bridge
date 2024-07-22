@@ -3,6 +3,7 @@ import { useAccount } from 'wagmi'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
 import { EVM_NETWORK, JOY_NETWORK } from '@/config'
 import { useMemo } from 'react'
+import { Address } from 'viem'
 
 export const useUser = () => {
   const { walletAccounts: joyAccounts } = useJoyWallets()
@@ -42,7 +43,7 @@ export const useUser = () => {
   const userJoyPauser: string | false =
     joyConfig?.pauserAccounts.find((pauser) => joyLookup[pauser]) || false
 
-  let userEvmAdmin: string | false = false
+  let userEvmAdmin: Address | false = false
   if (EVM_NETWORK.adminMulti) {
     userEvmAdmin =
       EVM_NETWORK.adminMulti.signers.find((signer) => evmLookup?.[signer]) ||
@@ -53,7 +54,7 @@ export const useUser = () => {
       false
   }
 
-  let userEvmOperator: string | false = false
+  let userEvmOperator: Address | false = false
   if (EVM_NETWORK.opMulti) {
     userEvmOperator =
       EVM_NETWORK.opMulti.signers.find((signer) => evmLookup?.[signer]) || false
@@ -64,7 +65,7 @@ export const useUser = () => {
       ) || false
   }
 
-  const userEvmPauser =
+  const userEvmPauser: Address | false =
     evmConfig?.pauserAccounts.find((pauser) => evmLookup?.[pauser]) || false
 
   return {

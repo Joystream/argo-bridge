@@ -1,14 +1,15 @@
 import { FC } from 'react'
-import { JOY_NETWORK } from '@/config'
-import { truncateAddress } from '@/lib/utils'
+import { truncateValue } from '@/lib/utils'
 import { ExternalLinkIcon } from 'lucide-react'
-import { useAccount } from 'wagmi'
+import { useChainId, useConfig } from 'wagmi'
 
 export const EvmTxLink: FC<{ hash: string }> = ({ hash }) => {
-  const { chain } = useAccount()
+  const { chains } = useConfig()
+  const chainId = useChainId()
+  const chain = chains.find((c) => c.id === chainId)
   const explorer = chain?.blockExplorers?.default
   const url = explorer ? `${explorer.url}/tx/${hash}` : ''
-  const truncated = truncateAddress(hash, 10)
+  const truncated = truncateValue(hash, 10)
 
   return (
     <a

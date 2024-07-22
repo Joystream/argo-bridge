@@ -3,6 +3,7 @@ import { TransfersPage } from '@/pages/Transfers'
 import { NewTransferPage } from '@/pages/NewTransfer'
 import { RouteObject } from 'react-router-dom'
 import { TransferDetails } from '@/pages/Transfers/TransferDetails'
+import { ProposalDetails } from '@/pages/Governance/proposals/ProposalDetails'
 
 export const ROUTES: (RouteObject & { name: string; path: string })[] = [
   {
@@ -25,5 +26,11 @@ export const ROUTES: (RouteObject & { name: string; path: string })[] = [
     path: '/governance',
     element: <GovernancePage />,
     name: 'Governance',
+    children: [
+      {
+        path: 'proposals/:id',
+        element: <ProposalDetails />,
+      },
+    ],
   },
 ]

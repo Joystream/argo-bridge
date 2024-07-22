@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DataTablePagination } from './Pagination'
+import { DataTablePagination } from '@/components/DataTablePagination'
 import { BridgeTransfer } from '@/lib/transfer'
 import { transfersTableColumns } from './transfers.shared'
 import { FC, useMemo, useState } from 'react'
@@ -35,20 +35,19 @@ import { statusFilterOptions } from '@/pages/Transfers/transfers.shared'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { useUser } from '@/providers/user/user.hooks'
+import { useTransfersQuery } from '@/lib/hooks'
 
-type TransfersTableProps = {
-  transfers: BridgeTransfer[]
-}
+type TransfersTableProps = {}
 
-export const TransfersTable: FC<TransfersTableProps> = ({
-  transfers: allTransfers,
-}) => {
+export const TransfersTable: FC<TransfersTableProps> = ({}) => {
+  const query = useTransfersQuery()
+
   const { joyAddresses, evmAddresses } = useUser()
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [showOnlyMyTransfers, setShowOnlyMyTransfers] = useState(false)
 
-  const transfers = useMemo(() => {
-    if (!showOnlyMyTransfers) return allTransfers
+  const visibleTransfers = useMemo(() => {
+    if (!showOnlyMyTransfers) return query.data || []
 
     const userAddressesLookup = [
       ...joyAddresses,
@@ -61,16 +60,18 @@ export const TransfersTable: FC<TransfersTableProps> = ({
       {} as Record<string, boolean>
     )
 
-    return allTransfers.filter((transfer) => {
-      return (
-        userAddressesLookup[transfer.sourceAccount.toLowerCase()] ||
-        userAddressesLookup[transfer.destAccount.toLowerCase()]
-      )
-    })
-  }, [allTransfers, showOnlyMyTransfers, joyAddresses, evmAddresses])
+    return (
+      query.data?.filter((transfer) => {
+        return (
+          userAddressesLookup[transfer.sourceAccount.toLowerCase()] ||
+          userAddressesLookup[transfer.destAccount.toLowerCase()]
+        )
+      }) || []
+    )
+  }, [query.data, showOnlyMyTransfers, joyAddresses, evmAddresses])
 
   const table = useReactTable({
-    data: transfers,
+    data: visibleTransfers,
     columns: transfersTableColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -213,7 +214,7 @@ export const TransfersTable: FC<TransfersTableProps> = ({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      <DataTablePagination table={table} query={query} />
     </div>
   )
 }

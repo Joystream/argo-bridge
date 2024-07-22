@@ -59,8 +59,11 @@ export function formatEth(amount: bigint | string | dn.Dnum) {
   return `${dn.format(dnum, { compact: true, digits: 5 })} ETH`
 }
 
-export function truncateAddress(address: string, length = 6) {
-  return `${address.slice(0, length)}...${address.slice(-length)}`
+export function truncateValue(value: string, length = 6) {
+  if (value.length <= length * 2 + 3) {
+    return value
+  }
+  return `${value.slice(0, length)}...${value.slice(-length)}`
 }
 
 export function isJoyAddress(address: string) {

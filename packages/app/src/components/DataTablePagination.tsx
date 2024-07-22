@@ -3,29 +3,35 @@ import {
   ChevronLast,
   ChevronLeftIcon,
   ChevronRightIcon,
-  // DoubleArrowLeft,
-  // DoubleArrowRightIcon,
+  RefreshCcwIcon,
 } from 'lucide-react'
 import { Table } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { UseQueryResult } from '@tanstack/react-query'
+import { cn } from '@/lib/utils'
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>
+  query: UseQueryResult<unknown>
 }
 
 export function DataTablePagination<TData>({
   table,
+  query,
 }: DataTablePaginationProps<TData>) {
   return (
-    <div className="flex items-center justify-end px-2 mt-3">
+    <div className="flex items-center justify-between px-2 mt-3">
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={() => query.refetch()}
+        disabled={query.isRefetching}
+      >
+        <RefreshCcwIcon
+          className={cn('h-4 w-4', query.isRefetching && 'animate-spin')}
+        />
+      </Button>
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
           Page {table.getState().pagination.pageIndex + 1} of{' '}

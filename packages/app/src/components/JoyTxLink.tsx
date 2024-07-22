@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { JOY_NETWORK } from '@/config'
-import { truncateAddress } from '@/lib/utils'
+import { truncateValue } from '@/lib/utils'
 import { ExternalLinkIcon } from 'lucide-react'
 
 export const JoyTxLink: FC<{ hash: string; block: number }> = ({
@@ -12,7 +12,7 @@ export const JoyTxLink: FC<{ hash: string; block: number }> = ({
     ? `https://joystream.subscan.io/extrinsic/${hash}`
     : `https://polkadot.js.org/apps/?rpc=${encodeURI(JOY_NETWORK.rpc.url)}#/explorer/query/${block}`
 
-  const truncated = truncateAddress(hash, 10)
+  const truncated = truncateValue(hash, 10)
 
   return (
     <a

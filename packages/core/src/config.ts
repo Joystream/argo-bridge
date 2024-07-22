@@ -67,6 +67,7 @@ const _EVM_NETWORKS = {
       bridge: "0xdb696e892681A86f421c136F317496DcB5Cb3Ace",
       timelock: "0xe070f47bf2849593f9745e448b2723C57B7E5292",
     },
+    // TODO: fetch signers from safe
     opMulti: {
       address: "0x6C0da65d7e8F1A75e7715F6b2e11a4d2388950bb",
       signers: [

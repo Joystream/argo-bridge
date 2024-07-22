@@ -23,23 +23,26 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [])
 
   const addTxPromise = useCallback(
-    async (txPromise: Promise<unknown>, onSuccess?: () => void) => {
-      const finalPromise = txPromise.then((result) => {
-        if (isHex(result) && publicClient) {
-          return waitForTransactionReceipt(publicClient, {
-            hash: result,
-          })
-        }
-      })
-      finalPromise.then(() => onSuccess?.())
-      finalPromise.catch((e) => {
-        console.error('Error sending transaction:', e)
-      })
-      toast.promise(txPromise, {
+    (txPromise: Promise<unknown>, onSuccess?: () => void) => {
+      const finalPromise = txPromise
+        .then((result) => {
+          if (isHex(result) && publicClient) {
+            return waitForTransactionReceipt(publicClient, {
+              hash: result,
+            })
+          }
+        })
+        .then(() => onSuccess?.())
+        .catch((e) => {
+          console.error('Error sending transaction:', e)
+          throw e
+        })
+      toast.promise(finalPromise, {
         loading: 'Sending transaction...',
         success: 'Transaction sent',
         error: 'Failed to send transaction',
       })
+      return finalPromise
     },
     []
   )
