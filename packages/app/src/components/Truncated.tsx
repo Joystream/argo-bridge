@@ -7,7 +7,16 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { toast } from 'sonner'
-import { getAddress, isAddress } from 'viem'
+import { getAddress, isAddress, keccak256, toHex } from 'viem'
+
+const knownValues = {
+  [keccak256(toHex('DEFAULT_ADMIN_ROLE'))]: 'DEFAULT_ADMIN_ROLE',
+  [keccak256(toHex('OPERATOR_ROLE'))]: 'OPERATOR_ROLE',
+  [keccak256(toHex('PAUSER_ROLE'))]: 'PAUSER_ROLE',
+  [keccak256(toHex('MINTER_ROLE'))]: 'MINTER_ROLE',
+  [keccak256(toHex('PROPOSER_ROLE'))]: 'PROPOSER_ROLE',
+  [keccak256(toHex('CANCELLER_ROLE'))]: 'CANCELLER_ROLE',
+}
 
 export const Truncated: FC<{
   value: string | number | bigint
@@ -36,7 +45,7 @@ export const Truncated: FC<{
             right && 'text-right'
           )}
         >
-          {truncated}
+          {knownValues[value] ?? truncated}
           <CopyIcon className="h-4 w-4 ml-2" />
         </span>
       </TooltipTrigger>

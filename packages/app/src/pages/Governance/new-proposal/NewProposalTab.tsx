@@ -21,6 +21,7 @@ import { Label } from '@/components/ui/label'
 import { ChangeEvmFee } from './ChangeEvmFee'
 import { AddEvmPauser } from '@/pages/Governance/new-proposal/AddEvmPauser'
 import { RevokeEvmPauser } from '@/pages/Governance/new-proposal/RevokeEvmPauser'
+import { UnpauseEvm } from '@/pages/Governance/new-proposal/UnpauseEvm'
 
 const selectOptions = [
   {
@@ -44,6 +45,11 @@ const selectOptions = [
     component: RevokeEvmPauser,
   },
   {
+    label: 'Unpause bridge',
+    value: 'unpause-evm',
+    component: UnpauseEvm,
+  },
+  {
     label: 'Swap bridge operator',
     value: 'swap-evm-operator',
     component: SwapEvmOperator,
@@ -63,9 +69,9 @@ export const NewProposalTab: FC = () => {
   return (
     <Card className="max-w-[700px]">
       <CardHeader>
-        <CardTitle>Propose new EVM governance proposal</CardTitle>
+        <CardTitle>Propose new Base governance proposal</CardTitle>
         <CardDescription>
-          For improved security, all EVM governance actions must be first
+          For improved security, all Base governance actions must be first
           proposed and approved by the admin multisig. Once approved, the
           proposal needs to go through the timelock grace period before it can
           be executed.

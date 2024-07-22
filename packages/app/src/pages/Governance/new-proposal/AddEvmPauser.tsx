@@ -62,6 +62,7 @@ export const AddEvmPauser: FC = () => {
   return (
     <NewProposalFields
       form={form}
+      description="Add a new pauser to the bridge. They are able to pause the bridge at any time in case of emergency. Bridge can be unpaused only by governance proposal."
       fields={[
         {
           name: 'newPauserAddress',

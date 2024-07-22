@@ -15,6 +15,7 @@ import { Truncated } from '@/components/Truncated'
 import { EvmGovernanceCall } from '@/lib/proposal'
 import { AddressLink } from '@/components/AddressLink'
 import { formatEth } from '@/lib/utils'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 export const ProposalDetails: FC = () => {
   const { id } = useParams()
@@ -116,7 +117,9 @@ export const ProposalDetails: FC = () => {
         <DialogHeader>
           <DialogTitle>Proposal details</DialogTitle>
         </DialogHeader>
-        {getContent()}
+        <ScrollArea className="max-h-[70vh]">
+          <div className="flex flex-col gap-2">{getContent()}</div>
+        </ScrollArea>
         <DialogFooter className="mt-2">
           <Button onClick={() => handleClose()} ref={closeButtonRef}>
             Done
@@ -141,7 +144,7 @@ const ProposalDetailsRow: FC<{ label: string; value: string | ReactNode }> = ({
 
 const CallDetails: FC<{ call: EvmGovernanceCall }> = ({ call }) => {
   return (
-    <div className="flex flex-col gap-2 mt-2">
+    <div className="flex flex-col gap-1 mt-2">
       <h4 className="font-semibold">Call #{call.index + 1}</h4>
       <ProposalDetailsRow
         label="Target"

@@ -62,6 +62,7 @@ export const RevokeEvmPauser: FC = () => {
   return (
     <NewProposalFields
       form={form}
+      description="Remove pausing privileges from an address."
       fields={[
         {
           name: 'revokedPauserAddress',
