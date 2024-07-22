@@ -8,7 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { EllipsisVertical, InfoIcon } from 'lucide-react'
+import { CircleAlertIcon, EllipsisVertical, InfoIcon } from 'lucide-react'
 import { FC } from 'react'
 import { Truncated } from '@/components/Truncated'
 import { AddressLink } from '@/components/AddressLink'
@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { NavLink } from 'react-router-dom'
 import { ProposalActions } from './ProposalActions'
+import { cn } from '@/lib/utils'
 
 const columnHelper = createColumnHelper<EvmGovernanceProposal>()
 
@@ -68,6 +69,13 @@ export const ProposalStatusCell: FC<{
   )
 }
 
+const dangerousActions = [
+  'Custom',
+  'Swap bridge operator',
+  'Swap bridge admin',
+  'Swap timelock admin',
+]
+
 export const proposalsTableColumns = [
   columnHelper.accessor('id', {
     header: 'ID',
@@ -75,20 +83,32 @@ export const proposalsTableColumns = [
   }),
   columnHelper.accessor('description', {
     header: 'Action',
-    cell: ({ row }) => (
-      <Tooltip>
-        <TooltipTrigger>{row.original.description}</TooltipTrigger>
-        <TooltipContent>
-          <ul>
-            {row.original.calls.map((call) => (
-              <li key={call.index}>
-                {call.functionFormatted || call.functionName || 'Unknown'}
-              </li>
-            ))}
-          </ul>
-        </TooltipContent>
-      </Tooltip>
-    ),
+    cell: ({ row }) => {
+      const description = row.original.description
+      const isDangerous = dangerousActions.includes(description)
+      return (
+        <Tooltip>
+          <TooltipTrigger
+            className={cn(
+              'flex items-center',
+              isDangerous && 'text-destructive'
+            )}
+          >
+            {description}
+            {isDangerous ? <CircleAlertIcon className="w-4 h-4 ml-1" /> : null}
+          </TooltipTrigger>
+          <TooltipContent>
+            <ul>
+              {row.original.calls.map((call) => (
+                <li key={call.index}>
+                  {call.functionFormatted || call.functionName || 'Unknown'}
+                </li>
+              ))}
+            </ul>
+          </TooltipContent>
+        </Tooltip>
+      )
+    },
   }),
   columnHelper.accessor('calls', {
     header: 'Call target',

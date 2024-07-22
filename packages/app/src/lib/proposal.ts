@@ -159,7 +159,7 @@ const getDescription = (calls: EvmGovernanceCall[]): string | undefined => {
         }
       } else if (firstCall.targetAddress === TIMELOCK_ADDRESS.toLowerCase()) {
         if (firstCall.functionArgs?.[0] === PROPOSER_ROLE) {
-          return 'Swap timelock proposer'
+          return 'Swap timelock admin'
         }
       }
     }

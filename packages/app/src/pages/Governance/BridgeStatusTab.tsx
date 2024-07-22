@@ -178,9 +178,13 @@ export const BridgeStatusTab: FC = () => {
     if (joyConfig.status === JoyBridgeStatus.Active) {
       return 'Active'
     } else if (joyConfig.status === JoyBridgeStatus.Paused) {
-      return 'Paused'
+      return <span className="text-destructive">Paused</span>
     } else {
-      return `Thawn - ends at block ${joyConfig.thawnEndsAtBlock}`
+      return (
+        <span className="text-destructive">
+          Thawn - ends at block ${joyConfig.thawnEndsAtBlock}
+        </span>
+      )
     }
   }
 
@@ -284,7 +288,7 @@ export const BridgeStatusTab: FC = () => {
     if (evmConfig.status === EvmBridgeStatus.Active) {
       return 'Active'
     } else {
-      return 'Paused'
+      return <span className="text-destructive">Paused</span>
     }
   }
 

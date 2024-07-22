@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react'
-import { BridgeTransferType } from '@/gql/graphql'
+import { BridgeTransferType, EvmBridgeStatus } from '@/gql/graphql'
 import { NewTransferForm } from './NewTransferForm'
 import {
   Card,
@@ -26,6 +26,9 @@ import { NewTransferAllowance } from './NewTransferAllowance'
 import { NewTransferSummary } from './NewTransferSummary'
 import { JoyConnectButton } from '@/components/JoyConnectButton'
 import { EvmConnectButton } from '@/components/EvmConnectButton'
+import { useBridgeConfigs } from '@/lib/bridgeConfig'
+import { Button } from '@/components/ui/button'
+import { NavLink } from 'react-router-dom'
 
 const evmToJoyFormSchema = z.object({
   sourceAddress: evmAddressSchema,
@@ -55,6 +58,8 @@ type TransferStep =
   | { type: 'summary'; data: ParsedTransferFormData }
 
 export const NewTransferCard: FC = () => {
+  const { isJoyPaused, isEvmPaused } = useBridgeConfigs()
+
   const [transferType, setTransferType] = useState<BridgeTransferType>(
     BridgeTransferType.JoyToEvm
   )
@@ -76,6 +81,10 @@ export const NewTransferCard: FC = () => {
 
   const sourceAddresses =
     transferType === BridgeTransferType.JoyToEvm ? joyAddresses : evmAddresses
+
+  const isBridgeUnavailable =
+    (transferType === BridgeTransferType.JoyToEvm && isJoyPaused) ||
+    (transferType === BridgeTransferType.EvmToJoy && isEvmPaused)
 
   const form = useForm<TransferFormSchema>({
     resolver: zodResolver(formSchema),
@@ -140,11 +149,10 @@ export const NewTransferCard: FC = () => {
     if (transferType === BridgeTransferType.EvmToJoy) {
       // we will call this function with timeout if the approval data is not ready
       // for that reason we need to get query state directly from queryClient, so we don't get stale React data
+      // I'll be honest, it's a bit dirty
 
       const allowanceQueryState =
         queryClient.getQueryState(evmAllowanceQueryKey)
-
-      console.log('allowanceQueryState', allowanceQueryState)
 
       if (!allowanceQueryState) {
         toast.error('Unexpected error')
@@ -182,6 +190,10 @@ export const NewTransferCard: FC = () => {
       (!evmAddresses?.length || !connectedEvmChain))
 
   const getCardTitle = () => {
+    if (isBridgeUnavailable) {
+      return 'Bridge is not active'
+    }
+
     if (isMissingWallet) {
       return 'Connect wallet'
     }
@@ -201,6 +213,12 @@ export const NewTransferCard: FC = () => {
   const cardTitle = getCardTitle()
 
   const getCardDescription = () => {
+    if (isBridgeUnavailable) {
+      return `Bridge is paused on ${
+        transferType === BridgeTransferType.JoyToEvm ? 'Joystream' : 'Base'
+      } network. Please try again later.`
+    }
+
     if (isMissingWallet) {
       return `Connect your ${
         transferType === BridgeTransferType.JoyToEvm ? 'Joystream' : 'Base'
@@ -222,6 +240,16 @@ export const NewTransferCard: FC = () => {
   const cardDescription = getCardDescription()
 
   const getDisplayedContent = () => {
+    if (isBridgeUnavailable) {
+      return (
+        <CardFooter>
+          <Button asChild variant="outline" className="w-full">
+            <NavLink to="/governance">Check governance page</NavLink>
+          </Button>
+        </CardFooter>
+      )
+    }
+
     if (isMissingWallet) {
       if (transferType === BridgeTransferType.JoyToEvm) {
         return (

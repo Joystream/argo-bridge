@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useAccount, useBalance } from 'wagmi'
+import { useBalance } from 'wagmi'
 import { ERC20_ADDRESS } from '@/config'
 import { Dnum } from 'dnum'
 import { Address, isAddress } from 'viem'
@@ -50,13 +50,16 @@ export const NewTransferForm: FC<NewTransferFormProps> = ({
 }) => {
   const { evmAddresses, joyAddresses } = useUser()
 
-  const { data: configsData } = useBridgeConfigs()
+  const { data: configsData, isEvmPaused, isJoyPaused } = useBridgeConfigs()
   const joyConfig = configsData?.joy
   const evmConfig = configsData?.evm
 
   const sourceAddresses =
     transferType === BridgeTransferType.JoyToEvm ? joyAddresses : evmAddresses
 
+  const isOtherSideUnavailable =
+    (transferType === BridgeTransferType.JoyToEvm && isEvmPaused) ||
+    (transferType === BridgeTransferType.EvmToJoy && isJoyPaused)
   const { sourceAddress } = form.watch()
 
   const _evmJoyBalance = useBalance({
@@ -238,6 +241,12 @@ export const NewTransferForm: FC<NewTransferFormProps> = ({
                 ? formatEth(evmConfig.bridgingFee)
                 : '—'}
           </p>
+          {isOtherSideUnavailable ? (
+            <p className="text-destructive text-sm">
+              Bridge on chain you are bridging to is currently paused. There may
+              be delays in the transfer.
+            </p>
+          ) : null}
         </CardContent>
         <CardFooter>
           <Button className="w-full" type="submit">

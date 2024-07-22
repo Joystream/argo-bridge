@@ -94,6 +94,7 @@ async function fetchBridgeConfigs() {
   ) {
     throw new Error('Invalid bridge configs response')
   }
+
   return {
     evm: parseEvmBridgeConfig(data.evmBridgeConfigs[0]),
     joy: parseJoyBridgeConfig(data.joyBridgeConfigs[0]),
@@ -101,8 +102,19 @@ async function fetchBridgeConfigs() {
 }
 
 export function useBridgeConfigs() {
-  return useQuery({
+  const query = useQuery({
     queryKey: ['bridgeConfigs', EVM_NETWORK.chainId, JOY_NETWORK.chainId],
     queryFn: fetchBridgeConfigs,
   })
+
+  const isEvmPaused =
+    query.data && query.data.evm.status !== EvmBridgeStatus.Active
+  const isJoyPaused =
+    query.data && query.data.joy.status !== JoyBridgeStatus.Active
+
+  return {
+    ...query,
+    isEvmPaused,
+    isJoyPaused,
+  }
 }
