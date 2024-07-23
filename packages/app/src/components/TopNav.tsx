@@ -43,7 +43,7 @@ export const TopNav: FC = () => {
                           <NavigationMenuLink
                             className={navigationMenuTriggerStyle()}
                             asChild
-                            active={pathname === item.path}
+                            active={pathname.split('/')[1] === item.path}
                           >
                             <NavLink to={item.path}>{item.name}</NavLink>
                           </NavigationMenuLink>

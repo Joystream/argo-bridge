@@ -1,7 +1,12 @@
 import { FC } from 'react'
-import { useEvmProposalsQuery } from '@/lib/hooks'
 import { ProposalsTable } from './ProposalsTable'
+import { Outlet } from 'react-router-dom'
 
 export const ProposalsTab: FC = () => {
-  return <ProposalsTable />
+  return (
+    <>
+      <ProposalsTable />
+      <Outlet />
+    </>
+  )
 }

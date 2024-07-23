@@ -22,7 +22,7 @@ const Layout: FC = () => (
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '',
     element: <Layout />,
     children: ROUTES,
   },

@@ -8,7 +8,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button, ButtonProps } from '@/components/ui/button'
-import { Wallet } from 'lucide-react'
 import { useJoyWallets } from '@/providers/joyWallet'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -62,7 +61,7 @@ export const JoyConnectButton: FC<JoyConnectButtonProps> = ({
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline">JOY wallet</Button>
+          <Button variant="outline">Joy wallet</Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>

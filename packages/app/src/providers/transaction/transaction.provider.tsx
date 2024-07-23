@@ -32,7 +32,10 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
             })
           }
         })
-        .then(() => onSuccess?.())
+        // don't await handler
+        .then(() => {
+          onSuccess?.()
+        })
         .catch((e) => {
           console.error('Error sending transaction:', e)
           throw e

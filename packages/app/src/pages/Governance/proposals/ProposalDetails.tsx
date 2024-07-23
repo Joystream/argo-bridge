@@ -98,7 +98,7 @@ export const ProposalDetails: FC = () => {
     )
   }
 
-  const handleClose = () => navigate('/governance')
+  const handleClose = () => navigate('..')
   const closeButtonRef = useRef<HTMLButtonElement>(null)
 
   return (
