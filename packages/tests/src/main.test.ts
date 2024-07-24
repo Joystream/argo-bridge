@@ -58,7 +58,9 @@ process.on("exit", async () => {
 })
 
 let evmConfig: Awaited<ReturnType<typeof getEvmConfig>>
-let deploymentParams: ReturnType<typeof getEvmDeploymentParams>["JoystreamEth"]
+let deploymentParams: ReturnType<
+  typeof getEvmDeploymentParams
+>["JoystreamDevelopmentEth"]
 
 let joyBridgeOperator: KeyringPair
 let joyBridgePauser: KeyringPair
@@ -66,16 +68,16 @@ let joyBridgePauser: KeyringPair
 const addressCodec = ss58.codec("joystream")
 
 beforeAll(async () => {
-  // await setup()
+  await setup()
   // await electCouncil()
-  await setupJoyApi()
+  // await setupJoyApi()
   joyBridgeOperator = councilAccounts[0]
   joyBridgePauser = councilAccounts[1]
   evmConfig = await getEvmConfig()
   deploymentParams = getEvmDeploymentParams(
     evmConfig.adminAccount,
     evmConfig.operatorAccount,
-  ).JoystreamEth
+  ).JoystreamDevelopmentEth
 })
 
 afterAll(async () => await cleanup())

@@ -1,16 +1,25 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules"
 import { ethers } from "ethers"
 
+// Ignition doesn't let us access the parameters value directly, it's some kind of a future
+// But we need it to create calldata in cleanup phase so we hardcode it here
 export const HARDCODED_TIMELOCK_DELAY = 120n
 
-const JoystreamEthModule = buildModule("JoystreamEth", (m) => {
+const JoystreamDevelopmentEthModule = buildModule("JoystreamDevelopmentEth", (m) => {
   const deployer = m.getAccount(0)
 
-  // const timelockDelay = m.getParameter("timelockDelay")
+  // === Prepare configuration ===
+  // Final timelock delay - delay between proposing and executing a call, in seconds
+  const timelockDelay = HARDCODED_TIMELOCK_DELAY
+  // Timelock proposer/admin - address that can propose and cancel calls, governance admin multisig
   const timelockProposer = m.getParameter("timelockProposer")
+  // Bridge operator - address that can finalize bridge transfers and mint tokens
   const bridgeOperator = m.getParameter("bridgeOperator")
+  // Initial bridging fee - fee charged on outgoing transfer, in wei
   const bridgeFee = m.getParameter("bridgeFee")
+  // Initial length of minting period - length of the period in blocks
   const mintingLimitPeriodLengthBlocks = m.getParameter("mintingLimitPeriodLengthBlocks")
+  // Initial minting limit per period - amount of tokens that can be minted in a period, in HAPI
   const mintingLimitPerPeriod = m.getParameter("mintingLimitPerPeriod")
 
   // set deployer as the initial timelock proposer for the initial setup
@@ -67,8 +76,7 @@ const JoystreamEthModule = buildModule("JoystreamEth", (m) => {
   // set final timelock delay
   const timelockAbi = ["function updateDelay(uint256 newDelay) external"]
   const timelockInterface = new ethers.Interface(timelockAbi)
-  // TODO: use ignition parameter instead of the hardcoded value
-  const updateDelayCallData = timelockInterface.encodeFunctionData("updateDelay", [HARDCODED_TIMELOCK_DELAY])
+  const updateDelayCallData = timelockInterface.encodeFunctionData("updateDelay", [timelockDelay])
 
   const proposeUpdateDelayCall = m.call(timelockController, "schedule", [
     timelockController,
@@ -106,4 +114,4 @@ const JoystreamEthModule = buildModule("JoystreamEth", (m) => {
   return { timelockController, joystreamErc20, argoBridge }
 })
 
-export default JoystreamEthModule
+export default JoystreamDevelopmentEthModule

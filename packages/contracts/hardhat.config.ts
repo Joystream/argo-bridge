@@ -34,10 +34,6 @@ const config: HardhatUserConfig = {
             },
           }),
     },
-    sepolia: {
-      url: EVM_NETWORKS.sepolia.rpc.url,
-      accounts: [DEPLOYER_PRIVATE_KEY],
-    },
     baseSepolia: {
       url: EVM_NETWORKS.baseSepolia.rpc.url,
       accounts: [DEPLOYER_PRIVATE_KEY],

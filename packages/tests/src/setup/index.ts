@@ -43,7 +43,10 @@ export async function setup(): Promise<void> {
     await deployEvm()
 
     printTask("Starting squid DB")
-    await run(["docker", "compose", "up", "-d", "db"], { cwd: "../indexer" })
+    await run(
+      ["docker", "compose", "-f", "docker-compose.dev.yml", "up", "-d", "db"],
+      { cwd: "../indexer" },
+    )
     startedDb = true
     printDone()
 

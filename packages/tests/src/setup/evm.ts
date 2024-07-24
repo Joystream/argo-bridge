@@ -42,7 +42,7 @@ export function getEvmDeploymentParams(
   operatorAccount: string,
 ) {
   return {
-    JoystreamEth: {
+    JoystreamDevelopmentEth: {
       timelockDelay: 120,
       timelockProposer: adminAccount,
       bridgeOperator: operatorAccount,
@@ -81,7 +81,7 @@ export async function deployEvm() {
       "hardhat",
       "ignition",
       "deploy",
-      "ignition/modules/JoystreamEth.ts",
+      "ignition/modules/JoystreamDevelopmentEth.ts",
       "--network",
       "localhost",
       "--parameters",

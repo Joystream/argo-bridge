@@ -13,7 +13,7 @@ export async function increaseTime(testClient: TestClient, newDate: Date) {
 
 export async function scheduleTimelockCall(callTarget: Hex, callData: Hex) {
   const {
-    JoystreamEth: { timelockDelay },
+    JoystreamDevelopmentEth: { timelockDelay },
   } = getEvmDeploymentParams("", "")
   const { walletClient, adminAccount, publicClient } = await getEvmConfig()
 

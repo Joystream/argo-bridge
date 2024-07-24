@@ -3,7 +3,7 @@
   "scripts": {
     "compile": "hardhat compile",
     "test": "UNIT_TESTS=true hardhat test",
-    "deploy:local": "hardhat ignition deploy ignition/modules/JoystreamEth.ts --network localhost --parameters ../tests/tmp/test-params.json",
+    "deploy:local": "hardhat ignition deploy ignition/modules/JoystreamDevelopmentEth.ts --network localhost --parameters ignition/parameters.json",
     "format": "prettier --write ."
   },
   "dependencies": {

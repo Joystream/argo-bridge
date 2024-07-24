@@ -1,5 +1,5 @@
 {
-  "JoystreamEth": {
+  "JoystreamProductionEth": {
     "timelockDelay": 120,
     "timelockProposer": "0x45F2aBcE86a938Bb4d4633048dfA15bED7A5E310",
     "bridgeOperator": "0x45F2aBcE86a938Bb4d4633048dfA15bED7A5E310",

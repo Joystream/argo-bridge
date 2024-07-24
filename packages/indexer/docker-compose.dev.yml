@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres:15
+    container_name: argo-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    ports:
+      - "${DB_PORT}:5432"
+    shm_size: 1gb
