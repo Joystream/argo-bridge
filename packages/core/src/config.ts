@@ -69,22 +69,31 @@ const _EVM_NETWORKS = {
     },
     // TODO: fetch signers from safe
     opMulti: {
-      address: "0x6C0da65d7e8F1A75e7715F6b2e11a4d2388950bb",
+      address: "0x6D4fb3B204Ade999217441167984F23d6E4638C3",
       signers: [
-        "0x5a8f5ee896d5bb15C8916cA744dBF9bCDDa63413",
-        "0xb39f942c37f98A7fE59e5bdd06d82b70718c5f96",
-        "0xb45f42a58fAa3F971AD52f132f45814448b2eA08",
+        "0x0E835F8925f72b3220DB3A9305b2a2C096329B62",
+        "0x078fa53AA7d2c45b4AF150701d83Ea66b73A0364",
+        "0xBe3F7220F73aA3009A67E1A1193454F6099C9b11",
+        "0x76C4fB9FEB3a9b11bf99B7C31EbaD30DE4548db8",
+        "0xaA709d6B0c4E0f10cb49203dcD7442E5626CbD53",
+        "0x34591a1e3f6394208FeF7ef433C89F1d793d8d8D", // temporary
       ],
-      threshold: 2,
+      threshold: 3,
     },
     adminMulti: {
-      address: "0x6C0da65d7e8F1A75e7715F6b2e11a4d2388950bb",
+      address: "0x62e6849aBA4Da5647374E41Bafb3f40588Ab4747",
       signers: [
-        "0x5a8f5ee896d5bb15C8916cA744dBF9bCDDa63413",
-        "0xb39f942c37f98A7fE59e5bdd06d82b70718c5f96",
-        "0xb45f42a58fAa3F971AD52f132f45814448b2eA08",
+        "0x34591a1e3f6394208FeF7ef433C89F1d793d8d8D",
+        "0xF2052f276d33E4B6655aA193E5Bd1cC9CC3F1B00",
+        "0xaA709d6B0c4E0f10cb49203dcD7442E5626CbD53",
+        "0x75996a4c2683EF365549Ee5EE39Ed187f239940d",
+        "0x2b6626FC4BB515239B65b36368c4a271CB06D3F4",
+        "0x28aa4F9ffe21365473B64C161b566C3CdeAD0108",
+        "0x38c38e86F747a01e1520135193401B61Dfe726b9",
+        "0xBe3F7220F73aA3009A67E1A1193454F6099C9b11",
+        "0x9132dadB3da875301dAb5De3ff42b015EC8956cA",
       ],
-      threshold: 2,
+      threshold: 5,
     },
   },
   hardhat: {
@@ -128,12 +137,17 @@ const _JOY_NETWORKS = {
       rateLimit: 500,
     },
     opMulti: {
-      address: "j4UJK4dg51HZcJ9nTh8epDCKzGDaNss4DkGdaa622GYVqLSqJ",
+      address: "j4VoG7QVXPKuej7zrd6RqMhokCbJbUCwPCqTvW8paNbZS4fMp",
       signers: [
-        "j4W7rVcUCxi2crhhjRq46fNDRbVHTjJrz6bKxZwehEMQxZeSf",
-        "j4UYhDYJ4pz2ihhDDzu69v2JTVeGaGmTebmBdWaX2ANVinXyE",
+        "j4Rk5azus8jsXdjR8e33d5egofwdFVk7Zu26zJeBwQ7LU3LDB",
+        "j4RxMioxyQsFbcUQJC6sh11jPcK3vWqfG4vGin2fWasJcMzrr",
+        "j4SdgoBiMDL1aMuNfdUk5P4zzjoqmMJg3wZqQzLhkdRUyPEd7",
+        "j4UpsPBehB8My5HT5jG5F6cwDyRn7AABV61k8Z1aFTtcRMEMy",
+        "j4VtgDn3jPp5YidVVYnASMsUfE3E5dHqJc4gd6t6cDgdRGWAs",
+        "j4WAERyuNQPnEgeDPf6QzeRsPLpM9GG4K7VWoQhNsd5i5eUQ3",
+        "j4WdPywNvexfJH7wyfjRTVJ8dVT9mjDEdHoA57a2kCSngvtf2",
       ],
-      threshold: 2,
+      threshold: 4,
     },
   },
 } as const
