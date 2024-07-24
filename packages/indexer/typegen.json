@@ -1,16 +1,13 @@
 {
   "outDir": "src/joy/generated",
-  "specVersions": "./joy-metadata.jsonl",
+  "specVersions": "https://v2.archive.subsquid.io/metadata/joystream",
   "pallets": {
     "ArgoBridge": {
       "events": true,
       "calls": true
     },
     "System": {
-      "events": [
-        "ExtrinsicSuccess",
-        "ExtrinsicFailed"
-      ]
+      "events": ["ExtrinsicSuccess", "ExtrinsicFailed"]
     }
   }
 }

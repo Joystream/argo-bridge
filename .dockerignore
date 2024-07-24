@@ -1,4 +1,6 @@
 /.git
+.out
+.turbo
 /node_modules
 /lib
 /*Versions.json

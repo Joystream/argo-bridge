@@ -1,5 +1,5 @@
-module.exports = class Data1719482513442 {
-    name = 'Data1719482513442'
+module.exports = class Data1721823789378 {
+    name = 'Data1721823789378'
 
     async up(db) {
         await db.query(`CREATE TABLE "bridge_transfer" ("id" character varying NOT NULL, "amount" numeric NOT NULL, "status" character varying(15) NOT NULL, "type" character varying(10) NOT NULL, "fee_paid" numeric NOT NULL, "source_chain_id" integer NOT NULL, "source_transfer_id" numeric NOT NULL, "source_account" text NOT NULL, "dest_chain_id" integer NOT NULL, "dest_account" text NOT NULL, "created_at_block" integer NOT NULL, "created_at_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "created_tx_hash" text NOT NULL, "completed_at_block" integer, "completed_at_timestamp" TIMESTAMP WITH TIME ZONE, "completed_tx_hash" text, "reverted_at_block" integer, "reverted_at_timestamp" TIMESTAMP WITH TIME ZONE, "reverted_tx_hash" text, "revert_reason" text, "revert_account" text, "revert_amount" numeric, CONSTRAINT "PK_fab0727701656a3e6c320fca6e9" PRIMARY KEY ("id"))`)

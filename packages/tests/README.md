@@ -14,6 +14,7 @@ To run the tests, you need to meet the following requirements:
 - Have `bun` installed, it's used to run the tests.
 - Have `docker compose` installed, it's used to launch the Postgres DB for the indexer.
 - Have a Docker Joystream node image available locally. At the time of writing, the image used is `joystream/node:9bb9ac54b99d6988c5127046966916681dbb3ffa`. The image is available on Docker Hub, but only for `linux/amd64`. If you're running on a different platform, you may need to build the image from monorepo yourself. Image tag is defined in `src/setup/joy.ts`.
+- Have `@joystream/argo-core` package built (`npm run build:core` in monorepo root).
 
 Once you have all the requirements, you can run the tests with:
 ```bash
