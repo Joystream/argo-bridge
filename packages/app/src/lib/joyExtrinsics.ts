@@ -1,5 +1,5 @@
 import { ApiPromise } from '@polkadot/api'
-import { Address, pad } from 'viem'
+import { Hex, pad } from 'viem'
 
 export async function buildRequestTransferExtrinsic(
   destChainId: number,
@@ -7,10 +7,7 @@ export async function buildRequestTransferExtrinsic(
   amount: bigint
 ) {
   return async (api: ApiPromise) => {
-    const encodedDestAccount = api.createType(
-      'Bytes',
-      pad(destAccount as Address)
-    )
+    const encodedDestAccount = api.createType('Bytes', pad(destAccount as Hex))
     const remoteAccount = api.createType('PalletArgoBridgeRemoteAccount', {
       account: encodedDestAccount,
       chain_id: destChainId,
