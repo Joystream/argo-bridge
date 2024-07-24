@@ -151,13 +151,17 @@ const getDescription = (calls: EvmGovernanceCall[]): string | undefined => {
         return
       }
 
-      if (firstCall.targetAddress === BRIDGE_ADDRESS.toLowerCase()) {
+      if (
+        firstCall.targetAddress.toLowerCase() === BRIDGE_ADDRESS.toLowerCase()
+      ) {
         if (firstCall.functionArgs?.[0] === OPERATOR_ROLE) {
           return 'Swap bridge operator'
         } else if (firstCall.functionArgs?.[0] === ADMIN_ROLE) {
           return 'Swap bridge admin'
         }
-      } else if (firstCall.targetAddress === TIMELOCK_ADDRESS.toLowerCase()) {
+      } else if (
+        firstCall.targetAddress.toLowerCase() === TIMELOCK_ADDRESS.toLowerCase()
+      ) {
         if (firstCall.functionArgs?.[0] === PROPOSER_ROLE) {
           return 'Swap timelock admin'
         }
