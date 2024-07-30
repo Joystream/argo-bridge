@@ -3,14 +3,29 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button, ButtonProps } from '@/components/ui/button'
 import { useJoyWallets } from '@/providers/joyWallet'
 import { toast } from 'sonner'
-import { cn } from '@/lib/utils'
+import { cn, truncateValue } from '@/lib/utils'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Card, CardHeader } from '@/components/ui/card'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import { useUser } from '@/providers/user/user.hooks'
+import { CopyIcon } from 'lucide-react'
 
 type JoyConnectButtonProps = {
   text?: string
@@ -29,77 +44,168 @@ export const JoyConnectButton: FC<JoyConnectButtonProps> = ({
     allWallets,
     walletStatus,
     wallet,
+    walletAccounts,
   } = useJoyWallets()
+
+  const { userJoyOperator, userJoyPauser } = useUser()
 
   const handleConnectWallet = async (walletId: string) => {
     try {
       const accounts = await connectToWallet(walletId)
-      toast.success(`Wallet connected with ${accounts?.length} accounts`)
+      if (!accounts || accounts.length === 0) {
+        toast.warning('Joystream wallet connected with no accounts')
+        return
+      }
+      toast.success(
+        `Joystream wallet connected with ${accounts.length} accounts`
+      )
     } catch (error) {
-      toast.error('Failed to connect wallet')
+      console.error(error)
+      toast.error('Joystream wallet connection failed')
     }
   }
 
   const handleDisconnectWallet = async () => {
     try {
       await disconnectWallet()
-      toast.success('Wallet disconnected')
+      toast.success('Joystream wallet disconnected')
     } catch (error) {
-      toast.error('Failed to disconnect wallet')
+      toast.error('Failed to disconnect Joystream wallet')
     }
   }
 
-  if (walletStatus === 'pending') {
-    return (
-      <Button disabled variant="outline">
-        Connecting...
-      </Button>
-    )
+  const getDescription = () => {
+    if (walletStatus === 'pending') {
+      return 'Connecting...'
+    }
+    if (walletStatus === 'connected') {
+      return `Connected to ${wallet?.metadata.title}`
+    }
+    return 'Not connected'
   }
 
-  if (walletStatus === 'connected') {
+  const getMainButton = () => {
+    if (walletStatus === 'pending') {
+      return (
+        <Button disabled variant="outline">
+          Connecting...
+        </Button>
+      )
+    }
+    if (walletStatus === 'connected') {
+      return (
+        <Button variant="outline" onClick={handleDisconnectWallet}>
+          Disconnect wallet
+        </Button>
+      )
+    }
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline">Joy wallet</Button>
+          <Button variant="outline">Connect wallet</Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>
-            Connected to {wallet?.metadata.title}
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleDisconnectWallet}>
-            Disconnect wallet
-          </DropdownMenuItem>
+        <DropdownMenuContent align="start">
+          {allWallets?.map((wallet) => (
+            <DropdownMenuItem
+              key={wallet.metadata.id}
+              onClick={() => handleConnectWallet(wallet.metadata.id)}
+            >
+              {wallet.type === 'WALLET_CONNECT'
+                ? 'WalletConnect'
+                : wallet.metadata.title}
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuContent>
       </DropdownMenu>
     )
   }
 
+  const getRoles = () => {
+    if (userJoyOperator || userJoyPauser) {
+      return (
+        <div className="flex flex-col gap-1 mb-2">
+          <h4 className="font-semibold">Roles:</h4>
+          <ul className="flex flex-col gap-1">
+            {userJoyOperator ? (
+              <li className="text-xs text-muted-foreground">
+                Operator - {truncateValue(userJoyOperator, 9)}
+              </li>
+            ) : null}
+            {userJoyPauser ? (
+              <li className="text-xs text-muted-foreground">
+                Pauser - {truncateValue(userJoyPauser, 9)}
+              </li>
+            ) : null}
+          </ul>
+        </div>
+      )
+    }
+  }
+
+  const copyAddress = (address: string) => {
+    navigator.clipboard.writeText(address)
+    toast.success('Address copied to clipboard')
+  }
+
+  const getAccounts = () => {
+    if (walletAccounts?.length) {
+      return (
+        <>
+          <h4 className="font-semibold mb-2">
+            Connected accounts ({walletAccounts?.length})
+          </h4>
+          <div className="flex flex-col gap-2">
+            {walletAccounts?.map((account) => (
+              <Card key={account.address}>
+                <CardHeader className="space-y-0 p-3 flex flex-row justify-between items-center">
+                  <div className="flex flex-col">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="font-medium w-fit">
+                          {truncateValue(account.address, 9)}
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>{account.address}</TooltipContent>
+                    </Tooltip>
+                    <span className="text-sm text-muted-foreground">
+                      {account.name}
+                    </span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="flex items-center gap-2"
+                    onClick={() => copyAddress(account.address)}
+                  >
+                    <CopyIcon className="w-5 h-5 text-muted-foreground" />
+                  </Button>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
+        </>
+      )
+    }
+  }
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant={variant || 'outline'}
-          className={cn(fullWidth && 'w-full')}
-        >
-          {text || 'JOY wallet'}
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline" className={cn(fullWidth && 'w-full')}>
+          Joy wallet
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Select wallet</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {allWallets?.map((wallet) => (
-          <DropdownMenuItem
-            key={wallet.metadata.id}
-            onClick={() => handleConnectWallet(wallet.metadata.id)}
-          >
-            {wallet.type === 'WALLET_CONNECT'
-              ? 'WalletConnect'
-              : wallet.metadata.title}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </DialogTrigger>
+      <DialogContent closeable className="max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Joystream wallet</DialogTitle>
+          <DialogDescription>{getDescription()}</DialogDescription>
+        </DialogHeader>
+        {getMainButton()}
+        <ScrollArea className="max-h-[70vh]">
+          {getRoles()}
+          {getAccounts()}
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
   )
 }

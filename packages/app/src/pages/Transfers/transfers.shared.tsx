@@ -58,7 +58,7 @@ export const transfersTableColumns = [
         .with(BridgeTransferStatus.Completed, () => 'Completed')
         .with(BridgeTransferStatus.Reverted, () => 'Reverted')
         .with(BridgeTransferStatus.MaybeCompleted, () => (
-          <span className="text-yellow-300">Unknown!</span>
+          <span className="text-destructive">Unknown!</span>
         ))
         .exhaustive()
     },
