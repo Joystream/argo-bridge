@@ -3,7 +3,7 @@ import { ethers } from "ethers"
 
 // Ignition doesn't let us access the parameters value directly, it's some kind of a future
 // But we need it to create calldata in cleanup phase so we hardcode it here
-export const HARDCODED_TIMELOCK_DELAY = 120n
+export const HARDCODED_TIMELOCK_DELAY = 60n
 
 const JoystreamDevelopmentEthModule = buildModule("JoystreamDevelopmentEth", (m) => {
   const deployer = m.getAccount(0)

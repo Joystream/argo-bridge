@@ -1,5 +1,5 @@
 {
-  "JoystreamEth#JoystreamERC20": "0xa2717A92FCE2Acb20F83AD9233709D2ce512752E",
-  "JoystreamEth#ArgoBridgeV1": "0xdb696e892681A86f421c136F317496DcB5Cb3Ace",
-  "JoystreamEth#TimelockController": "0xe070f47bf2849593f9745e448b2723C57B7E5292"
+  "JoystreamDevelopmentEth#JoystreamERC20": "0xCedCAE93F21a038d53e340B8f1043310441ed79d",
+  "JoystreamDevelopmentEth#ArgoBridgeV1": "0x6875B72D0F18a25Bd55487c2a444965efcc2Ef09",
+  "JoystreamDevelopmentEth#TimelockController": "0x53539bE3902E568A08439806388021D559B40C1b"
 }
