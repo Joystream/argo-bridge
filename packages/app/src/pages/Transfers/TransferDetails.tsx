@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useNavigate, useParams } from 'react-router-dom'
-import { formatEth, formatJoy } from '@/lib/utils'
+import { formatEth, formatJoy, truncateValue } from '@/lib/utils'
 import { NETWORKS_NAME_LOOKUP, statusFilterOptions } from './transfers.shared'
 import { Truncated } from '@/components/Truncated'
 import { BridgeTransferStatus, BridgeTransferType } from '@/gql/graphql'
@@ -15,13 +15,35 @@ import { Button } from '@/components/ui/button'
 import { JoyTxLink } from '@/components/JoyTxLink'
 import { EvmTxLink } from '@/components/EvmTxLink'
 import { useTransfersQuery } from '@/lib/hooks'
+import { usePendingOperatorCallsQuery } from '@/providers/safe/safe.hooks'
+import { useSafeStore } from '@/providers/safe/safe.store'
+import { BRIDGE_ADDRESS } from '@/config'
+import { encodeFunctionData } from 'viem'
+import { BridgeAbi } from '@joystream/argo-core'
+import { LinkBadge } from '@/components/LinkBadge'
 
 export const TransferDetails: FC = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { safeApiKit } = useSafeStore()
 
   const { data, isLoading } = useTransfersQuery()
   const transfer = data?.find((t) => t.id === id)
+
+  const { data: pendingCalls } = usePendingOperatorCallsQuery(safeApiKit)
+  const pendingBridgeCalls = pendingCalls?.results.filter(
+    (call) => call.to === BRIDGE_ADDRESS
+  )
+  const completeTransferCalldata =
+    transfer &&
+    encodeFunctionData({
+      abi: BridgeAbi,
+      functionName: 'completeTransferToEth',
+      args: [transfer.sourceTransferId, transfer.destAccount, transfer.amount],
+    })
+  const pendingApproval = pendingBridgeCalls?.find(
+    (call) => call.data === completeTransferCalldata
+  )
 
   const getContent = () => {
     if (isLoading) return <span>Loading...</span>
@@ -29,6 +51,22 @@ export const TransferDetails: FC = () => {
     const status = statusFilterOptions.find((o) => o.value === transfer.status)
     const sourceNetwork = NETWORKS_NAME_LOOKUP[transfer.sourceChainId]
     const destNetwork = NETWORKS_NAME_LOOKUP[transfer.destChainId]
+
+    const pendingRows = pendingApproval ? (
+      <>
+        <TransferDetailsRow
+          label="Safe TX"
+          value={
+            <LinkBadge
+              fullText={pendingApproval.safeTxHash}
+              label={truncateValue(pendingApproval.safeTxHash)}
+              href={`https://app.safe.global/transactions/tx?safe=basesep:${pendingApproval.safe}&id=${['multisig', pendingApproval.safe, pendingApproval.safeTxHash].join('_')}`}
+            />
+          }
+        />
+        <TransferDetailsRow label="Safe nonce" value={pendingApproval.nonce} />
+      </>
+    ) : null
 
     const completedRows =
       transfer.status === BridgeTransferStatus.Completed ? (
@@ -99,6 +137,7 @@ export const TransferDetails: FC = () => {
             )
           }
         />
+        {pendingRows}
         {completedRows}
       </>
     )

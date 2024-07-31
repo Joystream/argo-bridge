@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/table'
 import { DataTablePagination } from '@/components/DataTablePagination'
 import { BridgeTransfer } from '@/lib/transfer'
-import { transfersTableColumns } from './transfers.shared'
+import { toChainFilterOptions, transfersTableColumns } from './transfers.shared'
 import { FC, useMemo, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -87,6 +87,8 @@ export const TransfersTable: FC<TransfersTableProps> = ({}) => {
   const tableState = table.getState()
   const statusColumn = table.getColumn('status')
   const statusFilterValue = statusColumn?.getFilterValue()
+  const destChainIdColumn = table.getColumn('destChainId')
+  const toChainFilterValue = destChainIdColumn?.getFilterValue()
 
   return (
     <div>
@@ -127,10 +129,47 @@ export const TransfersTable: FC<TransfersTableProps> = ({}) => {
               <DropdownMenuLabel>Filter by status</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {statusFilterOptions.map((option) => (
-                <StatusDropdownItem
+                <FilterDropdownItem
                   key={option.value}
                   column={statusColumn}
-                  status={option.value}
+                  value={option.value}
+                  displayText={option.label}
+                />
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="border-dashed h-8 text-xs"
+                size="sm"
+              >
+                <FilterIcon className="mr-2 h-4 w-4" />
+                To chain
+                {toChainFilterValue ? (
+                  <>
+                    <span className="mx-2 h-4 w-[1px] bg-primary/20" />
+                    <span className="px-1 py-0.5 rounded bg-primary/20">
+                      {
+                        toChainFilterOptions.find(
+                          (option) => option.value === toChainFilterValue
+                        )?.label
+                      }
+                    </span>
+                  </>
+                ) : null}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuLabel>Filter by destination chain</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {toChainFilterOptions.map((option) => (
+                <FilterDropdownItem
+                  key={option.value}
+                  column={destChainIdColumn}
+                  value={option.value}
                   displayText={option.label}
                 />
               ))}
@@ -219,16 +258,16 @@ export const TransfersTable: FC<TransfersTableProps> = ({}) => {
   )
 }
 
-const StatusDropdownItem: FC<{
+const FilterDropdownItem: FC<{
   column: Column<BridgeTransfer> | undefined
-  status: BridgeTransferStatus
+  value: unknown
   displayText: string
-}> = ({ column, status, displayText }) => {
+}> = ({ column, value, displayText }) => {
   return (
     <DropdownMenuCheckboxItem
-      checked={column?.getFilterValue() === status}
+      checked={column?.getFilterValue() === value}
       onCheckedChange={(checked) => {
-        column?.setFilterValue(checked ? status : undefined)
+        column?.setFilterValue(checked ? value : undefined)
       }}
     >
       {displayText}

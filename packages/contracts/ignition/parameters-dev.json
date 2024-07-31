@@ -1,0 +1,10 @@
+{
+  "JoystreamDevelopmentEth": {
+    "timelockDelay": 60,
+    "timelockProposer": "0x883f4ae943116A5724f79B142Cd8aF1d6205EC5e",
+    "bridgeOperator": "0x82B617A3D6b049c83292Db6A4B0eABD38072f33c",
+    "bridgeFee": 1500000000000000,
+    "mintingLimitPeriodLengthBlocks": 1000,
+    "mintingLimitPerPeriod": 100000000000000
+  }
+}

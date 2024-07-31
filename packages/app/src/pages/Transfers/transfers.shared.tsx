@@ -15,6 +15,7 @@ import { NavLink } from 'react-router-dom'
 import { Truncated } from '@/components/Truncated'
 import { TransferToJoyActions } from './TransferToJoyActions'
 import { TransferToEvmActions } from './TransferToEvmActions'
+import { EVM_NETWORK, JOY_NETWORK } from '@/config'
 
 const columnHelper = createColumnHelper<BridgeTransfer>()
 
@@ -45,6 +46,17 @@ export const statusFilterOptions = [
   },
 ]
 
+export const toChainFilterOptions = [
+  {
+    value: EVM_NETWORK.chainId,
+    label: 'Base Sepolia',
+  },
+  {
+    value: JOY_NETWORK.chainId,
+    label: 'Petra testnet',
+  },
+]
+
 export const transfersTableColumns = [
   columnHelper.accessor('id', {
     header: 'ID',
@@ -57,10 +69,7 @@ export const transfersTableColumns = [
         .with(BridgeTransferStatus.Requested, () => 'Requested')
         .with(BridgeTransferStatus.Completed, () => 'Completed')
         .with(BridgeTransferStatus.Reverted, () => 'Reverted')
-        .with(BridgeTransferStatus.MaybeCompleted, () => (
-          <span className="text-destructive">Unknown!</span>
-        ))
-        .exhaustive()
+        .otherwise(() => <span className="text-destructive">Unknown!</span>)
     },
   }),
   columnHelper.accessor('sourceChainId', {

@@ -13,11 +13,14 @@ import {
   OperationType,
 } from '@safe-global/safe-core-sdk-types'
 import { BridgeTransferStatus } from '@/gql/graphql'
-import { TableCell } from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import { Tooltip, TooltipTrigger } from '@/components/ui/tooltip'
 import { useTransfersQuery } from '@/lib/hooks'
+import { buildSignatureBytes } from '@safe-global/protocol-kit'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
   transfer,
@@ -43,9 +46,10 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
     args: [transfer.sourceTransferId, transfer.destAccount, transfer.amount],
   })
 
-  const approvals = pendingBridgeCalls.find(
+  const pendingApproval = pendingBridgeCalls.find(
     (call) => call.data === completeTransferCalldata
-  )?.confirmations
+  )
+  const approvals = pendingApproval?.confirmations
   const approvalsCount = approvals?.length ?? 0
 
   const approveTransfer = async () => {
@@ -70,26 +74,38 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
     }
 
     const doApprove = async () => {
-      const safeTransactionData: MetaTransactionData = {
-        to: BRIDGE_ADDRESS,
-        value: '0',
-        operation: OperationType.Call,
-        data: completeTransferCalldata,
+      if (pendingApproval) {
+        const signature = await operatorSafe.signHash(
+          pendingApproval.safeTxHash
+        )
+        await safeApiKit.confirmTransaction(
+          pendingApproval.safeTxHash,
+          buildSignatureBytes([signature])
+        )
+      } else {
+        const safeTransactionData: MetaTransactionData = {
+          to: BRIDGE_ADDRESS,
+          value: '0',
+          operation: OperationType.Call,
+          data: completeTransferCalldata,
+        }
+        const safeTransaction = await operatorSafe.createTransaction({
+          transactions: [safeTransactionData],
+          options: { nonce: await safeApiKit.getNextNonce(safeAddress) },
+        })
+
+        const safeTxHash =
+          await operatorSafe.getTransactionHash(safeTransaction)
+        const signature = await operatorSafe.signHash(safeTxHash)
+
+        await safeApiKit.proposeTransaction({
+          safeAddress,
+          safeTransactionData: safeTransaction.data,
+          safeTxHash,
+          senderAddress: userEvmOperator,
+          senderSignature: signature.data,
+        })
       }
-      const safeTransaction = await operatorSafe.createTransaction({
-        transactions: [safeTransactionData],
-      })
-      const safeTxHash = await operatorSafe.getTransactionHash(safeTransaction)
-      const signature = await operatorSafe.signHash(safeTxHash)
-
-      await safeApiKit.proposeTransaction({
-        safeAddress,
-        safeTransactionData: safeTransaction.data,
-        safeTxHash,
-        senderAddress: userEvmOperator,
-        senderSignature: signature.data,
-      })
-
       refetch()
     }
 
@@ -99,17 +115,21 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
   const completeTransfer = async () => {
     if (!operatorSafe) return
 
-    const pendingTx = pendingBridgeCalls.find(
-      (call) => call.data === completeTransferCalldata
-    )
-
-    if (!pendingTx) {
+    if (!pendingApproval) {
       toast.error('Transaction not found')
       return
     }
 
+    const currentNonce = await operatorSafe.getNonce()
+    if (currentNonce !== pendingApproval.nonce) {
+      toast.error(
+        `This transaction must be executed after nonce ${pendingApproval.nonce - 1}`
+      )
+      return
+    }
+
     const txPromise = operatorSafe
-      .executeTransaction(pendingTx)
+      .executeTransaction(pendingApproval)
       .then((executeTxResponse) =>
         // @ts-ignore
         executeTxResponse.transactionResponse?.wait?.()
@@ -123,8 +143,23 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
   if (transfer.status !== BridgeTransferStatus.Requested) return null
 
   const approvalsText = `${approvalsCount}/${threshold}`
+  const hasAlreadyApproved = approvals?.some((a) => a.owner === userEvmOperator)
 
   if (approvalsCount >= threshold) {
+    if (!userEvmOperator) {
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span>
+              <DropdownMenuItem disabled>
+                Complete ({approvalsText})
+              </DropdownMenuItem>
+            </span>
+          </TooltipTrigger>
+          <TooltipContent>You're not an EthOp member.</TooltipContent>
+        </Tooltip>
+      )
+    }
     return (
       <DropdownMenuItem onClick={completeTransfer} disabled={!userEvmOperator}>
         Complete ({approvalsText})
@@ -132,11 +167,27 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
     )
   }
 
-  const canApprove =
-    userEvmOperator && !approvals?.some((a) => a.owner === userEvmOperator)
+  if (!userEvmOperator || hasAlreadyApproved) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span>
+            <DropdownMenuItem disabled>
+              Approve ({approvalsText})
+            </DropdownMenuItem>
+          </span>
+        </TooltipTrigger>
+        <TooltipContent>
+          {hasAlreadyApproved
+            ? 'You already approved this transfer'
+            : "You're not an EthOp member"}
+        </TooltipContent>
+      </Tooltip>
+    )
+  }
 
   return (
-    <DropdownMenuItem onClick={approveTransfer} disabled={!canApprove}>
+    <DropdownMenuItem onClick={approveTransfer}>
       Approve ({approvalsText})
     </DropdownMenuItem>
   )

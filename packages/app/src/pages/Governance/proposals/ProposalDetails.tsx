@@ -14,8 +14,9 @@ import { ProposalStatusCell } from './proposals.shared'
 import { Truncated } from '@/components/Truncated'
 import { EvmGovernanceCall } from '@/lib/proposal'
 import { AddressLink } from '@/components/AddressLink'
-import { formatEth } from '@/lib/utils'
+import { formatEth, truncateValue } from '@/lib/utils'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { LinkBadge } from '@/components/LinkBadge'
 
 export const ProposalDetails: FC = () => {
   const { id } = useParams()
@@ -27,6 +28,26 @@ export const ProposalDetails: FC = () => {
   const getContent = () => {
     if (isLoading) return <span>Loading...</span>
     if (!proposal) return <span>Proposal not found</span>
+
+    const proposedRows =
+      proposal.status.type === 'proposed' ? (
+        <>
+          <ProposalDetailsRow
+            label="Safe tx"
+            value={
+              <LinkBadge
+                fullText={proposal.status.safeTx.safeTxHash}
+                label={truncateValue(proposal.status.safeTx.safeTxHash)}
+                href={`https://app.safe.global/transactions/tx?safe=basesep:${proposal.status.safeTx.safe}&id=${['multisig', proposal.status.safeTx.safe, proposal.status.safeTx.safeTxHash].join('_')}`}
+              />
+            }
+          />
+          <ProposalDetailsRow
+            label="Safe nonce"
+            value={proposal.status.safeTx.nonce}
+          />
+        </>
+      ) : null
 
     const gracingRows =
       proposal.status.type === 'gracing' ||
@@ -88,6 +109,7 @@ export const ProposalDetails: FC = () => {
           value={<ProposalStatusCell status={proposal.status} />}
         />
         <ProposalDetailsRow label="Description" value={proposal.description} />
+        {proposedRows}
         {gracingRows}
         {executedRows}
         {cancelledRows}

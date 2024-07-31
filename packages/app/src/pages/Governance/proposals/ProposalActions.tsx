@@ -10,6 +10,11 @@ import { useEvmProposalsQuery } from '@/lib/hooks'
 import { TimelockAbi } from '@joystream/argo-core'
 import { TIMELOCK_ADDRESS } from '@/config'
 import { useWriteContract } from 'wagmi'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 type ProposalActionsProps = {
   proposal: EvmGovernanceProposal
@@ -69,6 +74,14 @@ export const ProposalActions: FC<ProposalActionsProps> = ({ proposal }) => {
       return
     }
 
+    const currentNonce = await adminSafe.getNonce()
+    if (currentNonce !== status.safeTx.nonce) {
+      toast.error(
+        `Transaction (nonce ${status.safeTx.nonce}) is not the next in queue. Next nonce is ${currentNonce}.`
+      )
+      return
+    }
+
     const doExecute = async () => {
       const response = await adminSafe.executeTransaction(status.safeTx)
       // @ts-ignore
@@ -121,9 +134,21 @@ export const ProposalActions: FC<ProposalActionsProps> = ({ proposal }) => {
 
   if (proposal.status.type === 'proposed') {
     const { approvals, threshold } = proposal.status
-    const canApprove = userEvmAdmin && !approvals.includes(userEvmAdmin)
+    const hasAlreadyApproved = userEvmAdmin && approvals.includes(userEvmAdmin)
 
     if (approvals.length >= threshold) {
+      if (!userEvmAdmin) {
+        return (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span>
+                <DropdownMenuItem disabled>Finish approval</DropdownMenuItem>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>You're not an EthAdmin member.</TooltipContent>
+          </Tooltip>
+        )
+      }
       return (
         <DropdownMenuItem onClick={handleFinishApproval}>
           Finish approval
@@ -131,8 +156,27 @@ export const ProposalActions: FC<ProposalActionsProps> = ({ proposal }) => {
       )
     }
 
+    if (!userEvmAdmin || hasAlreadyApproved) {
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span>
+              <DropdownMenuItem disabled>
+                Approve ({approvals.length}/{threshold})
+              </DropdownMenuItem>
+            </span>
+          </TooltipTrigger>
+          <TooltipContent>
+            {hasAlreadyApproved
+              ? 'You already approved this proposal'
+              : "You're not an EthAdmin member"}
+          </TooltipContent>
+        </Tooltip>
+      )
+    }
+
     return (
-      <DropdownMenuItem disabled={!canApprove} onClick={handleConfirm}>
+      <DropdownMenuItem onClick={handleConfirm}>
         Approve ({approvals.length}/{threshold})
       </DropdownMenuItem>
     )

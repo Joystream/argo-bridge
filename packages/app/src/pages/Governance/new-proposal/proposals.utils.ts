@@ -87,6 +87,9 @@ export const useProposeCall = () => {
         }
         const safeTransaction = await adminSafe.createTransaction({
           transactions: [safeTransactionData],
+          options: {
+            nonce: await safeApiKit.getNextNonce(safeAddress),
+          },
         })
         const safeTxHash = await adminSafe.getTransactionHash(safeTransaction)
         const signature = await adminSafe.signHash(safeTxHash)

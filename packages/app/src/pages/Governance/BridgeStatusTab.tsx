@@ -182,7 +182,7 @@ export const BridgeStatusTab: FC = () => {
     } else {
       return (
         <span className="text-destructive">
-          Thawn - ends at block ${joyConfig.thawnEndsAtBlock}
+          Thawn - ends at block {joyConfig.thawnEndsAtBlock}
         </span>
       )
     }

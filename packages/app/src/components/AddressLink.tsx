@@ -1,15 +1,9 @@
 import { FC } from 'react'
-import { Badge } from '@/components/ui/badge'
 import { EVM_NETWORK, JOY_NETWORK } from '@/config'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 import { useChainId, useConfig } from 'wagmi'
 import { truncateValue } from '@/lib/utils'
 import { isAddress } from 'viem'
-import { ExternalLinkIcon } from 'lucide-react'
+import { LinkBadge } from '@/components/LinkBadge'
 
 const knownAddresses = {
   [EVM_NETWORK.contracts.timelock.toLowerCase()]: 'TimelockController',
@@ -36,17 +30,5 @@ export const AddressLink: FC<{ address: string }> = ({ address }) => {
 
   const label = knownName || truncateValue(address)
 
-  return (
-    <Tooltip>
-      <TooltipTrigger>
-        <a href={getUrl()} target="_blank" rel="noopener noreferrer">
-          <Badge variant="outline">
-            {label}
-            <ExternalLinkIcon className="ml-1 w-3 h-3" />
-          </Badge>
-        </a>
-      </TooltipTrigger>
-      <TooltipContent>{address}</TooltipContent>
-    </Tooltip>
-  )
+  return <LinkBadge href={getUrl()} fullText={address} label={label} />
 }
