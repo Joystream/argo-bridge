@@ -1,4 +1,11 @@
-import { FC, PropsWithChildren, useCallback, useEffect, useRef } from 'react'
+import {
+  FC,
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { useJoyWalletStore } from '@/providers/joyWallet/joyWallet.store'
 import { submitExtrinsic } from '@joystream/argo-core'
 import { useJoyApiContext } from '@/providers/joyApi'
@@ -13,6 +20,7 @@ import { isHex } from 'viem'
 export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
   const { api: joyApi } = useJoyApiContext()
   const publicClient = usePublicClient()
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const selectedJoyAccountRef = useRef<Account | null>(null)
   useEffect(() => {
@@ -24,6 +32,13 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const addTxPromise = useCallback(
     (txPromise: Promise<unknown>, onSuccess?: () => void) => {
+      if (isSubmitting) {
+        toast.error('Please wait for previous transaction to finish')
+        return
+      }
+
+      setIsSubmitting(true)
+
       const finalPromise = txPromise
         .then((result) => {
           if (isHex(result) && publicClient) {
@@ -32,13 +47,16 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
             })
           }
         })
-        // don't await handler
         .then(() => {
+          // don't return onSuccess promise
           onSuccess?.()
         })
         .catch((e) => {
           console.error('Error sending transaction:', e)
           throw e
+        })
+        .finally(() => {
+          setIsSubmitting(false)
         })
       toast.promise(finalPromise, {
         loading: 'Sending transaction...',
@@ -47,7 +65,7 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
       })
       return finalPromise
     },
-    []
+    [isSubmitting]
   )
 
   const submitJoyTx = useCallback<SubmitJoyTx>(
@@ -95,6 +113,7 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
   const contextValue = {
     addTxPromise,
     submitJoyTx: joyApi ? submitJoyTx : undefined,
+    isSubmittingTx: isSubmitting,
   }
 
   return (

@@ -29,7 +29,7 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
   const { safeApiKit, operatorSafe } = useSafeStore()
   const { data, refetch } = usePendingOperatorCallsQuery(safeApiKit)
   const { refetch: refetchTransfers } = useTransfersQuery()
-  const { addTxPromise } = useTransaction()
+  const { addTxPromise, isSubmittingTx } = useTransaction()
   const { userEvmOperator } = useUser()
 
   if (!data) {
@@ -167,7 +167,7 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
     )
   }
 
-  if (!userEvmOperator || hasAlreadyApproved) {
+  if (!userEvmOperator || hasAlreadyApproved || isSubmittingTx) {
     return (
       <Tooltip>
         <TooltipTrigger asChild>
@@ -180,7 +180,9 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
         <TooltipContent>
           {hasAlreadyApproved
             ? 'You already approved this transfer'
-            : "You're not an EthOp member"}
+            : isSubmittingTx
+              ? 'Please wait for previous transaction to finish'
+              : "You're not an EthOp member"}
         </TooltipContent>
       </Tooltip>
     )

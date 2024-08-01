@@ -15,5 +15,6 @@ export type SubmitJoyTx = (
 export type TransactionContextType = {
   addTxPromise?: (txPromise: Promise<unknown>, onSuccess?: () => void) => void
   submitJoyTx?: SubmitJoyTx
+  isSubmittingTx?: boolean
 }
 export const TransactionContext = createContext<TransactionContextType>({})

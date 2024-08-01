@@ -24,7 +24,7 @@ export const ProposalActions: FC<ProposalActionsProps> = ({ proposal }) => {
   const { refetch } = useEvmProposalsQuery()
   const { userEvmAdmin, evmAddresses } = useUser()
   const { safeApiKit, adminSafe } = useSafeStore()
-  const { addTxPromise } = useTransaction()
+  const { addTxPromise, isSubmittingTx } = useTransaction()
   const { writeContractAsync } = useWriteContract()
 
   const handleConfirm = async () => {
@@ -156,7 +156,7 @@ export const ProposalActions: FC<ProposalActionsProps> = ({ proposal }) => {
       )
     }
 
-    if (!userEvmAdmin || hasAlreadyApproved) {
+    if (!userEvmAdmin || hasAlreadyApproved || isSubmittingTx) {
       return (
         <Tooltip>
           <TooltipTrigger asChild>
@@ -169,7 +169,9 @@ export const ProposalActions: FC<ProposalActionsProps> = ({ proposal }) => {
           <TooltipContent>
             {hasAlreadyApproved
               ? 'You already approved this proposal'
-              : "You're not an EthAdmin member"}
+              : isSubmittingTx
+                ? 'Please wait for previous transaction to finish'
+                : "You're not an EthAdmin member"}
           </TooltipContent>
         </Tooltip>
       )
@@ -186,7 +188,7 @@ export const ProposalActions: FC<ProposalActionsProps> = ({ proposal }) => {
     return (
       <DropdownMenuItem
         onClick={handleExecute}
-        disabled={!evmAddresses?.length}
+        disabled={!evmAddresses?.length || isSubmittingTx}
       >
         Execute
       </DropdownMenuItem>
