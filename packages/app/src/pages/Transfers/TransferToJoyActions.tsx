@@ -127,12 +127,6 @@ export const TransferToJoyActions: FC<{ transfer: BridgeTransfer }> = ({
   const canApprove =
     userJoyOperator && !joyCallMultisigInfo.approvals.includes(userJoyOperator)
 
-  console.log({
-    canApprove,
-    userJoyOperator,
-    joyCallMultisigInfo,
-  })
-
   if (joyCallMultisigInfo.approvals.length >= threshold - 1) {
     return (
       <DropdownMenuItem
