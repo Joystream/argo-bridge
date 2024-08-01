@@ -33,7 +33,7 @@ export const NewTransferSummary: FC<NewTransferSummaryProps> = ({
   const { data: configsData } = useBridgeConfigs()
   const joyConfig = configsData?.joy
   const evmConfig = configsData?.evm
-  const { submitJoyTx, addTxPromise } = useTransaction()
+  const { submitJoyTx, addTxPromise, isSubmittingTx } = useTransaction()
 
   const { writeContractAsync } = useWriteContract()
 
@@ -130,10 +130,12 @@ export const NewTransferSummary: FC<NewTransferSummaryProps> = ({
         <SummaryField label="Estimated arrival" value="Up to 3 days" />
       </CardContent>
       <CardFooter className="justify-between">
-        <Button variant="ghost" onClick={onGoBack}>
+        <Button variant="ghost" onClick={onGoBack} disabled={isSubmittingTx}>
           Go back
         </Button>
-        <Button onClick={handleSubmit}>Transfer</Button>
+        <Button onClick={handleSubmit} disabled={isSubmittingTx}>
+          {isSubmittingTx ? 'Sending...' : 'Transfer'}
+        </Button>
       </CardFooter>
     </>
   )

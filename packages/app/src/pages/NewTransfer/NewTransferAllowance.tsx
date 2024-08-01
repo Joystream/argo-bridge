@@ -19,7 +19,7 @@ export const NewTransferAllowance: FC<NewTransferAllowanceProps> = ({
   onGoBack,
   onSuccess,
 }) => {
-  const { addTxPromise } = useTransaction()
+  const { addTxPromise, isSubmittingTx } = useTransaction()
   const { writeContractAsync } = useWriteContract()
 
   const handleApprove = async () => {
@@ -48,7 +48,9 @@ export const NewTransferAllowance: FC<NewTransferAllowanceProps> = ({
       <Button variant="ghost" onClick={onGoBack}>
         Go back
       </Button>
-      <Button onClick={handleApprove}>Approve</Button>
+      <Button onClick={handleApprove} disabled={isSubmittingTx}>
+        {isSubmittingTx ? 'Approving...' : 'Approve'}
+      </Button>
     </CardFooter>
   )
 }
