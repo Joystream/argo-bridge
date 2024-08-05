@@ -30,7 +30,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { BridgeTransferStatus } from '@/gql/graphql'
 import { statusFilterOptions } from '@/pages/Transfers/transfers.shared'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
@@ -148,7 +147,7 @@ export const TransfersTable: FC<TransfersTableProps> = ({}) => {
               >
                 <FilterIcon className="mr-2 h-4 w-4" />
                 To chain
-                {toChainFilterValue ? (
+                {toChainFilterValue != null ? (
                   <>
                     <span className="mx-2 h-4 w-[1px] bg-primary/20" />
                     <span className="px-1 py-0.5 rounded bg-primary/20">

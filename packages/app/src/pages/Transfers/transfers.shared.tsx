@@ -91,6 +91,10 @@ export const transfersTableColumns = [
       const chainId = getValue()
       return NETWORKS_NAME_LOOKUP[chainId] || chainId
     },
+    filterFn: (row, columnId, filterValue) => {
+      const chainId = row.getValue(columnId)
+      return filterValue === chainId
+    },
   }),
   columnHelper.accessor('destAccount', {
     header: 'To address',
