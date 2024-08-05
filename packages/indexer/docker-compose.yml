@@ -14,6 +14,7 @@ services:
   indexer-eth:
     image: joystream/argo-indexer
     container_name: argo-indexer-eth
+    restart: unless-stopped
     env_file:
       - .env
     environment:
@@ -26,6 +27,7 @@ services:
   indexer-joy:
     image: joystream/argo-indexer
     container_name: argo-indexer-joy
+    restart: unless-stopped
     env_file:
       - .env
     environment:
@@ -38,6 +40,7 @@ services:
   graphql:
     image: joystream/argo-indexer
     container_name: argo-graphql
+    restart: unless-stopped
     env_file:
       - .env
     environment:
