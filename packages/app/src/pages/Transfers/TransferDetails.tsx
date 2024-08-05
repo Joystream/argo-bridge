@@ -31,19 +31,25 @@ export const TransferDetails: FC = () => {
   const transfer = data?.find((t) => t.id === id)
 
   const { data: pendingCalls } = usePendingOperatorCallsQuery(safeApiKit)
-  const pendingBridgeCalls = pendingCalls?.results.filter(
-    (call) => call.to === BRIDGE_ADDRESS
-  )
-  const completeTransferCalldata =
-    transfer &&
-    encodeFunctionData({
+  const getPendingEvmApproval = () => {
+    if (
+      !transfer ||
+      transfer.type !== BridgeTransferType.JoyToEvm ||
+      !pendingCalls
+    ) {
+      return
+    }
+    const bridgeCalls = pendingCalls.results.filter(
+      (call) => call.to === BRIDGE_ADDRESS
+    )
+    const completeTransferCalldata = encodeFunctionData({
       abi: BridgeAbi,
       functionName: 'completeTransferToEth',
       args: [transfer.sourceTransferId, transfer.destAccount, transfer.amount],
     })
-  const pendingApproval = pendingBridgeCalls?.find(
-    (call) => call.data === completeTransferCalldata
-  )
+    return bridgeCalls.find((call) => call.data === completeTransferCalldata)
+  }
+  const pendingEvmApproval = getPendingEvmApproval()
 
   const getContent = () => {
     if (isLoading) return <span>Loading...</span>
@@ -52,19 +58,22 @@ export const TransferDetails: FC = () => {
     const sourceNetwork = NETWORKS_NAME_LOOKUP[transfer.sourceChainId]
     const destNetwork = NETWORKS_NAME_LOOKUP[transfer.destChainId]
 
-    const pendingRows = pendingApproval ? (
+    const pendingRows = pendingEvmApproval ? (
       <>
         <TransferDetailsRow
           label="Safe TX"
           value={
             <LinkBadge
-              fullText={pendingApproval.safeTxHash}
-              label={truncateValue(pendingApproval.safeTxHash)}
-              href={`https://app.safe.global/transactions/tx?safe=basesep:${pendingApproval.safe}&id=${['multisig', pendingApproval.safe, pendingApproval.safeTxHash].join('_')}`}
+              fullText={pendingEvmApproval.safeTxHash}
+              label={truncateValue(pendingEvmApproval.safeTxHash)}
+              href={`https://app.safe.global/transactions/tx?safe=basesep:${pendingEvmApproval.safe}&id=${['multisig', pendingEvmApproval.safe, pendingEvmApproval.safeTxHash].join('_')}`}
             />
           }
         />
-        <TransferDetailsRow label="Safe nonce" value={pendingApproval.nonce} />
+        <TransferDetailsRow
+          label="Safe nonce"
+          value={pendingEvmApproval.nonce}
+        />
       </>
     ) : null
 

@@ -33,7 +33,7 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
   const { userEvmOperator } = useUser()
 
   if (!data) {
-    return null
+    return <DropdownMenuItem disabled>Loading...</DropdownMenuItem>
   }
 
   const pendingBridgeCalls = data.results.filter(

@@ -116,11 +116,12 @@ export const TransferToJoyActions: FC<{ transfer: BridgeTransfer }> = ({
     }
   }
 
-  if (
-    transfer.status !== BridgeTransferStatus.Requested ||
-    joyCallMultisigInfo == null
-  ) {
+  if (transfer.status !== BridgeTransferStatus.Requested) {
     return null
+  }
+
+  if (joyCallMultisigInfo == null) {
+    return <DropdownMenuItem disabled>Loading...</DropdownMenuItem>
   }
 
   const approvalsText = `${joyCallMultisigInfo?.approvals.length ?? '?'}/${threshold}`
