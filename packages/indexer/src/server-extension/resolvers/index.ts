@@ -27,7 +27,7 @@ export class ProcessorStatusResolver {
         `
         SELECT f.height AS "finalizedHeight",
             COALESCE(h.height, f.height) AS height
-        FROM squid_processor.status AS f
+        FROM eth_processor.status AS f
         FULL JOIN
             (SELECT *
                 FROM eth_processor.hot_block
@@ -51,10 +51,10 @@ export class ProcessorStatusResolver {
         `
         SELECT f.height AS "finalizedHeight",
             COALESCE(h.height, f.height) AS height
-        FROM squid_processor.status AS f
+        FROM joy_processor.status AS f
         FULL JOIN
             (SELECT *
-                FROM eth_processor.hot_block
+                FROM joy_processor.hot_block
                 ORDER BY height DESC
                 LIMIT 1) AS h ON TRUE
         WHERE f.id = 0
