@@ -135,6 +135,7 @@ contract ArgoBridgeV1 is AccessControl {
     ) {
         _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
 
+        require(joystreamErc20Address != address(0), "Joystream ERC20 address is the zero address");
         joystreamErc20 = JoystreamERC20(joystreamErc20Address);
 
         _setBridgeFee(initialBridgeFee);
