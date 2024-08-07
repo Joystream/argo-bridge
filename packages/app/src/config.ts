@@ -17,6 +17,9 @@ export const WC_METADATA = {
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
+export const EVM_OUT_OF_SYNC_THRESHOLD = 9
+export const JOY_OUT_OF_SYNC_THRESHOLD = 3
+
 export const EVM_NETWORK = EVM_NETWORKS.baseSepolia
 export const JOY_NETWORK = JOY_NETWORKS.petra
 export const BRIDGE_ADDRESS = EVM_NETWORK.contracts.bridge

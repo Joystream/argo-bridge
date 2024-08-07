@@ -3,6 +3,7 @@ import { TransfersTable } from './TransfersTable'
 import { Outlet } from 'react-router-dom'
 import { useSafeStore } from '@/providers/safe/safe.store'
 import { usePendingOperatorCallsQuery } from '@/providers/safe/safe.hooks'
+import { ProcessorStatusInfo } from '@/components/ProcessorStatusInfo'
 
 export const TransfersPage: FC = () => {
   const { safeApiKit } = useSafeStore()
@@ -11,6 +12,7 @@ export const TransfersPage: FC = () => {
 
   return (
     <div>
+      <ProcessorStatusInfo title="Transfers" />
       <TransfersTable />
       <Outlet />
     </div>
