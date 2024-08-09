@@ -127,15 +127,21 @@ const _EVM_NETWORKS = {
       threshold: 5,
     },
   },
-  // base: {
-  //   name: "Base",
-  //   chainId: 8453,
-  //   archiveName: "base",
-  //   rpc: {
-  //     url: "https://rpc.ankr.com/base/abc1ed712dcea03c2de5b71da89b9ad17341eea8d87a65dbff6cd668e7e65bf8",
-  //     rateLimit: 30,
-  //   },
-  // },
+  base: {
+    name: "Base",
+    chainId: 8453,
+    archiveName: "base",
+    rpc: {
+      url: "https://rpc.ankr.com/base/abc1ed712dcea03c2de5b71da89b9ad17341eea8d87a65dbff6cd668e7e65bf8",
+      rateLimit: 30,
+    },
+    startBlock: 18204000,
+    contracts: {
+      erc20: "0x8761155c814c807cD3CcD15B256D69D3C10f198C",
+      bridge: "0x459DD4088C359bBcA3939f8C59d94Cb938D80cb0",
+      timelock: "0x2011c60A4A082E9924EA2F64C6fd1830cb6C87EF",
+    },
+  },
   hardhat: {
     name: "Hardhat",
     chainId: 31337,
