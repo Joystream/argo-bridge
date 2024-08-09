@@ -127,6 +127,15 @@ const _EVM_NETWORKS = {
       threshold: 5,
     },
   },
+  // base: {
+  //   name: "Base",
+  //   chainId: 8453,
+  //   archiveName: "base",
+  //   rpc: {
+  //     url: "https://rpc.ankr.com/base/abc1ed712dcea03c2de5b71da89b9ad17341eea8d87a65dbff6cd668e7e65bf8",
+  //     rateLimit: 30,
+  //   },
+  // },
   hardhat: {
     name: "Hardhat",
     chainId: 31337,
