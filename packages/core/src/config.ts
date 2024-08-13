@@ -161,6 +161,7 @@ const _EVM_NETWORKS = {
 const _JOY_NETWORKS = {
   mainnet: {
     name: "Joystream",
+    archiveName: "joystream",
     chainId: 0,
     rpc: {
       url: "wss://rpc.joystream.org",
