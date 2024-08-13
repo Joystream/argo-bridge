@@ -1,5 +1,6 @@
 import { events } from "./generated"
 import { JOY_NETWORKS } from "@joystream/argo-core"
+import { lookupArchive } from "@subsquid/archive-registry"
 import {
   BlockHeader,
   DataHandlerContext,
@@ -72,6 +73,10 @@ export const processor = new SubstrateBatchProcessor()
     name: [events.argoBridge.outboundTransferReverted.name],
     extrinsic: true,
   })
+
+if (NETWORK.archiveName) {
+  processor.setGateway(lookupArchive(NETWORK.archiveName))
+}
 
 if (NETWORK.startBlock) {
   processor.setBlockRange({
