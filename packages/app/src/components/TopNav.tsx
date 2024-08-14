@@ -51,7 +51,7 @@ export const TopNav: FC = () => {
                       ))}
                     </NavigationMenuList>
                   </NavigationMenu>
-                  <div className="flex gap-x-3 items-center justify-end">
+                  <div className="flex gap-x-1 md:gap-x-3 items-center justify-end">
                     <JoyConnectButton />
                     <EvmConnectButton />
                     <DropdownMenu>

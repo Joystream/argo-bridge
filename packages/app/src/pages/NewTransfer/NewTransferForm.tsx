@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import {
   Form,
@@ -36,6 +36,10 @@ import { Button } from '@/components/ui/button'
 import './NewTransferForm.css'
 import { ParsedTransferFormData, TransferFormSchema } from './newTransfer.types'
 import { CardContent, CardFooter } from '@/components/ui/card'
+import {
+  NewTransferDisclaimer,
+  useNewTransferDisclaimerStore,
+} from './NewTransferDisclaimer'
 
 export type NewTransferFormProps = {
   onSubmit: (data: ParsedTransferFormData) => void
@@ -48,6 +52,9 @@ export const NewTransferForm: FC<NewTransferFormProps> = ({
   form,
   transferType,
 }) => {
+  const [isDisclaimerOpen, setIsDisclaimerOpen] = useState(false)
+  const { setHasAccepted: setHasAcceptedDisclaimer } =
+    useNewTransferDisclaimerStore()
   const { evmAddresses, joyAddresses } = useUser()
 
   const { data: configsData, isEvmPaused, isJoyPaused } = useBridgeConfigs()
@@ -138,6 +145,11 @@ export const NewTransferForm: FC<NewTransferFormProps> = ({
           ? formatJoystreamAddress(data.targetAddress)
           : data.targetAddress,
       hapiAmount: amountHapi,
+    }
+
+    if (!useNewTransferDisclaimerStore.getState().hasAccepted) {
+      setIsDisclaimerOpen(true)
+      return
     }
 
     onSubmit(parsedData)
@@ -254,6 +266,16 @@ export const NewTransferForm: FC<NewTransferFormProps> = ({
           </Button>
         </CardFooter>
       </form>
+      <NewTransferDisclaimer
+        isOpen={isDisclaimerOpen}
+        onClose={(accepted) => {
+          setIsDisclaimerOpen(false)
+          if (accepted) {
+            setHasAcceptedDisclaimer(true)
+            form.handleSubmit(handleFormSubmit)()
+          }
+        }}
+      />
     </Form>
   )
 }
