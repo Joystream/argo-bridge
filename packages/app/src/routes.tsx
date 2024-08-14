@@ -8,6 +8,7 @@ import { BridgeStatusTab } from '@/pages/Governance/BridgeStatusTab'
 import { ProposalsTab } from '@/pages/Governance/proposals/ProposalsTab'
 import { NewProposalTab } from '@/pages/Governance/new-proposal/NewProposalTab'
 import { Navigate } from 'react-router-dom'
+import { FAQPage } from '@/pages/FAQPage'
 
 export const ROUTES: (RouteObject & { name: string; path: string })[] = [
   {
@@ -54,5 +55,10 @@ export const ROUTES: (RouteObject & { name: string; path: string })[] = [
         element: <Navigate to="status" replace />,
       },
     ],
+  },
+  {
+    path: 'faq',
+    element: <FAQPage />,
+    name: 'FAQ',
   },
 ]
