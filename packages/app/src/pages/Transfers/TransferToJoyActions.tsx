@@ -88,7 +88,7 @@ export const TransferToJoyActions: FC<{ transfer: BridgeTransfer }> = ({
 
     const { data: freshData } = await refetch()
 
-    const isComplete = freshData?.approvals ?? 0 >= threshold - 1
+    const isComplete = freshData?.approvals.length ?? 0 >= threshold - 1
 
     await submitJoyTx(
       (api) =>
