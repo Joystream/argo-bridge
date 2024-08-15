@@ -1,3 +1,29 @@
+import { toChainFilterOptions, transfersTableColumns } from './transfers.shared'
+import { DataTablePagination } from '@/components/DataTablePagination'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { useTransfersQuery } from '@/lib/hooks'
+import { BridgeTransfer } from '@/lib/transfer'
+import { statusFilterOptions } from '@/pages/Transfers/transfers.shared'
+import { useUser } from '@/providers/user/user.hooks'
 import {
   Column,
   ColumnFiltersState,
@@ -7,34 +33,8 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { DataTablePagination } from '@/components/DataTablePagination'
-import { BridgeTransfer } from '@/lib/transfer'
-import { toChainFilterOptions, transfersTableColumns } from './transfers.shared'
-import { FC, useMemo, useState } from 'react'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { FilterIcon, XIcon } from 'lucide-react'
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { statusFilterOptions } from '@/pages/Transfers/transfers.shared'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
-import { useUser } from '@/providers/user/user.hooks'
-import { useTransfersQuery } from '@/lib/hooks'
+import { FC, useMemo, useState } from 'react'
 
 type TransfersTableProps = {}
 
@@ -56,7 +56,7 @@ export const TransfersTable: FC<TransfersTableProps> = ({}) => {
         acc[address.toLowerCase()] = true
         return acc
       },
-      {} as Record<string, boolean>
+      {} as Record<string, boolean>,
     )
 
     return (
@@ -116,7 +116,7 @@ export const TransfersTable: FC<TransfersTableProps> = ({}) => {
                     <span className="px-1 py-0.5 rounded bg-primary/20">
                       {
                         statusFilterOptions.find(
-                          (option) => option.value === statusFilterValue
+                          (option) => option.value === statusFilterValue,
                         )?.label
                       }
                     </span>
@@ -153,7 +153,7 @@ export const TransfersTable: FC<TransfersTableProps> = ({}) => {
                     <span className="px-1 py-0.5 rounded bg-primary/20">
                       {
                         toChainFilterOptions.find(
-                          (option) => option.value === toChainFilterValue
+                          (option) => option.value === toChainFilterValue,
                         )?.label
                       }
                     </span>
@@ -214,7 +214,7 @@ export const TransfersTable: FC<TransfersTableProps> = ({}) => {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   )
@@ -233,7 +233,7 @@ export const TransfersTable: FC<TransfersTableProps> = ({}) => {
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

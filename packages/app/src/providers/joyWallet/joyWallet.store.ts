@@ -1,5 +1,5 @@
-import { create } from 'zustand'
 import { Account, BaseWallet } from '@polkadot-onboard/core'
+import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
@@ -58,6 +58,6 @@ export const useJoyWalletStore = create<
       partialize: (s) => ({
         lastUsedWalletName: s.lastUsedWalletName,
       }),
-    }
-  )
+    },
+  ),
 )

@@ -1,7 +1,7 @@
-import { FC } from 'react'
 import { JOY_NETWORK } from '@/config'
 import { truncateValue } from '@/lib/utils'
 import { ExternalLinkIcon } from 'lucide-react'
+import { FC } from 'react'
 
 export const JoyTxLink: FC<{ hash: string; block: number }> = ({
   hash,

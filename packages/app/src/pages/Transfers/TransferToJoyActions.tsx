@@ -1,15 +1,15 @@
-import { FC, useMemo } from 'react'
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
+import { JOY_NETWORK } from '@/config'
+import { BridgeTransferStatus } from '@/gql/graphql'
+import { useTransfersQuery } from '@/lib/hooks'
 import { BridgeTransfer } from '@/lib/transfer'
 import { useJoyApiContext } from '@/providers/joyApi'
 import { useTransaction } from '@/providers/transaction'
 import { useUser } from '@/providers/user/user.hooks'
-import { JOY_NETWORK } from '@/config'
-import { BridgeTransferStatus } from '@/gql/graphql'
-import { useQuery } from '@tanstack/react-query'
-import { toast } from 'sonner'
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { joyAddressCodec } from '@joystream/argo-core'
-import { useTransfersQuery } from '@/lib/hooks'
+import { useQuery } from '@tanstack/react-query'
+import { FC, useMemo } from 'react'
+import { toast } from 'sonner'
 
 export const TransferToJoyActions: FC<{ transfer: BridgeTransfer }> = ({
   transfer,
@@ -35,7 +35,7 @@ export const TransferToJoyActions: FC<{ transfer: BridgeTransfer }> = ({
         chain_id: transfer.sourceChainId,
       }),
       transfer.destAccount,
-      transfer.amount
+      transfer.amount,
     )
   }, [api, transfer])
 
@@ -45,7 +45,7 @@ export const TransferToJoyActions: FC<{ transfer: BridgeTransfer }> = ({
       if (!joyCompleteCall || !api || !JOY_NETWORK.opMulti) return
       const result = await api.query.multisig.multisigs(
         JOY_NETWORK.opMulti.address,
-        joyCompleteCall.method.hash.toHex()
+        joyCompleteCall.method.hash.toHex(),
       )
       if (!result.isSome)
         return {
@@ -79,11 +79,11 @@ export const TransferToJoyActions: FC<{ transfer: BridgeTransfer }> = ({
       return
     }
     const otherSignatories = JOY_NETWORK.opMulti.signers.filter(
-      (address) => address !== userJoyOperator
+      (address) => address !== userJoyOperator,
     )
     const callDispatchInfo = await api.call.transactionPaymentApi.queryInfo(
       joyCompleteCall.toHex(),
-      joyCompleteCall.length
+      joyCompleteCall.length,
     )
 
     const { data: freshData } = await refetch()
@@ -98,16 +98,16 @@ export const TransferToJoyActions: FC<{ transfer: BridgeTransfer }> = ({
               otherSignatories,
               joyCallMultisigInfo?.timepoint ?? null,
               joyCompleteCall,
-              callDispatchInfo.weight
+              callDispatchInfo.weight,
             )
           : api.tx.multisig.approveAsMulti(
               threshold,
               otherSignatories,
               joyCallMultisigInfo?.timepoint ?? null,
               joyCompleteCall.method.hash.toHex(),
-              callDispatchInfo.weight
+              callDispatchInfo.weight,
             ),
-      userJoyOperator
+      userJoyOperator,
     )
 
     refetch()

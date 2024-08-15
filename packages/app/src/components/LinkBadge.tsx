@@ -1,11 +1,11 @@
-import { FC } from 'react'
+import { Badge } from '@/components/ui/badge'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { Badge } from '@/components/ui/badge'
 import { ExternalLinkIcon } from 'lucide-react'
+import { FC } from 'react'
 
 export type LinkBadgeProps = {
   href?: string

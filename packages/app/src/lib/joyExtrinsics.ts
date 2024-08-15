@@ -4,7 +4,7 @@ import { Hex, pad } from 'viem'
 export async function buildRequestTransferExtrinsic(
   destChainId: number,
   destAccount: string,
-  amount: bigint
+  amount: bigint,
 ) {
   return async (api: ApiPromise) => {
     const encodedDestAccount = api.createType('Bytes', pad(destAccount as Hex))
@@ -16,7 +16,7 @@ export async function buildRequestTransferExtrinsic(
     return api.tx.argoBridge.requestOutboundTransfer(
       remoteAccount,
       amount,
-      expectedFee
+      expectedFee,
     )
   }
 }
@@ -40,7 +40,7 @@ export function buildFinalizeTransferExtrinsic({
     return api.tx.argoBridge.finalizeInboundTransfer(
       remoteTransfer,
       destAccount,
-      amount
+      amount,
     )
   }
 }

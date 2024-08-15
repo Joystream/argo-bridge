@@ -1,26 +1,26 @@
-import { createColumnHelper } from '@tanstack/react-table'
-import {
-  EvmGovernanceProposal,
-  EvmGovernanceProposalStatus,
-} from '@/lib/proposal'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { CircleAlertIcon, EllipsisVertical, InfoIcon } from 'lucide-react'
-import { FC } from 'react'
-import { Truncated } from '@/components/Truncated'
+import { ProposalActions } from './ProposalActions'
 import { AddressLink } from '@/components/AddressLink'
+import { Truncated } from '@/components/Truncated'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { NavLink } from 'react-router-dom'
-import { ProposalActions } from './ProposalActions'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
+  EvmGovernanceProposal,
+  EvmGovernanceProposalStatus,
+} from '@/lib/proposal'
 import { cn } from '@/lib/utils'
+import { createColumnHelper } from '@tanstack/react-table'
+import { CircleAlertIcon, EllipsisVertical, InfoIcon } from 'lucide-react'
+import { FC } from 'react'
+import { NavLink } from 'react-router-dom'
 
 const columnHelper = createColumnHelper<EvmGovernanceProposal>()
 
@@ -91,7 +91,7 @@ export const proposalsTableColumns = [
           <TooltipTrigger
             className={cn(
               'flex items-center',
-              isDangerous && 'text-destructive'
+              isDangerous && 'text-destructive',
             )}
           >
             {description}
@@ -115,7 +115,7 @@ export const proposalsTableColumns = [
     cell: ({ cell: { getValue } }) => {
       const calls = getValue()
       const uniqueAddresses = Array.from(
-        new Set(calls.map((call) => call.targetAddress))
+        new Set(calls.map((call) => call.targetAddress)),
       )
       return uniqueAddresses.map((a, idx) => (
         <AddressLink address={a} key={idx} />

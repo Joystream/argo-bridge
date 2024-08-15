@@ -1,8 +1,3 @@
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -11,8 +6,13 @@ import {
   CommandInput,
   CommandItem,
 } from '@/components/ui/command'
-import { Check, ChevronsUpDown } from 'lucide-react'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
+import { Check, ChevronsUpDown } from 'lucide-react'
 import { FC, useState } from 'react'
 
 export type ComboBoxOption = {
@@ -69,7 +69,7 @@ export const Combobox: FC<ComboBoxProps> = ({
                 <Check
                   className={cn(
                     'mr-2 h-4 w-4',
-                    value === option.value ? 'opacity-100' : 'opacity-0'
+                    value === option.value ? 'opacity-100' : 'opacity-0',
                   )}
                 />
                 {option.label}

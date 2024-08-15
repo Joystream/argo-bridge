@@ -1,6 +1,11 @@
-import { FC, useEffect, useMemo, useState } from 'react'
-import { BridgeTransferType, EvmBridgeStatus } from '@/gql/graphql'
+import { NewTransferAllowance } from './NewTransferAllowance'
+import { NewTransferDirectionSelector } from './NewTransferDirectionSelector'
 import { NewTransferForm } from './NewTransferForm'
+import { NewTransferSummary } from './NewTransferSummary'
+import { ParsedTransferFormData, TransferFormSchema } from './newTransfer.types'
+import { EvmConnectButton } from '@/components/EvmConnectButton'
+import { JoyConnectButton } from '@/components/JoyConnectButton'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardDescription,
@@ -8,27 +13,22 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { useAccount, useReadContract } from 'wagmi'
 import { BRIDGE_ADDRESS, ERC20_ADDRESS } from '@/config'
-import { Erc20Abi } from '@joystream/argo-core'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Address, isAddress } from 'viem'
-import { isJoyAddress } from '@/lib/utils'
-import { evmAddressSchema, rawAmountSchema } from '@/lib/forms'
-import { ParsedTransferFormData, TransferFormSchema } from './newTransfer.types'
-import { useUser } from '@/providers/user/user.hooks'
-import { toast } from 'sonner'
-import { useQueryClient } from '@tanstack/react-query'
-import { NewTransferDirectionSelector } from './NewTransferDirectionSelector'
-import { NewTransferAllowance } from './NewTransferAllowance'
-import { NewTransferSummary } from './NewTransferSummary'
-import { JoyConnectButton } from '@/components/JoyConnectButton'
-import { EvmConnectButton } from '@/components/EvmConnectButton'
+import { BridgeTransferType, EvmBridgeStatus } from '@/gql/graphql'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
-import { Button } from '@/components/ui/button'
+import { evmAddressSchema, rawAmountSchema } from '@/lib/forms'
+import { isJoyAddress } from '@/lib/utils'
+import { useUser } from '@/providers/user/user.hooks'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Erc20Abi } from '@joystream/argo-core'
+import { useQueryClient } from '@tanstack/react-query'
+import { FC, useEffect, useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { NavLink } from 'react-router-dom'
+import { toast } from 'sonner'
+import { Address, isAddress } from 'viem'
+import { useAccount, useReadContract } from 'wagmi'
+import { z } from 'zod'
 
 const evmToJoyFormSchema = z.object({
   sourceAddress: evmAddressSchema,
@@ -61,7 +61,7 @@ export const NewTransferCard: FC = () => {
   const { isJoyPaused, isEvmPaused } = useBridgeConfigs()
 
   const [transferType, setTransferType] = useState<BridgeTransferType>(
-    BridgeTransferType.JoyToEvm
+    BridgeTransferType.JoyToEvm,
   )
   const [transferStep, setTransferStep] = useState<TransferStep>({
     type: 'form',
@@ -75,7 +75,7 @@ export const NewTransferCard: FC = () => {
       transferType === BridgeTransferType.JoyToEvm
         ? joyToEvmFormSchema
         : evmToJoyFormSchema,
-    [transferType]
+    [transferType],
   )
   const queryClient = useQueryClient()
 
@@ -138,7 +138,7 @@ export const NewTransferCard: FC = () => {
 
   const handleFormSubmit = async (
     data: ParsedTransferFormData,
-    retriesDone = 0
+    retriesDone = 0,
   ) => {
     if (retriesDone > 2) {
       toast.error('Unexpected error')

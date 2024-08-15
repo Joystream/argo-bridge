@@ -1,10 +1,10 @@
-import { FC, PropsWithChildren } from 'react'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { Info } from 'lucide-react'
+import { FC, PropsWithChildren } from 'react'
 
 export const InfoTooltip: FC<PropsWithChildren> = ({ children }) => {
   return (

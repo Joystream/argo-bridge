@@ -1,26 +1,26 @@
-import { FC } from 'react'
-import request from 'graphql-request'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   ARGO_INDEXER_URL,
   EVM_OUT_OF_SYNC_THRESHOLD,
   JOY_OUT_OF_SYNC_THRESHOLD,
 } from '@/config'
+import { useJoyApiContext } from '@/providers/joyApi'
 import { getProcessorStatusDocument } from '@/queries/processorStatus'
-import { PublicClient } from 'viem'
 import { ApiPromise } from '@polkadot/api'
 import { useQuery } from '@tanstack/react-query'
-import { useJoyApiContext } from '@/providers/joyApi'
-import { usePublicClient } from 'wagmi'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import request from 'graphql-request'
 import { AlertCircle } from 'lucide-react'
+import { FC } from 'react'
+import { PublicClient } from 'viem'
+import { usePublicClient } from 'wagmi'
 
 async function getProcessorStatusInfo(
   joyApi: ApiPromise,
-  publicClient: PublicClient
+  publicClient: PublicClient,
 ) {
   const processorStatusPromise = request(
     ARGO_INDEXER_URL,
-    getProcessorStatusDocument
+    getProcessorStatusDocument,
   )
   const latestJoyBlockPromise = joyApi.rpc.chain.getHeader()
   const latestEvmBlockPromise = publicClient.getBlockNumber()

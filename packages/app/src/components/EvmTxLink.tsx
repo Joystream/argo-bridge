@@ -1,6 +1,6 @@
-import { FC } from 'react'
 import { truncateValue } from '@/lib/utils'
 import { ExternalLinkIcon } from 'lucide-react'
+import { FC } from 'react'
 import { useChainId, useConfig } from 'wagmi'
 
 export const EvmTxLink: FC<{ hash: string }> = ({ hash }) => {

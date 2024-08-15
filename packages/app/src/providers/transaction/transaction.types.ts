@@ -1,15 +1,15 @@
-import { createContext } from 'react'
+import { RawExtrinsicResult } from '@joystream/argo-core'
 import { ApiPromise } from '@polkadot/api'
 import { SubmittableExtrinsic } from '@polkadot/api/types'
-import { RawExtrinsicResult } from '@joystream/argo-core'
+import { createContext } from 'react'
 
 export type SubmitJoyTx = (
   buildTx: (
-    api: ApiPromise
+    api: ApiPromise,
   ) =>
     | Promise<SubmittableExtrinsic<'promise'>>
     | SubmittableExtrinsic<'promise'>,
-  sender?: string
+  sender?: string,
 ) => Promise<RawExtrinsicResult | undefined>
 
 export type TransactionContextType = {

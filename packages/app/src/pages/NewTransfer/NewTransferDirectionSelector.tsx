@@ -1,5 +1,4 @@
-import { FC } from 'react'
-import { BridgeTransferType } from '@/gql/graphql'
+import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import {
   Select,
@@ -8,8 +7,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
+import { BridgeTransferType } from '@/gql/graphql'
 import { ArrowRightLeft } from 'lucide-react'
+import { FC } from 'react'
 
 const chainOptions = [
   { label: 'Base', value: 'base' },
@@ -34,7 +34,7 @@ export const NewTransferDirectionSelector: FC<
             onChange(
               value === 'joystream'
                 ? BridgeTransferType.JoyToEvm
-                : BridgeTransferType.EvmToJoy
+                : BridgeTransferType.EvmToJoy,
             )
           }
         >
@@ -58,7 +58,7 @@ export const NewTransferDirectionSelector: FC<
           onChange(
             value === BridgeTransferType.EvmToJoy
               ? BridgeTransferType.JoyToEvm
-              : BridgeTransferType.EvmToJoy
+              : BridgeTransferType.EvmToJoy,
           )
         }
       >
@@ -73,7 +73,7 @@ export const NewTransferDirectionSelector: FC<
             onChange(
               value === 'joystream'
                 ? BridgeTransferType.EvmToJoy
-                : BridgeTransferType.JoyToEvm
+                : BridgeTransferType.JoyToEvm,
             )
           }
         >

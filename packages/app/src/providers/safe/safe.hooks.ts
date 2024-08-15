@@ -1,13 +1,13 @@
-import { useQuery } from '@tanstack/react-query'
 import { EVM_NETWORK } from '@/config'
 import SafeApiKit from '@safe-global/api-kit'
+import { useQuery } from '@tanstack/react-query'
 
 export const usePendingAdminCallsQuery = (safeApiKit: SafeApiKit | null) => {
   return useQuery({
     queryKey: ['pendingAdminCalls'],
     queryFn: async () => {
       return safeApiKit?.getPendingTransactions(
-        EVM_NETWORK.adminMulti?.address || ''
+        EVM_NETWORK.adminMulti?.address || '',
       )
     },
     enabled: !!safeApiKit && !!EVM_NETWORK.adminMulti,
@@ -19,7 +19,7 @@ export const usePendingOperatorCallsQuery = (safeApiKit: SafeApiKit | null) => {
     queryKey: ['pendingOperatorCalls'],
     queryFn: async () => {
       return safeApiKit?.getPendingTransactions(
-        EVM_NETWORK.opMulti?.address || ''
+        EVM_NETWORK.opMulti?.address || '',
       )
     },
     enabled: !!safeApiKit && !!EVM_NETWORK.opMulti,

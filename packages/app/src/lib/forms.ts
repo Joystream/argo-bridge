@@ -1,5 +1,5 @@
-import { z } from 'zod'
 import { isAddress } from 'viem'
+import { z } from 'zod'
 
 export const rawAmountSchema = z
   .string()
@@ -14,7 +14,7 @@ export const rawAmountSchema = z
         return false
       }
     },
-    { message: 'Amount must be a positive number' }
+    { message: 'Amount must be a positive number' },
   )
 
 export const evmAddressSchema = z

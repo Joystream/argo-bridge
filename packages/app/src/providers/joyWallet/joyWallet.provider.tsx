@@ -1,28 +1,27 @@
-import {
-  createContext,
-  FC,
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-} from 'react'
-
+import { extensionConfig } from './extensionsConfig'
+import { useJoyWalletStore } from './joyWallet.store'
+import { JoyWalletContext } from './joyWallet.types'
 import {
   APP_NAME,
   JOYSTREAM_CHAIN_ID,
   WC_METADATA,
   WC_PROJECT_ID,
 } from '@/config'
+import { formatJoystreamAddress } from '@/lib/utils'
+import { Account, WalletAggregator } from '@polkadot-onboard/core'
 import { InjectedWalletProvider } from '@polkadot-onboard/injected-wallets'
-import { extensionConfig } from './extensionsConfig'
+import { PolkadotWalletsContextProvider } from '@polkadot-onboard/react'
 import {
   WalletConnectConfiguration,
   WalletConnectProvider,
 } from '@polkadot-onboard/wallet-connect'
-import { Account, WalletAggregator } from '@polkadot-onboard/core'
-import { PolkadotWalletsContextProvider } from '@polkadot-onboard/react'
-import { useJoyWalletStore } from './joyWallet.store'
-import { JoyWalletContext } from './joyWallet.types'
-import { formatJoystreamAddress } from '@/lib/utils'
+import {
+  FC,
+  PropsWithChildren,
+  createContext,
+  useCallback,
+  useEffect,
+} from 'react'
 
 const walletConnectParams: WalletConnectConfiguration = {
   projectId: WC_PROJECT_ID,
@@ -34,12 +33,12 @@ const walletConnectParams: WalletConnectConfiguration = {
 
 const injectedWalletProvider = new InjectedWalletProvider(
   extensionConfig,
-  APP_NAME
+  APP_NAME,
 )
 
 const walletConnectProvider = new WalletConnectProvider(
   walletConnectParams,
-  APP_NAME
+  APP_NAME,
 )
 const walletAggregator = new WalletAggregator([
   injectedWalletProvider,
@@ -72,7 +71,7 @@ const InnerWalletsProvider: FC<PropsWithChildren> = ({ children }) => {
         setWalletStatus('pending')
         const wallets = await walletAggregator.getWallets()
         const selectedWallet = wallets?.find(
-          (wallet) => wallet.metadata.id === walletId
+          (wallet) => wallet.metadata.id === walletId,
         )
         if (!selectedWallet) {
           console.error(`Wallet ${walletId} not found`)
@@ -96,7 +95,7 @@ const InnerWalletsProvider: FC<PropsWithChildren> = ({ children }) => {
         throw e
       }
     },
-    [setWallet, setWalletAccounts, setWalletStatus]
+    [setWallet, setWalletAccounts, setWalletStatus],
   )
 
   const disconnectWallet = useCallback(async () => {
@@ -117,7 +116,7 @@ const InnerWalletsProvider: FC<PropsWithChildren> = ({ children }) => {
       const parsedAccounts = parseAccounts(accounts)
       setWalletAccounts(parsedAccounts)
     },
-    [setWalletAccounts]
+    [setWalletAccounts],
   )
 
   useEffect(() => {
@@ -127,7 +126,7 @@ const InnerWalletsProvider: FC<PropsWithChildren> = ({ children }) => {
     type UnsubFn = () => void
     let unsubscribeAccounts: UnsubFn | undefined
     const subscribePromise = wallet.subscribeAccounts(
-      handleAccountsChange
+      handleAccountsChange,
     ) as Promise<UnsubFn>
     subscribePromise.then((unsub) => {
       unsubscribeAccounts = unsub

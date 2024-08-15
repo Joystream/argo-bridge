@@ -1,20 +1,20 @@
-import { useJoyWallets } from '@/providers/joyWallet'
-import { useAccount } from 'wagmi'
-import { useBridgeConfigs } from '@/lib/bridgeConfig'
 import { EVM_NETWORK, JOY_NETWORK } from '@/config'
+import { useBridgeConfigs } from '@/lib/bridgeConfig'
+import { useJoyWallets } from '@/providers/joyWallet'
 import { useMemo } from 'react'
 import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 
 export const useUser = () => {
   const { walletAccounts: joyAccounts } = useJoyWallets()
   const { addresses: evmAddresses } = useAccount()
   const joyAddresses = useMemo(
     () => joyAccounts?.map(({ address }) => address),
-    [joyAccounts]
+    [joyAccounts],
   )
   const joyLookup = joyAddresses?.reduce(
     (acc, address) => ({ ...acc, [address]: true }),
-    {} as Record<string, boolean>
+    {} as Record<string, boolean>,
   )
   const evmLookup = evmAddresses?.reduce(
     // all evm addresses from indexer will be lowercase
@@ -23,7 +23,7 @@ export const useUser = () => {
       [address.toLowerCase()]: true,
       [address]: true,
     }),
-    {} as Record<string, boolean>
+    {} as Record<string, boolean>,
   )
 
   const { data: configsData } = useBridgeConfigs()
@@ -61,7 +61,7 @@ export const useUser = () => {
   } else if (evmConfig) {
     userEvmOperator =
       evmConfig.bridgeOperatorAccounts.find(
-        (operator) => evmLookup?.[operator]
+        (operator) => evmLookup?.[operator],
       ) || false
   }
 

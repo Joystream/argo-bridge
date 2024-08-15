@@ -1,15 +1,14 @@
 import { JoyApiProvider } from './providers/joyApi'
 import { JoyWalletProvider } from './providers/joyWallet'
 import { TopNav } from '@/components/TopNav'
-
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
-import { FC } from 'react'
-import { TransactionProvider } from '@/providers/transaction'
 import { EvmProvider } from '@/providers/evm.provider'
-import { ROUTES } from '@/routes'
 import { ThemeProvider } from '@/providers/theme.provider'
+import { TransactionProvider } from '@/providers/transaction'
+import { ROUTES } from '@/routes'
+import { FC } from 'react'
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 const Layout: FC = () => (
   <>

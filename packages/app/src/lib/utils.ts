@@ -1,9 +1,9 @@
-import { type ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
-import { decodeAddress, encodeAddress } from '@polkadot/util-crypto'
 import { JOYSTREAM_SS58_PREFIX } from '@/config'
-import { formatUnits, parseUnits } from 'ethers'
+import { decodeAddress, encodeAddress } from '@polkadot/util-crypto'
+import { type ClassValue, clsx } from 'clsx'
 import * as dn from 'dnum'
+import { formatUnits, parseUnits } from 'ethers'
+import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

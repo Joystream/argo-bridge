@@ -1,7 +1,7 @@
-import { useContext } from 'react'
-import { JoyWalletContext } from './joyWallet.types'
 import { useJoyWalletStore } from './joyWallet.store'
+import { JoyWalletContext } from './joyWallet.types'
 import { useWallets } from '@polkadot-onboard/react'
+import { useContext } from 'react'
 
 export const useJoyWallets = () => {
   const { wallets: allWallets } = useWallets()

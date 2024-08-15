@@ -3,8 +3,8 @@ import {
   BridgeTransferType,
   GetTransfersQuery,
 } from '@/gql/graphql'
-import { Hex } from 'viem'
 import * as dn from 'dnum'
+import { Hex } from 'viem'
 
 export type BridgeTransfer = {
   id: string
@@ -28,7 +28,7 @@ export type BridgeTransfer = {
 }
 
 export function parseTransfer(
-  raw: GetTransfersQuery['bridgeTransfers'][number]
+  raw: GetTransfersQuery['bridgeTransfers'][number],
 ): BridgeTransfer {
   const amount = BigInt(raw.amount)
   const feePaid = BigInt(raw.feePaid)

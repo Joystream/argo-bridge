@@ -1,15 +1,15 @@
-import { useJoyApiContext } from '@/providers/joyApi'
-import { useQuery } from '@tanstack/react-query'
-import { isJoyAddress } from '@/lib/utils'
-import { Dnum } from 'dnum'
-import request from 'graphql-request'
 import { ARGO_INDEXER_URL, EVM_NETWORK } from '@/config'
-import { getTransfersDocument } from '@/queries/transfers'
-import { parseTransfer } from '@/lib/transfer'
-import { getTimelockOperationsQueryDocument } from '@/queries/timelockOperations'
 import { EvmTimelockOperationOrderByInput } from '@/gql/graphql'
 import { parseSafeOperations, parseTimelockOperations } from '@/lib/proposal'
+import { parseTransfer } from '@/lib/transfer'
+import { isJoyAddress } from '@/lib/utils'
+import { useJoyApiContext } from '@/providers/joyApi'
 import { useSafeStore } from '@/providers/safe/safe.store'
+import { getTimelockOperationsQueryDocument } from '@/queries/timelockOperations'
+import { getTransfersDocument } from '@/queries/transfers'
+import { useQuery } from '@tanstack/react-query'
+import { Dnum } from 'dnum'
+import request from 'graphql-request'
 
 export function useJoyBalanceQuery(address: string) {
   const { api } = useJoyApiContext()
@@ -48,11 +48,11 @@ export function useEvmProposalsQuery() {
         getTimelockOperationsQueryDocument,
         {
           orderBy: EvmTimelockOperationOrderByInput.CreatedAtBlockDesc,
-        }
+        },
       )
 
       const safeOperationsPromise = safeApiKit.getPendingTransactions(
-        EVM_NETWORK.adminMulti.address
+        EVM_NETWORK.adminMulti.address,
       )
 
       const [timelockOperations, safeOperations] = await Promise.all([

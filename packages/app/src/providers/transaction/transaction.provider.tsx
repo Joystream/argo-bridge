@@ -1,3 +1,9 @@
+import { SubmitJoyTx, TransactionContext } from './transaction.types'
+import { JOY_NETWORK } from '@/config'
+import { useJoyApiContext } from '@/providers/joyApi'
+import { useJoyWalletStore } from '@/providers/joyWallet/joyWallet.store'
+import { submitExtrinsic } from '@joystream/argo-core'
+import { Account } from '@polkadot-onboard/core'
 import {
   FC,
   PropsWithChildren,
@@ -6,16 +12,10 @@ import {
   useRef,
   useState,
 } from 'react'
-import { useJoyWalletStore } from '@/providers/joyWallet/joyWallet.store'
-import { submitExtrinsic } from '@joystream/argo-core'
-import { useJoyApiContext } from '@/providers/joyApi'
 import { toast } from 'sonner'
-import { SubmitJoyTx, TransactionContext } from './transaction.types'
-import { Account } from '@polkadot-onboard/core'
-import { JOY_NETWORK } from '@/config'
-import { usePublicClient } from 'wagmi'
-import { waitForTransactionReceipt } from 'viem/actions'
 import { isHex } from 'viem'
+import { waitForTransactionReceipt } from 'viem/actions'
+import { usePublicClient } from 'wagmi'
 
 export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
   const { api: joyApi } = useJoyApiContext()
@@ -65,7 +65,7 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
       })
       return finalPromise
     },
-    [isSubmitting]
+    [isSubmitting],
   )
 
   const submitJoyTx = useCallback<SubmitJoyTx>(
@@ -94,7 +94,7 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
           tx,
           sender,
           JOY_NETWORK.rpc.url,
-          signer
+          signer,
         )
         addTxPromise(submitPromise)
         // @ts-ignore
@@ -107,7 +107,7 @@ export const TransactionProvider: FC<PropsWithChildren> = ({ children }) => {
         console.error('Error sending extrinsic:', error)
       }
     },
-    [joyApi]
+    [joyApi],
   )
 
   const contextValue = {

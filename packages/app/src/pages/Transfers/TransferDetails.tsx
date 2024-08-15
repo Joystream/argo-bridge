@@ -1,4 +1,9 @@
-import { FC, ReactNode, useRef } from 'react'
+import { NETWORKS_NAME_LOOKUP, statusFilterOptions } from './transfers.shared'
+import { EvmTxLink } from '@/components/EvmTxLink'
+import { JoyTxLink } from '@/components/JoyTxLink'
+import { LinkBadge } from '@/components/LinkBadge'
+import { Truncated } from '@/components/Truncated'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -6,21 +11,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useNavigate, useParams } from 'react-router-dom'
-import { formatEth, formatJoy, truncateValue } from '@/lib/utils'
-import { NETWORKS_NAME_LOOKUP, statusFilterOptions } from './transfers.shared'
-import { Truncated } from '@/components/Truncated'
+import { BRIDGE_ADDRESS } from '@/config'
 import { BridgeTransferStatus, BridgeTransferType } from '@/gql/graphql'
-import { Button } from '@/components/ui/button'
-import { JoyTxLink } from '@/components/JoyTxLink'
-import { EvmTxLink } from '@/components/EvmTxLink'
 import { useTransfersQuery } from '@/lib/hooks'
+import { formatEth, formatJoy, truncateValue } from '@/lib/utils'
 import { usePendingOperatorCallsQuery } from '@/providers/safe/safe.hooks'
 import { useSafeStore } from '@/providers/safe/safe.store'
-import { BRIDGE_ADDRESS } from '@/config'
-import { encodeFunctionData } from 'viem'
 import { BridgeAbi } from '@joystream/argo-core'
-import { LinkBadge } from '@/components/LinkBadge'
+import { FC, ReactNode, useRef } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { encodeFunctionData } from 'viem'
 
 export const TransferDetails: FC = () => {
   const { id } = useParams()
@@ -40,7 +40,7 @@ export const TransferDetails: FC = () => {
       return
     }
     const bridgeCalls = pendingCalls.results.filter(
-      (call) => call.to === BRIDGE_ADDRESS
+      (call) => call.to === BRIDGE_ADDRESS,
     )
     const completeTransferCalldata = encodeFunctionData({
       abi: BridgeAbi,

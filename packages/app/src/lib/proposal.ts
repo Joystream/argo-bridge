@@ -1,12 +1,12 @@
-import { Address, Hash, keccak256, toHex } from 'viem'
+import { BRIDGE_ADDRESS, EVM_NETWORK, TIMELOCK_ADDRESS } from '@/config'
 import {
   EvmTimelockOperationStatus,
   GetTimelockOperationsQuery,
 } from '@/gql/graphql'
-import { match } from 'ts-pattern'
-import { SafeMultisigTransactionResponse } from '@safe-global/safe-core-sdk-types'
 import { decodeCall } from '@joystream/argo-core'
-import { BRIDGE_ADDRESS, EVM_NETWORK, TIMELOCK_ADDRESS } from '@/config'
+import { SafeMultisigTransactionResponse } from '@safe-global/safe-core-sdk-types'
+import { match } from 'ts-pattern'
+import { Address, Hash, keccak256, toHex } from 'viem'
 
 type ProposedProposalFields = {
   approvals: Address[]
@@ -65,7 +65,7 @@ const getDecodedCalls = (target: Address, data: Hash): EvmGovernanceCall[] => {
     const [decodedCallFnName, decodedCallArgs] = decodeCall(
       EVM_NETWORK,
       decodedArgs[0],
-      decodedArgs[2] || '0x'
+      decodedArgs[2] || '0x',
     )
     decodedCalls.push({
       index: 0,
@@ -81,7 +81,7 @@ const getDecodedCalls = (target: Address, data: Hash): EvmGovernanceCall[] => {
       const [decodedCallFnName, decodedCallArgs] = decodeCall(
         EVM_NETWORK,
         decodedArgs[0][i],
-        decodedArgs[2][i] || '0x'
+        decodedArgs[2][i] || '0x',
       )
       decodedCalls.push({
         index: i,
@@ -171,7 +171,7 @@ const getDescription = (calls: EvmGovernanceCall[]): string | undefined => {
 }
 
 export function parseTimelockOperations(
-  operations: GetTimelockOperationsQuery['evmTimelockOperations']
+  operations: GetTimelockOperationsQuery['evmTimelockOperations'],
 ): EvmGovernanceProposal[] {
   return operations.map((operation) => {
     const gracingFields = {
@@ -231,7 +231,7 @@ export function parseTimelockOperations(
 }
 
 export function parseSafeOperations(
-  operations: SafeMultisigTransactionResponse[]
+  operations: SafeMultisigTransactionResponse[],
 ): EvmGovernanceProposal[] {
   return operations.map((operation) => {
     const calls = operation.data
@@ -244,7 +244,7 @@ export function parseSafeOperations(
         type: 'proposed',
         approvals:
           operation.confirmations?.map(
-            (confirmation) => confirmation.owner as Address
+            (confirmation) => confirmation.owner as Address,
           ) ?? [],
         threshold: operation.confirmationsRequired,
         proposedAtTimestamp: new Date(operation.submissionDate),

@@ -1,18 +1,18 @@
-import React, { FC } from 'react'
-import { CardContent, CardFooter } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { BridgeTransferType } from '@/gql/graphql'
 import { ParsedTransferFormData } from './newTransfer.types'
-import { formatEth, formatJoy } from '@/lib/utils'
-import { useBridgeConfigs } from '@/lib/bridgeConfig'
-import { Address, isHex } from 'viem'
-import { toast } from 'sonner'
-import { buildRequestTransferExtrinsic } from '@/lib/joyExtrinsics'
+import { Button } from '@/components/ui/button'
+import { CardContent, CardFooter } from '@/components/ui/card'
 import { BRIDGE_ADDRESS, EVM_NETWORK } from '@/config'
+import { BridgeTransferType } from '@/gql/graphql'
+import { useBridgeConfigs } from '@/lib/bridgeConfig'
+import { buildRequestTransferExtrinsic } from '@/lib/joyExtrinsics'
+import { formatEth, formatJoy } from '@/lib/utils'
 import { useTransaction } from '@/providers/transaction'
 import { BridgeAbi, joyAddressCodec } from '@joystream/argo-core'
-import { usePublicClient, useWriteContract } from 'wagmi'
+import React, { FC } from 'react'
+import { toast } from 'sonner'
+import { Address, isHex } from 'viem'
 import { waitForTransactionReceipt } from 'viem/actions'
+import { usePublicClient, useWriteContract } from 'wagmi'
 
 type NewTransferSummaryProps = {
   transferType: BridgeTransferType
@@ -47,9 +47,9 @@ export const NewTransferSummary: FC<NewTransferSummaryProps> = ({
       await buildRequestTransferExtrinsic(
         EVM_NETWORK.chainId,
         transferData.targetAddress,
-        transferData.hapiAmount
+        transferData.hapiAmount,
       ),
-      transferData.sourceAddress
+      transferData.sourceAddress,
     )
     onSuccess()
   }

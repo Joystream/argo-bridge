@@ -1,6 +1,6 @@
-import { FC, useEffect, useId, useRef, useState } from 'react'
-import { hapiToJoy, joyToHapi } from '@/lib/utils'
 import { JoyInput } from '@/components/JoyInput'
+import { hapiToJoy, joyToHapi } from '@/lib/utils'
+import { FC, useEffect, useId, useRef, useState } from 'react'
 
 type JoyHapiInputProps = {
   type: 'joy' | 'hapi'

@@ -1,4 +1,4 @@
-import { FieldValues, Path, UseFormReturn } from 'react-hook-form'
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormField,
@@ -7,13 +7,13 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { useUser } from '@/providers/user/user.hooks'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { useUser } from '@/providers/user/user.hooks'
+import { FieldValues, Path, UseFormReturn } from 'react-hook-form'
 
 type NewProposalField<TData extends FieldValues> = {
   name: Path<TData>

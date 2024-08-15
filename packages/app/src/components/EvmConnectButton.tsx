@@ -1,7 +1,7 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { FC } from 'react'
 import { Button, ButtonProps } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { FC } from 'react'
 
 type EvmConnectButtonProps = {
   variant?: ButtonProps['variant']

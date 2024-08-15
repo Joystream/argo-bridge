@@ -1,5 +1,11 @@
-import { FC, useState } from 'react'
-import { UseFormReturn } from 'react-hook-form'
+import {
+  NewTransferDisclaimer,
+  useNewTransferDisclaimerStore,
+} from './NewTransferDisclaimer'
+import './NewTransferForm.css'
+import { ParsedTransferFormData, TransferFormSchema } from './newTransfer.types'
+import { Button } from '@/components/ui/button'
+import { CardContent, CardFooter } from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -9,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { useUser } from '@/providers/user/user.hooks'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -17,10 +23,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useBalance } from 'wagmi'
 import { ERC20_ADDRESS } from '@/config'
-import { Dnum } from 'dnum'
-import { Address, isAddress } from 'viem'
+import { BridgeTransferType } from '@/gql/graphql'
+import { useBridgeConfigs } from '@/lib/bridgeConfig'
+import { useJoyBalanceQuery } from '@/lib/hooks'
 import {
   cn,
   formatEth,
@@ -28,18 +34,12 @@ import {
   formatJoystreamAddress,
   joyToHapi,
 } from '@/lib/utils'
-import { BridgeTransferType } from '@/gql/graphql'
-import { useJoyBalanceQuery } from '@/lib/hooks'
-import { Input } from '@/components/ui/input'
-import { useBridgeConfigs } from '@/lib/bridgeConfig'
-import { Button } from '@/components/ui/button'
-import './NewTransferForm.css'
-import { ParsedTransferFormData, TransferFormSchema } from './newTransfer.types'
-import { CardContent, CardFooter } from '@/components/ui/card'
-import {
-  NewTransferDisclaimer,
-  useNewTransferDisclaimerStore,
-} from './NewTransferDisclaimer'
+import { useUser } from '@/providers/user/user.hooks'
+import { Dnum } from 'dnum'
+import { FC, useState } from 'react'
+import { UseFormReturn } from 'react-hook-form'
+import { Address, isAddress } from 'viem'
+import { useBalance } from 'wagmi'
 
 export type NewTransferFormProps = {
   onSubmit: (data: ParsedTransferFormData) => void
@@ -241,7 +241,7 @@ export const NewTransferForm: FC<NewTransferFormProps> = ({
                 form.formState.errors.sourceAddress
               )?.type === 'fee'
                 ? 'text-destructive'
-                : null
+                : null,
             )}
           >
             Bridging fee:{' '}

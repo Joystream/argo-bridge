@@ -1,4 +1,5 @@
-import { FC, useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
   DialogContent,
@@ -6,11 +7,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Button } from '@/components/ui/button'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { FC, useState } from 'react'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { ScrollArea } from '@/components/ui/scroll-area'
 
 type NewTransferDisclaimerProps = {
   isOpen: boolean
@@ -30,8 +30,8 @@ export const useNewTransferDisclaimerStore = create<{
     }),
     {
       name: 'argoapp-disclaimer',
-    }
-  )
+    },
+  ),
 )
 
 export const NewTransferDisclaimer: FC<NewTransferDisclaimerProps> = ({

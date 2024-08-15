@@ -1,9 +1,9 @@
-import { FC, useEffect, useRef } from 'react'
-import { EVM_NETWORK } from '@/config'
 import { useSafeStore } from './safe.store'
+import { EVM_NETWORK } from '@/config'
+import { useUser } from '@/providers/user/user.hooks'
 import SafeApiKit from '@safe-global/api-kit'
 import Safe from '@safe-global/protocol-kit'
-import { useUser } from '@/providers/user/user.hooks'
+import { FC, useEffect, useRef } from 'react'
 
 export const SafeManager: FC = () => {
   const { adminMulti, opMulti } = EVM_NETWORK

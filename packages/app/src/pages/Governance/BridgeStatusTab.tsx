@@ -1,4 +1,5 @@
-import { FC, ReactNode, useMemo } from 'react'
+import { AddressLink } from '@/components/AddressLink'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -6,20 +7,19 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { useBridgeConfigs } from '@/lib/bridgeConfig'
-import { EvmBridgeStatus, JoyBridgeStatus } from '@/gql/graphql'
-import { formatEth, formatJoy } from '@/lib/utils'
-import { AddressLink } from '@/components/AddressLink'
-import { useUser } from '@/providers/user/user.hooks'
-import { Button } from '@/components/ui/button'
-import { useTransaction } from '@/providers/transaction'
-import { useWriteContract } from 'wagmi'
-import { toast } from 'sonner'
-import { BridgeAbi, joyAddressCodec } from '@joystream/argo-core'
 import { BRIDGE_ADDRESS, JOY_NETWORK } from '@/config'
-import { Address } from 'viem'
-import { useQuery } from '@tanstack/react-query'
+import { EvmBridgeStatus, JoyBridgeStatus } from '@/gql/graphql'
+import { useBridgeConfigs } from '@/lib/bridgeConfig'
+import { formatEth, formatJoy } from '@/lib/utils'
 import { useJoyApiContext } from '@/providers/joyApi'
+import { useTransaction } from '@/providers/transaction'
+import { useUser } from '@/providers/user/user.hooks'
+import { BridgeAbi, joyAddressCodec } from '@joystream/argo-core'
+import { useQuery } from '@tanstack/react-query'
+import { FC, ReactNode, useMemo } from 'react'
+import { toast } from 'sonner'
+import { Address } from 'viem'
+import { useWriteContract } from 'wagmi'
 
 export const BridgeStatusTab: FC = () => {
   const { data: configsData, refetch: refetchConfigs } = useBridgeConfigs()
@@ -58,7 +58,7 @@ export const BridgeStatusTab: FC = () => {
       if (!joyFinishUnpauseCall || !api || !JOY_NETWORK.opMulti) return
       const result = await api.query.multisig.multisigs(
         JOY_NETWORK.opMulti.address,
-        joyFinishUnpauseCall.method.hash.toHex()
+        joyFinishUnpauseCall.method.hash.toHex(),
       )
       if (!result.isSome)
         return {
@@ -92,11 +92,11 @@ export const BridgeStatusTab: FC = () => {
       return
     }
     const otherSignatories = JOY_NETWORK.opMulti.signers.filter(
-      (address) => address !== userJoyOperator
+      (address) => address !== userJoyOperator,
     )
     const callDispatchInfo = await api.call.transactionPaymentApi.queryInfo(
       joyFinishUnpauseCall.toHex(),
-      joyFinishUnpauseCall.length
+      joyFinishUnpauseCall.length,
     )
 
     const { data: freshData } = await refetch()
@@ -111,16 +111,16 @@ export const BridgeStatusTab: FC = () => {
               otherSignatories,
               joyCallMultisigInfo?.timepoint ?? null,
               joyFinishUnpauseCall,
-              callDispatchInfo.weight
+              callDispatchInfo.weight,
             )
           : api.tx.multisig.approveAsMulti(
               threshold,
               otherSignatories,
               joyCallMultisigInfo?.timepoint ?? null,
               joyFinishUnpauseCall.method.hash.toHex(),
-              callDispatchInfo.weight
+              callDispatchInfo.weight,
             ),
-      userJoyOperator
+      userJoyOperator,
     )
 
     refetch()
@@ -138,7 +138,7 @@ export const BridgeStatusTab: FC = () => {
 
     await submitJoyTx(
       async (api) => api.tx.argoBridge.pauseBridge(),
-      userJoyPauser
+      userJoyPauser,
     )
     refetchConfigs()
   }
@@ -152,7 +152,7 @@ export const BridgeStatusTab: FC = () => {
 
     await submitJoyTx(
       async (api) => api.tx.argoBridge.initUnpauseBridge(),
-      userJoyPauser
+      userJoyPauser,
     )
     refetchConfigs()
   }

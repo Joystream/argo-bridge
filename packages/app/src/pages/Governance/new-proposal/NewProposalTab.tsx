@@ -1,4 +1,7 @@
-import React, { FC, useState } from 'react'
+import { ChangeEvmFee } from './ChangeEvmFee'
+import { ChangeEvmLimits } from './ChangeEvmLimits'
+import { SwapEvmAdmin } from './SwapEvmAdmin'
+import { SwapEvmOperator } from './SwapEvmOperator'
 import {
   Card,
   CardContent,
@@ -6,22 +9,19 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { TypographyH3 } from '@/components/ui/typography'
-import { ChangeEvmLimits } from './ChangeEvmLimits'
-import { SwapEvmOperator } from './SwapEvmOperator'
-import { SwapEvmAdmin } from './SwapEvmAdmin'
+import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
+  SelectItem,
   SelectTrigger,
   SelectValue,
-  SelectItem,
 } from '@/components/ui/select'
-import { Label } from '@/components/ui/label'
-import { ChangeEvmFee } from './ChangeEvmFee'
+import { TypographyH3 } from '@/components/ui/typography'
 import { AddEvmPauser } from '@/pages/Governance/new-proposal/AddEvmPauser'
 import { RevokeEvmPauser } from '@/pages/Governance/new-proposal/RevokeEvmPauser'
 import { UnpauseEvm } from '@/pages/Governance/new-proposal/UnpauseEvm'
+import React, { FC, useState } from 'react'
 
 const selectOptions = [
   {
@@ -64,7 +64,7 @@ const selectOptions = [
 export const NewProposalTab: FC = () => {
   const [selected, setSelected] = useState(selectOptions[0].value)
   const Component = selectOptions.find(
-    (option) => option.value === selected
+    (option) => option.value === selected,
   )!.component
   return (
     <Card className="max-w-[700px]">

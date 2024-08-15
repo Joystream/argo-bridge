@@ -1,13 +1,13 @@
+import { ARGO_INDEXER_URL, EVM_NETWORK, JOY_NETWORK } from '@/config'
 import {
   EvmBridgeStatus,
   GetConfigsQuery,
   JoyBridgeStatus,
 } from '@/gql/graphql'
-import { Address } from 'viem'
-import request from 'graphql-request'
 import { getConfigsDocument } from '@/queries/configs'
-import { ARGO_INDEXER_URL, EVM_NETWORK, JOY_NETWORK } from '@/config'
 import { useQuery } from '@tanstack/react-query'
+import request from 'graphql-request'
+import { Address } from 'viem'
 
 export type EvmBridgeConfig = {
   id: string
@@ -43,7 +43,7 @@ export type JoyBridgeConfig = {
 }
 
 function parseEvmBridgeConfig(
-  raw: GetConfigsQuery['evmBridgeConfigs'][0]
+  raw: GetConfigsQuery['evmBridgeConfigs'][0],
 ): EvmBridgeConfig {
   return {
     id: raw.id,
@@ -65,7 +65,7 @@ function parseEvmBridgeConfig(
 }
 
 function parseJoyBridgeConfig(
-  raw: GetConfigsQuery['joyBridgeConfigs'][0]
+  raw: GetConfigsQuery['joyBridgeConfigs'][0],
 ): JoyBridgeConfig {
   return {
     id: raw.id,

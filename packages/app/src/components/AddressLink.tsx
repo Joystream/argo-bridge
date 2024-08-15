@@ -1,9 +1,9 @@
-import { FC } from 'react'
-import { EVM_NETWORK, JOY_NETWORK } from '@/config'
-import { useChainId, useConfig } from 'wagmi'
-import { truncateValue } from '@/lib/utils'
-import { isAddress } from 'viem'
 import { LinkBadge } from '@/components/LinkBadge'
+import { EVM_NETWORK, JOY_NETWORK } from '@/config'
+import { truncateValue } from '@/lib/utils'
+import { FC } from 'react'
+import { isAddress } from 'viem'
+import { useChainId, useConfig } from 'wagmi'
 
 const knownAddresses = {
   [EVM_NETWORK.contracts.timelock.toLowerCase()]: 'TimelockController',

@@ -1,20 +1,20 @@
-import { FC } from 'react'
-import { EvmGovernanceProposal } from '@/lib/proposal'
-import { useUser } from '@/providers/user/user.hooks'
-import { useSafeStore } from '@/providers/safe/safe.store'
-import { useTransaction } from '@/providers/transaction'
-import { Hex, zeroHash } from 'viem'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import { toast } from 'sonner'
-import { useEvmProposalsQuery } from '@/lib/hooks'
-import { TimelockAbi } from '@joystream/argo-core'
-import { TIMELOCK_ADDRESS } from '@/config'
-import { useWriteContract } from 'wagmi'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { TIMELOCK_ADDRESS } from '@/config'
+import { useEvmProposalsQuery } from '@/lib/hooks'
+import { EvmGovernanceProposal } from '@/lib/proposal'
+import { useSafeStore } from '@/providers/safe/safe.store'
+import { useTransaction } from '@/providers/transaction'
+import { useUser } from '@/providers/user/user.hooks'
+import { TimelockAbi } from '@joystream/argo-core'
+import { FC } from 'react'
+import { toast } from 'sonner'
+import { Hex, zeroHash } from 'viem'
+import { useWriteContract } from 'wagmi'
 
 type ProposalActionsProps = {
   proposal: EvmGovernanceProposal
@@ -49,7 +49,7 @@ export const ProposalActions: FC<ProposalActionsProps> = ({ proposal }) => {
       const signature = await adminSafe.signHash(status.safeTx.safeTxHash)
       await safeApiKit?.confirmTransaction(
         status.safeTx.safeTxHash,
-        signature.data
+        signature.data,
       )
       await refetch()
     }
@@ -77,7 +77,7 @@ export const ProposalActions: FC<ProposalActionsProps> = ({ proposal }) => {
     const currentNonce = await adminSafe.getNonce()
     if (currentNonce !== status.safeTx.nonce) {
       toast.error(
-        `Transaction (nonce ${status.safeTx.nonce}) is not the next in queue. Next nonce is ${currentNonce}.`
+        `Transaction (nonce ${status.safeTx.nonce}) is not the next in queue. Next nonce is ${currentNonce}.`,
       )
       return
     }

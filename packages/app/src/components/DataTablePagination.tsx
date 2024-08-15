@@ -1,3 +1,7 @@
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { UseQueryResult } from '@tanstack/react-query'
+import { Table } from '@tanstack/react-table'
 import {
   ChevronFirst,
   ChevronLast,
@@ -5,11 +9,6 @@ import {
   ChevronRightIcon,
   RefreshCcwIcon,
 } from 'lucide-react'
-import { Table } from '@tanstack/react-table'
-
-import { Button } from '@/components/ui/button'
-import { UseQueryResult } from '@tanstack/react-query'
-import { cn } from '@/lib/utils'
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>

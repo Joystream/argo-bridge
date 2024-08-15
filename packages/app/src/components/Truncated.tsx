@@ -1,11 +1,11 @@
-import { FC } from 'react'
-import { cn, truncateValue } from '@/lib/utils'
-import { CopyIcon } from 'lucide-react'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { cn, truncateValue } from '@/lib/utils'
+import { CopyIcon } from 'lucide-react'
+import { FC } from 'react'
 import { toast } from 'sonner'
 import { getAddress, isAddress, keccak256, toHex } from 'viem'
 
@@ -42,7 +42,7 @@ export const Truncated: FC<{
           className={cn(
             'flex items-center',
             !right && 'justify-between min-w-[205px]',
-            right && 'text-right'
+            right && 'text-right',
           )}
         >
           {knownValues[value] ?? truncated}

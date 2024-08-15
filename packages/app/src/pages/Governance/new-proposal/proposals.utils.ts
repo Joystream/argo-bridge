@@ -1,16 +1,16 @@
-import { useReadContract } from 'wagmi'
-import { TimelockAbi } from '@joystream/argo-core'
 import { EVM_NETWORK, TIMELOCK_ADDRESS } from '@/config'
+import { useSafeStore } from '@/providers/safe/safe.store'
 import { useTransaction } from '@/providers/transaction'
-import { Address, bytesToHex, encodeFunctionData, Hex, zeroHash } from 'viem'
-import { useCallback } from 'react'
-import { toast } from 'sonner'
+import { useUser } from '@/providers/user/user.hooks'
+import { TimelockAbi } from '@joystream/argo-core'
 import {
   MetaTransactionData,
   OperationType,
 } from '@safe-global/safe-core-sdk-types'
-import { useUser } from '@/providers/user/user.hooks'
-import { useSafeStore } from '@/providers/safe/safe.store'
+import { useCallback } from 'react'
+import { toast } from 'sonner'
+import { Address, Hex, bytesToHex, encodeFunctionData, zeroHash } from 'viem'
+import { useReadContract } from 'wagmi'
 
 type Call = {
   target: Address
@@ -105,6 +105,6 @@ export const useProposeCall = () => {
 
       addTxPromise(doScheduleCall())
     },
-    [timelockMinDelay, addTxPromise]
+    [timelockMinDelay, addTxPromise],
   )
 }

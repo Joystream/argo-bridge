@@ -1,8 +1,8 @@
-import { FC, ReactNode, useId } from 'react'
+import { InfoTooltip } from '@/components/InfoTooltip'
 import { Input, InputProps } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { InfoTooltip } from '@/components/InfoTooltip'
 import { cn } from '@/lib/utils'
+import { FC, ReactNode, useId } from 'react'
 
 export type JoyInputProps = {
   label: string

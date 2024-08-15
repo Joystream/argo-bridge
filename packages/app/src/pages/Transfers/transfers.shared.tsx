@@ -1,21 +1,21 @@
-import { createColumnHelper } from '@tanstack/react-table'
-import { BridgeTransfer } from '@/lib/transfer'
-import { formatJoy } from '@/lib/utils'
-import { match } from 'ts-pattern'
-import { BridgeTransferStatus, BridgeTransferType } from '@/gql/graphql'
-import { ALL_NETWORKS } from '@joystream/argo-core'
+import { TransferToEvmActions } from './TransferToEvmActions'
+import { TransferToJoyActions } from './TransferToJoyActions'
+import { Truncated } from '@/components/Truncated'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { EVM_NETWORK, JOY_NETWORK } from '@/config'
+import { BridgeTransferStatus, BridgeTransferType } from '@/gql/graphql'
+import { BridgeTransfer } from '@/lib/transfer'
+import { formatJoy } from '@/lib/utils'
+import { ALL_NETWORKS } from '@joystream/argo-core'
+import { createColumnHelper } from '@tanstack/react-table'
 import { EllipsisVertical } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
-import { Truncated } from '@/components/Truncated'
-import { TransferToJoyActions } from './TransferToJoyActions'
-import { TransferToEvmActions } from './TransferToEvmActions'
-import { EVM_NETWORK, JOY_NETWORK } from '@/config'
+import { match } from 'ts-pattern'
 
 const columnHelper = createColumnHelper<BridgeTransfer>()
 
@@ -24,7 +24,7 @@ export const NETWORKS_NAME_LOOKUP = Object.values(ALL_NETWORKS).reduce(
     acc[network.chainId] = network.name
     return acc
   },
-  {} as Record<number, string>
+  {} as Record<number, string>,
 )
 
 export const statusFilterOptions = [

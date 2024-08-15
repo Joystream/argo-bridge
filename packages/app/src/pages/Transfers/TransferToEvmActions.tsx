@@ -1,26 +1,26 @@
-import { FC } from 'react'
-import { BridgeTransfer } from '@/lib/transfer'
-import { BRIDGE_ADDRESS, EVM_NETWORK } from '@/config'
-import { useSafeStore } from '@/providers/safe/safe.store'
-import { usePendingOperatorCallsQuery } from '@/providers/safe/safe.hooks'
-import { useTransaction } from '@/providers/transaction'
-import { useUser } from '@/providers/user/user.hooks'
-import { encodeFunctionData } from 'viem'
-import { BridgeAbi } from '@joystream/argo-core'
-import { toast } from 'sonner'
-import {
-  MetaTransactionData,
-  OperationType,
-} from '@safe-global/safe-core-sdk-types'
-import { BridgeTransferStatus } from '@/gql/graphql'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import { useTransfersQuery } from '@/lib/hooks'
-import { buildSignatureBytes } from '@safe-global/protocol-kit'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { BRIDGE_ADDRESS, EVM_NETWORK } from '@/config'
+import { BridgeTransferStatus } from '@/gql/graphql'
+import { useTransfersQuery } from '@/lib/hooks'
+import { BridgeTransfer } from '@/lib/transfer'
+import { usePendingOperatorCallsQuery } from '@/providers/safe/safe.hooks'
+import { useSafeStore } from '@/providers/safe/safe.store'
+import { useTransaction } from '@/providers/transaction'
+import { useUser } from '@/providers/user/user.hooks'
+import { BridgeAbi } from '@joystream/argo-core'
+import { buildSignatureBytes } from '@safe-global/protocol-kit'
+import {
+  MetaTransactionData,
+  OperationType,
+} from '@safe-global/safe-core-sdk-types'
+import { FC } from 'react'
+import { toast } from 'sonner'
+import { encodeFunctionData } from 'viem'
 
 export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
   transfer,
@@ -37,7 +37,7 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
   }
 
   const pendingBridgeCalls = data.results.filter(
-    (call) => call.to === BRIDGE_ADDRESS
+    (call) => call.to === BRIDGE_ADDRESS,
   )
 
   const completeTransferCalldata = encodeFunctionData({
@@ -47,7 +47,7 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
   })
 
   const pendingApproval = pendingBridgeCalls.find(
-    (call) => call.data === completeTransferCalldata
+    (call) => call.data === completeTransferCalldata,
   )
   const approvals = pendingApproval?.confirmations
   const approvalsCount = approvals?.length ?? 0
@@ -76,11 +76,11 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
     const doApprove = async () => {
       if (pendingApproval) {
         const signature = await operatorSafe.signHash(
-          pendingApproval.safeTxHash
+          pendingApproval.safeTxHash,
         )
         await safeApiKit.confirmTransaction(
           pendingApproval.safeTxHash,
-          buildSignatureBytes([signature])
+          buildSignatureBytes([signature]),
         )
       } else {
         const safeTransactionData: MetaTransactionData = {
@@ -123,7 +123,7 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
     const currentNonce = await operatorSafe.getNonce()
     if (currentNonce !== pendingApproval.nonce) {
       toast.error(
-        `This transaction must be executed after nonce ${pendingApproval.nonce - 1}`
+        `This transaction must be executed after nonce ${pendingApproval.nonce - 1}`,
       )
       return
     }
@@ -132,7 +132,7 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
       .executeTransaction(pendingApproval)
       .then((executeTxResponse) =>
         // @ts-ignore
-        executeTxResponse.transactionResponse?.wait?.()
+        executeTxResponse.transactionResponse?.wait?.(),
       )
       .then(() => {
         refetchTransfers()

@@ -1,13 +1,13 @@
-import { FC } from 'react'
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { NewProposalFields } from './NewProposalFields'
 import { useProposeCall } from './proposals.utils'
-import { encodeFunctionData, parseEther } from 'viem'
-import { BridgeAbi } from '@joystream/argo-core'
 import { BRIDGE_ADDRESS } from '@/config'
 import { rawAmountSchema } from '@/lib/forms'
-import { NewProposalFields } from './NewProposalFields'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { BridgeAbi } from '@joystream/argo-core'
+import { FC } from 'react'
+import { useForm } from 'react-hook-form'
+import { encodeFunctionData, parseEther } from 'viem'
+import { z } from 'zod'
 
 const formSchema = z.object({
   newFeeRaw: rawAmountSchema,

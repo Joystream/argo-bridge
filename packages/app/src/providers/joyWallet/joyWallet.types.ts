@@ -1,5 +1,5 @@
-import { createContext } from 'react'
 import { Account } from '@polkadot-onboard/core'
+import { createContext } from 'react'
 
 export const JoyWalletContext = createContext<
   | undefined

@@ -1,4 +1,3 @@
-import { FC, PropsWithChildren } from 'react'
 import {
   Card,
   CardContent,
@@ -6,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { FC, PropsWithChildren } from 'react'
 
 export type JoyCardProps = PropsWithChildren<{
   title: string

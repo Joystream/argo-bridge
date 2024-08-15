@@ -1,7 +1,7 @@
-import { FC } from 'react'
 import { ProposalsTable } from './ProposalsTable'
-import { Outlet } from 'react-router-dom'
 import { ProcessorStatusInfo } from '@/components/ProcessorStatusInfo'
+import { FC } from 'react'
+import { Outlet } from 'react-router-dom'
 
 export const ProposalsTab: FC = () => {
   return (

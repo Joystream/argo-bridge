@@ -1,18 +1,12 @@
-import { FC } from 'react'
-import { Disclosure } from '@headlessui/react'
-import { Menu, Moon, Sun, X } from 'lucide-react'
-import { NavLink, useLocation } from 'react-router-dom'
-import { ROUTES } from '@/routes'
-import { JoyConnectButton } from '@/components/JoyConnectButton'
 import { EvmConnectButton } from '@/components/EvmConnectButton'
+import { JoyConnectButton } from '@/components/JoyConnectButton'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Button } from '@/components/ui/button'
-import { useTheme } from '@/providers/theme.provider'
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -20,6 +14,12 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
+import { useTheme } from '@/providers/theme.provider'
+import { ROUTES } from '@/routes'
+import { Disclosure } from '@headlessui/react'
+import { Menu, Moon, Sun, X } from 'lucide-react'
+import { FC } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 
 export const TopNav: FC = () => {
   const { setTheme } = useTheme()

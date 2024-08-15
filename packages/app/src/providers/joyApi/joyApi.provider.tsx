@@ -1,20 +1,20 @@
+import { JOY_NETWORK } from '@/config'
 import * as types from '@joystream/types'
 import { ApiPromise, WsProvider } from '@polkadot/api'
 import {
-  createContext,
   FC,
   PropsWithChildren,
+  createContext,
   useCallback,
   useContext,
   useEffect,
   useState,
 } from 'react'
-import { JOY_NETWORK } from '@/config'
 
 type JoyApiContextType = {
   api: ApiPromise | null
   apiAt: (
-    blockNumber: number
+    blockNumber: number,
   ) => Promise<Awaited<ReturnType<ApiPromise['at']>> | null>
 }
 export const JoyApiContext = createContext<JoyApiContextType>({
@@ -42,7 +42,7 @@ export const JoyApiProvider: FC<PropsWithChildren> = ({ children }) => {
       const hash = await api.rpc.chain.getBlockHash(blockNumber)
       return await api.at(hash)
     },
-    [api]
+    [api],
   )
 
   return (

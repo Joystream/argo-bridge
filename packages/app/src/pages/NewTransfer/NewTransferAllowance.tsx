@@ -1,11 +1,11 @@
-import React, { FC } from 'react'
-import { CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
+import { CardFooter } from '@/components/ui/card'
 import { BRIDGE_ADDRESS, ERC20_ADDRESS } from '@/config'
-import { Erc20Abi } from '@joystream/argo-core'
-import { Address, maxUint256 } from 'viem'
 import { useTransaction } from '@/providers/transaction'
+import { Erc20Abi } from '@joystream/argo-core'
+import React, { FC } from 'react'
+import { toast } from 'sonner'
+import { Address, maxUint256 } from 'viem'
 import { useWriteContract } from 'wagmi'
 
 type NewTransferAllowanceProps = {
@@ -38,7 +38,7 @@ export const NewTransferAllowance: FC<NewTransferAllowanceProps> = ({
       },
       {
         onSuccess: () => onSuccess(),
-      }
+      },
     )
     addTxPromise(tx)
   }

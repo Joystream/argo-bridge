@@ -1,14 +1,5 @@
-import { FC } from 'react'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { Button, ButtonProps } from '@/components/ui/button'
-import { useJoyWallets } from '@/providers/joyWallet'
-import { toast } from 'sonner'
-import { cn, truncateValue } from '@/lib/utils'
+import { Card, CardHeader } from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
@@ -17,15 +8,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Card, CardHeader } from '@/components/ui/card'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { cn, truncateValue } from '@/lib/utils'
+import { useJoyWallets } from '@/providers/joyWallet'
 import { useUser } from '@/providers/user/user.hooks'
 import { CopyIcon } from 'lucide-react'
+import { FC } from 'react'
+import { toast } from 'sonner'
 
 type JoyConnectButtonProps = {
   text?: string
@@ -57,7 +57,7 @@ export const JoyConnectButton: FC<JoyConnectButtonProps> = ({
         return
       }
       toast.success(
-        `Joystream wallet connected with ${accounts.length} accounts`
+        `Joystream wallet connected with ${accounts.length} accounts`,
       )
     } catch (error) {
       console.error(error)

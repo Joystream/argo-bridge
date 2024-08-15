@@ -1,56 +1,70 @@
 /* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
-export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
+
+export type Maybe<T> = T | null
+export type InputMaybe<T> = Maybe<T>
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K]
+}
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>
+}
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>
+}
+export type MakeEmpty<
+  T extends { [key: string]: unknown },
+  K extends keyof T,
+> = { [_ in K]?: never }
+export type Incremental<T> =
+  | T
+  | {
+      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never
+    }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
+  ID: { input: string; output: string }
+  String: { input: string; output: string }
+  Boolean: { input: boolean; output: boolean }
+  Int: { input: number; output: number }
+  Float: { input: number; output: number }
   /** Big number integer */
-  BigInt: { input: string; output: string; }
+  BigInt: { input: string; output: string }
   /** A date-time string in simplified extended ISO 8601 format (YYYY-MM-DDTHH:mm:ss.sssZ) */
-  DateTime: { input: string; output: string; }
-};
+  DateTime: { input: string; output: string }
+}
 
 export type BridgeTransfer = {
-  __typename?: 'BridgeTransfer';
-  amount: Scalars['BigInt']['output'];
-  completedAtBlock?: Maybe<Scalars['Int']['output']>;
-  completedAtTimestamp?: Maybe<Scalars['DateTime']['output']>;
-  completedTxHash?: Maybe<Scalars['String']['output']>;
-  createdAtBlock: Scalars['Int']['output'];
-  createdAtTimestamp: Scalars['DateTime']['output'];
-  createdTxHash: Scalars['String']['output'];
-  destAccount: Scalars['String']['output'];
-  destChainId: Scalars['Int']['output'];
-  feePaid: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  revertAccount?: Maybe<Scalars['String']['output']>;
-  revertAmount?: Maybe<Scalars['BigInt']['output']>;
-  revertReason?: Maybe<Scalars['String']['output']>;
-  revertedAtBlock?: Maybe<Scalars['Int']['output']>;
-  revertedAtTimestamp?: Maybe<Scalars['DateTime']['output']>;
-  revertedTxHash?: Maybe<Scalars['String']['output']>;
-  sourceAccount: Scalars['String']['output'];
-  sourceChainId: Scalars['Int']['output'];
-  sourceTransferId: Scalars['BigInt']['output'];
-  status: BridgeTransferStatus;
-  type: BridgeTransferType;
-};
+  __typename?: 'BridgeTransfer'
+  amount: Scalars['BigInt']['output']
+  completedAtBlock?: Maybe<Scalars['Int']['output']>
+  completedAtTimestamp?: Maybe<Scalars['DateTime']['output']>
+  completedTxHash?: Maybe<Scalars['String']['output']>
+  createdAtBlock: Scalars['Int']['output']
+  createdAtTimestamp: Scalars['DateTime']['output']
+  createdTxHash: Scalars['String']['output']
+  destAccount: Scalars['String']['output']
+  destChainId: Scalars['Int']['output']
+  feePaid: Scalars['BigInt']['output']
+  id: Scalars['String']['output']
+  revertAccount?: Maybe<Scalars['String']['output']>
+  revertAmount?: Maybe<Scalars['BigInt']['output']>
+  revertReason?: Maybe<Scalars['String']['output']>
+  revertedAtBlock?: Maybe<Scalars['Int']['output']>
+  revertedAtTimestamp?: Maybe<Scalars['DateTime']['output']>
+  revertedTxHash?: Maybe<Scalars['String']['output']>
+  sourceAccount: Scalars['String']['output']
+  sourceChainId: Scalars['Int']['output']
+  sourceTransferId: Scalars['BigInt']['output']
+  status: BridgeTransferStatus
+  type: BridgeTransferType
+}
 
 export type BridgeTransferEdge = {
-  __typename?: 'BridgeTransferEdge';
-  cursor: Scalars['String']['output'];
-  node: BridgeTransfer;
-};
+  __typename?: 'BridgeTransferEdge'
+  cursor: Scalars['String']['output']
+  node: BridgeTransfer
+}
 
 export enum BridgeTransferOrderByInput {
   AmountAsc = 'amount_ASC',
@@ -184,314 +198,318 @@ export enum BridgeTransferOrderByInput {
   TypeAscNullsLast = 'type_ASC_NULLS_LAST',
   TypeDesc = 'type_DESC',
   TypeDescNullsFirst = 'type_DESC_NULLS_FIRST',
-  TypeDescNullsLast = 'type_DESC_NULLS_LAST'
+  TypeDescNullsLast = 'type_DESC_NULLS_LAST',
 }
 
 export enum BridgeTransferStatus {
   Completed = 'COMPLETED',
   MaybeCompleted = 'MAYBE_COMPLETED',
   Requested = 'REQUESTED',
-  Reverted = 'REVERTED'
+  Reverted = 'REVERTED',
 }
 
 export enum BridgeTransferType {
   EvmToJoy = 'EVM_TO_JOY',
-  JoyToEvm = 'JOY_TO_EVM'
+  JoyToEvm = 'JOY_TO_EVM',
 }
 
 export type BridgeTransferWhereInput = {
-  AND?: InputMaybe<Array<BridgeTransferWhereInput>>;
-  OR?: InputMaybe<Array<BridgeTransferWhereInput>>;
-  amount_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  completedAtBlock_eq?: InputMaybe<Scalars['Int']['input']>;
-  completedAtBlock_gt?: InputMaybe<Scalars['Int']['input']>;
-  completedAtBlock_gte?: InputMaybe<Scalars['Int']['input']>;
-  completedAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  completedAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  completedAtBlock_lt?: InputMaybe<Scalars['Int']['input']>;
-  completedAtBlock_lte?: InputMaybe<Scalars['Int']['input']>;
-  completedAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  completedAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  completedAtTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  completedAtTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  completedAtTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  completedAtTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  completedAtTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  completedAtTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  completedAtTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  completedAtTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  completedAtTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  completedTxHash_contains?: InputMaybe<Scalars['String']['input']>;
-  completedTxHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  completedTxHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  completedTxHash_eq?: InputMaybe<Scalars['String']['input']>;
-  completedTxHash_gt?: InputMaybe<Scalars['String']['input']>;
-  completedTxHash_gte?: InputMaybe<Scalars['String']['input']>;
-  completedTxHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  completedTxHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  completedTxHash_lt?: InputMaybe<Scalars['String']['input']>;
-  completedTxHash_lte?: InputMaybe<Scalars['String']['input']>;
-  completedTxHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  completedTxHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  completedTxHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  completedTxHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  completedTxHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  completedTxHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  completedTxHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-  createdAtBlock_eq?: InputMaybe<Scalars['Int']['input']>;
-  createdAtBlock_gt?: InputMaybe<Scalars['Int']['input']>;
-  createdAtBlock_gte?: InputMaybe<Scalars['Int']['input']>;
-  createdAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  createdAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  createdAtBlock_lt?: InputMaybe<Scalars['Int']['input']>;
-  createdAtBlock_lte?: InputMaybe<Scalars['Int']['input']>;
-  createdAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  createdAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  createdAtTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAtTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAtTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAtTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  createdAtTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  createdAtTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAtTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAtTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAtTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  createdTxHash_contains?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_eq?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_gt?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_gte?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  createdTxHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  createdTxHash_lt?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_lte?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  createdTxHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-  destAccount_contains?: InputMaybe<Scalars['String']['input']>;
-  destAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  destAccount_endsWith?: InputMaybe<Scalars['String']['input']>;
-  destAccount_eq?: InputMaybe<Scalars['String']['input']>;
-  destAccount_gt?: InputMaybe<Scalars['String']['input']>;
-  destAccount_gte?: InputMaybe<Scalars['String']['input']>;
-  destAccount_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  destAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  destAccount_lt?: InputMaybe<Scalars['String']['input']>;
-  destAccount_lte?: InputMaybe<Scalars['String']['input']>;
-  destAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
-  destAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  destAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  destAccount_not_eq?: InputMaybe<Scalars['String']['input']>;
-  destAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  destAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  destAccount_startsWith?: InputMaybe<Scalars['String']['input']>;
-  destChainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  destChainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  destChainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  destChainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  destChainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  destChainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  destChainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  destChainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  destChainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  feePaid_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  feePaid_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  feePaid_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  feePaid_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  feePaid_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  feePaid_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  feePaid_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  feePaid_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  feePaid_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_contains?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_endsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_eq?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_gt?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_gte?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  revertAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  revertAccount_lt?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_lte?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_eq?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  revertAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_startsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAmount_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  revertAmount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  revertAmount_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  revertReason_contains?: InputMaybe<Scalars['String']['input']>;
-  revertReason_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  revertReason_endsWith?: InputMaybe<Scalars['String']['input']>;
-  revertReason_eq?: InputMaybe<Scalars['String']['input']>;
-  revertReason_gt?: InputMaybe<Scalars['String']['input']>;
-  revertReason_gte?: InputMaybe<Scalars['String']['input']>;
-  revertReason_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  revertReason_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  revertReason_lt?: InputMaybe<Scalars['String']['input']>;
-  revertReason_lte?: InputMaybe<Scalars['String']['input']>;
-  revertReason_not_contains?: InputMaybe<Scalars['String']['input']>;
-  revertReason_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  revertReason_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  revertReason_not_eq?: InputMaybe<Scalars['String']['input']>;
-  revertReason_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  revertReason_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  revertReason_startsWith?: InputMaybe<Scalars['String']['input']>;
-  revertedAtBlock_eq?: InputMaybe<Scalars['Int']['input']>;
-  revertedAtBlock_gt?: InputMaybe<Scalars['Int']['input']>;
-  revertedAtBlock_gte?: InputMaybe<Scalars['Int']['input']>;
-  revertedAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  revertedAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  revertedAtBlock_lt?: InputMaybe<Scalars['Int']['input']>;
-  revertedAtBlock_lte?: InputMaybe<Scalars['Int']['input']>;
-  revertedAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  revertedAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  revertedAtTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  revertedAtTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  revertedAtTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  revertedAtTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  revertedAtTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  revertedAtTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  revertedAtTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  revertedAtTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  revertedAtTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  revertedTxHash_contains?: InputMaybe<Scalars['String']['input']>;
-  revertedTxHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  revertedTxHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  revertedTxHash_eq?: InputMaybe<Scalars['String']['input']>;
-  revertedTxHash_gt?: InputMaybe<Scalars['String']['input']>;
-  revertedTxHash_gte?: InputMaybe<Scalars['String']['input']>;
-  revertedTxHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  revertedTxHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  revertedTxHash_lt?: InputMaybe<Scalars['String']['input']>;
-  revertedTxHash_lte?: InputMaybe<Scalars['String']['input']>;
-  revertedTxHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  revertedTxHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  revertedTxHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  revertedTxHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  revertedTxHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  revertedTxHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  revertedTxHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_contains?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_endsWith?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_eq?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_gt?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_gte?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  sourceAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  sourceAccount_lt?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_lte?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_not_eq?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  sourceAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  sourceAccount_startsWith?: InputMaybe<Scalars['String']['input']>;
-  sourceChainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  sourceChainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  sourceChainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  sourceChainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  sourceChainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  sourceChainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  sourceChainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  sourceChainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  sourceChainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  sourceTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  sourceTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  sourceTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  sourceTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  sourceTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  sourceTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  sourceTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  sourceTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  sourceTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  status_eq?: InputMaybe<BridgeTransferStatus>;
-  status_in?: InputMaybe<Array<BridgeTransferStatus>>;
-  status_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  status_not_eq?: InputMaybe<BridgeTransferStatus>;
-  status_not_in?: InputMaybe<Array<BridgeTransferStatus>>;
-  type_eq?: InputMaybe<BridgeTransferType>;
-  type_in?: InputMaybe<Array<BridgeTransferType>>;
-  type_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  type_not_eq?: InputMaybe<BridgeTransferType>;
-  type_not_in?: InputMaybe<Array<BridgeTransferType>>;
-};
+  AND?: InputMaybe<Array<BridgeTransferWhereInput>>
+  OR?: InputMaybe<Array<BridgeTransferWhereInput>>
+  amount_eq?: InputMaybe<Scalars['BigInt']['input']>
+  amount_gt?: InputMaybe<Scalars['BigInt']['input']>
+  amount_gte?: InputMaybe<Scalars['BigInt']['input']>
+  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  amount_lt?: InputMaybe<Scalars['BigInt']['input']>
+  amount_lte?: InputMaybe<Scalars['BigInt']['input']>
+  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  completedAtBlock_eq?: InputMaybe<Scalars['Int']['input']>
+  completedAtBlock_gt?: InputMaybe<Scalars['Int']['input']>
+  completedAtBlock_gte?: InputMaybe<Scalars['Int']['input']>
+  completedAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  completedAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  completedAtBlock_lt?: InputMaybe<Scalars['Int']['input']>
+  completedAtBlock_lte?: InputMaybe<Scalars['Int']['input']>
+  completedAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>
+  completedAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  completedAtTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  completedAtTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  completedAtTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  completedAtTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  completedAtTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  completedAtTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  completedAtTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  completedAtTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  completedAtTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  completedTxHash_contains?: InputMaybe<Scalars['String']['input']>
+  completedTxHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  completedTxHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  completedTxHash_eq?: InputMaybe<Scalars['String']['input']>
+  completedTxHash_gt?: InputMaybe<Scalars['String']['input']>
+  completedTxHash_gte?: InputMaybe<Scalars['String']['input']>
+  completedTxHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  completedTxHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  completedTxHash_lt?: InputMaybe<Scalars['String']['input']>
+  completedTxHash_lte?: InputMaybe<Scalars['String']['input']>
+  completedTxHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  completedTxHash_not_containsInsensitive?: InputMaybe<
+    Scalars['String']['input']
+  >
+  completedTxHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  completedTxHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  completedTxHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  completedTxHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  completedTxHash_startsWith?: InputMaybe<Scalars['String']['input']>
+  createdAtBlock_eq?: InputMaybe<Scalars['Int']['input']>
+  createdAtBlock_gt?: InputMaybe<Scalars['Int']['input']>
+  createdAtBlock_gte?: InputMaybe<Scalars['Int']['input']>
+  createdAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  createdAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  createdAtBlock_lt?: InputMaybe<Scalars['Int']['input']>
+  createdAtBlock_lte?: InputMaybe<Scalars['Int']['input']>
+  createdAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>
+  createdAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  createdAtTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  createdAtTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  createdAtTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  createdAtTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  createdAtTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  createdAtTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  createdAtTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  createdAtTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  createdAtTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  createdTxHash_contains?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_eq?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_gt?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_gte?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  createdTxHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  createdTxHash_lt?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_lte?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  createdTxHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_startsWith?: InputMaybe<Scalars['String']['input']>
+  destAccount_contains?: InputMaybe<Scalars['String']['input']>
+  destAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  destAccount_endsWith?: InputMaybe<Scalars['String']['input']>
+  destAccount_eq?: InputMaybe<Scalars['String']['input']>
+  destAccount_gt?: InputMaybe<Scalars['String']['input']>
+  destAccount_gte?: InputMaybe<Scalars['String']['input']>
+  destAccount_in?: InputMaybe<Array<Scalars['String']['input']>>
+  destAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  destAccount_lt?: InputMaybe<Scalars['String']['input']>
+  destAccount_lte?: InputMaybe<Scalars['String']['input']>
+  destAccount_not_contains?: InputMaybe<Scalars['String']['input']>
+  destAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  destAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  destAccount_not_eq?: InputMaybe<Scalars['String']['input']>
+  destAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  destAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  destAccount_startsWith?: InputMaybe<Scalars['String']['input']>
+  destChainId_eq?: InputMaybe<Scalars['Int']['input']>
+  destChainId_gt?: InputMaybe<Scalars['Int']['input']>
+  destChainId_gte?: InputMaybe<Scalars['Int']['input']>
+  destChainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  destChainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  destChainId_lt?: InputMaybe<Scalars['Int']['input']>
+  destChainId_lte?: InputMaybe<Scalars['Int']['input']>
+  destChainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  destChainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  feePaid_eq?: InputMaybe<Scalars['BigInt']['input']>
+  feePaid_gt?: InputMaybe<Scalars['BigInt']['input']>
+  feePaid_gte?: InputMaybe<Scalars['BigInt']['input']>
+  feePaid_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  feePaid_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  feePaid_lt?: InputMaybe<Scalars['BigInt']['input']>
+  feePaid_lte?: InputMaybe<Scalars['BigInt']['input']>
+  feePaid_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  feePaid_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  revertAccount_contains?: InputMaybe<Scalars['String']['input']>
+  revertAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  revertAccount_endsWith?: InputMaybe<Scalars['String']['input']>
+  revertAccount_eq?: InputMaybe<Scalars['String']['input']>
+  revertAccount_gt?: InputMaybe<Scalars['String']['input']>
+  revertAccount_gte?: InputMaybe<Scalars['String']['input']>
+  revertAccount_in?: InputMaybe<Array<Scalars['String']['input']>>
+  revertAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  revertAccount_lt?: InputMaybe<Scalars['String']['input']>
+  revertAccount_lte?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_contains?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_eq?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  revertAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  revertAccount_startsWith?: InputMaybe<Scalars['String']['input']>
+  revertAmount_eq?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_gt?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_gte?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  revertAmount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  revertAmount_lt?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_lte?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  revertReason_contains?: InputMaybe<Scalars['String']['input']>
+  revertReason_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  revertReason_endsWith?: InputMaybe<Scalars['String']['input']>
+  revertReason_eq?: InputMaybe<Scalars['String']['input']>
+  revertReason_gt?: InputMaybe<Scalars['String']['input']>
+  revertReason_gte?: InputMaybe<Scalars['String']['input']>
+  revertReason_in?: InputMaybe<Array<Scalars['String']['input']>>
+  revertReason_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  revertReason_lt?: InputMaybe<Scalars['String']['input']>
+  revertReason_lte?: InputMaybe<Scalars['String']['input']>
+  revertReason_not_contains?: InputMaybe<Scalars['String']['input']>
+  revertReason_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  revertReason_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  revertReason_not_eq?: InputMaybe<Scalars['String']['input']>
+  revertReason_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  revertReason_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  revertReason_startsWith?: InputMaybe<Scalars['String']['input']>
+  revertedAtBlock_eq?: InputMaybe<Scalars['Int']['input']>
+  revertedAtBlock_gt?: InputMaybe<Scalars['Int']['input']>
+  revertedAtBlock_gte?: InputMaybe<Scalars['Int']['input']>
+  revertedAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  revertedAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  revertedAtBlock_lt?: InputMaybe<Scalars['Int']['input']>
+  revertedAtBlock_lte?: InputMaybe<Scalars['Int']['input']>
+  revertedAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>
+  revertedAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  revertedAtTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  revertedAtTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  revertedAtTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  revertedAtTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  revertedAtTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  revertedAtTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  revertedAtTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  revertedAtTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  revertedAtTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  revertedTxHash_contains?: InputMaybe<Scalars['String']['input']>
+  revertedTxHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  revertedTxHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  revertedTxHash_eq?: InputMaybe<Scalars['String']['input']>
+  revertedTxHash_gt?: InputMaybe<Scalars['String']['input']>
+  revertedTxHash_gte?: InputMaybe<Scalars['String']['input']>
+  revertedTxHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  revertedTxHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  revertedTxHash_lt?: InputMaybe<Scalars['String']['input']>
+  revertedTxHash_lte?: InputMaybe<Scalars['String']['input']>
+  revertedTxHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  revertedTxHash_not_containsInsensitive?: InputMaybe<
+    Scalars['String']['input']
+  >
+  revertedTxHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  revertedTxHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  revertedTxHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  revertedTxHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  revertedTxHash_startsWith?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_contains?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_endsWith?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_eq?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_gt?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_gte?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_in?: InputMaybe<Array<Scalars['String']['input']>>
+  sourceAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  sourceAccount_lt?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_lte?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_not_contains?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_not_eq?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  sourceAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  sourceAccount_startsWith?: InputMaybe<Scalars['String']['input']>
+  sourceChainId_eq?: InputMaybe<Scalars['Int']['input']>
+  sourceChainId_gt?: InputMaybe<Scalars['Int']['input']>
+  sourceChainId_gte?: InputMaybe<Scalars['Int']['input']>
+  sourceChainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  sourceChainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  sourceChainId_lt?: InputMaybe<Scalars['Int']['input']>
+  sourceChainId_lte?: InputMaybe<Scalars['Int']['input']>
+  sourceChainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  sourceChainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  sourceTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>
+  sourceTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>
+  sourceTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>
+  sourceTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  sourceTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  sourceTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>
+  sourceTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>
+  sourceTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  sourceTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  status_eq?: InputMaybe<BridgeTransferStatus>
+  status_in?: InputMaybe<Array<BridgeTransferStatus>>
+  status_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  status_not_eq?: InputMaybe<BridgeTransferStatus>
+  status_not_in?: InputMaybe<Array<BridgeTransferStatus>>
+  type_eq?: InputMaybe<BridgeTransferType>
+  type_in?: InputMaybe<Array<BridgeTransferType>>
+  type_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  type_not_eq?: InputMaybe<BridgeTransferType>
+  type_not_in?: InputMaybe<Array<BridgeTransferType>>
+}
 
 export type BridgeTransfersConnection = {
-  __typename?: 'BridgeTransfersConnection';
-  edges: Array<BridgeTransferEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'BridgeTransfersConnection'
+  edges: Array<BridgeTransferEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type Event = {
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash?: Maybe<Scalars['String']['output']>;
-};
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash?: Maybe<Scalars['String']['output']>
+}
 
 export type EvmBridgeConfig = {
-  __typename?: 'EvmBridgeConfig';
-  bridgeAdminAccounts: Array<Scalars['String']['output']>;
-  bridgeOperatorAccounts: Array<Scalars['String']['output']>;
-  bridgingFee: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  mintingLimits: EvmBridgeMintingLimits;
-  pauserAccounts: Array<Scalars['String']['output']>;
-  status: EvmBridgeStatus;
-  timelockAdminAccounts: Array<Scalars['String']['output']>;
-  totalBurned: Scalars['BigInt']['output'];
-  totalMinted: Scalars['BigInt']['output'];
-};
+  __typename?: 'EvmBridgeConfig'
+  bridgeAdminAccounts: Array<Scalars['String']['output']>
+  bridgeOperatorAccounts: Array<Scalars['String']['output']>
+  bridgingFee: Scalars['BigInt']['output']
+  id: Scalars['String']['output']
+  mintingLimits: EvmBridgeMintingLimits
+  pauserAccounts: Array<Scalars['String']['output']>
+  status: EvmBridgeStatus
+  timelockAdminAccounts: Array<Scalars['String']['output']>
+  totalBurned: Scalars['BigInt']['output']
+  totalMinted: Scalars['BigInt']['output']
+}
 
 export type EvmBridgeConfigEdge = {
-  __typename?: 'EvmBridgeConfigEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmBridgeConfig;
-};
+  __typename?: 'EvmBridgeConfigEdge'
+  cursor: Scalars['String']['output']
+  node: EvmBridgeConfig
+}
 
 export enum EvmBridgeConfigOrderByInput {
   BridgingFeeAsc = 'bridgingFee_ASC',
@@ -547,103 +565,121 @@ export enum EvmBridgeConfigOrderByInput {
   TotalMintedAscNullsLast = 'totalMinted_ASC_NULLS_LAST',
   TotalMintedDesc = 'totalMinted_DESC',
   TotalMintedDescNullsFirst = 'totalMinted_DESC_NULLS_FIRST',
-  TotalMintedDescNullsLast = 'totalMinted_DESC_NULLS_LAST'
+  TotalMintedDescNullsLast = 'totalMinted_DESC_NULLS_LAST',
 }
 
 export type EvmBridgeConfigWhereInput = {
-  AND?: InputMaybe<Array<EvmBridgeConfigWhereInput>>;
-  OR?: InputMaybe<Array<EvmBridgeConfigWhereInput>>;
-  bridgeAdminAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
-  bridgeAdminAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
-  bridgeAdminAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;
-  bridgeAdminAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  bridgeOperatorAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
-  bridgeOperatorAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
-  bridgeOperatorAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;
-  bridgeOperatorAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  bridgingFee_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  bridgingFee_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  bridgingFee_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  bridgingFee_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  bridgingFee_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  bridgingFee_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  bridgingFee_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  bridgingFee_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  bridgingFee_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  mintingLimits?: InputMaybe<EvmBridgeMintingLimitsWhereInput>;
-  mintingLimits_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  pauserAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
-  pauserAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
-  pauserAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;
-  pauserAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  status_eq?: InputMaybe<EvmBridgeStatus>;
-  status_in?: InputMaybe<Array<EvmBridgeStatus>>;
-  status_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  status_not_eq?: InputMaybe<EvmBridgeStatus>;
-  status_not_in?: InputMaybe<Array<EvmBridgeStatus>>;
-  timelockAdminAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
-  timelockAdminAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
-  timelockAdminAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;
-  timelockAdminAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  totalBurned_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  totalBurned_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  totalBurned_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  totalBurned_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  totalBurned_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  totalBurned_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  totalBurned_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  totalBurned_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  totalBurned_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  totalMinted_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  totalMinted_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  totalMinted_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  totalMinted_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  totalMinted_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  totalMinted_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  totalMinted_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  totalMinted_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  totalMinted_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-};
+  AND?: InputMaybe<Array<EvmBridgeConfigWhereInput>>
+  OR?: InputMaybe<Array<EvmBridgeConfigWhereInput>>
+  bridgeAdminAccounts_containsAll?: InputMaybe<
+    Array<Scalars['String']['input']>
+  >
+  bridgeAdminAccounts_containsAny?: InputMaybe<
+    Array<Scalars['String']['input']>
+  >
+  bridgeAdminAccounts_containsNone?: InputMaybe<
+    Array<Scalars['String']['input']>
+  >
+  bridgeAdminAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  bridgeOperatorAccounts_containsAll?: InputMaybe<
+    Array<Scalars['String']['input']>
+  >
+  bridgeOperatorAccounts_containsAny?: InputMaybe<
+    Array<Scalars['String']['input']>
+  >
+  bridgeOperatorAccounts_containsNone?: InputMaybe<
+    Array<Scalars['String']['input']>
+  >
+  bridgeOperatorAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  bridgingFee_eq?: InputMaybe<Scalars['BigInt']['input']>
+  bridgingFee_gt?: InputMaybe<Scalars['BigInt']['input']>
+  bridgingFee_gte?: InputMaybe<Scalars['BigInt']['input']>
+  bridgingFee_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  bridgingFee_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  bridgingFee_lt?: InputMaybe<Scalars['BigInt']['input']>
+  bridgingFee_lte?: InputMaybe<Scalars['BigInt']['input']>
+  bridgingFee_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  bridgingFee_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  mintingLimits?: InputMaybe<EvmBridgeMintingLimitsWhereInput>
+  mintingLimits_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  pauserAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>
+  pauserAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>
+  pauserAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>
+  pauserAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  status_eq?: InputMaybe<EvmBridgeStatus>
+  status_in?: InputMaybe<Array<EvmBridgeStatus>>
+  status_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  status_not_eq?: InputMaybe<EvmBridgeStatus>
+  status_not_in?: InputMaybe<Array<EvmBridgeStatus>>
+  timelockAdminAccounts_containsAll?: InputMaybe<
+    Array<Scalars['String']['input']>
+  >
+  timelockAdminAccounts_containsAny?: InputMaybe<
+    Array<Scalars['String']['input']>
+  >
+  timelockAdminAccounts_containsNone?: InputMaybe<
+    Array<Scalars['String']['input']>
+  >
+  timelockAdminAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  totalBurned_eq?: InputMaybe<Scalars['BigInt']['input']>
+  totalBurned_gt?: InputMaybe<Scalars['BigInt']['input']>
+  totalBurned_gte?: InputMaybe<Scalars['BigInt']['input']>
+  totalBurned_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  totalBurned_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  totalBurned_lt?: InputMaybe<Scalars['BigInt']['input']>
+  totalBurned_lte?: InputMaybe<Scalars['BigInt']['input']>
+  totalBurned_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  totalBurned_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  totalMinted_eq?: InputMaybe<Scalars['BigInt']['input']>
+  totalMinted_gt?: InputMaybe<Scalars['BigInt']['input']>
+  totalMinted_gte?: InputMaybe<Scalars['BigInt']['input']>
+  totalMinted_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  totalMinted_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  totalMinted_lt?: InputMaybe<Scalars['BigInt']['input']>
+  totalMinted_lte?: InputMaybe<Scalars['BigInt']['input']>
+  totalMinted_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  totalMinted_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+}
 
 export type EvmBridgeConfigsConnection = {
-  __typename?: 'EvmBridgeConfigsConnection';
-  edges: Array<EvmBridgeConfigEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmBridgeConfigsConnection'
+  edges: Array<EvmBridgeConfigEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmBridgeFeeChangedEvent = Event & {
-  __typename?: 'EvmBridgeFeeChangedEvent';
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  fee: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmBridgeFeeChangedEvent'
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  fee: Scalars['BigInt']['output']
+  id: Scalars['String']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmBridgeFeeChangedEventEdge = {
-  __typename?: 'EvmBridgeFeeChangedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmBridgeFeeChangedEvent;
-};
+  __typename?: 'EvmBridgeFeeChangedEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmBridgeFeeChangedEvent
+}
 
 export enum EvmBridgeFeeChangedEventOrderByInput {
   BlockAsc = 'block_ASC',
@@ -681,107 +717,107 @@ export enum EvmBridgeFeeChangedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmBridgeFeeChangedEventWhereInput = {
-  AND?: InputMaybe<Array<EvmBridgeFeeChangedEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmBridgeFeeChangedEventWhereInput>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  fee_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  fee_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  fee_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  fee_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  fee_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  fee_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  fee_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  fee_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  fee_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmBridgeFeeChangedEventWhereInput>>
+  OR?: InputMaybe<Array<EvmBridgeFeeChangedEventWhereInput>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  fee_eq?: InputMaybe<Scalars['BigInt']['input']>
+  fee_gt?: InputMaybe<Scalars['BigInt']['input']>
+  fee_gte?: InputMaybe<Scalars['BigInt']['input']>
+  fee_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  fee_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  fee_lt?: InputMaybe<Scalars['BigInt']['input']>
+  fee_lte?: InputMaybe<Scalars['BigInt']['input']>
+  fee_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  fee_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmBridgeFeeChangedEventsConnection = {
-  __typename?: 'EvmBridgeFeeChangedEventsConnection';
-  edges: Array<EvmBridgeFeeChangedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmBridgeFeeChangedEventsConnection'
+  edges: Array<EvmBridgeFeeChangedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmBridgeFeesWithdrawnEvent = Event & {
-  __typename?: 'EvmBridgeFeesWithdrawnEvent';
-  amount: Scalars['BigInt']['output'];
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  destination: Scalars['String']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmBridgeFeesWithdrawnEvent'
+  amount: Scalars['BigInt']['output']
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  destination: Scalars['String']['output']
+  id: Scalars['String']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmBridgeFeesWithdrawnEventEdge = {
-  __typename?: 'EvmBridgeFeesWithdrawnEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmBridgeFeesWithdrawnEvent;
-};
+  __typename?: 'EvmBridgeFeesWithdrawnEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmBridgeFeesWithdrawnEvent
+}
 
 export enum EvmBridgeFeesWithdrawnEventOrderByInput {
   AmountAsc = 'amount_ASC',
@@ -825,132 +861,132 @@ export enum EvmBridgeFeesWithdrawnEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmBridgeFeesWithdrawnEventWhereInput = {
-  AND?: InputMaybe<Array<EvmBridgeFeesWithdrawnEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmBridgeFeesWithdrawnEventWhereInput>>;
-  amount_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  destination_contains?: InputMaybe<Scalars['String']['input']>;
-  destination_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  destination_endsWith?: InputMaybe<Scalars['String']['input']>;
-  destination_eq?: InputMaybe<Scalars['String']['input']>;
-  destination_gt?: InputMaybe<Scalars['String']['input']>;
-  destination_gte?: InputMaybe<Scalars['String']['input']>;
-  destination_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  destination_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  destination_lt?: InputMaybe<Scalars['String']['input']>;
-  destination_lte?: InputMaybe<Scalars['String']['input']>;
-  destination_not_contains?: InputMaybe<Scalars['String']['input']>;
-  destination_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  destination_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  destination_not_eq?: InputMaybe<Scalars['String']['input']>;
-  destination_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  destination_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  destination_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmBridgeFeesWithdrawnEventWhereInput>>
+  OR?: InputMaybe<Array<EvmBridgeFeesWithdrawnEventWhereInput>>
+  amount_eq?: InputMaybe<Scalars['BigInt']['input']>
+  amount_gt?: InputMaybe<Scalars['BigInt']['input']>
+  amount_gte?: InputMaybe<Scalars['BigInt']['input']>
+  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  amount_lt?: InputMaybe<Scalars['BigInt']['input']>
+  amount_lte?: InputMaybe<Scalars['BigInt']['input']>
+  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  destination_contains?: InputMaybe<Scalars['String']['input']>
+  destination_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  destination_endsWith?: InputMaybe<Scalars['String']['input']>
+  destination_eq?: InputMaybe<Scalars['String']['input']>
+  destination_gt?: InputMaybe<Scalars['String']['input']>
+  destination_gte?: InputMaybe<Scalars['String']['input']>
+  destination_in?: InputMaybe<Array<Scalars['String']['input']>>
+  destination_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  destination_lt?: InputMaybe<Scalars['String']['input']>
+  destination_lte?: InputMaybe<Scalars['String']['input']>
+  destination_not_contains?: InputMaybe<Scalars['String']['input']>
+  destination_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  destination_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  destination_not_eq?: InputMaybe<Scalars['String']['input']>
+  destination_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  destination_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  destination_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmBridgeFeesWithdrawnEventsConnection = {
-  __typename?: 'EvmBridgeFeesWithdrawnEventsConnection';
-  edges: Array<EvmBridgeFeesWithdrawnEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmBridgeFeesWithdrawnEventsConnection'
+  edges: Array<EvmBridgeFeesWithdrawnEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmBridgeMintingLimits = {
-  __typename?: 'EvmBridgeMintingLimits';
-  currentPeriodEndBlock: Scalars['Int']['output'];
-  currentPeriodMinted: Scalars['BigInt']['output'];
-  periodLength: Scalars['Int']['output'];
-  periodLimit: Scalars['BigInt']['output'];
-};
+  __typename?: 'EvmBridgeMintingLimits'
+  currentPeriodEndBlock: Scalars['Int']['output']
+  currentPeriodMinted: Scalars['BigInt']['output']
+  periodLength: Scalars['Int']['output']
+  periodLimit: Scalars['BigInt']['output']
+}
 
 export type EvmBridgeMintingLimitsUpdatedEvent = Event & {
-  __typename?: 'EvmBridgeMintingLimitsUpdatedEvent';
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  periodLength: Scalars['Int']['output'];
-  periodLimit: Scalars['BigInt']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmBridgeMintingLimitsUpdatedEvent'
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  periodLength: Scalars['Int']['output']
+  periodLimit: Scalars['BigInt']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmBridgeMintingLimitsUpdatedEventEdge = {
-  __typename?: 'EvmBridgeMintingLimitsUpdatedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmBridgeMintingLimitsUpdatedEvent;
-};
+  __typename?: 'EvmBridgeMintingLimitsUpdatedEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmBridgeMintingLimitsUpdatedEvent
+}
 
 export enum EvmBridgeMintingLimitsUpdatedEventOrderByInput {
   BlockAsc = 'block_ASC',
@@ -994,155 +1030,155 @@ export enum EvmBridgeMintingLimitsUpdatedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmBridgeMintingLimitsUpdatedEventWhereInput = {
-  AND?: InputMaybe<Array<EvmBridgeMintingLimitsUpdatedEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmBridgeMintingLimitsUpdatedEventWhereInput>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  periodLength_eq?: InputMaybe<Scalars['Int']['input']>;
-  periodLength_gt?: InputMaybe<Scalars['Int']['input']>;
-  periodLength_gte?: InputMaybe<Scalars['Int']['input']>;
-  periodLength_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  periodLength_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  periodLength_lt?: InputMaybe<Scalars['Int']['input']>;
-  periodLength_lte?: InputMaybe<Scalars['Int']['input']>;
-  periodLength_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  periodLength_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  periodLimit_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  periodLimit_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  periodLimit_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  periodLimit_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  periodLimit_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  periodLimit_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  periodLimit_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  periodLimit_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  periodLimit_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmBridgeMintingLimitsUpdatedEventWhereInput>>
+  OR?: InputMaybe<Array<EvmBridgeMintingLimitsUpdatedEventWhereInput>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  periodLength_eq?: InputMaybe<Scalars['Int']['input']>
+  periodLength_gt?: InputMaybe<Scalars['Int']['input']>
+  periodLength_gte?: InputMaybe<Scalars['Int']['input']>
+  periodLength_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  periodLength_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  periodLength_lt?: InputMaybe<Scalars['Int']['input']>
+  periodLength_lte?: InputMaybe<Scalars['Int']['input']>
+  periodLength_not_eq?: InputMaybe<Scalars['Int']['input']>
+  periodLength_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  periodLimit_eq?: InputMaybe<Scalars['BigInt']['input']>
+  periodLimit_gt?: InputMaybe<Scalars['BigInt']['input']>
+  periodLimit_gte?: InputMaybe<Scalars['BigInt']['input']>
+  periodLimit_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  periodLimit_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  periodLimit_lt?: InputMaybe<Scalars['BigInt']['input']>
+  periodLimit_lte?: InputMaybe<Scalars['BigInt']['input']>
+  periodLimit_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  periodLimit_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmBridgeMintingLimitsUpdatedEventsConnection = {
-  __typename?: 'EvmBridgeMintingLimitsUpdatedEventsConnection';
-  edges: Array<EvmBridgeMintingLimitsUpdatedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmBridgeMintingLimitsUpdatedEventsConnection'
+  edges: Array<EvmBridgeMintingLimitsUpdatedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmBridgeMintingLimitsWhereInput = {
-  currentPeriodEndBlock_eq?: InputMaybe<Scalars['Int']['input']>;
-  currentPeriodEndBlock_gt?: InputMaybe<Scalars['Int']['input']>;
-  currentPeriodEndBlock_gte?: InputMaybe<Scalars['Int']['input']>;
-  currentPeriodEndBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  currentPeriodEndBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  currentPeriodEndBlock_lt?: InputMaybe<Scalars['Int']['input']>;
-  currentPeriodEndBlock_lte?: InputMaybe<Scalars['Int']['input']>;
-  currentPeriodEndBlock_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  currentPeriodEndBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  currentPeriodMinted_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  currentPeriodMinted_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  currentPeriodMinted_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  currentPeriodMinted_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  currentPeriodMinted_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  currentPeriodMinted_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  currentPeriodMinted_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  currentPeriodMinted_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  currentPeriodMinted_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  periodLength_eq?: InputMaybe<Scalars['Int']['input']>;
-  periodLength_gt?: InputMaybe<Scalars['Int']['input']>;
-  periodLength_gte?: InputMaybe<Scalars['Int']['input']>;
-  periodLength_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  periodLength_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  periodLength_lt?: InputMaybe<Scalars['Int']['input']>;
-  periodLength_lte?: InputMaybe<Scalars['Int']['input']>;
-  periodLength_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  periodLength_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  periodLimit_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  periodLimit_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  periodLimit_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  periodLimit_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  periodLimit_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  periodLimit_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  periodLimit_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  periodLimit_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  periodLimit_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-};
+  currentPeriodEndBlock_eq?: InputMaybe<Scalars['Int']['input']>
+  currentPeriodEndBlock_gt?: InputMaybe<Scalars['Int']['input']>
+  currentPeriodEndBlock_gte?: InputMaybe<Scalars['Int']['input']>
+  currentPeriodEndBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  currentPeriodEndBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  currentPeriodEndBlock_lt?: InputMaybe<Scalars['Int']['input']>
+  currentPeriodEndBlock_lte?: InputMaybe<Scalars['Int']['input']>
+  currentPeriodEndBlock_not_eq?: InputMaybe<Scalars['Int']['input']>
+  currentPeriodEndBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  currentPeriodMinted_eq?: InputMaybe<Scalars['BigInt']['input']>
+  currentPeriodMinted_gt?: InputMaybe<Scalars['BigInt']['input']>
+  currentPeriodMinted_gte?: InputMaybe<Scalars['BigInt']['input']>
+  currentPeriodMinted_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  currentPeriodMinted_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  currentPeriodMinted_lt?: InputMaybe<Scalars['BigInt']['input']>
+  currentPeriodMinted_lte?: InputMaybe<Scalars['BigInt']['input']>
+  currentPeriodMinted_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  currentPeriodMinted_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  periodLength_eq?: InputMaybe<Scalars['Int']['input']>
+  periodLength_gt?: InputMaybe<Scalars['Int']['input']>
+  periodLength_gte?: InputMaybe<Scalars['Int']['input']>
+  periodLength_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  periodLength_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  periodLength_lt?: InputMaybe<Scalars['Int']['input']>
+  periodLength_lte?: InputMaybe<Scalars['Int']['input']>
+  periodLength_not_eq?: InputMaybe<Scalars['Int']['input']>
+  periodLength_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  periodLimit_eq?: InputMaybe<Scalars['BigInt']['input']>
+  periodLimit_gt?: InputMaybe<Scalars['BigInt']['input']>
+  periodLimit_gte?: InputMaybe<Scalars['BigInt']['input']>
+  periodLimit_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  periodLimit_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  periodLimit_lt?: InputMaybe<Scalars['BigInt']['input']>
+  periodLimit_lte?: InputMaybe<Scalars['BigInt']['input']>
+  periodLimit_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  periodLimit_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+}
 
 export type EvmBridgeRoleGrantedEvent = Event & {
-  __typename?: 'EvmBridgeRoleGrantedEvent';
-  account: Scalars['String']['output'];
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  role: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmBridgeRoleGrantedEvent'
+  account: Scalars['String']['output']
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  role: Scalars['String']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmBridgeRoleGrantedEventEdge = {
-  __typename?: 'EvmBridgeRoleGrantedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmBridgeRoleGrantedEvent;
-};
+  __typename?: 'EvmBridgeRoleGrantedEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmBridgeRoleGrantedEvent
+}
 
 export enum EvmBridgeRoleGrantedEventOrderByInput {
   AccountAsc = 'account_ASC',
@@ -1186,132 +1222,132 @@ export enum EvmBridgeRoleGrantedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmBridgeRoleGrantedEventWhereInput = {
-  AND?: InputMaybe<Array<EvmBridgeRoleGrantedEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmBridgeRoleGrantedEventWhereInput>>;
-  account_contains?: InputMaybe<Scalars['String']['input']>;
-  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  account_endsWith?: InputMaybe<Scalars['String']['input']>;
-  account_eq?: InputMaybe<Scalars['String']['input']>;
-  account_gt?: InputMaybe<Scalars['String']['input']>;
-  account_gte?: InputMaybe<Scalars['String']['input']>;
-  account_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  account_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  account_lt?: InputMaybe<Scalars['String']['input']>;
-  account_lte?: InputMaybe<Scalars['String']['input']>;
-  account_not_contains?: InputMaybe<Scalars['String']['input']>;
-  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  account_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  account_not_eq?: InputMaybe<Scalars['String']['input']>;
-  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  account_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  account_startsWith?: InputMaybe<Scalars['String']['input']>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  role_contains?: InputMaybe<Scalars['String']['input']>;
-  role_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  role_endsWith?: InputMaybe<Scalars['String']['input']>;
-  role_eq?: InputMaybe<Scalars['String']['input']>;
-  role_gt?: InputMaybe<Scalars['String']['input']>;
-  role_gte?: InputMaybe<Scalars['String']['input']>;
-  role_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  role_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  role_lt?: InputMaybe<Scalars['String']['input']>;
-  role_lte?: InputMaybe<Scalars['String']['input']>;
-  role_not_contains?: InputMaybe<Scalars['String']['input']>;
-  role_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  role_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  role_not_eq?: InputMaybe<Scalars['String']['input']>;
-  role_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  role_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  role_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmBridgeRoleGrantedEventWhereInput>>
+  OR?: InputMaybe<Array<EvmBridgeRoleGrantedEventWhereInput>>
+  account_contains?: InputMaybe<Scalars['String']['input']>
+  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  account_endsWith?: InputMaybe<Scalars['String']['input']>
+  account_eq?: InputMaybe<Scalars['String']['input']>
+  account_gt?: InputMaybe<Scalars['String']['input']>
+  account_gte?: InputMaybe<Scalars['String']['input']>
+  account_in?: InputMaybe<Array<Scalars['String']['input']>>
+  account_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  account_lt?: InputMaybe<Scalars['String']['input']>
+  account_lte?: InputMaybe<Scalars['String']['input']>
+  account_not_contains?: InputMaybe<Scalars['String']['input']>
+  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  account_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  account_not_eq?: InputMaybe<Scalars['String']['input']>
+  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  account_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  account_startsWith?: InputMaybe<Scalars['String']['input']>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  role_contains?: InputMaybe<Scalars['String']['input']>
+  role_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  role_endsWith?: InputMaybe<Scalars['String']['input']>
+  role_eq?: InputMaybe<Scalars['String']['input']>
+  role_gt?: InputMaybe<Scalars['String']['input']>
+  role_gte?: InputMaybe<Scalars['String']['input']>
+  role_in?: InputMaybe<Array<Scalars['String']['input']>>
+  role_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  role_lt?: InputMaybe<Scalars['String']['input']>
+  role_lte?: InputMaybe<Scalars['String']['input']>
+  role_not_contains?: InputMaybe<Scalars['String']['input']>
+  role_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  role_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  role_not_eq?: InputMaybe<Scalars['String']['input']>
+  role_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  role_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  role_startsWith?: InputMaybe<Scalars['String']['input']>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmBridgeRoleGrantedEventsConnection = {
-  __typename?: 'EvmBridgeRoleGrantedEventsConnection';
-  edges: Array<EvmBridgeRoleGrantedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmBridgeRoleGrantedEventsConnection'
+  edges: Array<EvmBridgeRoleGrantedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmBridgeRoleRevokedEvent = Event & {
-  __typename?: 'EvmBridgeRoleRevokedEvent';
-  account: Scalars['String']['output'];
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  role: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmBridgeRoleRevokedEvent'
+  account: Scalars['String']['output']
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  role: Scalars['String']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmBridgeRoleRevokedEventEdge = {
-  __typename?: 'EvmBridgeRoleRevokedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmBridgeRoleRevokedEvent;
-};
+  __typename?: 'EvmBridgeRoleRevokedEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmBridgeRoleRevokedEvent
+}
 
 export enum EvmBridgeRoleRevokedEventOrderByInput {
   AccountAsc = 'account_ASC',
@@ -1355,136 +1391,136 @@ export enum EvmBridgeRoleRevokedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmBridgeRoleRevokedEventWhereInput = {
-  AND?: InputMaybe<Array<EvmBridgeRoleRevokedEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmBridgeRoleRevokedEventWhereInput>>;
-  account_contains?: InputMaybe<Scalars['String']['input']>;
-  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  account_endsWith?: InputMaybe<Scalars['String']['input']>;
-  account_eq?: InputMaybe<Scalars['String']['input']>;
-  account_gt?: InputMaybe<Scalars['String']['input']>;
-  account_gte?: InputMaybe<Scalars['String']['input']>;
-  account_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  account_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  account_lt?: InputMaybe<Scalars['String']['input']>;
-  account_lte?: InputMaybe<Scalars['String']['input']>;
-  account_not_contains?: InputMaybe<Scalars['String']['input']>;
-  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  account_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  account_not_eq?: InputMaybe<Scalars['String']['input']>;
-  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  account_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  account_startsWith?: InputMaybe<Scalars['String']['input']>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  role_contains?: InputMaybe<Scalars['String']['input']>;
-  role_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  role_endsWith?: InputMaybe<Scalars['String']['input']>;
-  role_eq?: InputMaybe<Scalars['String']['input']>;
-  role_gt?: InputMaybe<Scalars['String']['input']>;
-  role_gte?: InputMaybe<Scalars['String']['input']>;
-  role_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  role_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  role_lt?: InputMaybe<Scalars['String']['input']>;
-  role_lte?: InputMaybe<Scalars['String']['input']>;
-  role_not_contains?: InputMaybe<Scalars['String']['input']>;
-  role_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  role_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  role_not_eq?: InputMaybe<Scalars['String']['input']>;
-  role_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  role_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  role_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmBridgeRoleRevokedEventWhereInput>>
+  OR?: InputMaybe<Array<EvmBridgeRoleRevokedEventWhereInput>>
+  account_contains?: InputMaybe<Scalars['String']['input']>
+  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  account_endsWith?: InputMaybe<Scalars['String']['input']>
+  account_eq?: InputMaybe<Scalars['String']['input']>
+  account_gt?: InputMaybe<Scalars['String']['input']>
+  account_gte?: InputMaybe<Scalars['String']['input']>
+  account_in?: InputMaybe<Array<Scalars['String']['input']>>
+  account_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  account_lt?: InputMaybe<Scalars['String']['input']>
+  account_lte?: InputMaybe<Scalars['String']['input']>
+  account_not_contains?: InputMaybe<Scalars['String']['input']>
+  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  account_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  account_not_eq?: InputMaybe<Scalars['String']['input']>
+  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  account_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  account_startsWith?: InputMaybe<Scalars['String']['input']>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  role_contains?: InputMaybe<Scalars['String']['input']>
+  role_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  role_endsWith?: InputMaybe<Scalars['String']['input']>
+  role_eq?: InputMaybe<Scalars['String']['input']>
+  role_gt?: InputMaybe<Scalars['String']['input']>
+  role_gte?: InputMaybe<Scalars['String']['input']>
+  role_in?: InputMaybe<Array<Scalars['String']['input']>>
+  role_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  role_lt?: InputMaybe<Scalars['String']['input']>
+  role_lte?: InputMaybe<Scalars['String']['input']>
+  role_not_contains?: InputMaybe<Scalars['String']['input']>
+  role_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  role_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  role_not_eq?: InputMaybe<Scalars['String']['input']>
+  role_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  role_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  role_startsWith?: InputMaybe<Scalars['String']['input']>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmBridgeRoleRevokedEventsConnection = {
-  __typename?: 'EvmBridgeRoleRevokedEventsConnection';
-  edges: Array<EvmBridgeRoleRevokedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmBridgeRoleRevokedEventsConnection'
+  edges: Array<EvmBridgeRoleRevokedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export enum EvmBridgeStatus {
   Active = 'ACTIVE',
-  Paused = 'PAUSED'
+  Paused = 'PAUSED',
 }
 
 export type EvmBridgeStatusChangedEvent = Event & {
-  __typename?: 'EvmBridgeStatusChangedEvent';
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  status: EvmBridgeStatus;
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmBridgeStatusChangedEvent'
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  status: EvmBridgeStatus
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmBridgeStatusChangedEventEdge = {
-  __typename?: 'EvmBridgeStatusChangedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmBridgeStatusChangedEvent;
-};
+  __typename?: 'EvmBridgeStatusChangedEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmBridgeStatusChangedEvent
+}
 
 export enum EvmBridgeStatusChangedEventOrderByInput {
   BlockAsc = 'block_ASC',
@@ -1522,104 +1558,104 @@ export enum EvmBridgeStatusChangedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmBridgeStatusChangedEventWhereInput = {
-  AND?: InputMaybe<Array<EvmBridgeStatusChangedEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmBridgeStatusChangedEventWhereInput>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  status_eq?: InputMaybe<EvmBridgeStatus>;
-  status_in?: InputMaybe<Array<EvmBridgeStatus>>;
-  status_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  status_not_eq?: InputMaybe<EvmBridgeStatus>;
-  status_not_in?: InputMaybe<Array<EvmBridgeStatus>>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmBridgeStatusChangedEventWhereInput>>
+  OR?: InputMaybe<Array<EvmBridgeStatusChangedEventWhereInput>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  status_eq?: InputMaybe<EvmBridgeStatus>
+  status_in?: InputMaybe<Array<EvmBridgeStatus>>
+  status_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  status_not_eq?: InputMaybe<EvmBridgeStatus>
+  status_not_in?: InputMaybe<Array<EvmBridgeStatus>>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmBridgeStatusChangedEventsConnection = {
-  __typename?: 'EvmBridgeStatusChangedEventsConnection';
-  edges: Array<EvmBridgeStatusChangedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmBridgeStatusChangedEventsConnection'
+  edges: Array<EvmBridgeStatusChangedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmBridgeTransferToEthCompletedEvent = Event & {
-  __typename?: 'EvmBridgeTransferToEthCompletedEvent';
-  amount: Scalars['BigInt']['output'];
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  ethDestAddress: Scalars['String']['output'];
-  id: Scalars['String']['output'];
-  joyTransferId: Scalars['BigInt']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmBridgeTransferToEthCompletedEvent'
+  amount: Scalars['BigInt']['output']
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  ethDestAddress: Scalars['String']['output']
+  id: Scalars['String']['output']
+  joyTransferId: Scalars['BigInt']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmBridgeTransferToEthCompletedEventEdge = {
-  __typename?: 'EvmBridgeTransferToEthCompletedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmBridgeTransferToEthCompletedEvent;
-};
+  __typename?: 'EvmBridgeTransferToEthCompletedEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmBridgeTransferToEthCompletedEvent
+}
 
 export enum EvmBridgeTransferToEthCompletedEventOrderByInput {
   AmountAsc = 'amount_ASC',
@@ -1669,135 +1705,137 @@ export enum EvmBridgeTransferToEthCompletedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmBridgeTransferToEthCompletedEventWhereInput = {
-  AND?: InputMaybe<Array<EvmBridgeTransferToEthCompletedEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmBridgeTransferToEthCompletedEventWhereInput>>;
-  amount_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  ethDestAddress_contains?: InputMaybe<Scalars['String']['input']>;
-  ethDestAddress_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  ethDestAddress_endsWith?: InputMaybe<Scalars['String']['input']>;
-  ethDestAddress_eq?: InputMaybe<Scalars['String']['input']>;
-  ethDestAddress_gt?: InputMaybe<Scalars['String']['input']>;
-  ethDestAddress_gte?: InputMaybe<Scalars['String']['input']>;
-  ethDestAddress_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  ethDestAddress_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  ethDestAddress_lt?: InputMaybe<Scalars['String']['input']>;
-  ethDestAddress_lte?: InputMaybe<Scalars['String']['input']>;
-  ethDestAddress_not_contains?: InputMaybe<Scalars['String']['input']>;
-  ethDestAddress_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  ethDestAddress_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  ethDestAddress_not_eq?: InputMaybe<Scalars['String']['input']>;
-  ethDestAddress_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  ethDestAddress_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  ethDestAddress_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  joyTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  joyTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  joyTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmBridgeTransferToEthCompletedEventWhereInput>>
+  OR?: InputMaybe<Array<EvmBridgeTransferToEthCompletedEventWhereInput>>
+  amount_eq?: InputMaybe<Scalars['BigInt']['input']>
+  amount_gt?: InputMaybe<Scalars['BigInt']['input']>
+  amount_gte?: InputMaybe<Scalars['BigInt']['input']>
+  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  amount_lt?: InputMaybe<Scalars['BigInt']['input']>
+  amount_lte?: InputMaybe<Scalars['BigInt']['input']>
+  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  ethDestAddress_contains?: InputMaybe<Scalars['String']['input']>
+  ethDestAddress_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  ethDestAddress_endsWith?: InputMaybe<Scalars['String']['input']>
+  ethDestAddress_eq?: InputMaybe<Scalars['String']['input']>
+  ethDestAddress_gt?: InputMaybe<Scalars['String']['input']>
+  ethDestAddress_gte?: InputMaybe<Scalars['String']['input']>
+  ethDestAddress_in?: InputMaybe<Array<Scalars['String']['input']>>
+  ethDestAddress_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  ethDestAddress_lt?: InputMaybe<Scalars['String']['input']>
+  ethDestAddress_lte?: InputMaybe<Scalars['String']['input']>
+  ethDestAddress_not_contains?: InputMaybe<Scalars['String']['input']>
+  ethDestAddress_not_containsInsensitive?: InputMaybe<
+    Scalars['String']['input']
+  >
+  ethDestAddress_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  ethDestAddress_not_eq?: InputMaybe<Scalars['String']['input']>
+  ethDestAddress_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  ethDestAddress_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  ethDestAddress_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  joyTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  joyTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  joyTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmBridgeTransferToEthCompletedEventsConnection = {
-  __typename?: 'EvmBridgeTransferToEthCompletedEventsConnection';
-  edges: Array<EvmBridgeTransferToEthCompletedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmBridgeTransferToEthCompletedEventsConnection'
+  edges: Array<EvmBridgeTransferToEthCompletedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmBridgeTransferToJoystreamRequestedEvent = Event & {
-  __typename?: 'EvmBridgeTransferToJoystreamRequestedEvent';
-  amount: Scalars['BigInt']['output'];
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  ethRequester: Scalars['String']['output'];
-  ethTransferId: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  joyDestAccount: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmBridgeTransferToJoystreamRequestedEvent'
+  amount: Scalars['BigInt']['output']
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  ethRequester: Scalars['String']['output']
+  ethTransferId: Scalars['BigInt']['output']
+  id: Scalars['String']['output']
+  joyDestAccount: Scalars['String']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmBridgeTransferToJoystreamRequestedEventEdge = {
-  __typename?: 'EvmBridgeTransferToJoystreamRequestedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmBridgeTransferToJoystreamRequestedEvent;
-};
+  __typename?: 'EvmBridgeTransferToJoystreamRequestedEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmBridgeTransferToJoystreamRequestedEvent
+}
 
 export enum EvmBridgeTransferToJoystreamRequestedEventOrderByInput {
   AmountAsc = 'amount_ASC',
@@ -1853,152 +1891,154 @@ export enum EvmBridgeTransferToJoystreamRequestedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmBridgeTransferToJoystreamRequestedEventWhereInput = {
-  AND?: InputMaybe<Array<EvmBridgeTransferToJoystreamRequestedEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmBridgeTransferToJoystreamRequestedEventWhereInput>>;
-  amount_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  ethRequester_contains?: InputMaybe<Scalars['String']['input']>;
-  ethRequester_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  ethRequester_endsWith?: InputMaybe<Scalars['String']['input']>;
-  ethRequester_eq?: InputMaybe<Scalars['String']['input']>;
-  ethRequester_gt?: InputMaybe<Scalars['String']['input']>;
-  ethRequester_gte?: InputMaybe<Scalars['String']['input']>;
-  ethRequester_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  ethRequester_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  ethRequester_lt?: InputMaybe<Scalars['String']['input']>;
-  ethRequester_lte?: InputMaybe<Scalars['String']['input']>;
-  ethRequester_not_contains?: InputMaybe<Scalars['String']['input']>;
-  ethRequester_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  ethRequester_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  ethRequester_not_eq?: InputMaybe<Scalars['String']['input']>;
-  ethRequester_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  ethRequester_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  ethRequester_startsWith?: InputMaybe<Scalars['String']['input']>;
-  ethTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  ethTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  ethTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  ethTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  ethTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  ethTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  ethTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  ethTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  ethTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_contains?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_endsWith?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_eq?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_gt?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_gte?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  joyDestAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  joyDestAccount_lt?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_lte?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_not_eq?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  joyDestAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmBridgeTransferToJoystreamRequestedEventWhereInput>>
+  OR?: InputMaybe<Array<EvmBridgeTransferToJoystreamRequestedEventWhereInput>>
+  amount_eq?: InputMaybe<Scalars['BigInt']['input']>
+  amount_gt?: InputMaybe<Scalars['BigInt']['input']>
+  amount_gte?: InputMaybe<Scalars['BigInt']['input']>
+  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  amount_lt?: InputMaybe<Scalars['BigInt']['input']>
+  amount_lte?: InputMaybe<Scalars['BigInt']['input']>
+  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  ethRequester_contains?: InputMaybe<Scalars['String']['input']>
+  ethRequester_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  ethRequester_endsWith?: InputMaybe<Scalars['String']['input']>
+  ethRequester_eq?: InputMaybe<Scalars['String']['input']>
+  ethRequester_gt?: InputMaybe<Scalars['String']['input']>
+  ethRequester_gte?: InputMaybe<Scalars['String']['input']>
+  ethRequester_in?: InputMaybe<Array<Scalars['String']['input']>>
+  ethRequester_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  ethRequester_lt?: InputMaybe<Scalars['String']['input']>
+  ethRequester_lte?: InputMaybe<Scalars['String']['input']>
+  ethRequester_not_contains?: InputMaybe<Scalars['String']['input']>
+  ethRequester_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  ethRequester_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  ethRequester_not_eq?: InputMaybe<Scalars['String']['input']>
+  ethRequester_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  ethRequester_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  ethRequester_startsWith?: InputMaybe<Scalars['String']['input']>
+  ethTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>
+  ethTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>
+  ethTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>
+  ethTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  ethTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  ethTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>
+  ethTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>
+  ethTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  ethTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_contains?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_endsWith?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_eq?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_gt?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_gte?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_in?: InputMaybe<Array<Scalars['String']['input']>>
+  joyDestAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  joyDestAccount_lt?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_lte?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_not_contains?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_not_containsInsensitive?: InputMaybe<
+    Scalars['String']['input']
+  >
+  joyDestAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_not_eq?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  joyDestAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_startsWith?: InputMaybe<Scalars['String']['input']>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmBridgeTransferToJoystreamRequestedEventsConnection = {
-  __typename?: 'EvmBridgeTransferToJoystreamRequestedEventsConnection';
-  edges: Array<EvmBridgeTransferToJoystreamRequestedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmBridgeTransferToJoystreamRequestedEventsConnection'
+  edges: Array<EvmBridgeTransferToJoystreamRequestedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmBridgeTransferToJoystreamRevertedEvent = Event & {
-  __typename?: 'EvmBridgeTransferToJoystreamRevertedEvent';
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  ethTransferId: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  rationale: Scalars['String']['output'];
-  revertAccount: Scalars['String']['output'];
-  revertAmount: Scalars['BigInt']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmBridgeTransferToJoystreamRevertedEvent'
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  ethTransferId: Scalars['BigInt']['output']
+  id: Scalars['String']['output']
+  rationale: Scalars['String']['output']
+  revertAccount: Scalars['String']['output']
+  revertAmount: Scalars['BigInt']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmBridgeTransferToJoystreamRevertedEventEdge = {
-  __typename?: 'EvmBridgeTransferToJoystreamRevertedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmBridgeTransferToJoystreamRevertedEvent;
-};
+  __typename?: 'EvmBridgeTransferToJoystreamRevertedEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmBridgeTransferToJoystreamRevertedEvent
+}
 
 export enum EvmBridgeTransferToJoystreamRevertedEventOrderByInput {
   BlockAsc = 'block_ASC',
@@ -2054,169 +2094,169 @@ export enum EvmBridgeTransferToJoystreamRevertedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmBridgeTransferToJoystreamRevertedEventWhereInput = {
-  AND?: InputMaybe<Array<EvmBridgeTransferToJoystreamRevertedEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmBridgeTransferToJoystreamRevertedEventWhereInput>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  ethTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  ethTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  ethTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  ethTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  ethTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  ethTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  ethTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  ethTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  ethTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  rationale_contains?: InputMaybe<Scalars['String']['input']>;
-  rationale_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  rationale_endsWith?: InputMaybe<Scalars['String']['input']>;
-  rationale_eq?: InputMaybe<Scalars['String']['input']>;
-  rationale_gt?: InputMaybe<Scalars['String']['input']>;
-  rationale_gte?: InputMaybe<Scalars['String']['input']>;
-  rationale_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  rationale_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  rationale_lt?: InputMaybe<Scalars['String']['input']>;
-  rationale_lte?: InputMaybe<Scalars['String']['input']>;
-  rationale_not_contains?: InputMaybe<Scalars['String']['input']>;
-  rationale_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  rationale_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  rationale_not_eq?: InputMaybe<Scalars['String']['input']>;
-  rationale_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  rationale_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  rationale_startsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_contains?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_endsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_eq?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_gt?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_gte?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  revertAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  revertAccount_lt?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_lte?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_eq?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  revertAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_startsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAmount_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  revertAmount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  revertAmount_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmBridgeTransferToJoystreamRevertedEventWhereInput>>
+  OR?: InputMaybe<Array<EvmBridgeTransferToJoystreamRevertedEventWhereInput>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  ethTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>
+  ethTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>
+  ethTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>
+  ethTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  ethTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  ethTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>
+  ethTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>
+  ethTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  ethTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  rationale_contains?: InputMaybe<Scalars['String']['input']>
+  rationale_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  rationale_endsWith?: InputMaybe<Scalars['String']['input']>
+  rationale_eq?: InputMaybe<Scalars['String']['input']>
+  rationale_gt?: InputMaybe<Scalars['String']['input']>
+  rationale_gte?: InputMaybe<Scalars['String']['input']>
+  rationale_in?: InputMaybe<Array<Scalars['String']['input']>>
+  rationale_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  rationale_lt?: InputMaybe<Scalars['String']['input']>
+  rationale_lte?: InputMaybe<Scalars['String']['input']>
+  rationale_not_contains?: InputMaybe<Scalars['String']['input']>
+  rationale_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  rationale_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  rationale_not_eq?: InputMaybe<Scalars['String']['input']>
+  rationale_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  rationale_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  rationale_startsWith?: InputMaybe<Scalars['String']['input']>
+  revertAccount_contains?: InputMaybe<Scalars['String']['input']>
+  revertAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  revertAccount_endsWith?: InputMaybe<Scalars['String']['input']>
+  revertAccount_eq?: InputMaybe<Scalars['String']['input']>
+  revertAccount_gt?: InputMaybe<Scalars['String']['input']>
+  revertAccount_gte?: InputMaybe<Scalars['String']['input']>
+  revertAccount_in?: InputMaybe<Array<Scalars['String']['input']>>
+  revertAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  revertAccount_lt?: InputMaybe<Scalars['String']['input']>
+  revertAccount_lte?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_contains?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_eq?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  revertAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  revertAccount_startsWith?: InputMaybe<Scalars['String']['input']>
+  revertAmount_eq?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_gt?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_gte?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  revertAmount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  revertAmount_lt?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_lte?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmBridgeTransferToJoystreamRevertedEventsConnection = {
-  __typename?: 'EvmBridgeTransferToJoystreamRevertedEventsConnection';
-  edges: Array<EvmBridgeTransferToJoystreamRevertedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmBridgeTransferToJoystreamRevertedEventsConnection'
+  edges: Array<EvmBridgeTransferToJoystreamRevertedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmTimelockCall = {
-  __typename?: 'EvmTimelockCall';
-  callArgs?: Maybe<Scalars['String']['output']>;
-  callData: Scalars['String']['output'];
-  callIndex: Scalars['Int']['output'];
-  callSignature?: Maybe<Scalars['String']['output']>;
-  callTarget: Scalars['String']['output'];
-  callValue: Scalars['BigInt']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  operation: EvmTimelockOperation;
-};
+  __typename?: 'EvmTimelockCall'
+  callArgs?: Maybe<Scalars['String']['output']>
+  callData: Scalars['String']['output']
+  callIndex: Scalars['Int']['output']
+  callSignature?: Maybe<Scalars['String']['output']>
+  callTarget: Scalars['String']['output']
+  callValue: Scalars['BigInt']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  operation: EvmTimelockOperation
+}
 
 export type EvmTimelockCallEdge = {
-  __typename?: 'EvmTimelockCallEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmTimelockCall;
-};
+  __typename?: 'EvmTimelockCallEdge'
+  cursor: Scalars['String']['output']
+  node: EvmTimelockCall
+}
 
 export type EvmTimelockCallExecutedEvent = Event & {
-  __typename?: 'EvmTimelockCallExecutedEvent';
-  block: Scalars['Int']['output'];
-  callIndex: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  operationId: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmTimelockCallExecutedEvent'
+  block: Scalars['Int']['output']
+  callIndex: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  operationId: Scalars['String']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmTimelockCallExecutedEventEdge = {
-  __typename?: 'EvmTimelockCallExecutedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmTimelockCallExecutedEvent;
-};
+  __typename?: 'EvmTimelockCallExecutedEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmTimelockCallExecutedEvent
+}
 
 export enum EvmTimelockCallExecutedEventOrderByInput {
   BlockAsc = 'block_ASC',
@@ -2260,107 +2300,107 @@ export enum EvmTimelockCallExecutedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmTimelockCallExecutedEventWhereInput = {
-  AND?: InputMaybe<Array<EvmTimelockCallExecutedEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmTimelockCallExecutedEventWhereInput>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  callIndex_eq?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_gt?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_gte?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  callIndex_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callIndex_lt?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_lte?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_contains?: InputMaybe<Scalars['String']['input']>;
-  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  operationId_endsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_eq?: InputMaybe<Scalars['String']['input']>;
-  operationId_gt?: InputMaybe<Scalars['String']['input']>;
-  operationId_gte?: InputMaybe<Scalars['String']['input']>;
-  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  operationId_lt?: InputMaybe<Scalars['String']['input']>;
-  operationId_lte?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_contains?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_eq?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmTimelockCallExecutedEventWhereInput>>
+  OR?: InputMaybe<Array<EvmTimelockCallExecutedEventWhereInput>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  callIndex_eq?: InputMaybe<Scalars['Int']['input']>
+  callIndex_gt?: InputMaybe<Scalars['Int']['input']>
+  callIndex_gte?: InputMaybe<Scalars['Int']['input']>
+  callIndex_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  callIndex_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  callIndex_lt?: InputMaybe<Scalars['Int']['input']>
+  callIndex_lte?: InputMaybe<Scalars['Int']['input']>
+  callIndex_not_eq?: InputMaybe<Scalars['Int']['input']>
+  callIndex_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_contains?: InputMaybe<Scalars['String']['input']>
+  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  operationId_endsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_eq?: InputMaybe<Scalars['String']['input']>
+  operationId_gt?: InputMaybe<Scalars['String']['input']>
+  operationId_gte?: InputMaybe<Scalars['String']['input']>
+  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>
+  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  operationId_lt?: InputMaybe<Scalars['String']['input']>
+  operationId_lte?: InputMaybe<Scalars['String']['input']>
+  operationId_not_contains?: InputMaybe<Scalars['String']['input']>
+  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_not_eq?: InputMaybe<Scalars['String']['input']>
+  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_startsWith?: InputMaybe<Scalars['String']['input']>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmTimelockCallExecutedEventsConnection = {
-  __typename?: 'EvmTimelockCallExecutedEventsConnection';
-  edges: Array<EvmTimelockCallExecutedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmTimelockCallExecutedEventsConnection'
+  edges: Array<EvmTimelockCallExecutedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export enum EvmTimelockCallOrderByInput {
   CallArgsAsc = 'callArgs_ASC',
@@ -2506,25 +2546,25 @@ export enum EvmTimelockCallOrderByInput {
   OperationStatusAscNullsLast = 'operation_status_ASC_NULLS_LAST',
   OperationStatusDesc = 'operation_status_DESC',
   OperationStatusDescNullsFirst = 'operation_status_DESC_NULLS_FIRST',
-  OperationStatusDescNullsLast = 'operation_status_DESC_NULLS_LAST'
+  OperationStatusDescNullsLast = 'operation_status_DESC_NULLS_LAST',
 }
 
 export type EvmTimelockCallSaltEvent = Event & {
-  __typename?: 'EvmTimelockCallSaltEvent';
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  operationId: Scalars['String']['output'];
-  salt: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmTimelockCallSaltEvent'
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  operationId: Scalars['String']['output']
+  salt: Scalars['String']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmTimelockCallSaltEventEdge = {
-  __typename?: 'EvmTimelockCallSaltEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmTimelockCallSaltEvent;
-};
+  __typename?: 'EvmTimelockCallSaltEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmTimelockCallSaltEvent
+}
 
 export enum EvmTimelockCallSaltEventOrderByInput {
   BlockAsc = 'block_ASC',
@@ -2568,137 +2608,137 @@ export enum EvmTimelockCallSaltEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmTimelockCallSaltEventWhereInput = {
-  AND?: InputMaybe<Array<EvmTimelockCallSaltEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmTimelockCallSaltEventWhereInput>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_contains?: InputMaybe<Scalars['String']['input']>;
-  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  operationId_endsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_eq?: InputMaybe<Scalars['String']['input']>;
-  operationId_gt?: InputMaybe<Scalars['String']['input']>;
-  operationId_gte?: InputMaybe<Scalars['String']['input']>;
-  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  operationId_lt?: InputMaybe<Scalars['String']['input']>;
-  operationId_lte?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_contains?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_eq?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_startsWith?: InputMaybe<Scalars['String']['input']>;
-  salt_contains?: InputMaybe<Scalars['String']['input']>;
-  salt_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  salt_endsWith?: InputMaybe<Scalars['String']['input']>;
-  salt_eq?: InputMaybe<Scalars['String']['input']>;
-  salt_gt?: InputMaybe<Scalars['String']['input']>;
-  salt_gte?: InputMaybe<Scalars['String']['input']>;
-  salt_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  salt_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  salt_lt?: InputMaybe<Scalars['String']['input']>;
-  salt_lte?: InputMaybe<Scalars['String']['input']>;
-  salt_not_contains?: InputMaybe<Scalars['String']['input']>;
-  salt_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  salt_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  salt_not_eq?: InputMaybe<Scalars['String']['input']>;
-  salt_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  salt_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  salt_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmTimelockCallSaltEventWhereInput>>
+  OR?: InputMaybe<Array<EvmTimelockCallSaltEventWhereInput>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_contains?: InputMaybe<Scalars['String']['input']>
+  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  operationId_endsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_eq?: InputMaybe<Scalars['String']['input']>
+  operationId_gt?: InputMaybe<Scalars['String']['input']>
+  operationId_gte?: InputMaybe<Scalars['String']['input']>
+  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>
+  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  operationId_lt?: InputMaybe<Scalars['String']['input']>
+  operationId_lte?: InputMaybe<Scalars['String']['input']>
+  operationId_not_contains?: InputMaybe<Scalars['String']['input']>
+  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_not_eq?: InputMaybe<Scalars['String']['input']>
+  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_startsWith?: InputMaybe<Scalars['String']['input']>
+  salt_contains?: InputMaybe<Scalars['String']['input']>
+  salt_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  salt_endsWith?: InputMaybe<Scalars['String']['input']>
+  salt_eq?: InputMaybe<Scalars['String']['input']>
+  salt_gt?: InputMaybe<Scalars['String']['input']>
+  salt_gte?: InputMaybe<Scalars['String']['input']>
+  salt_in?: InputMaybe<Array<Scalars['String']['input']>>
+  salt_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  salt_lt?: InputMaybe<Scalars['String']['input']>
+  salt_lte?: InputMaybe<Scalars['String']['input']>
+  salt_not_contains?: InputMaybe<Scalars['String']['input']>
+  salt_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  salt_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  salt_not_eq?: InputMaybe<Scalars['String']['input']>
+  salt_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  salt_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  salt_startsWith?: InputMaybe<Scalars['String']['input']>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmTimelockCallSaltEventsConnection = {
-  __typename?: 'EvmTimelockCallSaltEventsConnection';
-  edges: Array<EvmTimelockCallSaltEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmTimelockCallSaltEventsConnection'
+  edges: Array<EvmTimelockCallSaltEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmTimelockCallScheduledEvent = Event & {
-  __typename?: 'EvmTimelockCallScheduledEvent';
-  block: Scalars['Int']['output'];
-  callData: Scalars['String']['output'];
-  callIndex: Scalars['Int']['output'];
-  callTarget: Scalars['String']['output'];
-  callValue: Scalars['BigInt']['output'];
-  chainId: Scalars['Int']['output'];
-  delay: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  operationId: Scalars['String']['output'];
-  predecessor?: Maybe<Scalars['String']['output']>;
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmTimelockCallScheduledEvent'
+  block: Scalars['Int']['output']
+  callData: Scalars['String']['output']
+  callIndex: Scalars['Int']['output']
+  callTarget: Scalars['String']['output']
+  callValue: Scalars['BigInt']['output']
+  chainId: Scalars['Int']['output']
+  delay: Scalars['BigInt']['output']
+  id: Scalars['String']['output']
+  operationId: Scalars['String']['output']
+  predecessor?: Maybe<Scalars['String']['output']>
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmTimelockCallScheduledEventEdge = {
-  __typename?: 'EvmTimelockCallScheduledEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmTimelockCallScheduledEvent;
-};
+  __typename?: 'EvmTimelockCallScheduledEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmTimelockCallScheduledEvent
+}
 
 export enum EvmTimelockCallScheduledEventOrderByInput {
   BlockAsc = 'block_ASC',
@@ -2772,347 +2812,346 @@ export enum EvmTimelockCallScheduledEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmTimelockCallScheduledEventWhereInput = {
-  AND?: InputMaybe<Array<EvmTimelockCallScheduledEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmTimelockCallScheduledEventWhereInput>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  callData_contains?: InputMaybe<Scalars['String']['input']>;
-  callData_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callData_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callData_eq?: InputMaybe<Scalars['String']['input']>;
-  callData_gt?: InputMaybe<Scalars['String']['input']>;
-  callData_gte?: InputMaybe<Scalars['String']['input']>;
-  callData_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callData_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callData_lt?: InputMaybe<Scalars['String']['input']>;
-  callData_lte?: InputMaybe<Scalars['String']['input']>;
-  callData_not_contains?: InputMaybe<Scalars['String']['input']>;
-  callData_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callData_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callData_not_eq?: InputMaybe<Scalars['String']['input']>;
-  callData_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callData_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callData_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callIndex_eq?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_gt?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_gte?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  callIndex_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callIndex_lt?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_lte?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  callTarget_contains?: InputMaybe<Scalars['String']['input']>;
-  callTarget_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callTarget_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callTarget_eq?: InputMaybe<Scalars['String']['input']>;
-  callTarget_gt?: InputMaybe<Scalars['String']['input']>;
-  callTarget_gte?: InputMaybe<Scalars['String']['input']>;
-  callTarget_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callTarget_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callTarget_lt?: InputMaybe<Scalars['String']['input']>;
-  callTarget_lte?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_contains?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_eq?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callTarget_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callTarget_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callValue_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  callValue_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callValue_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  delay_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  delay_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  delay_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  delay_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  delay_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  delay_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  delay_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  delay_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  delay_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_contains?: InputMaybe<Scalars['String']['input']>;
-  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  operationId_endsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_eq?: InputMaybe<Scalars['String']['input']>;
-  operationId_gt?: InputMaybe<Scalars['String']['input']>;
-  operationId_gte?: InputMaybe<Scalars['String']['input']>;
-  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  operationId_lt?: InputMaybe<Scalars['String']['input']>;
-  operationId_lte?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_contains?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_eq?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_startsWith?: InputMaybe<Scalars['String']['input']>;
-  predecessor_contains?: InputMaybe<Scalars['String']['input']>;
-  predecessor_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  predecessor_endsWith?: InputMaybe<Scalars['String']['input']>;
-  predecessor_eq?: InputMaybe<Scalars['String']['input']>;
-  predecessor_gt?: InputMaybe<Scalars['String']['input']>;
-  predecessor_gte?: InputMaybe<Scalars['String']['input']>;
-  predecessor_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  predecessor_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  predecessor_lt?: InputMaybe<Scalars['String']['input']>;
-  predecessor_lte?: InputMaybe<Scalars['String']['input']>;
-  predecessor_not_contains?: InputMaybe<Scalars['String']['input']>;
-  predecessor_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  predecessor_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  predecessor_not_eq?: InputMaybe<Scalars['String']['input']>;
-  predecessor_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  predecessor_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  predecessor_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmTimelockCallScheduledEventWhereInput>>
+  OR?: InputMaybe<Array<EvmTimelockCallScheduledEventWhereInput>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  callData_contains?: InputMaybe<Scalars['String']['input']>
+  callData_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  callData_endsWith?: InputMaybe<Scalars['String']['input']>
+  callData_eq?: InputMaybe<Scalars['String']['input']>
+  callData_gt?: InputMaybe<Scalars['String']['input']>
+  callData_gte?: InputMaybe<Scalars['String']['input']>
+  callData_in?: InputMaybe<Array<Scalars['String']['input']>>
+  callData_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  callData_lt?: InputMaybe<Scalars['String']['input']>
+  callData_lte?: InputMaybe<Scalars['String']['input']>
+  callData_not_contains?: InputMaybe<Scalars['String']['input']>
+  callData_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  callData_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  callData_not_eq?: InputMaybe<Scalars['String']['input']>
+  callData_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  callData_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  callData_startsWith?: InputMaybe<Scalars['String']['input']>
+  callIndex_eq?: InputMaybe<Scalars['Int']['input']>
+  callIndex_gt?: InputMaybe<Scalars['Int']['input']>
+  callIndex_gte?: InputMaybe<Scalars['Int']['input']>
+  callIndex_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  callIndex_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  callIndex_lt?: InputMaybe<Scalars['Int']['input']>
+  callIndex_lte?: InputMaybe<Scalars['Int']['input']>
+  callIndex_not_eq?: InputMaybe<Scalars['Int']['input']>
+  callIndex_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  callTarget_contains?: InputMaybe<Scalars['String']['input']>
+  callTarget_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  callTarget_endsWith?: InputMaybe<Scalars['String']['input']>
+  callTarget_eq?: InputMaybe<Scalars['String']['input']>
+  callTarget_gt?: InputMaybe<Scalars['String']['input']>
+  callTarget_gte?: InputMaybe<Scalars['String']['input']>
+  callTarget_in?: InputMaybe<Array<Scalars['String']['input']>>
+  callTarget_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  callTarget_lt?: InputMaybe<Scalars['String']['input']>
+  callTarget_lte?: InputMaybe<Scalars['String']['input']>
+  callTarget_not_contains?: InputMaybe<Scalars['String']['input']>
+  callTarget_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  callTarget_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  callTarget_not_eq?: InputMaybe<Scalars['String']['input']>
+  callTarget_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  callTarget_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  callTarget_startsWith?: InputMaybe<Scalars['String']['input']>
+  callValue_eq?: InputMaybe<Scalars['BigInt']['input']>
+  callValue_gt?: InputMaybe<Scalars['BigInt']['input']>
+  callValue_gte?: InputMaybe<Scalars['BigInt']['input']>
+  callValue_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  callValue_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  callValue_lt?: InputMaybe<Scalars['BigInt']['input']>
+  callValue_lte?: InputMaybe<Scalars['BigInt']['input']>
+  callValue_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  callValue_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  delay_eq?: InputMaybe<Scalars['BigInt']['input']>
+  delay_gt?: InputMaybe<Scalars['BigInt']['input']>
+  delay_gte?: InputMaybe<Scalars['BigInt']['input']>
+  delay_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  delay_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  delay_lt?: InputMaybe<Scalars['BigInt']['input']>
+  delay_lte?: InputMaybe<Scalars['BigInt']['input']>
+  delay_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  delay_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_contains?: InputMaybe<Scalars['String']['input']>
+  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  operationId_endsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_eq?: InputMaybe<Scalars['String']['input']>
+  operationId_gt?: InputMaybe<Scalars['String']['input']>
+  operationId_gte?: InputMaybe<Scalars['String']['input']>
+  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>
+  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  operationId_lt?: InputMaybe<Scalars['String']['input']>
+  operationId_lte?: InputMaybe<Scalars['String']['input']>
+  operationId_not_contains?: InputMaybe<Scalars['String']['input']>
+  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_not_eq?: InputMaybe<Scalars['String']['input']>
+  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_startsWith?: InputMaybe<Scalars['String']['input']>
+  predecessor_contains?: InputMaybe<Scalars['String']['input']>
+  predecessor_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  predecessor_endsWith?: InputMaybe<Scalars['String']['input']>
+  predecessor_eq?: InputMaybe<Scalars['String']['input']>
+  predecessor_gt?: InputMaybe<Scalars['String']['input']>
+  predecessor_gte?: InputMaybe<Scalars['String']['input']>
+  predecessor_in?: InputMaybe<Array<Scalars['String']['input']>>
+  predecessor_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  predecessor_lt?: InputMaybe<Scalars['String']['input']>
+  predecessor_lte?: InputMaybe<Scalars['String']['input']>
+  predecessor_not_contains?: InputMaybe<Scalars['String']['input']>
+  predecessor_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  predecessor_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  predecessor_not_eq?: InputMaybe<Scalars['String']['input']>
+  predecessor_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  predecessor_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  predecessor_startsWith?: InputMaybe<Scalars['String']['input']>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmTimelockCallScheduledEventsConnection = {
-  __typename?: 'EvmTimelockCallScheduledEventsConnection';
-  edges: Array<EvmTimelockCallScheduledEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmTimelockCallScheduledEventsConnection'
+  edges: Array<EvmTimelockCallScheduledEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmTimelockCallWhereInput = {
-  AND?: InputMaybe<Array<EvmTimelockCallWhereInput>>;
-  OR?: InputMaybe<Array<EvmTimelockCallWhereInput>>;
-  callArgs_contains?: InputMaybe<Scalars['String']['input']>;
-  callArgs_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callArgs_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callArgs_eq?: InputMaybe<Scalars['String']['input']>;
-  callArgs_gt?: InputMaybe<Scalars['String']['input']>;
-  callArgs_gte?: InputMaybe<Scalars['String']['input']>;
-  callArgs_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callArgs_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callArgs_lt?: InputMaybe<Scalars['String']['input']>;
-  callArgs_lte?: InputMaybe<Scalars['String']['input']>;
-  callArgs_not_contains?: InputMaybe<Scalars['String']['input']>;
-  callArgs_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callArgs_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callArgs_not_eq?: InputMaybe<Scalars['String']['input']>;
-  callArgs_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callArgs_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callArgs_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callData_contains?: InputMaybe<Scalars['String']['input']>;
-  callData_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callData_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callData_eq?: InputMaybe<Scalars['String']['input']>;
-  callData_gt?: InputMaybe<Scalars['String']['input']>;
-  callData_gte?: InputMaybe<Scalars['String']['input']>;
-  callData_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callData_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callData_lt?: InputMaybe<Scalars['String']['input']>;
-  callData_lte?: InputMaybe<Scalars['String']['input']>;
-  callData_not_contains?: InputMaybe<Scalars['String']['input']>;
-  callData_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callData_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callData_not_eq?: InputMaybe<Scalars['String']['input']>;
-  callData_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callData_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callData_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callIndex_eq?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_gt?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_gte?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  callIndex_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callIndex_lt?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_lte?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  callIndex_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  callSignature_contains?: InputMaybe<Scalars['String']['input']>;
-  callSignature_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callSignature_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callSignature_eq?: InputMaybe<Scalars['String']['input']>;
-  callSignature_gt?: InputMaybe<Scalars['String']['input']>;
-  callSignature_gte?: InputMaybe<Scalars['String']['input']>;
-  callSignature_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callSignature_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callSignature_lt?: InputMaybe<Scalars['String']['input']>;
-  callSignature_lte?: InputMaybe<Scalars['String']['input']>;
-  callSignature_not_contains?: InputMaybe<Scalars['String']['input']>;
-  callSignature_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callSignature_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callSignature_not_eq?: InputMaybe<Scalars['String']['input']>;
-  callSignature_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callSignature_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callSignature_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callTarget_contains?: InputMaybe<Scalars['String']['input']>;
-  callTarget_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callTarget_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callTarget_eq?: InputMaybe<Scalars['String']['input']>;
-  callTarget_gt?: InputMaybe<Scalars['String']['input']>;
-  callTarget_gte?: InputMaybe<Scalars['String']['input']>;
-  callTarget_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callTarget_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callTarget_lt?: InputMaybe<Scalars['String']['input']>;
-  callTarget_lte?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_contains?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_eq?: InputMaybe<Scalars['String']['input']>;
-  callTarget_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callTarget_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callTarget_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callValue_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  callValue_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callValue_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  callValue_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  operation?: InputMaybe<EvmTimelockOperationWhereInput>;
-  operation_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-};
+  AND?: InputMaybe<Array<EvmTimelockCallWhereInput>>
+  OR?: InputMaybe<Array<EvmTimelockCallWhereInput>>
+  callArgs_contains?: InputMaybe<Scalars['String']['input']>
+  callArgs_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  callArgs_endsWith?: InputMaybe<Scalars['String']['input']>
+  callArgs_eq?: InputMaybe<Scalars['String']['input']>
+  callArgs_gt?: InputMaybe<Scalars['String']['input']>
+  callArgs_gte?: InputMaybe<Scalars['String']['input']>
+  callArgs_in?: InputMaybe<Array<Scalars['String']['input']>>
+  callArgs_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  callArgs_lt?: InputMaybe<Scalars['String']['input']>
+  callArgs_lte?: InputMaybe<Scalars['String']['input']>
+  callArgs_not_contains?: InputMaybe<Scalars['String']['input']>
+  callArgs_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  callArgs_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  callArgs_not_eq?: InputMaybe<Scalars['String']['input']>
+  callArgs_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  callArgs_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  callArgs_startsWith?: InputMaybe<Scalars['String']['input']>
+  callData_contains?: InputMaybe<Scalars['String']['input']>
+  callData_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  callData_endsWith?: InputMaybe<Scalars['String']['input']>
+  callData_eq?: InputMaybe<Scalars['String']['input']>
+  callData_gt?: InputMaybe<Scalars['String']['input']>
+  callData_gte?: InputMaybe<Scalars['String']['input']>
+  callData_in?: InputMaybe<Array<Scalars['String']['input']>>
+  callData_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  callData_lt?: InputMaybe<Scalars['String']['input']>
+  callData_lte?: InputMaybe<Scalars['String']['input']>
+  callData_not_contains?: InputMaybe<Scalars['String']['input']>
+  callData_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  callData_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  callData_not_eq?: InputMaybe<Scalars['String']['input']>
+  callData_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  callData_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  callData_startsWith?: InputMaybe<Scalars['String']['input']>
+  callIndex_eq?: InputMaybe<Scalars['Int']['input']>
+  callIndex_gt?: InputMaybe<Scalars['Int']['input']>
+  callIndex_gte?: InputMaybe<Scalars['Int']['input']>
+  callIndex_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  callIndex_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  callIndex_lt?: InputMaybe<Scalars['Int']['input']>
+  callIndex_lte?: InputMaybe<Scalars['Int']['input']>
+  callIndex_not_eq?: InputMaybe<Scalars['Int']['input']>
+  callIndex_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  callSignature_contains?: InputMaybe<Scalars['String']['input']>
+  callSignature_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  callSignature_endsWith?: InputMaybe<Scalars['String']['input']>
+  callSignature_eq?: InputMaybe<Scalars['String']['input']>
+  callSignature_gt?: InputMaybe<Scalars['String']['input']>
+  callSignature_gte?: InputMaybe<Scalars['String']['input']>
+  callSignature_in?: InputMaybe<Array<Scalars['String']['input']>>
+  callSignature_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  callSignature_lt?: InputMaybe<Scalars['String']['input']>
+  callSignature_lte?: InputMaybe<Scalars['String']['input']>
+  callSignature_not_contains?: InputMaybe<Scalars['String']['input']>
+  callSignature_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  callSignature_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  callSignature_not_eq?: InputMaybe<Scalars['String']['input']>
+  callSignature_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  callSignature_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  callSignature_startsWith?: InputMaybe<Scalars['String']['input']>
+  callTarget_contains?: InputMaybe<Scalars['String']['input']>
+  callTarget_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  callTarget_endsWith?: InputMaybe<Scalars['String']['input']>
+  callTarget_eq?: InputMaybe<Scalars['String']['input']>
+  callTarget_gt?: InputMaybe<Scalars['String']['input']>
+  callTarget_gte?: InputMaybe<Scalars['String']['input']>
+  callTarget_in?: InputMaybe<Array<Scalars['String']['input']>>
+  callTarget_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  callTarget_lt?: InputMaybe<Scalars['String']['input']>
+  callTarget_lte?: InputMaybe<Scalars['String']['input']>
+  callTarget_not_contains?: InputMaybe<Scalars['String']['input']>
+  callTarget_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  callTarget_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  callTarget_not_eq?: InputMaybe<Scalars['String']['input']>
+  callTarget_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  callTarget_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  callTarget_startsWith?: InputMaybe<Scalars['String']['input']>
+  callValue_eq?: InputMaybe<Scalars['BigInt']['input']>
+  callValue_gt?: InputMaybe<Scalars['BigInt']['input']>
+  callValue_gte?: InputMaybe<Scalars['BigInt']['input']>
+  callValue_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  callValue_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  callValue_lt?: InputMaybe<Scalars['BigInt']['input']>
+  callValue_lte?: InputMaybe<Scalars['BigInt']['input']>
+  callValue_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  callValue_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  operation?: InputMaybe<EvmTimelockOperationWhereInput>
+  operation_isNull?: InputMaybe<Scalars['Boolean']['input']>
+}
 
 export type EvmTimelockCallsConnection = {
-  __typename?: 'EvmTimelockCallsConnection';
-  edges: Array<EvmTimelockCallEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmTimelockCallsConnection'
+  edges: Array<EvmTimelockCallEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmTimelockOperation = {
-  __typename?: 'EvmTimelockOperation';
-  calls: Array<EvmTimelockCall>;
-  cancelledAtBlock?: Maybe<Scalars['Int']['output']>;
-  cancelledAtTimestamp?: Maybe<Scalars['DateTime']['output']>;
-  cancelledTxHash?: Maybe<Scalars['String']['output']>;
-  chainId: Scalars['Int']['output'];
-  createdAtBlock: Scalars['Int']['output'];
-  createdAtTimestamp: Scalars['DateTime']['output'];
-  createdTxHash: Scalars['String']['output'];
-  delayDoneTimestamp: Scalars['DateTime']['output'];
-  executedAtBlock?: Maybe<Scalars['Int']['output']>;
-  executedAtTimestamp?: Maybe<Scalars['DateTime']['output']>;
-  executedTxHash?: Maybe<Scalars['String']['output']>;
-  id: Scalars['String']['output'];
-  operationId: Scalars['String']['output'];
-  predecessor?: Maybe<Scalars['String']['output']>;
-  salt?: Maybe<Scalars['String']['output']>;
-  status: EvmTimelockOperationStatus;
-};
-
+  __typename?: 'EvmTimelockOperation'
+  calls: Array<EvmTimelockCall>
+  cancelledAtBlock?: Maybe<Scalars['Int']['output']>
+  cancelledAtTimestamp?: Maybe<Scalars['DateTime']['output']>
+  cancelledTxHash?: Maybe<Scalars['String']['output']>
+  chainId: Scalars['Int']['output']
+  createdAtBlock: Scalars['Int']['output']
+  createdAtTimestamp: Scalars['DateTime']['output']
+  createdTxHash: Scalars['String']['output']
+  delayDoneTimestamp: Scalars['DateTime']['output']
+  executedAtBlock?: Maybe<Scalars['Int']['output']>
+  executedAtTimestamp?: Maybe<Scalars['DateTime']['output']>
+  executedTxHash?: Maybe<Scalars['String']['output']>
+  id: Scalars['String']['output']
+  operationId: Scalars['String']['output']
+  predecessor?: Maybe<Scalars['String']['output']>
+  salt?: Maybe<Scalars['String']['output']>
+  status: EvmTimelockOperationStatus
+}
 
 export type EvmTimelockOperationCallsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmTimelockCallOrderByInput>>;
-  where?: InputMaybe<EvmTimelockCallWhereInput>;
-};
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmTimelockCallOrderByInput>>
+  where?: InputMaybe<EvmTimelockCallWhereInput>
+}
 
 export type EvmTimelockOperationCancelledEvent = Event & {
-  __typename?: 'EvmTimelockOperationCancelledEvent';
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  operationId: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmTimelockOperationCancelledEvent'
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  operationId: Scalars['String']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmTimelockOperationCancelledEventEdge = {
-  __typename?: 'EvmTimelockOperationCancelledEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmTimelockOperationCancelledEvent;
-};
+  __typename?: 'EvmTimelockOperationCancelledEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmTimelockOperationCancelledEvent
+}
 
 export enum EvmTimelockOperationCancelledEventOrderByInput {
   BlockAsc = 'block_ASC',
@@ -3150,104 +3189,104 @@ export enum EvmTimelockOperationCancelledEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmTimelockOperationCancelledEventWhereInput = {
-  AND?: InputMaybe<Array<EvmTimelockOperationCancelledEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmTimelockOperationCancelledEventWhereInput>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_contains?: InputMaybe<Scalars['String']['input']>;
-  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  operationId_endsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_eq?: InputMaybe<Scalars['String']['input']>;
-  operationId_gt?: InputMaybe<Scalars['String']['input']>;
-  operationId_gte?: InputMaybe<Scalars['String']['input']>;
-  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  operationId_lt?: InputMaybe<Scalars['String']['input']>;
-  operationId_lte?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_contains?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_eq?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmTimelockOperationCancelledEventWhereInput>>
+  OR?: InputMaybe<Array<EvmTimelockOperationCancelledEventWhereInput>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_contains?: InputMaybe<Scalars['String']['input']>
+  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  operationId_endsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_eq?: InputMaybe<Scalars['String']['input']>
+  operationId_gt?: InputMaybe<Scalars['String']['input']>
+  operationId_gte?: InputMaybe<Scalars['String']['input']>
+  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>
+  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  operationId_lt?: InputMaybe<Scalars['String']['input']>
+  operationId_lte?: InputMaybe<Scalars['String']['input']>
+  operationId_not_contains?: InputMaybe<Scalars['String']['input']>
+  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_not_eq?: InputMaybe<Scalars['String']['input']>
+  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_startsWith?: InputMaybe<Scalars['String']['input']>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmTimelockOperationCancelledEventsConnection = {
-  __typename?: 'EvmTimelockOperationCancelledEventsConnection';
-  edges: Array<EvmTimelockOperationCancelledEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmTimelockOperationCancelledEventsConnection'
+  edges: Array<EvmTimelockOperationCancelledEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmTimelockOperationEdge = {
-  __typename?: 'EvmTimelockOperationEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmTimelockOperation;
-};
+  __typename?: 'EvmTimelockOperationEdge'
+  cursor: Scalars['String']['output']
+  node: EvmTimelockOperation
+}
 
 export enum EvmTimelockOperationOrderByInput {
   CancelledAtBlockAsc = 'cancelledAtBlock_ASC',
@@ -3345,242 +3384,246 @@ export enum EvmTimelockOperationOrderByInput {
   StatusAscNullsLast = 'status_ASC_NULLS_LAST',
   StatusDesc = 'status_DESC',
   StatusDescNullsFirst = 'status_DESC_NULLS_FIRST',
-  StatusDescNullsLast = 'status_DESC_NULLS_LAST'
+  StatusDescNullsLast = 'status_DESC_NULLS_LAST',
 }
 
 export enum EvmTimelockOperationStatus {
   Cancelled = 'CANCELLED',
   Executed = 'EXECUTED',
-  Pending = 'PENDING'
+  Pending = 'PENDING',
 }
 
 export type EvmTimelockOperationWhereInput = {
-  AND?: InputMaybe<Array<EvmTimelockOperationWhereInput>>;
-  OR?: InputMaybe<Array<EvmTimelockOperationWhereInput>>;
-  calls_every?: InputMaybe<EvmTimelockCallWhereInput>;
-  calls_none?: InputMaybe<EvmTimelockCallWhereInput>;
-  calls_some?: InputMaybe<EvmTimelockCallWhereInput>;
-  cancelledAtBlock_eq?: InputMaybe<Scalars['Int']['input']>;
-  cancelledAtBlock_gt?: InputMaybe<Scalars['Int']['input']>;
-  cancelledAtBlock_gte?: InputMaybe<Scalars['Int']['input']>;
-  cancelledAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  cancelledAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  cancelledAtBlock_lt?: InputMaybe<Scalars['Int']['input']>;
-  cancelledAtBlock_lte?: InputMaybe<Scalars['Int']['input']>;
-  cancelledAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  cancelledAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  cancelledAtTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  cancelledAtTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  cancelledAtTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  cancelledAtTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  cancelledAtTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  cancelledAtTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  cancelledAtTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  cancelledAtTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  cancelledAtTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  cancelledTxHash_contains?: InputMaybe<Scalars['String']['input']>;
-  cancelledTxHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  cancelledTxHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  cancelledTxHash_eq?: InputMaybe<Scalars['String']['input']>;
-  cancelledTxHash_gt?: InputMaybe<Scalars['String']['input']>;
-  cancelledTxHash_gte?: InputMaybe<Scalars['String']['input']>;
-  cancelledTxHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  cancelledTxHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  cancelledTxHash_lt?: InputMaybe<Scalars['String']['input']>;
-  cancelledTxHash_lte?: InputMaybe<Scalars['String']['input']>;
-  cancelledTxHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  cancelledTxHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  cancelledTxHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  cancelledTxHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  cancelledTxHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  cancelledTxHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  cancelledTxHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  createdAtBlock_eq?: InputMaybe<Scalars['Int']['input']>;
-  createdAtBlock_gt?: InputMaybe<Scalars['Int']['input']>;
-  createdAtBlock_gte?: InputMaybe<Scalars['Int']['input']>;
-  createdAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  createdAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  createdAtBlock_lt?: InputMaybe<Scalars['Int']['input']>;
-  createdAtBlock_lte?: InputMaybe<Scalars['Int']['input']>;
-  createdAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  createdAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  createdAtTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAtTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAtTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAtTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  createdAtTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  createdAtTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAtTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAtTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  createdAtTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  createdTxHash_contains?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_eq?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_gt?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_gte?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  createdTxHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  createdTxHash_lt?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_lte?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  createdTxHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  createdTxHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-  delayDoneTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  delayDoneTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  delayDoneTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  delayDoneTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  delayDoneTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  delayDoneTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  delayDoneTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  delayDoneTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  delayDoneTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  executedAtBlock_eq?: InputMaybe<Scalars['Int']['input']>;
-  executedAtBlock_gt?: InputMaybe<Scalars['Int']['input']>;
-  executedAtBlock_gte?: InputMaybe<Scalars['Int']['input']>;
-  executedAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  executedAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  executedAtBlock_lt?: InputMaybe<Scalars['Int']['input']>;
-  executedAtBlock_lte?: InputMaybe<Scalars['Int']['input']>;
-  executedAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  executedAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  executedAtTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  executedAtTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  executedAtTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  executedAtTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  executedAtTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  executedAtTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  executedAtTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  executedAtTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  executedAtTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  executedTxHash_contains?: InputMaybe<Scalars['String']['input']>;
-  executedTxHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  executedTxHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  executedTxHash_eq?: InputMaybe<Scalars['String']['input']>;
-  executedTxHash_gt?: InputMaybe<Scalars['String']['input']>;
-  executedTxHash_gte?: InputMaybe<Scalars['String']['input']>;
-  executedTxHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  executedTxHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  executedTxHash_lt?: InputMaybe<Scalars['String']['input']>;
-  executedTxHash_lte?: InputMaybe<Scalars['String']['input']>;
-  executedTxHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  executedTxHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  executedTxHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  executedTxHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  executedTxHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  executedTxHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  executedTxHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_contains?: InputMaybe<Scalars['String']['input']>;
-  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  operationId_endsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_eq?: InputMaybe<Scalars['String']['input']>;
-  operationId_gt?: InputMaybe<Scalars['String']['input']>;
-  operationId_gte?: InputMaybe<Scalars['String']['input']>;
-  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  operationId_lt?: InputMaybe<Scalars['String']['input']>;
-  operationId_lte?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_contains?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_eq?: InputMaybe<Scalars['String']['input']>;
-  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  operationId_startsWith?: InputMaybe<Scalars['String']['input']>;
-  predecessor_contains?: InputMaybe<Scalars['String']['input']>;
-  predecessor_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  predecessor_endsWith?: InputMaybe<Scalars['String']['input']>;
-  predecessor_eq?: InputMaybe<Scalars['String']['input']>;
-  predecessor_gt?: InputMaybe<Scalars['String']['input']>;
-  predecessor_gte?: InputMaybe<Scalars['String']['input']>;
-  predecessor_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  predecessor_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  predecessor_lt?: InputMaybe<Scalars['String']['input']>;
-  predecessor_lte?: InputMaybe<Scalars['String']['input']>;
-  predecessor_not_contains?: InputMaybe<Scalars['String']['input']>;
-  predecessor_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  predecessor_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  predecessor_not_eq?: InputMaybe<Scalars['String']['input']>;
-  predecessor_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  predecessor_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  predecessor_startsWith?: InputMaybe<Scalars['String']['input']>;
-  salt_contains?: InputMaybe<Scalars['String']['input']>;
-  salt_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  salt_endsWith?: InputMaybe<Scalars['String']['input']>;
-  salt_eq?: InputMaybe<Scalars['String']['input']>;
-  salt_gt?: InputMaybe<Scalars['String']['input']>;
-  salt_gte?: InputMaybe<Scalars['String']['input']>;
-  salt_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  salt_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  salt_lt?: InputMaybe<Scalars['String']['input']>;
-  salt_lte?: InputMaybe<Scalars['String']['input']>;
-  salt_not_contains?: InputMaybe<Scalars['String']['input']>;
-  salt_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  salt_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  salt_not_eq?: InputMaybe<Scalars['String']['input']>;
-  salt_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  salt_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  salt_startsWith?: InputMaybe<Scalars['String']['input']>;
-  status_eq?: InputMaybe<EvmTimelockOperationStatus>;
-  status_in?: InputMaybe<Array<EvmTimelockOperationStatus>>;
-  status_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  status_not_eq?: InputMaybe<EvmTimelockOperationStatus>;
-  status_not_in?: InputMaybe<Array<EvmTimelockOperationStatus>>;
-};
+  AND?: InputMaybe<Array<EvmTimelockOperationWhereInput>>
+  OR?: InputMaybe<Array<EvmTimelockOperationWhereInput>>
+  calls_every?: InputMaybe<EvmTimelockCallWhereInput>
+  calls_none?: InputMaybe<EvmTimelockCallWhereInput>
+  calls_some?: InputMaybe<EvmTimelockCallWhereInput>
+  cancelledAtBlock_eq?: InputMaybe<Scalars['Int']['input']>
+  cancelledAtBlock_gt?: InputMaybe<Scalars['Int']['input']>
+  cancelledAtBlock_gte?: InputMaybe<Scalars['Int']['input']>
+  cancelledAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  cancelledAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  cancelledAtBlock_lt?: InputMaybe<Scalars['Int']['input']>
+  cancelledAtBlock_lte?: InputMaybe<Scalars['Int']['input']>
+  cancelledAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>
+  cancelledAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  cancelledAtTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  cancelledAtTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  cancelledAtTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  cancelledAtTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  cancelledAtTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  cancelledAtTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  cancelledAtTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  cancelledAtTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  cancelledAtTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  cancelledTxHash_contains?: InputMaybe<Scalars['String']['input']>
+  cancelledTxHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  cancelledTxHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  cancelledTxHash_eq?: InputMaybe<Scalars['String']['input']>
+  cancelledTxHash_gt?: InputMaybe<Scalars['String']['input']>
+  cancelledTxHash_gte?: InputMaybe<Scalars['String']['input']>
+  cancelledTxHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  cancelledTxHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  cancelledTxHash_lt?: InputMaybe<Scalars['String']['input']>
+  cancelledTxHash_lte?: InputMaybe<Scalars['String']['input']>
+  cancelledTxHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  cancelledTxHash_not_containsInsensitive?: InputMaybe<
+    Scalars['String']['input']
+  >
+  cancelledTxHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  cancelledTxHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  cancelledTxHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  cancelledTxHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  cancelledTxHash_startsWith?: InputMaybe<Scalars['String']['input']>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  createdAtBlock_eq?: InputMaybe<Scalars['Int']['input']>
+  createdAtBlock_gt?: InputMaybe<Scalars['Int']['input']>
+  createdAtBlock_gte?: InputMaybe<Scalars['Int']['input']>
+  createdAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  createdAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  createdAtBlock_lt?: InputMaybe<Scalars['Int']['input']>
+  createdAtBlock_lte?: InputMaybe<Scalars['Int']['input']>
+  createdAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>
+  createdAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  createdAtTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  createdAtTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  createdAtTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  createdAtTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  createdAtTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  createdAtTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  createdAtTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  createdAtTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  createdAtTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  createdTxHash_contains?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_eq?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_gt?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_gte?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  createdTxHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  createdTxHash_lt?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_lte?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  createdTxHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  createdTxHash_startsWith?: InputMaybe<Scalars['String']['input']>
+  delayDoneTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  delayDoneTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  delayDoneTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  delayDoneTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  delayDoneTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  delayDoneTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  delayDoneTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  delayDoneTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  delayDoneTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  executedAtBlock_eq?: InputMaybe<Scalars['Int']['input']>
+  executedAtBlock_gt?: InputMaybe<Scalars['Int']['input']>
+  executedAtBlock_gte?: InputMaybe<Scalars['Int']['input']>
+  executedAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  executedAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  executedAtBlock_lt?: InputMaybe<Scalars['Int']['input']>
+  executedAtBlock_lte?: InputMaybe<Scalars['Int']['input']>
+  executedAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>
+  executedAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  executedAtTimestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  executedAtTimestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  executedAtTimestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  executedAtTimestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  executedAtTimestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  executedAtTimestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  executedAtTimestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  executedAtTimestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  executedAtTimestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  executedTxHash_contains?: InputMaybe<Scalars['String']['input']>
+  executedTxHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  executedTxHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  executedTxHash_eq?: InputMaybe<Scalars['String']['input']>
+  executedTxHash_gt?: InputMaybe<Scalars['String']['input']>
+  executedTxHash_gte?: InputMaybe<Scalars['String']['input']>
+  executedTxHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  executedTxHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  executedTxHash_lt?: InputMaybe<Scalars['String']['input']>
+  executedTxHash_lte?: InputMaybe<Scalars['String']['input']>
+  executedTxHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  executedTxHash_not_containsInsensitive?: InputMaybe<
+    Scalars['String']['input']
+  >
+  executedTxHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  executedTxHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  executedTxHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  executedTxHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  executedTxHash_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_contains?: InputMaybe<Scalars['String']['input']>
+  operationId_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  operationId_endsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_eq?: InputMaybe<Scalars['String']['input']>
+  operationId_gt?: InputMaybe<Scalars['String']['input']>
+  operationId_gte?: InputMaybe<Scalars['String']['input']>
+  operationId_in?: InputMaybe<Array<Scalars['String']['input']>>
+  operationId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  operationId_lt?: InputMaybe<Scalars['String']['input']>
+  operationId_lte?: InputMaybe<Scalars['String']['input']>
+  operationId_not_contains?: InputMaybe<Scalars['String']['input']>
+  operationId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  operationId_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_not_eq?: InputMaybe<Scalars['String']['input']>
+  operationId_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  operationId_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  operationId_startsWith?: InputMaybe<Scalars['String']['input']>
+  predecessor_contains?: InputMaybe<Scalars['String']['input']>
+  predecessor_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  predecessor_endsWith?: InputMaybe<Scalars['String']['input']>
+  predecessor_eq?: InputMaybe<Scalars['String']['input']>
+  predecessor_gt?: InputMaybe<Scalars['String']['input']>
+  predecessor_gte?: InputMaybe<Scalars['String']['input']>
+  predecessor_in?: InputMaybe<Array<Scalars['String']['input']>>
+  predecessor_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  predecessor_lt?: InputMaybe<Scalars['String']['input']>
+  predecessor_lte?: InputMaybe<Scalars['String']['input']>
+  predecessor_not_contains?: InputMaybe<Scalars['String']['input']>
+  predecessor_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  predecessor_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  predecessor_not_eq?: InputMaybe<Scalars['String']['input']>
+  predecessor_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  predecessor_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  predecessor_startsWith?: InputMaybe<Scalars['String']['input']>
+  salt_contains?: InputMaybe<Scalars['String']['input']>
+  salt_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  salt_endsWith?: InputMaybe<Scalars['String']['input']>
+  salt_eq?: InputMaybe<Scalars['String']['input']>
+  salt_gt?: InputMaybe<Scalars['String']['input']>
+  salt_gte?: InputMaybe<Scalars['String']['input']>
+  salt_in?: InputMaybe<Array<Scalars['String']['input']>>
+  salt_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  salt_lt?: InputMaybe<Scalars['String']['input']>
+  salt_lte?: InputMaybe<Scalars['String']['input']>
+  salt_not_contains?: InputMaybe<Scalars['String']['input']>
+  salt_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  salt_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  salt_not_eq?: InputMaybe<Scalars['String']['input']>
+  salt_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  salt_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  salt_startsWith?: InputMaybe<Scalars['String']['input']>
+  status_eq?: InputMaybe<EvmTimelockOperationStatus>
+  status_in?: InputMaybe<Array<EvmTimelockOperationStatus>>
+  status_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  status_not_eq?: InputMaybe<EvmTimelockOperationStatus>
+  status_not_in?: InputMaybe<Array<EvmTimelockOperationStatus>>
+}
 
 export type EvmTimelockOperationsConnection = {
-  __typename?: 'EvmTimelockOperationsConnection';
-  edges: Array<EvmTimelockOperationEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmTimelockOperationsConnection'
+  edges: Array<EvmTimelockOperationEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmTimelockRoleGrantedEvent = Event & {
-  __typename?: 'EvmTimelockRoleGrantedEvent';
-  account: Scalars['String']['output'];
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  role: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmTimelockRoleGrantedEvent'
+  account: Scalars['String']['output']
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  role: Scalars['String']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmTimelockRoleGrantedEventEdge = {
-  __typename?: 'EvmTimelockRoleGrantedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmTimelockRoleGrantedEvent;
-};
+  __typename?: 'EvmTimelockRoleGrantedEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmTimelockRoleGrantedEvent
+}
 
 export enum EvmTimelockRoleGrantedEventOrderByInput {
   AccountAsc = 'account_ASC',
@@ -3624,132 +3667,132 @@ export enum EvmTimelockRoleGrantedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmTimelockRoleGrantedEventWhereInput = {
-  AND?: InputMaybe<Array<EvmTimelockRoleGrantedEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmTimelockRoleGrantedEventWhereInput>>;
-  account_contains?: InputMaybe<Scalars['String']['input']>;
-  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  account_endsWith?: InputMaybe<Scalars['String']['input']>;
-  account_eq?: InputMaybe<Scalars['String']['input']>;
-  account_gt?: InputMaybe<Scalars['String']['input']>;
-  account_gte?: InputMaybe<Scalars['String']['input']>;
-  account_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  account_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  account_lt?: InputMaybe<Scalars['String']['input']>;
-  account_lte?: InputMaybe<Scalars['String']['input']>;
-  account_not_contains?: InputMaybe<Scalars['String']['input']>;
-  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  account_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  account_not_eq?: InputMaybe<Scalars['String']['input']>;
-  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  account_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  account_startsWith?: InputMaybe<Scalars['String']['input']>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  role_contains?: InputMaybe<Scalars['String']['input']>;
-  role_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  role_endsWith?: InputMaybe<Scalars['String']['input']>;
-  role_eq?: InputMaybe<Scalars['String']['input']>;
-  role_gt?: InputMaybe<Scalars['String']['input']>;
-  role_gte?: InputMaybe<Scalars['String']['input']>;
-  role_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  role_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  role_lt?: InputMaybe<Scalars['String']['input']>;
-  role_lte?: InputMaybe<Scalars['String']['input']>;
-  role_not_contains?: InputMaybe<Scalars['String']['input']>;
-  role_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  role_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  role_not_eq?: InputMaybe<Scalars['String']['input']>;
-  role_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  role_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  role_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmTimelockRoleGrantedEventWhereInput>>
+  OR?: InputMaybe<Array<EvmTimelockRoleGrantedEventWhereInput>>
+  account_contains?: InputMaybe<Scalars['String']['input']>
+  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  account_endsWith?: InputMaybe<Scalars['String']['input']>
+  account_eq?: InputMaybe<Scalars['String']['input']>
+  account_gt?: InputMaybe<Scalars['String']['input']>
+  account_gte?: InputMaybe<Scalars['String']['input']>
+  account_in?: InputMaybe<Array<Scalars['String']['input']>>
+  account_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  account_lt?: InputMaybe<Scalars['String']['input']>
+  account_lte?: InputMaybe<Scalars['String']['input']>
+  account_not_contains?: InputMaybe<Scalars['String']['input']>
+  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  account_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  account_not_eq?: InputMaybe<Scalars['String']['input']>
+  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  account_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  account_startsWith?: InputMaybe<Scalars['String']['input']>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  role_contains?: InputMaybe<Scalars['String']['input']>
+  role_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  role_endsWith?: InputMaybe<Scalars['String']['input']>
+  role_eq?: InputMaybe<Scalars['String']['input']>
+  role_gt?: InputMaybe<Scalars['String']['input']>
+  role_gte?: InputMaybe<Scalars['String']['input']>
+  role_in?: InputMaybe<Array<Scalars['String']['input']>>
+  role_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  role_lt?: InputMaybe<Scalars['String']['input']>
+  role_lte?: InputMaybe<Scalars['String']['input']>
+  role_not_contains?: InputMaybe<Scalars['String']['input']>
+  role_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  role_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  role_not_eq?: InputMaybe<Scalars['String']['input']>
+  role_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  role_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  role_startsWith?: InputMaybe<Scalars['String']['input']>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmTimelockRoleGrantedEventsConnection = {
-  __typename?: 'EvmTimelockRoleGrantedEventsConnection';
-  edges: Array<EvmTimelockRoleGrantedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmTimelockRoleGrantedEventsConnection'
+  edges: Array<EvmTimelockRoleGrantedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type EvmTimelockRoleRevokedEvent = Event & {
-  __typename?: 'EvmTimelockRoleRevokedEvent';
-  account: Scalars['String']['output'];
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  role: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'EvmTimelockRoleRevokedEvent'
+  account: Scalars['String']['output']
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  role: Scalars['String']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type EvmTimelockRoleRevokedEventEdge = {
-  __typename?: 'EvmTimelockRoleRevokedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: EvmTimelockRoleRevokedEvent;
-};
+  __typename?: 'EvmTimelockRoleRevokedEventEdge'
+  cursor: Scalars['String']['output']
+  node: EvmTimelockRoleRevokedEvent
+}
 
 export enum EvmTimelockRoleRevokedEventOrderByInput {
   AccountAsc = 'account_ASC',
@@ -3793,137 +3836,137 @@ export enum EvmTimelockRoleRevokedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type EvmTimelockRoleRevokedEventWhereInput = {
-  AND?: InputMaybe<Array<EvmTimelockRoleRevokedEventWhereInput>>;
-  OR?: InputMaybe<Array<EvmTimelockRoleRevokedEventWhereInput>>;
-  account_contains?: InputMaybe<Scalars['String']['input']>;
-  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  account_endsWith?: InputMaybe<Scalars['String']['input']>;
-  account_eq?: InputMaybe<Scalars['String']['input']>;
-  account_gt?: InputMaybe<Scalars['String']['input']>;
-  account_gte?: InputMaybe<Scalars['String']['input']>;
-  account_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  account_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  account_lt?: InputMaybe<Scalars['String']['input']>;
-  account_lte?: InputMaybe<Scalars['String']['input']>;
-  account_not_contains?: InputMaybe<Scalars['String']['input']>;
-  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  account_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  account_not_eq?: InputMaybe<Scalars['String']['input']>;
-  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  account_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  account_startsWith?: InputMaybe<Scalars['String']['input']>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  role_contains?: InputMaybe<Scalars['String']['input']>;
-  role_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  role_endsWith?: InputMaybe<Scalars['String']['input']>;
-  role_eq?: InputMaybe<Scalars['String']['input']>;
-  role_gt?: InputMaybe<Scalars['String']['input']>;
-  role_gte?: InputMaybe<Scalars['String']['input']>;
-  role_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  role_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  role_lt?: InputMaybe<Scalars['String']['input']>;
-  role_lte?: InputMaybe<Scalars['String']['input']>;
-  role_not_contains?: InputMaybe<Scalars['String']['input']>;
-  role_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  role_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  role_not_eq?: InputMaybe<Scalars['String']['input']>;
-  role_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  role_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  role_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<EvmTimelockRoleRevokedEventWhereInput>>
+  OR?: InputMaybe<Array<EvmTimelockRoleRevokedEventWhereInput>>
+  account_contains?: InputMaybe<Scalars['String']['input']>
+  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  account_endsWith?: InputMaybe<Scalars['String']['input']>
+  account_eq?: InputMaybe<Scalars['String']['input']>
+  account_gt?: InputMaybe<Scalars['String']['input']>
+  account_gte?: InputMaybe<Scalars['String']['input']>
+  account_in?: InputMaybe<Array<Scalars['String']['input']>>
+  account_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  account_lt?: InputMaybe<Scalars['String']['input']>
+  account_lte?: InputMaybe<Scalars['String']['input']>
+  account_not_contains?: InputMaybe<Scalars['String']['input']>
+  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  account_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  account_not_eq?: InputMaybe<Scalars['String']['input']>
+  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  account_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  account_startsWith?: InputMaybe<Scalars['String']['input']>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  role_contains?: InputMaybe<Scalars['String']['input']>
+  role_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  role_endsWith?: InputMaybe<Scalars['String']['input']>
+  role_eq?: InputMaybe<Scalars['String']['input']>
+  role_gt?: InputMaybe<Scalars['String']['input']>
+  role_gte?: InputMaybe<Scalars['String']['input']>
+  role_in?: InputMaybe<Array<Scalars['String']['input']>>
+  role_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  role_lt?: InputMaybe<Scalars['String']['input']>
+  role_lte?: InputMaybe<Scalars['String']['input']>
+  role_not_contains?: InputMaybe<Scalars['String']['input']>
+  role_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  role_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  role_not_eq?: InputMaybe<Scalars['String']['input']>
+  role_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  role_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  role_startsWith?: InputMaybe<Scalars['String']['input']>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type EvmTimelockRoleRevokedEventsConnection = {
-  __typename?: 'EvmTimelockRoleRevokedEventsConnection';
-  edges: Array<EvmTimelockRoleRevokedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'EvmTimelockRoleRevokedEventsConnection'
+  edges: Array<EvmTimelockRoleRevokedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type JoyBridgeConfig = {
-  __typename?: 'JoyBridgeConfig';
-  bridgingFee: Scalars['BigInt']['output'];
-  feesBurned: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  mintAllowance: Scalars['BigInt']['output'];
-  operatorAccount: Scalars['String']['output'];
-  pauserAccounts: Array<Scalars['String']['output']>;
-  status: JoyBridgeStatus;
-  supportedRemoteChainIds: Array<Scalars['Int']['output']>;
-  thawnDurationBlocks: Scalars['Int']['output'];
-  thawnEndsAtBlock?: Maybe<Scalars['Int']['output']>;
-  totalBurned: Scalars['BigInt']['output'];
-  totalMinted: Scalars['BigInt']['output'];
-};
+  __typename?: 'JoyBridgeConfig'
+  bridgingFee: Scalars['BigInt']['output']
+  feesBurned: Scalars['BigInt']['output']
+  id: Scalars['String']['output']
+  mintAllowance: Scalars['BigInt']['output']
+  operatorAccount: Scalars['String']['output']
+  pauserAccounts: Array<Scalars['String']['output']>
+  status: JoyBridgeStatus
+  supportedRemoteChainIds: Array<Scalars['Int']['output']>
+  thawnDurationBlocks: Scalars['Int']['output']
+  thawnEndsAtBlock?: Maybe<Scalars['Int']['output']>
+  totalBurned: Scalars['BigInt']['output']
+  totalMinted: Scalars['BigInt']['output']
+}
 
 export type JoyBridgeConfigEdge = {
-  __typename?: 'JoyBridgeConfigEdge';
-  cursor: Scalars['String']['output'];
-  node: JoyBridgeConfig;
-};
+  __typename?: 'JoyBridgeConfigEdge'
+  cursor: Scalars['String']['output']
+  node: JoyBridgeConfig
+}
 
 export enum JoyBridgeConfigOrderByInput {
   BridgingFeeAsc = 'bridgingFee_ASC',
@@ -3985,28 +4028,28 @@ export enum JoyBridgeConfigOrderByInput {
   TotalMintedAscNullsLast = 'totalMinted_ASC_NULLS_LAST',
   TotalMintedDesc = 'totalMinted_DESC',
   TotalMintedDescNullsFirst = 'totalMinted_DESC_NULLS_FIRST',
-  TotalMintedDescNullsLast = 'totalMinted_DESC_NULLS_LAST'
+  TotalMintedDescNullsLast = 'totalMinted_DESC_NULLS_LAST',
 }
 
 export type JoyBridgeConfigUpdatedEvent = Event & {
-  __typename?: 'JoyBridgeConfigUpdatedEvent';
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  newBridgingFee?: Maybe<Scalars['BigInt']['output']>;
-  newOperatorAccount?: Maybe<Scalars['String']['output']>;
-  newPauserAccounts?: Maybe<Array<Scalars['String']['output']>>;
-  newRemoteChains?: Maybe<Array<Scalars['Int']['output']>>;
-  newThawnDuration?: Maybe<Scalars['Int']['output']>;
-  timestamp: Scalars['DateTime']['output'];
-  txHash?: Maybe<Scalars['String']['output']>;
-};
+  __typename?: 'JoyBridgeConfigUpdatedEvent'
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  newBridgingFee?: Maybe<Scalars['BigInt']['output']>
+  newOperatorAccount?: Maybe<Scalars['String']['output']>
+  newPauserAccounts?: Maybe<Array<Scalars['String']['output']>>
+  newRemoteChains?: Maybe<Array<Scalars['Int']['output']>>
+  newThawnDuration?: Maybe<Scalars['Int']['output']>
+  timestamp: Scalars['DateTime']['output']
+  txHash?: Maybe<Scalars['String']['output']>
+}
 
 export type JoyBridgeConfigUpdatedEventEdge = {
-  __typename?: 'JoyBridgeConfigUpdatedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: JoyBridgeConfigUpdatedEvent;
-};
+  __typename?: 'JoyBridgeConfigUpdatedEventEdge'
+  cursor: Scalars['String']['output']
+  node: JoyBridgeConfigUpdatedEvent
+}
 
 export enum JoyBridgeConfigUpdatedEventOrderByInput {
   BlockAsc = 'block_ASC',
@@ -4056,265 +4099,277 @@ export enum JoyBridgeConfigUpdatedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type JoyBridgeConfigUpdatedEventWhereInput = {
-  AND?: InputMaybe<Array<JoyBridgeConfigUpdatedEventWhereInput>>;
-  OR?: InputMaybe<Array<JoyBridgeConfigUpdatedEventWhereInput>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  newBridgingFee_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  newBridgingFee_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  newBridgingFee_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  newBridgingFee_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  newBridgingFee_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  newBridgingFee_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  newBridgingFee_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  newBridgingFee_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  newBridgingFee_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  newOperatorAccount_contains?: InputMaybe<Scalars['String']['input']>;
-  newOperatorAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  newOperatorAccount_endsWith?: InputMaybe<Scalars['String']['input']>;
-  newOperatorAccount_eq?: InputMaybe<Scalars['String']['input']>;
-  newOperatorAccount_gt?: InputMaybe<Scalars['String']['input']>;
-  newOperatorAccount_gte?: InputMaybe<Scalars['String']['input']>;
-  newOperatorAccount_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  newOperatorAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  newOperatorAccount_lt?: InputMaybe<Scalars['String']['input']>;
-  newOperatorAccount_lte?: InputMaybe<Scalars['String']['input']>;
-  newOperatorAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
-  newOperatorAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  newOperatorAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  newOperatorAccount_not_eq?: InputMaybe<Scalars['String']['input']>;
-  newOperatorAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  newOperatorAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  newOperatorAccount_startsWith?: InputMaybe<Scalars['String']['input']>;
-  newPauserAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
-  newPauserAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
-  newPauserAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;
-  newPauserAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  newRemoteChains_containsAll?: InputMaybe<Array<Scalars['Int']['input']>>;
-  newRemoteChains_containsAny?: InputMaybe<Array<Scalars['Int']['input']>>;
-  newRemoteChains_containsNone?: InputMaybe<Array<Scalars['Int']['input']>>;
-  newRemoteChains_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  newThawnDuration_eq?: InputMaybe<Scalars['Int']['input']>;
-  newThawnDuration_gt?: InputMaybe<Scalars['Int']['input']>;
-  newThawnDuration_gte?: InputMaybe<Scalars['Int']['input']>;
-  newThawnDuration_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  newThawnDuration_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  newThawnDuration_lt?: InputMaybe<Scalars['Int']['input']>;
-  newThawnDuration_lte?: InputMaybe<Scalars['Int']['input']>;
-  newThawnDuration_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  newThawnDuration_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<JoyBridgeConfigUpdatedEventWhereInput>>
+  OR?: InputMaybe<Array<JoyBridgeConfigUpdatedEventWhereInput>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  newBridgingFee_eq?: InputMaybe<Scalars['BigInt']['input']>
+  newBridgingFee_gt?: InputMaybe<Scalars['BigInt']['input']>
+  newBridgingFee_gte?: InputMaybe<Scalars['BigInt']['input']>
+  newBridgingFee_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  newBridgingFee_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  newBridgingFee_lt?: InputMaybe<Scalars['BigInt']['input']>
+  newBridgingFee_lte?: InputMaybe<Scalars['BigInt']['input']>
+  newBridgingFee_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  newBridgingFee_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  newOperatorAccount_contains?: InputMaybe<Scalars['String']['input']>
+  newOperatorAccount_containsInsensitive?: InputMaybe<
+    Scalars['String']['input']
+  >
+  newOperatorAccount_endsWith?: InputMaybe<Scalars['String']['input']>
+  newOperatorAccount_eq?: InputMaybe<Scalars['String']['input']>
+  newOperatorAccount_gt?: InputMaybe<Scalars['String']['input']>
+  newOperatorAccount_gte?: InputMaybe<Scalars['String']['input']>
+  newOperatorAccount_in?: InputMaybe<Array<Scalars['String']['input']>>
+  newOperatorAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  newOperatorAccount_lt?: InputMaybe<Scalars['String']['input']>
+  newOperatorAccount_lte?: InputMaybe<Scalars['String']['input']>
+  newOperatorAccount_not_contains?: InputMaybe<Scalars['String']['input']>
+  newOperatorAccount_not_containsInsensitive?: InputMaybe<
+    Scalars['String']['input']
+  >
+  newOperatorAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  newOperatorAccount_not_eq?: InputMaybe<Scalars['String']['input']>
+  newOperatorAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  newOperatorAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  newOperatorAccount_startsWith?: InputMaybe<Scalars['String']['input']>
+  newPauserAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>
+  newPauserAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>
+  newPauserAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>
+  newPauserAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  newRemoteChains_containsAll?: InputMaybe<Array<Scalars['Int']['input']>>
+  newRemoteChains_containsAny?: InputMaybe<Array<Scalars['Int']['input']>>
+  newRemoteChains_containsNone?: InputMaybe<Array<Scalars['Int']['input']>>
+  newRemoteChains_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  newThawnDuration_eq?: InputMaybe<Scalars['Int']['input']>
+  newThawnDuration_gt?: InputMaybe<Scalars['Int']['input']>
+  newThawnDuration_gte?: InputMaybe<Scalars['Int']['input']>
+  newThawnDuration_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  newThawnDuration_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  newThawnDuration_lt?: InputMaybe<Scalars['Int']['input']>
+  newThawnDuration_lte?: InputMaybe<Scalars['Int']['input']>
+  newThawnDuration_not_eq?: InputMaybe<Scalars['Int']['input']>
+  newThawnDuration_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type JoyBridgeConfigUpdatedEventsConnection = {
-  __typename?: 'JoyBridgeConfigUpdatedEventsConnection';
-  edges: Array<JoyBridgeConfigUpdatedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'JoyBridgeConfigUpdatedEventsConnection'
+  edges: Array<JoyBridgeConfigUpdatedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type JoyBridgeConfigWhereInput = {
-  AND?: InputMaybe<Array<JoyBridgeConfigWhereInput>>;
-  OR?: InputMaybe<Array<JoyBridgeConfigWhereInput>>;
-  bridgingFee_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  bridgingFee_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  bridgingFee_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  bridgingFee_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  bridgingFee_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  bridgingFee_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  bridgingFee_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  bridgingFee_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  bridgingFee_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  feesBurned_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  feesBurned_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  feesBurned_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  feesBurned_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  feesBurned_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  feesBurned_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  feesBurned_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  feesBurned_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  feesBurned_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  mintAllowance_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  mintAllowance_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  mintAllowance_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  mintAllowance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  mintAllowance_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  mintAllowance_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  mintAllowance_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  mintAllowance_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  mintAllowance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  operatorAccount_contains?: InputMaybe<Scalars['String']['input']>;
-  operatorAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  operatorAccount_endsWith?: InputMaybe<Scalars['String']['input']>;
-  operatorAccount_eq?: InputMaybe<Scalars['String']['input']>;
-  operatorAccount_gt?: InputMaybe<Scalars['String']['input']>;
-  operatorAccount_gte?: InputMaybe<Scalars['String']['input']>;
-  operatorAccount_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  operatorAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  operatorAccount_lt?: InputMaybe<Scalars['String']['input']>;
-  operatorAccount_lte?: InputMaybe<Scalars['String']['input']>;
-  operatorAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
-  operatorAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  operatorAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  operatorAccount_not_eq?: InputMaybe<Scalars['String']['input']>;
-  operatorAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  operatorAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  operatorAccount_startsWith?: InputMaybe<Scalars['String']['input']>;
-  pauserAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
-  pauserAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
-  pauserAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;
-  pauserAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  status_eq?: InputMaybe<JoyBridgeStatus>;
-  status_in?: InputMaybe<Array<JoyBridgeStatus>>;
-  status_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  status_not_eq?: InputMaybe<JoyBridgeStatus>;
-  status_not_in?: InputMaybe<Array<JoyBridgeStatus>>;
-  supportedRemoteChainIds_containsAll?: InputMaybe<Array<Scalars['Int']['input']>>;
-  supportedRemoteChainIds_containsAny?: InputMaybe<Array<Scalars['Int']['input']>>;
-  supportedRemoteChainIds_containsNone?: InputMaybe<Array<Scalars['Int']['input']>>;
-  supportedRemoteChainIds_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  thawnDurationBlocks_eq?: InputMaybe<Scalars['Int']['input']>;
-  thawnDurationBlocks_gt?: InputMaybe<Scalars['Int']['input']>;
-  thawnDurationBlocks_gte?: InputMaybe<Scalars['Int']['input']>;
-  thawnDurationBlocks_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  thawnDurationBlocks_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  thawnDurationBlocks_lt?: InputMaybe<Scalars['Int']['input']>;
-  thawnDurationBlocks_lte?: InputMaybe<Scalars['Int']['input']>;
-  thawnDurationBlocks_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  thawnDurationBlocks_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  thawnEndsAtBlock_eq?: InputMaybe<Scalars['Int']['input']>;
-  thawnEndsAtBlock_gt?: InputMaybe<Scalars['Int']['input']>;
-  thawnEndsAtBlock_gte?: InputMaybe<Scalars['Int']['input']>;
-  thawnEndsAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  thawnEndsAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  thawnEndsAtBlock_lt?: InputMaybe<Scalars['Int']['input']>;
-  thawnEndsAtBlock_lte?: InputMaybe<Scalars['Int']['input']>;
-  thawnEndsAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  thawnEndsAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  totalBurned_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  totalBurned_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  totalBurned_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  totalBurned_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  totalBurned_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  totalBurned_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  totalBurned_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  totalBurned_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  totalBurned_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  totalMinted_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  totalMinted_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  totalMinted_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  totalMinted_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  totalMinted_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  totalMinted_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  totalMinted_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  totalMinted_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  totalMinted_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-};
+  AND?: InputMaybe<Array<JoyBridgeConfigWhereInput>>
+  OR?: InputMaybe<Array<JoyBridgeConfigWhereInput>>
+  bridgingFee_eq?: InputMaybe<Scalars['BigInt']['input']>
+  bridgingFee_gt?: InputMaybe<Scalars['BigInt']['input']>
+  bridgingFee_gte?: InputMaybe<Scalars['BigInt']['input']>
+  bridgingFee_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  bridgingFee_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  bridgingFee_lt?: InputMaybe<Scalars['BigInt']['input']>
+  bridgingFee_lte?: InputMaybe<Scalars['BigInt']['input']>
+  bridgingFee_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  bridgingFee_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  feesBurned_eq?: InputMaybe<Scalars['BigInt']['input']>
+  feesBurned_gt?: InputMaybe<Scalars['BigInt']['input']>
+  feesBurned_gte?: InputMaybe<Scalars['BigInt']['input']>
+  feesBurned_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  feesBurned_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  feesBurned_lt?: InputMaybe<Scalars['BigInt']['input']>
+  feesBurned_lte?: InputMaybe<Scalars['BigInt']['input']>
+  feesBurned_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  feesBurned_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  mintAllowance_eq?: InputMaybe<Scalars['BigInt']['input']>
+  mintAllowance_gt?: InputMaybe<Scalars['BigInt']['input']>
+  mintAllowance_gte?: InputMaybe<Scalars['BigInt']['input']>
+  mintAllowance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  mintAllowance_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  mintAllowance_lt?: InputMaybe<Scalars['BigInt']['input']>
+  mintAllowance_lte?: InputMaybe<Scalars['BigInt']['input']>
+  mintAllowance_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  mintAllowance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  operatorAccount_contains?: InputMaybe<Scalars['String']['input']>
+  operatorAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  operatorAccount_endsWith?: InputMaybe<Scalars['String']['input']>
+  operatorAccount_eq?: InputMaybe<Scalars['String']['input']>
+  operatorAccount_gt?: InputMaybe<Scalars['String']['input']>
+  operatorAccount_gte?: InputMaybe<Scalars['String']['input']>
+  operatorAccount_in?: InputMaybe<Array<Scalars['String']['input']>>
+  operatorAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  operatorAccount_lt?: InputMaybe<Scalars['String']['input']>
+  operatorAccount_lte?: InputMaybe<Scalars['String']['input']>
+  operatorAccount_not_contains?: InputMaybe<Scalars['String']['input']>
+  operatorAccount_not_containsInsensitive?: InputMaybe<
+    Scalars['String']['input']
+  >
+  operatorAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  operatorAccount_not_eq?: InputMaybe<Scalars['String']['input']>
+  operatorAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  operatorAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  operatorAccount_startsWith?: InputMaybe<Scalars['String']['input']>
+  pauserAccounts_containsAll?: InputMaybe<Array<Scalars['String']['input']>>
+  pauserAccounts_containsAny?: InputMaybe<Array<Scalars['String']['input']>>
+  pauserAccounts_containsNone?: InputMaybe<Array<Scalars['String']['input']>>
+  pauserAccounts_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  status_eq?: InputMaybe<JoyBridgeStatus>
+  status_in?: InputMaybe<Array<JoyBridgeStatus>>
+  status_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  status_not_eq?: InputMaybe<JoyBridgeStatus>
+  status_not_in?: InputMaybe<Array<JoyBridgeStatus>>
+  supportedRemoteChainIds_containsAll?: InputMaybe<
+    Array<Scalars['Int']['input']>
+  >
+  supportedRemoteChainIds_containsAny?: InputMaybe<
+    Array<Scalars['Int']['input']>
+  >
+  supportedRemoteChainIds_containsNone?: InputMaybe<
+    Array<Scalars['Int']['input']>
+  >
+  supportedRemoteChainIds_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  thawnDurationBlocks_eq?: InputMaybe<Scalars['Int']['input']>
+  thawnDurationBlocks_gt?: InputMaybe<Scalars['Int']['input']>
+  thawnDurationBlocks_gte?: InputMaybe<Scalars['Int']['input']>
+  thawnDurationBlocks_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  thawnDurationBlocks_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  thawnDurationBlocks_lt?: InputMaybe<Scalars['Int']['input']>
+  thawnDurationBlocks_lte?: InputMaybe<Scalars['Int']['input']>
+  thawnDurationBlocks_not_eq?: InputMaybe<Scalars['Int']['input']>
+  thawnDurationBlocks_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  thawnEndsAtBlock_eq?: InputMaybe<Scalars['Int']['input']>
+  thawnEndsAtBlock_gt?: InputMaybe<Scalars['Int']['input']>
+  thawnEndsAtBlock_gte?: InputMaybe<Scalars['Int']['input']>
+  thawnEndsAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  thawnEndsAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  thawnEndsAtBlock_lt?: InputMaybe<Scalars['Int']['input']>
+  thawnEndsAtBlock_lte?: InputMaybe<Scalars['Int']['input']>
+  thawnEndsAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>
+  thawnEndsAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  totalBurned_eq?: InputMaybe<Scalars['BigInt']['input']>
+  totalBurned_gt?: InputMaybe<Scalars['BigInt']['input']>
+  totalBurned_gte?: InputMaybe<Scalars['BigInt']['input']>
+  totalBurned_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  totalBurned_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  totalBurned_lt?: InputMaybe<Scalars['BigInt']['input']>
+  totalBurned_lte?: InputMaybe<Scalars['BigInt']['input']>
+  totalBurned_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  totalBurned_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  totalMinted_eq?: InputMaybe<Scalars['BigInt']['input']>
+  totalMinted_gt?: InputMaybe<Scalars['BigInt']['input']>
+  totalMinted_gte?: InputMaybe<Scalars['BigInt']['input']>
+  totalMinted_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  totalMinted_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  totalMinted_lt?: InputMaybe<Scalars['BigInt']['input']>
+  totalMinted_lte?: InputMaybe<Scalars['BigInt']['input']>
+  totalMinted_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  totalMinted_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+}
 
 export type JoyBridgeConfigsConnection = {
-  __typename?: 'JoyBridgeConfigsConnection';
-  edges: Array<JoyBridgeConfigEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'JoyBridgeConfigsConnection'
+  edges: Array<JoyBridgeConfigEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type JoyBridgeInboundTransferFinalizedEvent = Event & {
-  __typename?: 'JoyBridgeInboundTransferFinalizedEvent';
-  amount: Scalars['BigInt']['output'];
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  joyDestAccount: Scalars['String']['output'];
-  remoteChainId: Scalars['Int']['output'];
-  remoteTransferId: Scalars['BigInt']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'JoyBridgeInboundTransferFinalizedEvent'
+  amount: Scalars['BigInt']['output']
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  joyDestAccount: Scalars['String']['output']
+  remoteChainId: Scalars['Int']['output']
+  remoteTransferId: Scalars['BigInt']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type JoyBridgeInboundTransferFinalizedEventEdge = {
-  __typename?: 'JoyBridgeInboundTransferFinalizedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: JoyBridgeInboundTransferFinalizedEvent;
-};
+  __typename?: 'JoyBridgeInboundTransferFinalizedEventEdge'
+  cursor: Scalars['String']['output']
+  node: JoyBridgeInboundTransferFinalizedEvent
+}
 
 export enum JoyBridgeInboundTransferFinalizedEventOrderByInput {
   AmountAsc = 'amount_ASC',
@@ -4370,146 +4425,148 @@ export enum JoyBridgeInboundTransferFinalizedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type JoyBridgeInboundTransferFinalizedEventWhereInput = {
-  AND?: InputMaybe<Array<JoyBridgeInboundTransferFinalizedEventWhereInput>>;
-  OR?: InputMaybe<Array<JoyBridgeInboundTransferFinalizedEventWhereInput>>;
-  amount_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_contains?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_endsWith?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_eq?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_gt?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_gte?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  joyDestAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  joyDestAccount_lt?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_lte?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_not_eq?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  joyDestAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  joyDestAccount_startsWith?: InputMaybe<Scalars['String']['input']>;
-  remoteChainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  remoteChainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  remoteChainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  remoteChainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  remoteChainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  remoteChainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  remoteChainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  remoteChainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  remoteChainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  remoteTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  remoteTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  remoteTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  remoteTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  remoteTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  remoteTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  remoteTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  remoteTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  remoteTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<JoyBridgeInboundTransferFinalizedEventWhereInput>>
+  OR?: InputMaybe<Array<JoyBridgeInboundTransferFinalizedEventWhereInput>>
+  amount_eq?: InputMaybe<Scalars['BigInt']['input']>
+  amount_gt?: InputMaybe<Scalars['BigInt']['input']>
+  amount_gte?: InputMaybe<Scalars['BigInt']['input']>
+  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  amount_lt?: InputMaybe<Scalars['BigInt']['input']>
+  amount_lte?: InputMaybe<Scalars['BigInt']['input']>
+  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_contains?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_endsWith?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_eq?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_gt?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_gte?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_in?: InputMaybe<Array<Scalars['String']['input']>>
+  joyDestAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  joyDestAccount_lt?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_lte?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_not_contains?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_not_containsInsensitive?: InputMaybe<
+    Scalars['String']['input']
+  >
+  joyDestAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_not_eq?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  joyDestAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  joyDestAccount_startsWith?: InputMaybe<Scalars['String']['input']>
+  remoteChainId_eq?: InputMaybe<Scalars['Int']['input']>
+  remoteChainId_gt?: InputMaybe<Scalars['Int']['input']>
+  remoteChainId_gte?: InputMaybe<Scalars['Int']['input']>
+  remoteChainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  remoteChainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  remoteChainId_lt?: InputMaybe<Scalars['Int']['input']>
+  remoteChainId_lte?: InputMaybe<Scalars['Int']['input']>
+  remoteChainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  remoteChainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  remoteTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>
+  remoteTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>
+  remoteTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>
+  remoteTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  remoteTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  remoteTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>
+  remoteTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>
+  remoteTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  remoteTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type JoyBridgeInboundTransferFinalizedEventsConnection = {
-  __typename?: 'JoyBridgeInboundTransferFinalizedEventsConnection';
-  edges: Array<JoyBridgeInboundTransferFinalizedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'JoyBridgeInboundTransferFinalizedEventsConnection'
+  edges: Array<JoyBridgeInboundTransferFinalizedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type JoyBridgeOutboundTransferRequestedEvent = Event & {
-  __typename?: 'JoyBridgeOutboundTransferRequestedEvent';
-  amount: Scalars['BigInt']['output'];
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  destAccount: Scalars['String']['output'];
-  destChainId: Scalars['Int']['output'];
-  feePaid: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  joyRequester: Scalars['String']['output'];
-  joyTransferId: Scalars['BigInt']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'JoyBridgeOutboundTransferRequestedEvent'
+  amount: Scalars['BigInt']['output']
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  destAccount: Scalars['String']['output']
+  destChainId: Scalars['Int']['output']
+  feePaid: Scalars['BigInt']['output']
+  id: Scalars['String']['output']
+  joyRequester: Scalars['String']['output']
+  joyTransferId: Scalars['BigInt']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type JoyBridgeOutboundTransferRequestedEventEdge = {
-  __typename?: 'JoyBridgeOutboundTransferRequestedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: JoyBridgeOutboundTransferRequestedEvent;
-};
+  __typename?: 'JoyBridgeOutboundTransferRequestedEventEdge'
+  cursor: Scalars['String']['output']
+  node: JoyBridgeOutboundTransferRequestedEvent
+}
 
 export enum JoyBridgeOutboundTransferRequestedEventOrderByInput {
   AmountAsc = 'amount_ASC',
@@ -4577,170 +4634,170 @@ export enum JoyBridgeOutboundTransferRequestedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type JoyBridgeOutboundTransferRequestedEventWhereInput = {
-  AND?: InputMaybe<Array<JoyBridgeOutboundTransferRequestedEventWhereInput>>;
-  OR?: InputMaybe<Array<JoyBridgeOutboundTransferRequestedEventWhereInput>>;
-  amount_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  destAccount_contains?: InputMaybe<Scalars['String']['input']>;
-  destAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  destAccount_endsWith?: InputMaybe<Scalars['String']['input']>;
-  destAccount_eq?: InputMaybe<Scalars['String']['input']>;
-  destAccount_gt?: InputMaybe<Scalars['String']['input']>;
-  destAccount_gte?: InputMaybe<Scalars['String']['input']>;
-  destAccount_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  destAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  destAccount_lt?: InputMaybe<Scalars['String']['input']>;
-  destAccount_lte?: InputMaybe<Scalars['String']['input']>;
-  destAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
-  destAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  destAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  destAccount_not_eq?: InputMaybe<Scalars['String']['input']>;
-  destAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  destAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  destAccount_startsWith?: InputMaybe<Scalars['String']['input']>;
-  destChainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  destChainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  destChainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  destChainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  destChainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  destChainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  destChainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  destChainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  destChainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  feePaid_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  feePaid_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  feePaid_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  feePaid_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  feePaid_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  feePaid_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  feePaid_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  feePaid_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  feePaid_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_contains?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_endsWith?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_eq?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_gt?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_gte?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  joyRequester_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  joyRequester_lt?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_lte?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_not_contains?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_not_eq?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  joyRequester_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  joyRequester_startsWith?: InputMaybe<Scalars['String']['input']>;
-  joyTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  joyTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  joyTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<JoyBridgeOutboundTransferRequestedEventWhereInput>>
+  OR?: InputMaybe<Array<JoyBridgeOutboundTransferRequestedEventWhereInput>>
+  amount_eq?: InputMaybe<Scalars['BigInt']['input']>
+  amount_gt?: InputMaybe<Scalars['BigInt']['input']>
+  amount_gte?: InputMaybe<Scalars['BigInt']['input']>
+  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  amount_lt?: InputMaybe<Scalars['BigInt']['input']>
+  amount_lte?: InputMaybe<Scalars['BigInt']['input']>
+  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  destAccount_contains?: InputMaybe<Scalars['String']['input']>
+  destAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  destAccount_endsWith?: InputMaybe<Scalars['String']['input']>
+  destAccount_eq?: InputMaybe<Scalars['String']['input']>
+  destAccount_gt?: InputMaybe<Scalars['String']['input']>
+  destAccount_gte?: InputMaybe<Scalars['String']['input']>
+  destAccount_in?: InputMaybe<Array<Scalars['String']['input']>>
+  destAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  destAccount_lt?: InputMaybe<Scalars['String']['input']>
+  destAccount_lte?: InputMaybe<Scalars['String']['input']>
+  destAccount_not_contains?: InputMaybe<Scalars['String']['input']>
+  destAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  destAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  destAccount_not_eq?: InputMaybe<Scalars['String']['input']>
+  destAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  destAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  destAccount_startsWith?: InputMaybe<Scalars['String']['input']>
+  destChainId_eq?: InputMaybe<Scalars['Int']['input']>
+  destChainId_gt?: InputMaybe<Scalars['Int']['input']>
+  destChainId_gte?: InputMaybe<Scalars['Int']['input']>
+  destChainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  destChainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  destChainId_lt?: InputMaybe<Scalars['Int']['input']>
+  destChainId_lte?: InputMaybe<Scalars['Int']['input']>
+  destChainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  destChainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  feePaid_eq?: InputMaybe<Scalars['BigInt']['input']>
+  feePaid_gt?: InputMaybe<Scalars['BigInt']['input']>
+  feePaid_gte?: InputMaybe<Scalars['BigInt']['input']>
+  feePaid_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  feePaid_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  feePaid_lt?: InputMaybe<Scalars['BigInt']['input']>
+  feePaid_lte?: InputMaybe<Scalars['BigInt']['input']>
+  feePaid_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  feePaid_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  joyRequester_contains?: InputMaybe<Scalars['String']['input']>
+  joyRequester_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  joyRequester_endsWith?: InputMaybe<Scalars['String']['input']>
+  joyRequester_eq?: InputMaybe<Scalars['String']['input']>
+  joyRequester_gt?: InputMaybe<Scalars['String']['input']>
+  joyRequester_gte?: InputMaybe<Scalars['String']['input']>
+  joyRequester_in?: InputMaybe<Array<Scalars['String']['input']>>
+  joyRequester_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  joyRequester_lt?: InputMaybe<Scalars['String']['input']>
+  joyRequester_lte?: InputMaybe<Scalars['String']['input']>
+  joyRequester_not_contains?: InputMaybe<Scalars['String']['input']>
+  joyRequester_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  joyRequester_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  joyRequester_not_eq?: InputMaybe<Scalars['String']['input']>
+  joyRequester_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  joyRequester_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  joyRequester_startsWith?: InputMaybe<Scalars['String']['input']>
+  joyTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  joyTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  joyTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type JoyBridgeOutboundTransferRequestedEventsConnection = {
-  __typename?: 'JoyBridgeOutboundTransferRequestedEventsConnection';
-  edges: Array<JoyBridgeOutboundTransferRequestedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'JoyBridgeOutboundTransferRequestedEventsConnection'
+  edges: Array<JoyBridgeOutboundTransferRequestedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type JoyBridgeOutboundTransferRevertedEvent = Event & {
-  __typename?: 'JoyBridgeOutboundTransferRevertedEvent';
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  joyTransferId: Scalars['BigInt']['output'];
-  rationale: Scalars['String']['output'];
-  revertAccount: Scalars['String']['output'];
-  revertAmount: Scalars['BigInt']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'JoyBridgeOutboundTransferRevertedEvent'
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  joyTransferId: Scalars['BigInt']['output']
+  rationale: Scalars['String']['output']
+  revertAccount: Scalars['String']['output']
+  revertAmount: Scalars['BigInt']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type JoyBridgeOutboundTransferRevertedEventEdge = {
-  __typename?: 'JoyBridgeOutboundTransferRevertedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: JoyBridgeOutboundTransferRevertedEvent;
-};
+  __typename?: 'JoyBridgeOutboundTransferRevertedEventEdge'
+  cursor: Scalars['String']['output']
+  node: JoyBridgeOutboundTransferRevertedEvent
+}
 
 export enum JoyBridgeOutboundTransferRevertedEventOrderByInput {
   BlockAsc = 'block_ASC',
@@ -4796,149 +4853,149 @@ export enum JoyBridgeOutboundTransferRevertedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type JoyBridgeOutboundTransferRevertedEventWhereInput = {
-  AND?: InputMaybe<Array<JoyBridgeOutboundTransferRevertedEventWhereInput>>;
-  OR?: InputMaybe<Array<JoyBridgeOutboundTransferRevertedEventWhereInput>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  joyTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  joyTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  joyTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  joyTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  rationale_contains?: InputMaybe<Scalars['String']['input']>;
-  rationale_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  rationale_endsWith?: InputMaybe<Scalars['String']['input']>;
-  rationale_eq?: InputMaybe<Scalars['String']['input']>;
-  rationale_gt?: InputMaybe<Scalars['String']['input']>;
-  rationale_gte?: InputMaybe<Scalars['String']['input']>;
-  rationale_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  rationale_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  rationale_lt?: InputMaybe<Scalars['String']['input']>;
-  rationale_lte?: InputMaybe<Scalars['String']['input']>;
-  rationale_not_contains?: InputMaybe<Scalars['String']['input']>;
-  rationale_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  rationale_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  rationale_not_eq?: InputMaybe<Scalars['String']['input']>;
-  rationale_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  rationale_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  rationale_startsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_contains?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_endsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_eq?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_gt?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_gte?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  revertAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  revertAccount_lt?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_lte?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_eq?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  revertAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAccount_startsWith?: InputMaybe<Scalars['String']['input']>;
-  revertAmount_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  revertAmount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  revertAmount_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  revertAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<JoyBridgeOutboundTransferRevertedEventWhereInput>>
+  OR?: InputMaybe<Array<JoyBridgeOutboundTransferRevertedEventWhereInput>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  joyTransferId_eq?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_gt?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_gte?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  joyTransferId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  joyTransferId_lt?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_lte?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  joyTransferId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  rationale_contains?: InputMaybe<Scalars['String']['input']>
+  rationale_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  rationale_endsWith?: InputMaybe<Scalars['String']['input']>
+  rationale_eq?: InputMaybe<Scalars['String']['input']>
+  rationale_gt?: InputMaybe<Scalars['String']['input']>
+  rationale_gte?: InputMaybe<Scalars['String']['input']>
+  rationale_in?: InputMaybe<Array<Scalars['String']['input']>>
+  rationale_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  rationale_lt?: InputMaybe<Scalars['String']['input']>
+  rationale_lte?: InputMaybe<Scalars['String']['input']>
+  rationale_not_contains?: InputMaybe<Scalars['String']['input']>
+  rationale_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  rationale_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  rationale_not_eq?: InputMaybe<Scalars['String']['input']>
+  rationale_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  rationale_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  rationale_startsWith?: InputMaybe<Scalars['String']['input']>
+  revertAccount_contains?: InputMaybe<Scalars['String']['input']>
+  revertAccount_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  revertAccount_endsWith?: InputMaybe<Scalars['String']['input']>
+  revertAccount_eq?: InputMaybe<Scalars['String']['input']>
+  revertAccount_gt?: InputMaybe<Scalars['String']['input']>
+  revertAccount_gte?: InputMaybe<Scalars['String']['input']>
+  revertAccount_in?: InputMaybe<Array<Scalars['String']['input']>>
+  revertAccount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  revertAccount_lt?: InputMaybe<Scalars['String']['input']>
+  revertAccount_lte?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_contains?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_eq?: InputMaybe<Scalars['String']['input']>
+  revertAccount_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  revertAccount_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  revertAccount_startsWith?: InputMaybe<Scalars['String']['input']>
+  revertAmount_eq?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_gt?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_gte?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  revertAmount_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  revertAmount_lt?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_lte?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_not_eq?: InputMaybe<Scalars['BigInt']['input']>
+  revertAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type JoyBridgeOutboundTransferRevertedEventsConnection = {
-  __typename?: 'JoyBridgeOutboundTransferRevertedEventsConnection';
-  edges: Array<JoyBridgeOutboundTransferRevertedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'JoyBridgeOutboundTransferRevertedEventsConnection'
+  edges: Array<JoyBridgeOutboundTransferRevertedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type JoyBridgePausedEvent = Event & {
-  __typename?: 'JoyBridgePausedEvent';
-  account: Scalars['String']['output'];
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'JoyBridgePausedEvent'
+  account: Scalars['String']['output']
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type JoyBridgePausedEventEdge = {
-  __typename?: 'JoyBridgePausedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: JoyBridgePausedEvent;
-};
+  __typename?: 'JoyBridgePausedEventEdge'
+  cursor: Scalars['String']['output']
+  node: JoyBridgePausedEvent
+}
 
 export enum JoyBridgePausedEventOrderByInput {
   AccountAsc = 'account_ASC',
@@ -4976,119 +5033,119 @@ export enum JoyBridgePausedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type JoyBridgePausedEventWhereInput = {
-  AND?: InputMaybe<Array<JoyBridgePausedEventWhereInput>>;
-  OR?: InputMaybe<Array<JoyBridgePausedEventWhereInput>>;
-  account_contains?: InputMaybe<Scalars['String']['input']>;
-  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  account_endsWith?: InputMaybe<Scalars['String']['input']>;
-  account_eq?: InputMaybe<Scalars['String']['input']>;
-  account_gt?: InputMaybe<Scalars['String']['input']>;
-  account_gte?: InputMaybe<Scalars['String']['input']>;
-  account_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  account_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  account_lt?: InputMaybe<Scalars['String']['input']>;
-  account_lte?: InputMaybe<Scalars['String']['input']>;
-  account_not_contains?: InputMaybe<Scalars['String']['input']>;
-  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  account_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  account_not_eq?: InputMaybe<Scalars['String']['input']>;
-  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  account_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  account_startsWith?: InputMaybe<Scalars['String']['input']>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<JoyBridgePausedEventWhereInput>>
+  OR?: InputMaybe<Array<JoyBridgePausedEventWhereInput>>
+  account_contains?: InputMaybe<Scalars['String']['input']>
+  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  account_endsWith?: InputMaybe<Scalars['String']['input']>
+  account_eq?: InputMaybe<Scalars['String']['input']>
+  account_gt?: InputMaybe<Scalars['String']['input']>
+  account_gte?: InputMaybe<Scalars['String']['input']>
+  account_in?: InputMaybe<Array<Scalars['String']['input']>>
+  account_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  account_lt?: InputMaybe<Scalars['String']['input']>
+  account_lte?: InputMaybe<Scalars['String']['input']>
+  account_not_contains?: InputMaybe<Scalars['String']['input']>
+  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  account_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  account_not_eq?: InputMaybe<Scalars['String']['input']>
+  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  account_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  account_startsWith?: InputMaybe<Scalars['String']['input']>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type JoyBridgePausedEventsConnection = {
-  __typename?: 'JoyBridgePausedEventsConnection';
-  edges: Array<JoyBridgePausedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'JoyBridgePausedEventsConnection'
+  edges: Array<JoyBridgePausedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export enum JoyBridgeStatus {
   Active = 'ACTIVE',
   Paused = 'PAUSED',
-  Thawn = 'THAWN'
+  Thawn = 'THAWN',
 }
 
 export type JoyBridgeThawnFinishedEvent = Event & {
-  __typename?: 'JoyBridgeThawnFinishedEvent';
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'JoyBridgeThawnFinishedEvent'
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type JoyBridgeThawnFinishedEventEdge = {
-  __typename?: 'JoyBridgeThawnFinishedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: JoyBridgeThawnFinishedEvent;
-};
+  __typename?: 'JoyBridgeThawnFinishedEventEdge'
+  cursor: Scalars['String']['output']
+  node: JoyBridgeThawnFinishedEvent
+}
 
 export enum JoyBridgeThawnFinishedEventOrderByInput {
   BlockAsc = 'block_ASC',
@@ -5120,98 +5177,98 @@ export enum JoyBridgeThawnFinishedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type JoyBridgeThawnFinishedEventWhereInput = {
-  AND?: InputMaybe<Array<JoyBridgeThawnFinishedEventWhereInput>>;
-  OR?: InputMaybe<Array<JoyBridgeThawnFinishedEventWhereInput>>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<JoyBridgeThawnFinishedEventWhereInput>>
+  OR?: InputMaybe<Array<JoyBridgeThawnFinishedEventWhereInput>>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type JoyBridgeThawnFinishedEventsConnection = {
-  __typename?: 'JoyBridgeThawnFinishedEventsConnection';
-  edges: Array<JoyBridgeThawnFinishedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'JoyBridgeThawnFinishedEventsConnection'
+  edges: Array<JoyBridgeThawnFinishedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type JoyBridgeThawnStartedEvent = Event & {
-  __typename?: 'JoyBridgeThawnStartedEvent';
-  account: Scalars['String']['output'];
-  block: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
-  id: Scalars['String']['output'];
-  thawnEndsAtBlock: Scalars['Int']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  txHash: Scalars['String']['output'];
-};
+  __typename?: 'JoyBridgeThawnStartedEvent'
+  account: Scalars['String']['output']
+  block: Scalars['Int']['output']
+  chainId: Scalars['Int']['output']
+  id: Scalars['String']['output']
+  thawnEndsAtBlock: Scalars['Int']['output']
+  timestamp: Scalars['DateTime']['output']
+  txHash: Scalars['String']['output']
+}
 
 export type JoyBridgeThawnStartedEventEdge = {
-  __typename?: 'JoyBridgeThawnStartedEventEdge';
-  cursor: Scalars['String']['output'];
-  node: JoyBridgeThawnStartedEvent;
-};
+  __typename?: 'JoyBridgeThawnStartedEventEdge'
+  cursor: Scalars['String']['output']
+  node: JoyBridgeThawnStartedEvent
+}
 
 export enum JoyBridgeThawnStartedEventOrderByInput {
   AccountAsc = 'account_ASC',
@@ -5255,1002 +5312,1527 @@ export enum JoyBridgeThawnStartedEventOrderByInput {
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type JoyBridgeThawnStartedEventWhereInput = {
-  AND?: InputMaybe<Array<JoyBridgeThawnStartedEventWhereInput>>;
-  OR?: InputMaybe<Array<JoyBridgeThawnStartedEventWhereInput>>;
-  account_contains?: InputMaybe<Scalars['String']['input']>;
-  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  account_endsWith?: InputMaybe<Scalars['String']['input']>;
-  account_eq?: InputMaybe<Scalars['String']['input']>;
-  account_gt?: InputMaybe<Scalars['String']['input']>;
-  account_gte?: InputMaybe<Scalars['String']['input']>;
-  account_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  account_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  account_lt?: InputMaybe<Scalars['String']['input']>;
-  account_lte?: InputMaybe<Scalars['String']['input']>;
-  account_not_contains?: InputMaybe<Scalars['String']['input']>;
-  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  account_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  account_not_eq?: InputMaybe<Scalars['String']['input']>;
-  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  account_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  account_startsWith?: InputMaybe<Scalars['String']['input']>;
-  block_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_gt?: InputMaybe<Scalars['Int']['input']>;
-  block_gte?: InputMaybe<Scalars['Int']['input']>;
-  block_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  block_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  block_lt?: InputMaybe<Scalars['Int']['input']>;
-  block_lte?: InputMaybe<Scalars['Int']['input']>;
-  block_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
-  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  thawnEndsAtBlock_eq?: InputMaybe<Scalars['Int']['input']>;
-  thawnEndsAtBlock_gt?: InputMaybe<Scalars['Int']['input']>;
-  thawnEndsAtBlock_gte?: InputMaybe<Scalars['Int']['input']>;
-  thawnEndsAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  thawnEndsAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  thawnEndsAtBlock_lt?: InputMaybe<Scalars['Int']['input']>;
-  thawnEndsAtBlock_lte?: InputMaybe<Scalars['Int']['input']>;
-  thawnEndsAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  thawnEndsAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
+  AND?: InputMaybe<Array<JoyBridgeThawnStartedEventWhereInput>>
+  OR?: InputMaybe<Array<JoyBridgeThawnStartedEventWhereInput>>
+  account_contains?: InputMaybe<Scalars['String']['input']>
+  account_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  account_endsWith?: InputMaybe<Scalars['String']['input']>
+  account_eq?: InputMaybe<Scalars['String']['input']>
+  account_gt?: InputMaybe<Scalars['String']['input']>
+  account_gte?: InputMaybe<Scalars['String']['input']>
+  account_in?: InputMaybe<Array<Scalars['String']['input']>>
+  account_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  account_lt?: InputMaybe<Scalars['String']['input']>
+  account_lte?: InputMaybe<Scalars['String']['input']>
+  account_not_contains?: InputMaybe<Scalars['String']['input']>
+  account_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  account_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  account_not_eq?: InputMaybe<Scalars['String']['input']>
+  account_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  account_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  account_startsWith?: InputMaybe<Scalars['String']['input']>
+  block_eq?: InputMaybe<Scalars['Int']['input']>
+  block_gt?: InputMaybe<Scalars['Int']['input']>
+  block_gte?: InputMaybe<Scalars['Int']['input']>
+  block_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  block_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  block_lt?: InputMaybe<Scalars['Int']['input']>
+  block_lte?: InputMaybe<Scalars['Int']['input']>
+  block_not_eq?: InputMaybe<Scalars['Int']['input']>
+  block_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  id_contains?: InputMaybe<Scalars['String']['input']>
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_eq?: InputMaybe<Scalars['String']['input']>
+  id_gt?: InputMaybe<Scalars['String']['input']>
+  id_gte?: InputMaybe<Scalars['String']['input']>
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  id_lt?: InputMaybe<Scalars['String']['input']>
+  id_lte?: InputMaybe<Scalars['String']['input']>
+  id_not_contains?: InputMaybe<Scalars['String']['input']>
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  id_not_eq?: InputMaybe<Scalars['String']['input']>
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  id_startsWith?: InputMaybe<Scalars['String']['input']>
+  thawnEndsAtBlock_eq?: InputMaybe<Scalars['Int']['input']>
+  thawnEndsAtBlock_gt?: InputMaybe<Scalars['Int']['input']>
+  thawnEndsAtBlock_gte?: InputMaybe<Scalars['Int']['input']>
+  thawnEndsAtBlock_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  thawnEndsAtBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  thawnEndsAtBlock_lt?: InputMaybe<Scalars['Int']['input']>
+  thawnEndsAtBlock_lte?: InputMaybe<Scalars['Int']['input']>
+  thawnEndsAtBlock_not_eq?: InputMaybe<Scalars['Int']['input']>
+  thawnEndsAtBlock_not_in?: InputMaybe<Array<Scalars['Int']['input']>>
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>
+  txHash_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_gt?: InputMaybe<Scalars['String']['input']>
+  txHash_gte?: InputMaybe<Scalars['String']['input']>
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>
+  txHash_lt?: InputMaybe<Scalars['String']['input']>
+  txHash_lte?: InputMaybe<Scalars['String']['input']>
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>
+}
 
 export type JoyBridgeThawnStartedEventsConnection = {
-  __typename?: 'JoyBridgeThawnStartedEventsConnection';
-  edges: Array<JoyBridgeThawnStartedEventEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
+  __typename?: 'JoyBridgeThawnStartedEventsConnection'
+  edges: Array<JoyBridgeThawnStartedEventEdge>
+  pageInfo: PageInfo
+  totalCount: Scalars['Int']['output']
+}
 
 export type PageInfo = {
-  __typename?: 'PageInfo';
-  endCursor: Scalars['String']['output'];
-  hasNextPage: Scalars['Boolean']['output'];
-  hasPreviousPage: Scalars['Boolean']['output'];
-  startCursor: Scalars['String']['output'];
-};
+  __typename?: 'PageInfo'
+  endCursor: Scalars['String']['output']
+  hasNextPage: Scalars['Boolean']['output']
+  hasPreviousPage: Scalars['Boolean']['output']
+  startCursor: Scalars['String']['output']
+}
 
 export type Query = {
-  __typename?: 'Query';
-  baseProcessorStatus: SquidStatus;
-  bridgeTransferById?: Maybe<BridgeTransfer>;
+  __typename?: 'Query'
+  baseProcessorStatus: SquidStatus
+  bridgeTransferById?: Maybe<BridgeTransfer>
   /** @deprecated Use bridgeTransferById */
-  bridgeTransferByUniqueInput?: Maybe<BridgeTransfer>;
-  bridgeTransfers: Array<BridgeTransfer>;
-  bridgeTransfersConnection: BridgeTransfersConnection;
-  evmBridgeConfigById?: Maybe<EvmBridgeConfig>;
+  bridgeTransferByUniqueInput?: Maybe<BridgeTransfer>
+  bridgeTransfers: Array<BridgeTransfer>
+  bridgeTransfersConnection: BridgeTransfersConnection
+  evmBridgeConfigById?: Maybe<EvmBridgeConfig>
   /** @deprecated Use evmBridgeConfigById */
-  evmBridgeConfigByUniqueInput?: Maybe<EvmBridgeConfig>;
-  evmBridgeConfigs: Array<EvmBridgeConfig>;
-  evmBridgeConfigsConnection: EvmBridgeConfigsConnection;
-  evmBridgeFeeChangedEventById?: Maybe<EvmBridgeFeeChangedEvent>;
+  evmBridgeConfigByUniqueInput?: Maybe<EvmBridgeConfig>
+  evmBridgeConfigs: Array<EvmBridgeConfig>
+  evmBridgeConfigsConnection: EvmBridgeConfigsConnection
+  evmBridgeFeeChangedEventById?: Maybe<EvmBridgeFeeChangedEvent>
   /** @deprecated Use evmBridgeFeeChangedEventById */
-  evmBridgeFeeChangedEventByUniqueInput?: Maybe<EvmBridgeFeeChangedEvent>;
-  evmBridgeFeeChangedEvents: Array<EvmBridgeFeeChangedEvent>;
-  evmBridgeFeeChangedEventsConnection: EvmBridgeFeeChangedEventsConnection;
-  evmBridgeFeesWithdrawnEventById?: Maybe<EvmBridgeFeesWithdrawnEvent>;
+  evmBridgeFeeChangedEventByUniqueInput?: Maybe<EvmBridgeFeeChangedEvent>
+  evmBridgeFeeChangedEvents: Array<EvmBridgeFeeChangedEvent>
+  evmBridgeFeeChangedEventsConnection: EvmBridgeFeeChangedEventsConnection
+  evmBridgeFeesWithdrawnEventById?: Maybe<EvmBridgeFeesWithdrawnEvent>
   /** @deprecated Use evmBridgeFeesWithdrawnEventById */
-  evmBridgeFeesWithdrawnEventByUniqueInput?: Maybe<EvmBridgeFeesWithdrawnEvent>;
-  evmBridgeFeesWithdrawnEvents: Array<EvmBridgeFeesWithdrawnEvent>;
-  evmBridgeFeesWithdrawnEventsConnection: EvmBridgeFeesWithdrawnEventsConnection;
-  evmBridgeMintingLimitsUpdatedEventById?: Maybe<EvmBridgeMintingLimitsUpdatedEvent>;
+  evmBridgeFeesWithdrawnEventByUniqueInput?: Maybe<EvmBridgeFeesWithdrawnEvent>
+  evmBridgeFeesWithdrawnEvents: Array<EvmBridgeFeesWithdrawnEvent>
+  evmBridgeFeesWithdrawnEventsConnection: EvmBridgeFeesWithdrawnEventsConnection
+  evmBridgeMintingLimitsUpdatedEventById?: Maybe<EvmBridgeMintingLimitsUpdatedEvent>
   /** @deprecated Use evmBridgeMintingLimitsUpdatedEventById */
-  evmBridgeMintingLimitsUpdatedEventByUniqueInput?: Maybe<EvmBridgeMintingLimitsUpdatedEvent>;
-  evmBridgeMintingLimitsUpdatedEvents: Array<EvmBridgeMintingLimitsUpdatedEvent>;
-  evmBridgeMintingLimitsUpdatedEventsConnection: EvmBridgeMintingLimitsUpdatedEventsConnection;
-  evmBridgeRoleGrantedEventById?: Maybe<EvmBridgeRoleGrantedEvent>;
+  evmBridgeMintingLimitsUpdatedEventByUniqueInput?: Maybe<EvmBridgeMintingLimitsUpdatedEvent>
+  evmBridgeMintingLimitsUpdatedEvents: Array<EvmBridgeMintingLimitsUpdatedEvent>
+  evmBridgeMintingLimitsUpdatedEventsConnection: EvmBridgeMintingLimitsUpdatedEventsConnection
+  evmBridgeRoleGrantedEventById?: Maybe<EvmBridgeRoleGrantedEvent>
   /** @deprecated Use evmBridgeRoleGrantedEventById */
-  evmBridgeRoleGrantedEventByUniqueInput?: Maybe<EvmBridgeRoleGrantedEvent>;
-  evmBridgeRoleGrantedEvents: Array<EvmBridgeRoleGrantedEvent>;
-  evmBridgeRoleGrantedEventsConnection: EvmBridgeRoleGrantedEventsConnection;
-  evmBridgeRoleRevokedEventById?: Maybe<EvmBridgeRoleRevokedEvent>;
+  evmBridgeRoleGrantedEventByUniqueInput?: Maybe<EvmBridgeRoleGrantedEvent>
+  evmBridgeRoleGrantedEvents: Array<EvmBridgeRoleGrantedEvent>
+  evmBridgeRoleGrantedEventsConnection: EvmBridgeRoleGrantedEventsConnection
+  evmBridgeRoleRevokedEventById?: Maybe<EvmBridgeRoleRevokedEvent>
   /** @deprecated Use evmBridgeRoleRevokedEventById */
-  evmBridgeRoleRevokedEventByUniqueInput?: Maybe<EvmBridgeRoleRevokedEvent>;
-  evmBridgeRoleRevokedEvents: Array<EvmBridgeRoleRevokedEvent>;
-  evmBridgeRoleRevokedEventsConnection: EvmBridgeRoleRevokedEventsConnection;
-  evmBridgeStatusChangedEventById?: Maybe<EvmBridgeStatusChangedEvent>;
+  evmBridgeRoleRevokedEventByUniqueInput?: Maybe<EvmBridgeRoleRevokedEvent>
+  evmBridgeRoleRevokedEvents: Array<EvmBridgeRoleRevokedEvent>
+  evmBridgeRoleRevokedEventsConnection: EvmBridgeRoleRevokedEventsConnection
+  evmBridgeStatusChangedEventById?: Maybe<EvmBridgeStatusChangedEvent>
   /** @deprecated Use evmBridgeStatusChangedEventById */
-  evmBridgeStatusChangedEventByUniqueInput?: Maybe<EvmBridgeStatusChangedEvent>;
-  evmBridgeStatusChangedEvents: Array<EvmBridgeStatusChangedEvent>;
-  evmBridgeStatusChangedEventsConnection: EvmBridgeStatusChangedEventsConnection;
-  evmBridgeTransferToEthCompletedEventById?: Maybe<EvmBridgeTransferToEthCompletedEvent>;
+  evmBridgeStatusChangedEventByUniqueInput?: Maybe<EvmBridgeStatusChangedEvent>
+  evmBridgeStatusChangedEvents: Array<EvmBridgeStatusChangedEvent>
+  evmBridgeStatusChangedEventsConnection: EvmBridgeStatusChangedEventsConnection
+  evmBridgeTransferToEthCompletedEventById?: Maybe<EvmBridgeTransferToEthCompletedEvent>
   /** @deprecated Use evmBridgeTransferToEthCompletedEventById */
-  evmBridgeTransferToEthCompletedEventByUniqueInput?: Maybe<EvmBridgeTransferToEthCompletedEvent>;
-  evmBridgeTransferToEthCompletedEvents: Array<EvmBridgeTransferToEthCompletedEvent>;
-  evmBridgeTransferToEthCompletedEventsConnection: EvmBridgeTransferToEthCompletedEventsConnection;
-  evmBridgeTransferToJoystreamRequestedEventById?: Maybe<EvmBridgeTransferToJoystreamRequestedEvent>;
+  evmBridgeTransferToEthCompletedEventByUniqueInput?: Maybe<EvmBridgeTransferToEthCompletedEvent>
+  evmBridgeTransferToEthCompletedEvents: Array<EvmBridgeTransferToEthCompletedEvent>
+  evmBridgeTransferToEthCompletedEventsConnection: EvmBridgeTransferToEthCompletedEventsConnection
+  evmBridgeTransferToJoystreamRequestedEventById?: Maybe<EvmBridgeTransferToJoystreamRequestedEvent>
   /** @deprecated Use evmBridgeTransferToJoystreamRequestedEventById */
-  evmBridgeTransferToJoystreamRequestedEventByUniqueInput?: Maybe<EvmBridgeTransferToJoystreamRequestedEvent>;
-  evmBridgeTransferToJoystreamRequestedEvents: Array<EvmBridgeTransferToJoystreamRequestedEvent>;
-  evmBridgeTransferToJoystreamRequestedEventsConnection: EvmBridgeTransferToJoystreamRequestedEventsConnection;
-  evmBridgeTransferToJoystreamRevertedEventById?: Maybe<EvmBridgeTransferToJoystreamRevertedEvent>;
+  evmBridgeTransferToJoystreamRequestedEventByUniqueInput?: Maybe<EvmBridgeTransferToJoystreamRequestedEvent>
+  evmBridgeTransferToJoystreamRequestedEvents: Array<EvmBridgeTransferToJoystreamRequestedEvent>
+  evmBridgeTransferToJoystreamRequestedEventsConnection: EvmBridgeTransferToJoystreamRequestedEventsConnection
+  evmBridgeTransferToJoystreamRevertedEventById?: Maybe<EvmBridgeTransferToJoystreamRevertedEvent>
   /** @deprecated Use evmBridgeTransferToJoystreamRevertedEventById */
-  evmBridgeTransferToJoystreamRevertedEventByUniqueInput?: Maybe<EvmBridgeTransferToJoystreamRevertedEvent>;
-  evmBridgeTransferToJoystreamRevertedEvents: Array<EvmBridgeTransferToJoystreamRevertedEvent>;
-  evmBridgeTransferToJoystreamRevertedEventsConnection: EvmBridgeTransferToJoystreamRevertedEventsConnection;
-  evmTimelockCallById?: Maybe<EvmTimelockCall>;
+  evmBridgeTransferToJoystreamRevertedEventByUniqueInput?: Maybe<EvmBridgeTransferToJoystreamRevertedEvent>
+  evmBridgeTransferToJoystreamRevertedEvents: Array<EvmBridgeTransferToJoystreamRevertedEvent>
+  evmBridgeTransferToJoystreamRevertedEventsConnection: EvmBridgeTransferToJoystreamRevertedEventsConnection
+  evmTimelockCallById?: Maybe<EvmTimelockCall>
   /** @deprecated Use evmTimelockCallById */
-  evmTimelockCallByUniqueInput?: Maybe<EvmTimelockCall>;
-  evmTimelockCallExecutedEventById?: Maybe<EvmTimelockCallExecutedEvent>;
+  evmTimelockCallByUniqueInput?: Maybe<EvmTimelockCall>
+  evmTimelockCallExecutedEventById?: Maybe<EvmTimelockCallExecutedEvent>
   /** @deprecated Use evmTimelockCallExecutedEventById */
-  evmTimelockCallExecutedEventByUniqueInput?: Maybe<EvmTimelockCallExecutedEvent>;
-  evmTimelockCallExecutedEvents: Array<EvmTimelockCallExecutedEvent>;
-  evmTimelockCallExecutedEventsConnection: EvmTimelockCallExecutedEventsConnection;
-  evmTimelockCallSaltEventById?: Maybe<EvmTimelockCallSaltEvent>;
+  evmTimelockCallExecutedEventByUniqueInput?: Maybe<EvmTimelockCallExecutedEvent>
+  evmTimelockCallExecutedEvents: Array<EvmTimelockCallExecutedEvent>
+  evmTimelockCallExecutedEventsConnection: EvmTimelockCallExecutedEventsConnection
+  evmTimelockCallSaltEventById?: Maybe<EvmTimelockCallSaltEvent>
   /** @deprecated Use evmTimelockCallSaltEventById */
-  evmTimelockCallSaltEventByUniqueInput?: Maybe<EvmTimelockCallSaltEvent>;
-  evmTimelockCallSaltEvents: Array<EvmTimelockCallSaltEvent>;
-  evmTimelockCallSaltEventsConnection: EvmTimelockCallSaltEventsConnection;
-  evmTimelockCallScheduledEventById?: Maybe<EvmTimelockCallScheduledEvent>;
+  evmTimelockCallSaltEventByUniqueInput?: Maybe<EvmTimelockCallSaltEvent>
+  evmTimelockCallSaltEvents: Array<EvmTimelockCallSaltEvent>
+  evmTimelockCallSaltEventsConnection: EvmTimelockCallSaltEventsConnection
+  evmTimelockCallScheduledEventById?: Maybe<EvmTimelockCallScheduledEvent>
   /** @deprecated Use evmTimelockCallScheduledEventById */
-  evmTimelockCallScheduledEventByUniqueInput?: Maybe<EvmTimelockCallScheduledEvent>;
-  evmTimelockCallScheduledEvents: Array<EvmTimelockCallScheduledEvent>;
-  evmTimelockCallScheduledEventsConnection: EvmTimelockCallScheduledEventsConnection;
-  evmTimelockCalls: Array<EvmTimelockCall>;
-  evmTimelockCallsConnection: EvmTimelockCallsConnection;
-  evmTimelockOperationById?: Maybe<EvmTimelockOperation>;
+  evmTimelockCallScheduledEventByUniqueInput?: Maybe<EvmTimelockCallScheduledEvent>
+  evmTimelockCallScheduledEvents: Array<EvmTimelockCallScheduledEvent>
+  evmTimelockCallScheduledEventsConnection: EvmTimelockCallScheduledEventsConnection
+  evmTimelockCalls: Array<EvmTimelockCall>
+  evmTimelockCallsConnection: EvmTimelockCallsConnection
+  evmTimelockOperationById?: Maybe<EvmTimelockOperation>
   /** @deprecated Use evmTimelockOperationById */
-  evmTimelockOperationByUniqueInput?: Maybe<EvmTimelockOperation>;
-  evmTimelockOperationCancelledEventById?: Maybe<EvmTimelockOperationCancelledEvent>;
+  evmTimelockOperationByUniqueInput?: Maybe<EvmTimelockOperation>
+  evmTimelockOperationCancelledEventById?: Maybe<EvmTimelockOperationCancelledEvent>
   /** @deprecated Use evmTimelockOperationCancelledEventById */
-  evmTimelockOperationCancelledEventByUniqueInput?: Maybe<EvmTimelockOperationCancelledEvent>;
-  evmTimelockOperationCancelledEvents: Array<EvmTimelockOperationCancelledEvent>;
-  evmTimelockOperationCancelledEventsConnection: EvmTimelockOperationCancelledEventsConnection;
-  evmTimelockOperations: Array<EvmTimelockOperation>;
-  evmTimelockOperationsConnection: EvmTimelockOperationsConnection;
-  evmTimelockRoleGrantedEventById?: Maybe<EvmTimelockRoleGrantedEvent>;
+  evmTimelockOperationCancelledEventByUniqueInput?: Maybe<EvmTimelockOperationCancelledEvent>
+  evmTimelockOperationCancelledEvents: Array<EvmTimelockOperationCancelledEvent>
+  evmTimelockOperationCancelledEventsConnection: EvmTimelockOperationCancelledEventsConnection
+  evmTimelockOperations: Array<EvmTimelockOperation>
+  evmTimelockOperationsConnection: EvmTimelockOperationsConnection
+  evmTimelockRoleGrantedEventById?: Maybe<EvmTimelockRoleGrantedEvent>
   /** @deprecated Use evmTimelockRoleGrantedEventById */
-  evmTimelockRoleGrantedEventByUniqueInput?: Maybe<EvmTimelockRoleGrantedEvent>;
-  evmTimelockRoleGrantedEvents: Array<EvmTimelockRoleGrantedEvent>;
-  evmTimelockRoleGrantedEventsConnection: EvmTimelockRoleGrantedEventsConnection;
-  evmTimelockRoleRevokedEventById?: Maybe<EvmTimelockRoleRevokedEvent>;
+  evmTimelockRoleGrantedEventByUniqueInput?: Maybe<EvmTimelockRoleGrantedEvent>
+  evmTimelockRoleGrantedEvents: Array<EvmTimelockRoleGrantedEvent>
+  evmTimelockRoleGrantedEventsConnection: EvmTimelockRoleGrantedEventsConnection
+  evmTimelockRoleRevokedEventById?: Maybe<EvmTimelockRoleRevokedEvent>
   /** @deprecated Use evmTimelockRoleRevokedEventById */
-  evmTimelockRoleRevokedEventByUniqueInput?: Maybe<EvmTimelockRoleRevokedEvent>;
-  evmTimelockRoleRevokedEvents: Array<EvmTimelockRoleRevokedEvent>;
-  evmTimelockRoleRevokedEventsConnection: EvmTimelockRoleRevokedEventsConnection;
-  joyBridgeConfigById?: Maybe<JoyBridgeConfig>;
+  evmTimelockRoleRevokedEventByUniqueInput?: Maybe<EvmTimelockRoleRevokedEvent>
+  evmTimelockRoleRevokedEvents: Array<EvmTimelockRoleRevokedEvent>
+  evmTimelockRoleRevokedEventsConnection: EvmTimelockRoleRevokedEventsConnection
+  joyBridgeConfigById?: Maybe<JoyBridgeConfig>
   /** @deprecated Use joyBridgeConfigById */
-  joyBridgeConfigByUniqueInput?: Maybe<JoyBridgeConfig>;
-  joyBridgeConfigUpdatedEventById?: Maybe<JoyBridgeConfigUpdatedEvent>;
+  joyBridgeConfigByUniqueInput?: Maybe<JoyBridgeConfig>
+  joyBridgeConfigUpdatedEventById?: Maybe<JoyBridgeConfigUpdatedEvent>
   /** @deprecated Use joyBridgeConfigUpdatedEventById */
-  joyBridgeConfigUpdatedEventByUniqueInput?: Maybe<JoyBridgeConfigUpdatedEvent>;
-  joyBridgeConfigUpdatedEvents: Array<JoyBridgeConfigUpdatedEvent>;
-  joyBridgeConfigUpdatedEventsConnection: JoyBridgeConfigUpdatedEventsConnection;
-  joyBridgeConfigs: Array<JoyBridgeConfig>;
-  joyBridgeConfigsConnection: JoyBridgeConfigsConnection;
-  joyBridgeInboundTransferFinalizedEventById?: Maybe<JoyBridgeInboundTransferFinalizedEvent>;
+  joyBridgeConfigUpdatedEventByUniqueInput?: Maybe<JoyBridgeConfigUpdatedEvent>
+  joyBridgeConfigUpdatedEvents: Array<JoyBridgeConfigUpdatedEvent>
+  joyBridgeConfigUpdatedEventsConnection: JoyBridgeConfigUpdatedEventsConnection
+  joyBridgeConfigs: Array<JoyBridgeConfig>
+  joyBridgeConfigsConnection: JoyBridgeConfigsConnection
+  joyBridgeInboundTransferFinalizedEventById?: Maybe<JoyBridgeInboundTransferFinalizedEvent>
   /** @deprecated Use joyBridgeInboundTransferFinalizedEventById */
-  joyBridgeInboundTransferFinalizedEventByUniqueInput?: Maybe<JoyBridgeInboundTransferFinalizedEvent>;
-  joyBridgeInboundTransferFinalizedEvents: Array<JoyBridgeInboundTransferFinalizedEvent>;
-  joyBridgeInboundTransferFinalizedEventsConnection: JoyBridgeInboundTransferFinalizedEventsConnection;
-  joyBridgeOutboundTransferRequestedEventById?: Maybe<JoyBridgeOutboundTransferRequestedEvent>;
+  joyBridgeInboundTransferFinalizedEventByUniqueInput?: Maybe<JoyBridgeInboundTransferFinalizedEvent>
+  joyBridgeInboundTransferFinalizedEvents: Array<JoyBridgeInboundTransferFinalizedEvent>
+  joyBridgeInboundTransferFinalizedEventsConnection: JoyBridgeInboundTransferFinalizedEventsConnection
+  joyBridgeOutboundTransferRequestedEventById?: Maybe<JoyBridgeOutboundTransferRequestedEvent>
   /** @deprecated Use joyBridgeOutboundTransferRequestedEventById */
-  joyBridgeOutboundTransferRequestedEventByUniqueInput?: Maybe<JoyBridgeOutboundTransferRequestedEvent>;
-  joyBridgeOutboundTransferRequestedEvents: Array<JoyBridgeOutboundTransferRequestedEvent>;
-  joyBridgeOutboundTransferRequestedEventsConnection: JoyBridgeOutboundTransferRequestedEventsConnection;
-  joyBridgeOutboundTransferRevertedEventById?: Maybe<JoyBridgeOutboundTransferRevertedEvent>;
+  joyBridgeOutboundTransferRequestedEventByUniqueInput?: Maybe<JoyBridgeOutboundTransferRequestedEvent>
+  joyBridgeOutboundTransferRequestedEvents: Array<JoyBridgeOutboundTransferRequestedEvent>
+  joyBridgeOutboundTransferRequestedEventsConnection: JoyBridgeOutboundTransferRequestedEventsConnection
+  joyBridgeOutboundTransferRevertedEventById?: Maybe<JoyBridgeOutboundTransferRevertedEvent>
   /** @deprecated Use joyBridgeOutboundTransferRevertedEventById */
-  joyBridgeOutboundTransferRevertedEventByUniqueInput?: Maybe<JoyBridgeOutboundTransferRevertedEvent>;
-  joyBridgeOutboundTransferRevertedEvents: Array<JoyBridgeOutboundTransferRevertedEvent>;
-  joyBridgeOutboundTransferRevertedEventsConnection: JoyBridgeOutboundTransferRevertedEventsConnection;
-  joyBridgePausedEventById?: Maybe<JoyBridgePausedEvent>;
+  joyBridgeOutboundTransferRevertedEventByUniqueInput?: Maybe<JoyBridgeOutboundTransferRevertedEvent>
+  joyBridgeOutboundTransferRevertedEvents: Array<JoyBridgeOutboundTransferRevertedEvent>
+  joyBridgeOutboundTransferRevertedEventsConnection: JoyBridgeOutboundTransferRevertedEventsConnection
+  joyBridgePausedEventById?: Maybe<JoyBridgePausedEvent>
   /** @deprecated Use joyBridgePausedEventById */
-  joyBridgePausedEventByUniqueInput?: Maybe<JoyBridgePausedEvent>;
-  joyBridgePausedEvents: Array<JoyBridgePausedEvent>;
-  joyBridgePausedEventsConnection: JoyBridgePausedEventsConnection;
-  joyBridgeThawnFinishedEventById?: Maybe<JoyBridgeThawnFinishedEvent>;
+  joyBridgePausedEventByUniqueInput?: Maybe<JoyBridgePausedEvent>
+  joyBridgePausedEvents: Array<JoyBridgePausedEvent>
+  joyBridgePausedEventsConnection: JoyBridgePausedEventsConnection
+  joyBridgeThawnFinishedEventById?: Maybe<JoyBridgeThawnFinishedEvent>
   /** @deprecated Use joyBridgeThawnFinishedEventById */
-  joyBridgeThawnFinishedEventByUniqueInput?: Maybe<JoyBridgeThawnFinishedEvent>;
-  joyBridgeThawnFinishedEvents: Array<JoyBridgeThawnFinishedEvent>;
-  joyBridgeThawnFinishedEventsConnection: JoyBridgeThawnFinishedEventsConnection;
-  joyBridgeThawnStartedEventById?: Maybe<JoyBridgeThawnStartedEvent>;
+  joyBridgeThawnFinishedEventByUniqueInput?: Maybe<JoyBridgeThawnFinishedEvent>
+  joyBridgeThawnFinishedEvents: Array<JoyBridgeThawnFinishedEvent>
+  joyBridgeThawnFinishedEventsConnection: JoyBridgeThawnFinishedEventsConnection
+  joyBridgeThawnStartedEventById?: Maybe<JoyBridgeThawnStartedEvent>
   /** @deprecated Use joyBridgeThawnStartedEventById */
-  joyBridgeThawnStartedEventByUniqueInput?: Maybe<JoyBridgeThawnStartedEvent>;
-  joyBridgeThawnStartedEvents: Array<JoyBridgeThawnStartedEvent>;
-  joyBridgeThawnStartedEventsConnection: JoyBridgeThawnStartedEventsConnection;
-  joyProcessorStatus: SquidStatus;
-};
-
+  joyBridgeThawnStartedEventByUniqueInput?: Maybe<JoyBridgeThawnStartedEvent>
+  joyBridgeThawnStartedEvents: Array<JoyBridgeThawnStartedEvent>
+  joyBridgeThawnStartedEventsConnection: JoyBridgeThawnStartedEventsConnection
+  joyProcessorStatus: SquidStatus
+}
 
 export type QueryBridgeTransferByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryBridgeTransferByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryBridgeTransfersArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<BridgeTransferOrderByInput>>;
-  where?: InputMaybe<BridgeTransferWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<BridgeTransferOrderByInput>>
+  where?: InputMaybe<BridgeTransferWhereInput>
+}
 
 export type QueryBridgeTransfersConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<BridgeTransferOrderByInput>;
-  where?: InputMaybe<BridgeTransferWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<BridgeTransferOrderByInput>
+  where?: InputMaybe<BridgeTransferWhereInput>
+}
 
 export type QueryEvmBridgeConfigByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmBridgeConfigByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmBridgeConfigsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmBridgeConfigOrderByInput>>;
-  where?: InputMaybe<EvmBridgeConfigWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmBridgeConfigOrderByInput>>
+  where?: InputMaybe<EvmBridgeConfigWhereInput>
+}
 
 export type QueryEvmBridgeConfigsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmBridgeConfigOrderByInput>;
-  where?: InputMaybe<EvmBridgeConfigWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmBridgeConfigOrderByInput>
+  where?: InputMaybe<EvmBridgeConfigWhereInput>
+}
 
 export type QueryEvmBridgeFeeChangedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmBridgeFeeChangedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmBridgeFeeChangedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmBridgeFeeChangedEventOrderByInput>>;
-  where?: InputMaybe<EvmBridgeFeeChangedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmBridgeFeeChangedEventOrderByInput>>
+  where?: InputMaybe<EvmBridgeFeeChangedEventWhereInput>
+}
 
 export type QueryEvmBridgeFeeChangedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmBridgeFeeChangedEventOrderByInput>;
-  where?: InputMaybe<EvmBridgeFeeChangedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmBridgeFeeChangedEventOrderByInput>
+  where?: InputMaybe<EvmBridgeFeeChangedEventWhereInput>
+}
 
 export type QueryEvmBridgeFeesWithdrawnEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmBridgeFeesWithdrawnEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmBridgeFeesWithdrawnEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmBridgeFeesWithdrawnEventOrderByInput>>;
-  where?: InputMaybe<EvmBridgeFeesWithdrawnEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmBridgeFeesWithdrawnEventOrderByInput>>
+  where?: InputMaybe<EvmBridgeFeesWithdrawnEventWhereInput>
+}
 
 export type QueryEvmBridgeFeesWithdrawnEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmBridgeFeesWithdrawnEventOrderByInput>;
-  where?: InputMaybe<EvmBridgeFeesWithdrawnEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmBridgeFeesWithdrawnEventOrderByInput>
+  where?: InputMaybe<EvmBridgeFeesWithdrawnEventWhereInput>
+}
 
 export type QueryEvmBridgeMintingLimitsUpdatedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmBridgeMintingLimitsUpdatedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmBridgeMintingLimitsUpdatedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmBridgeMintingLimitsUpdatedEventOrderByInput>>;
-  where?: InputMaybe<EvmBridgeMintingLimitsUpdatedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmBridgeMintingLimitsUpdatedEventOrderByInput>>
+  where?: InputMaybe<EvmBridgeMintingLimitsUpdatedEventWhereInput>
+}
 
 export type QueryEvmBridgeMintingLimitsUpdatedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmBridgeMintingLimitsUpdatedEventOrderByInput>;
-  where?: InputMaybe<EvmBridgeMintingLimitsUpdatedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmBridgeMintingLimitsUpdatedEventOrderByInput>
+  where?: InputMaybe<EvmBridgeMintingLimitsUpdatedEventWhereInput>
+}
 
 export type QueryEvmBridgeRoleGrantedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmBridgeRoleGrantedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmBridgeRoleGrantedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmBridgeRoleGrantedEventOrderByInput>>;
-  where?: InputMaybe<EvmBridgeRoleGrantedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmBridgeRoleGrantedEventOrderByInput>>
+  where?: InputMaybe<EvmBridgeRoleGrantedEventWhereInput>
+}
 
 export type QueryEvmBridgeRoleGrantedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmBridgeRoleGrantedEventOrderByInput>;
-  where?: InputMaybe<EvmBridgeRoleGrantedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmBridgeRoleGrantedEventOrderByInput>
+  where?: InputMaybe<EvmBridgeRoleGrantedEventWhereInput>
+}
 
 export type QueryEvmBridgeRoleRevokedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmBridgeRoleRevokedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmBridgeRoleRevokedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmBridgeRoleRevokedEventOrderByInput>>;
-  where?: InputMaybe<EvmBridgeRoleRevokedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmBridgeRoleRevokedEventOrderByInput>>
+  where?: InputMaybe<EvmBridgeRoleRevokedEventWhereInput>
+}
 
 export type QueryEvmBridgeRoleRevokedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmBridgeRoleRevokedEventOrderByInput>;
-  where?: InputMaybe<EvmBridgeRoleRevokedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmBridgeRoleRevokedEventOrderByInput>
+  where?: InputMaybe<EvmBridgeRoleRevokedEventWhereInput>
+}
 
 export type QueryEvmBridgeStatusChangedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmBridgeStatusChangedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmBridgeStatusChangedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmBridgeStatusChangedEventOrderByInput>>;
-  where?: InputMaybe<EvmBridgeStatusChangedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmBridgeStatusChangedEventOrderByInput>>
+  where?: InputMaybe<EvmBridgeStatusChangedEventWhereInput>
+}
 
 export type QueryEvmBridgeStatusChangedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmBridgeStatusChangedEventOrderByInput>;
-  where?: InputMaybe<EvmBridgeStatusChangedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmBridgeStatusChangedEventOrderByInput>
+  where?: InputMaybe<EvmBridgeStatusChangedEventWhereInput>
+}
 
 export type QueryEvmBridgeTransferToEthCompletedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmBridgeTransferToEthCompletedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmBridgeTransferToEthCompletedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmBridgeTransferToEthCompletedEventOrderByInput>>;
-  where?: InputMaybe<EvmBridgeTransferToEthCompletedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmBridgeTransferToEthCompletedEventOrderByInput>>
+  where?: InputMaybe<EvmBridgeTransferToEthCompletedEventWhereInput>
+}
 
 export type QueryEvmBridgeTransferToEthCompletedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmBridgeTransferToEthCompletedEventOrderByInput>;
-  where?: InputMaybe<EvmBridgeTransferToEthCompletedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmBridgeTransferToEthCompletedEventOrderByInput>
+  where?: InputMaybe<EvmBridgeTransferToEthCompletedEventWhereInput>
+}
 
 export type QueryEvmBridgeTransferToJoystreamRequestedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmBridgeTransferToJoystreamRequestedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmBridgeTransferToJoystreamRequestedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmBridgeTransferToJoystreamRequestedEventOrderByInput>>;
-  where?: InputMaybe<EvmBridgeTransferToJoystreamRequestedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<
+    Array<EvmBridgeTransferToJoystreamRequestedEventOrderByInput>
+  >
+  where?: InputMaybe<EvmBridgeTransferToJoystreamRequestedEventWhereInput>
+}
 
 export type QueryEvmBridgeTransferToJoystreamRequestedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmBridgeTransferToJoystreamRequestedEventOrderByInput>;
-  where?: InputMaybe<EvmBridgeTransferToJoystreamRequestedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmBridgeTransferToJoystreamRequestedEventOrderByInput>
+  where?: InputMaybe<EvmBridgeTransferToJoystreamRequestedEventWhereInput>
+}
 
 export type QueryEvmBridgeTransferToJoystreamRevertedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmBridgeTransferToJoystreamRevertedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmBridgeTransferToJoystreamRevertedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmBridgeTransferToJoystreamRevertedEventOrderByInput>>;
-  where?: InputMaybe<EvmBridgeTransferToJoystreamRevertedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<
+    Array<EvmBridgeTransferToJoystreamRevertedEventOrderByInput>
+  >
+  where?: InputMaybe<EvmBridgeTransferToJoystreamRevertedEventWhereInput>
+}
 
 export type QueryEvmBridgeTransferToJoystreamRevertedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmBridgeTransferToJoystreamRevertedEventOrderByInput>;
-  where?: InputMaybe<EvmBridgeTransferToJoystreamRevertedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmBridgeTransferToJoystreamRevertedEventOrderByInput>
+  where?: InputMaybe<EvmBridgeTransferToJoystreamRevertedEventWhereInput>
+}
 
 export type QueryEvmTimelockCallByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmTimelockCallByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmTimelockCallExecutedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmTimelockCallExecutedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmTimelockCallExecutedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmTimelockCallExecutedEventOrderByInput>>;
-  where?: InputMaybe<EvmTimelockCallExecutedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmTimelockCallExecutedEventOrderByInput>>
+  where?: InputMaybe<EvmTimelockCallExecutedEventWhereInput>
+}
 
 export type QueryEvmTimelockCallExecutedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmTimelockCallExecutedEventOrderByInput>;
-  where?: InputMaybe<EvmTimelockCallExecutedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmTimelockCallExecutedEventOrderByInput>
+  where?: InputMaybe<EvmTimelockCallExecutedEventWhereInput>
+}
 
 export type QueryEvmTimelockCallSaltEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmTimelockCallSaltEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmTimelockCallSaltEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmTimelockCallSaltEventOrderByInput>>;
-  where?: InputMaybe<EvmTimelockCallSaltEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmTimelockCallSaltEventOrderByInput>>
+  where?: InputMaybe<EvmTimelockCallSaltEventWhereInput>
+}
 
 export type QueryEvmTimelockCallSaltEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmTimelockCallSaltEventOrderByInput>;
-  where?: InputMaybe<EvmTimelockCallSaltEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmTimelockCallSaltEventOrderByInput>
+  where?: InputMaybe<EvmTimelockCallSaltEventWhereInput>
+}
 
 export type QueryEvmTimelockCallScheduledEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmTimelockCallScheduledEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmTimelockCallScheduledEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmTimelockCallScheduledEventOrderByInput>>;
-  where?: InputMaybe<EvmTimelockCallScheduledEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmTimelockCallScheduledEventOrderByInput>>
+  where?: InputMaybe<EvmTimelockCallScheduledEventWhereInput>
+}
 
 export type QueryEvmTimelockCallScheduledEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmTimelockCallScheduledEventOrderByInput>;
-  where?: InputMaybe<EvmTimelockCallScheduledEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmTimelockCallScheduledEventOrderByInput>
+  where?: InputMaybe<EvmTimelockCallScheduledEventWhereInput>
+}
 
 export type QueryEvmTimelockCallsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmTimelockCallOrderByInput>>;
-  where?: InputMaybe<EvmTimelockCallWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmTimelockCallOrderByInput>>
+  where?: InputMaybe<EvmTimelockCallWhereInput>
+}
 
 export type QueryEvmTimelockCallsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmTimelockCallOrderByInput>;
-  where?: InputMaybe<EvmTimelockCallWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmTimelockCallOrderByInput>
+  where?: InputMaybe<EvmTimelockCallWhereInput>
+}
 
 export type QueryEvmTimelockOperationByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmTimelockOperationByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmTimelockOperationCancelledEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmTimelockOperationCancelledEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmTimelockOperationCancelledEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmTimelockOperationCancelledEventOrderByInput>>;
-  where?: InputMaybe<EvmTimelockOperationCancelledEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmTimelockOperationCancelledEventOrderByInput>>
+  where?: InputMaybe<EvmTimelockOperationCancelledEventWhereInput>
+}
 
 export type QueryEvmTimelockOperationCancelledEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmTimelockOperationCancelledEventOrderByInput>;
-  where?: InputMaybe<EvmTimelockOperationCancelledEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmTimelockOperationCancelledEventOrderByInput>
+  where?: InputMaybe<EvmTimelockOperationCancelledEventWhereInput>
+}
 
 export type QueryEvmTimelockOperationsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmTimelockOperationOrderByInput>>;
-  where?: InputMaybe<EvmTimelockOperationWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmTimelockOperationOrderByInput>>
+  where?: InputMaybe<EvmTimelockOperationWhereInput>
+}
 
 export type QueryEvmTimelockOperationsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmTimelockOperationOrderByInput>;
-  where?: InputMaybe<EvmTimelockOperationWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmTimelockOperationOrderByInput>
+  where?: InputMaybe<EvmTimelockOperationWhereInput>
+}
 
 export type QueryEvmTimelockRoleGrantedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmTimelockRoleGrantedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmTimelockRoleGrantedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmTimelockRoleGrantedEventOrderByInput>>;
-  where?: InputMaybe<EvmTimelockRoleGrantedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmTimelockRoleGrantedEventOrderByInput>>
+  where?: InputMaybe<EvmTimelockRoleGrantedEventWhereInput>
+}
 
 export type QueryEvmTimelockRoleGrantedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmTimelockRoleGrantedEventOrderByInput>;
-  where?: InputMaybe<EvmTimelockRoleGrantedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmTimelockRoleGrantedEventOrderByInput>
+  where?: InputMaybe<EvmTimelockRoleGrantedEventWhereInput>
+}
 
 export type QueryEvmTimelockRoleRevokedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryEvmTimelockRoleRevokedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryEvmTimelockRoleRevokedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<EvmTimelockRoleRevokedEventOrderByInput>>;
-  where?: InputMaybe<EvmTimelockRoleRevokedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<EvmTimelockRoleRevokedEventOrderByInput>>
+  where?: InputMaybe<EvmTimelockRoleRevokedEventWhereInput>
+}
 
 export type QueryEvmTimelockRoleRevokedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<EvmTimelockRoleRevokedEventOrderByInput>;
-  where?: InputMaybe<EvmTimelockRoleRevokedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<EvmTimelockRoleRevokedEventOrderByInput>
+  where?: InputMaybe<EvmTimelockRoleRevokedEventWhereInput>
+}
 
 export type QueryJoyBridgeConfigByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryJoyBridgeConfigByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryJoyBridgeConfigUpdatedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryJoyBridgeConfigUpdatedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryJoyBridgeConfigUpdatedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<JoyBridgeConfigUpdatedEventOrderByInput>>;
-  where?: InputMaybe<JoyBridgeConfigUpdatedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<JoyBridgeConfigUpdatedEventOrderByInput>>
+  where?: InputMaybe<JoyBridgeConfigUpdatedEventWhereInput>
+}
 
 export type QueryJoyBridgeConfigUpdatedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<JoyBridgeConfigUpdatedEventOrderByInput>;
-  where?: InputMaybe<JoyBridgeConfigUpdatedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<JoyBridgeConfigUpdatedEventOrderByInput>
+  where?: InputMaybe<JoyBridgeConfigUpdatedEventWhereInput>
+}
 
 export type QueryJoyBridgeConfigsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<JoyBridgeConfigOrderByInput>>;
-  where?: InputMaybe<JoyBridgeConfigWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<JoyBridgeConfigOrderByInput>>
+  where?: InputMaybe<JoyBridgeConfigWhereInput>
+}
 
 export type QueryJoyBridgeConfigsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<JoyBridgeConfigOrderByInput>;
-  where?: InputMaybe<JoyBridgeConfigWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<JoyBridgeConfigOrderByInput>
+  where?: InputMaybe<JoyBridgeConfigWhereInput>
+}
 
 export type QueryJoyBridgeInboundTransferFinalizedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryJoyBridgeInboundTransferFinalizedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryJoyBridgeInboundTransferFinalizedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<JoyBridgeInboundTransferFinalizedEventOrderByInput>>;
-  where?: InputMaybe<JoyBridgeInboundTransferFinalizedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<
+    Array<JoyBridgeInboundTransferFinalizedEventOrderByInput>
+  >
+  where?: InputMaybe<JoyBridgeInboundTransferFinalizedEventWhereInput>
+}
 
 export type QueryJoyBridgeInboundTransferFinalizedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<JoyBridgeInboundTransferFinalizedEventOrderByInput>;
-  where?: InputMaybe<JoyBridgeInboundTransferFinalizedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<JoyBridgeInboundTransferFinalizedEventOrderByInput>
+  where?: InputMaybe<JoyBridgeInboundTransferFinalizedEventWhereInput>
+}
 
 export type QueryJoyBridgeOutboundTransferRequestedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryJoyBridgeOutboundTransferRequestedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryJoyBridgeOutboundTransferRequestedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<JoyBridgeOutboundTransferRequestedEventOrderByInput>>;
-  where?: InputMaybe<JoyBridgeOutboundTransferRequestedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<
+    Array<JoyBridgeOutboundTransferRequestedEventOrderByInput>
+  >
+  where?: InputMaybe<JoyBridgeOutboundTransferRequestedEventWhereInput>
+}
 
 export type QueryJoyBridgeOutboundTransferRequestedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<JoyBridgeOutboundTransferRequestedEventOrderByInput>;
-  where?: InputMaybe<JoyBridgeOutboundTransferRequestedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<JoyBridgeOutboundTransferRequestedEventOrderByInput>
+  where?: InputMaybe<JoyBridgeOutboundTransferRequestedEventWhereInput>
+}
 
 export type QueryJoyBridgeOutboundTransferRevertedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryJoyBridgeOutboundTransferRevertedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryJoyBridgeOutboundTransferRevertedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<JoyBridgeOutboundTransferRevertedEventOrderByInput>>;
-  where?: InputMaybe<JoyBridgeOutboundTransferRevertedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<
+    Array<JoyBridgeOutboundTransferRevertedEventOrderByInput>
+  >
+  where?: InputMaybe<JoyBridgeOutboundTransferRevertedEventWhereInput>
+}
 
 export type QueryJoyBridgeOutboundTransferRevertedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<JoyBridgeOutboundTransferRevertedEventOrderByInput>;
-  where?: InputMaybe<JoyBridgeOutboundTransferRevertedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<JoyBridgeOutboundTransferRevertedEventOrderByInput>
+  where?: InputMaybe<JoyBridgeOutboundTransferRevertedEventWhereInput>
+}
 
 export type QueryJoyBridgePausedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryJoyBridgePausedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryJoyBridgePausedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<JoyBridgePausedEventOrderByInput>>;
-  where?: InputMaybe<JoyBridgePausedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<JoyBridgePausedEventOrderByInput>>
+  where?: InputMaybe<JoyBridgePausedEventWhereInput>
+}
 
 export type QueryJoyBridgePausedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<JoyBridgePausedEventOrderByInput>;
-  where?: InputMaybe<JoyBridgePausedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<JoyBridgePausedEventOrderByInput>
+  where?: InputMaybe<JoyBridgePausedEventWhereInput>
+}
 
 export type QueryJoyBridgeThawnFinishedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryJoyBridgeThawnFinishedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryJoyBridgeThawnFinishedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<JoyBridgeThawnFinishedEventOrderByInput>>;
-  where?: InputMaybe<JoyBridgeThawnFinishedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<JoyBridgeThawnFinishedEventOrderByInput>>
+  where?: InputMaybe<JoyBridgeThawnFinishedEventWhereInput>
+}
 
 export type QueryJoyBridgeThawnFinishedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<JoyBridgeThawnFinishedEventOrderByInput>;
-  where?: InputMaybe<JoyBridgeThawnFinishedEventWhereInput>;
-};
-
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<JoyBridgeThawnFinishedEventOrderByInput>
+  where?: InputMaybe<JoyBridgeThawnFinishedEventWhereInput>
+}
 
 export type QueryJoyBridgeThawnStartedEventByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
+  id: Scalars['String']['input']
+}
 
 export type QueryJoyBridgeThawnStartedEventByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
+  where: WhereIdInput
+}
 
 export type QueryJoyBridgeThawnStartedEventsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<JoyBridgeThawnStartedEventOrderByInput>>;
-  where?: InputMaybe<JoyBridgeThawnStartedEventWhereInput>;
-};
-
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+  orderBy?: InputMaybe<Array<JoyBridgeThawnStartedEventOrderByInput>>
+  where?: InputMaybe<JoyBridgeThawnStartedEventWhereInput>
+}
 
 export type QueryJoyBridgeThawnStartedEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<JoyBridgeThawnStartedEventOrderByInput>;
-  where?: InputMaybe<JoyBridgeThawnStartedEventWhereInput>;
-};
+  after?: InputMaybe<Scalars['String']['input']>
+  first?: InputMaybe<Scalars['Int']['input']>
+  orderBy: Array<JoyBridgeThawnStartedEventOrderByInput>
+  where?: InputMaybe<JoyBridgeThawnStartedEventWhereInput>
+}
 
 export type SquidStatus = {
-  __typename?: 'SquidStatus';
-  finalizedHeight: Scalars['Float']['output'];
-  height: Scalars['Float']['output'];
-};
+  __typename?: 'SquidStatus'
+  finalizedHeight: Scalars['Float']['output']
+  height: Scalars['Float']['output']
+}
 
 export type WhereIdInput = {
-  id: Scalars['String']['input'];
-};
+  id: Scalars['String']['input']
+}
 
 export type GetConfigsQueryVariables = Exact<{
-  evmChainId: Scalars['String']['input'];
-  joyChainId: Scalars['String']['input'];
-}>;
+  evmChainId: Scalars['String']['input']
+  joyChainId: Scalars['String']['input']
+}>
 
+export type GetConfigsQuery = {
+  __typename?: 'Query'
+  evmBridgeConfigs: Array<{
+    __typename?: 'EvmBridgeConfig'
+    id: string
+    status: EvmBridgeStatus
+    bridgeOperatorAccounts: Array<string>
+    bridgeAdminAccounts: Array<string>
+    timelockAdminAccounts: Array<string>
+    pauserAccounts: Array<string>
+    bridgingFee: string
+    totalBurned: string
+    totalMinted: string
+    mintingLimits: {
+      __typename?: 'EvmBridgeMintingLimits'
+      periodLength: number
+      periodLimit: string
+      currentPeriodMinted: string
+      currentPeriodEndBlock: number
+    }
+  }>
+  joyBridgeConfigs: Array<{
+    __typename?: 'JoyBridgeConfig'
+    id: string
+    status: JoyBridgeStatus
+    operatorAccount: string
+    pauserAccounts: Array<string>
+    mintAllowance: string
+    feesBurned: string
+    bridgingFee: string
+    supportedRemoteChainIds: Array<number>
+    thawnDurationBlocks: number
+    thawnEndsAtBlock?: number | null
+    totalBurned: string
+    totalMinted: string
+  }>
+}
 
-export type GetConfigsQuery = { __typename?: 'Query', evmBridgeConfigs: Array<{ __typename?: 'EvmBridgeConfig', id: string, status: EvmBridgeStatus, bridgeOperatorAccounts: Array<string>, bridgeAdminAccounts: Array<string>, timelockAdminAccounts: Array<string>, pauserAccounts: Array<string>, bridgingFee: string, totalBurned: string, totalMinted: string, mintingLimits: { __typename?: 'EvmBridgeMintingLimits', periodLength: number, periodLimit: string, currentPeriodMinted: string, currentPeriodEndBlock: number } }>, joyBridgeConfigs: Array<{ __typename?: 'JoyBridgeConfig', id: string, status: JoyBridgeStatus, operatorAccount: string, pauserAccounts: Array<string>, mintAllowance: string, feesBurned: string, bridgingFee: string, supportedRemoteChainIds: Array<number>, thawnDurationBlocks: number, thawnEndsAtBlock?: number | null, totalBurned: string, totalMinted: string }> };
+export type GetProcessorStatusQueryVariables = Exact<{ [key: string]: never }>
 
-export type GetProcessorStatusQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetProcessorStatusQuery = { __typename?: 'Query', joyProcessorStatus: { __typename?: 'SquidStatus', finalizedHeight: number, height: number }, baseProcessorStatus: { __typename?: 'SquidStatus', finalizedHeight: number, height: number } };
+export type GetProcessorStatusQuery = {
+  __typename?: 'Query'
+  joyProcessorStatus: {
+    __typename?: 'SquidStatus'
+    finalizedHeight: number
+    height: number
+  }
+  baseProcessorStatus: {
+    __typename?: 'SquidStatus'
+    finalizedHeight: number
+    height: number
+  }
+}
 
 export type GetTimelockOperationsQueryVariables = Exact<{
-  where?: InputMaybe<EvmTimelockOperationWhereInput>;
-  orderBy?: InputMaybe<Array<EvmTimelockOperationOrderByInput> | EvmTimelockOperationOrderByInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-}>;
+  where?: InputMaybe<EvmTimelockOperationWhereInput>
+  orderBy?: InputMaybe<
+    Array<EvmTimelockOperationOrderByInput> | EvmTimelockOperationOrderByInput
+  >
+  limit?: InputMaybe<Scalars['Int']['input']>
+  offset?: InputMaybe<Scalars['Int']['input']>
+}>
 
-
-export type GetTimelockOperationsQuery = { __typename?: 'Query', evmTimelockOperations: Array<{ __typename?: 'EvmTimelockOperation', id: string, operationId: string, cancelledAtBlock?: number | null, cancelledAtTimestamp?: string | null, cancelledTxHash?: string | null, createdAtBlock: number, createdAtTimestamp: string, createdTxHash: string, delayDoneTimestamp: string, executedAtBlock?: number | null, executedAtTimestamp?: string | null, executedTxHash?: string | null, predecessor?: string | null, salt?: string | null, status: EvmTimelockOperationStatus, calls: Array<{ __typename?: 'EvmTimelockCall', callIndex: number, callArgs?: string | null, callData: string, callSignature?: string | null, callTarget: string, callValue: string }> }> };
+export type GetTimelockOperationsQuery = {
+  __typename?: 'Query'
+  evmTimelockOperations: Array<{
+    __typename?: 'EvmTimelockOperation'
+    id: string
+    operationId: string
+    cancelledAtBlock?: number | null
+    cancelledAtTimestamp?: string | null
+    cancelledTxHash?: string | null
+    createdAtBlock: number
+    createdAtTimestamp: string
+    createdTxHash: string
+    delayDoneTimestamp: string
+    executedAtBlock?: number | null
+    executedAtTimestamp?: string | null
+    executedTxHash?: string | null
+    predecessor?: string | null
+    salt?: string | null
+    status: EvmTimelockOperationStatus
+    calls: Array<{
+      __typename?: 'EvmTimelockCall'
+      callIndex: number
+      callArgs?: string | null
+      callData: string
+      callSignature?: string | null
+      callTarget: string
+      callValue: string
+    }>
+  }>
+}
 
 export type GetTransfersQueryVariables = Exact<{
-  where?: InputMaybe<BridgeTransferWhereInput>;
-  orderBy?: InputMaybe<Array<BridgeTransferOrderByInput> | BridgeTransferOrderByInput>;
-}>;
+  where?: InputMaybe<BridgeTransferWhereInput>
+  orderBy?: InputMaybe<
+    Array<BridgeTransferOrderByInput> | BridgeTransferOrderByInput
+  >
+}>
 
+export type GetTransfersQuery = {
+  __typename?: 'Query'
+  bridgeTransfers: Array<{
+    __typename?: 'BridgeTransfer'
+    id: string
+    status: BridgeTransferStatus
+    type: BridgeTransferType
+    sourceAccount: string
+    sourceChainId: number
+    sourceTransferId: string
+    destAccount: string
+    destChainId: number
+    createdTxHash: string
+    createdAtTimestamp: string
+    createdAtBlock: number
+    completedTxHash?: string | null
+    completedAtTimestamp?: string | null
+    completedAtBlock?: number | null
+    amount: string
+    feePaid: string
+  }>
+}
 
-export type GetTransfersQuery = { __typename?: 'Query', bridgeTransfers: Array<{ __typename?: 'BridgeTransfer', id: string, status: BridgeTransferStatus, type: BridgeTransferType, sourceAccount: string, sourceChainId: number, sourceTransferId: string, destAccount: string, destChainId: number, createdTxHash: string, createdAtTimestamp: string, createdAtBlock: number, completedTxHash?: string | null, completedAtTimestamp?: string | null, completedAtBlock?: number | null, amount: string, feePaid: string }> };
-
-
-export const GetConfigsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetConfigs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"evmChainId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"joyChainId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"evmBridgeConfigs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"evmChainId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"bridgeOperatorAccounts"}},{"kind":"Field","name":{"kind":"Name","value":"bridgeAdminAccounts"}},{"kind":"Field","name":{"kind":"Name","value":"timelockAdminAccounts"}},{"kind":"Field","name":{"kind":"Name","value":"pauserAccounts"}},{"kind":"Field","name":{"kind":"Name","value":"mintingLimits"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"periodLength"}},{"kind":"Field","name":{"kind":"Name","value":"periodLimit"}},{"kind":"Field","name":{"kind":"Name","value":"currentPeriodMinted"}},{"kind":"Field","name":{"kind":"Name","value":"currentPeriodEndBlock"}}]}},{"kind":"Field","name":{"kind":"Name","value":"bridgingFee"}},{"kind":"Field","name":{"kind":"Name","value":"totalBurned"}},{"kind":"Field","name":{"kind":"Name","value":"totalMinted"}}]}},{"kind":"Field","name":{"kind":"Name","value":"joyBridgeConfigs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"joyChainId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"operatorAccount"}},{"kind":"Field","name":{"kind":"Name","value":"pauserAccounts"}},{"kind":"Field","name":{"kind":"Name","value":"mintAllowance"}},{"kind":"Field","name":{"kind":"Name","value":"feesBurned"}},{"kind":"Field","name":{"kind":"Name","value":"bridgingFee"}},{"kind":"Field","name":{"kind":"Name","value":"supportedRemoteChainIds"}},{"kind":"Field","name":{"kind":"Name","value":"thawnDurationBlocks"}},{"kind":"Field","name":{"kind":"Name","value":"thawnEndsAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"totalBurned"}},{"kind":"Field","name":{"kind":"Name","value":"totalMinted"}}]}}]}}]} as unknown as DocumentNode<GetConfigsQuery, GetConfigsQueryVariables>;
-export const GetProcessorStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProcessorStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"joyProcessorStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"finalizedHeight"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}},{"kind":"Field","name":{"kind":"Name","value":"baseProcessorStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"finalizedHeight"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}}]}}]} as unknown as DocumentNode<GetProcessorStatusQuery, GetProcessorStatusQueryVariables>;
-export const GetTimelockOperationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTimelockOperations"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"EvmTimelockOperationWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EvmTimelockOperationOrderByInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"evmTimelockOperations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"operationId"}},{"kind":"Field","name":{"kind":"Name","value":"cancelledAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"cancelledAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"cancelledTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"createdTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"delayDoneTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"executedAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"executedAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"executedTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"predecessor"}},{"kind":"Field","name":{"kind":"Name","value":"salt"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"calls"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"callIndex"}},{"kind":"Field","name":{"kind":"Name","value":"callArgs"}},{"kind":"Field","name":{"kind":"Name","value":"callData"}},{"kind":"Field","name":{"kind":"Name","value":"callSignature"}},{"kind":"Field","name":{"kind":"Name","value":"callTarget"}},{"kind":"Field","name":{"kind":"Name","value":"callValue"}}]}}]}}]}}]} as unknown as DocumentNode<GetTimelockOperationsQuery, GetTimelockOperationsQueryVariables>;
-export const GetTransfersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTransfers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"BridgeTransferWhereInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BridgeTransferOrderByInput"}}}},"defaultValue":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"createdAtTimestamp_DESC"}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bridgeTransfers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orderBy"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"sourceAccount"}},{"kind":"Field","name":{"kind":"Name","value":"sourceChainId"}},{"kind":"Field","name":{"kind":"Name","value":"sourceTransferId"}},{"kind":"Field","name":{"kind":"Name","value":"destAccount"}},{"kind":"Field","name":{"kind":"Name","value":"destChainId"}},{"kind":"Field","name":{"kind":"Name","value":"createdTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"createdAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"completedTxHash"}},{"kind":"Field","name":{"kind":"Name","value":"completedAtTimestamp"}},{"kind":"Field","name":{"kind":"Name","value":"completedAtBlock"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"feePaid"}}]}}]}}]} as unknown as DocumentNode<GetTransfersQuery, GetTransfersQueryVariables>;
+export const GetConfigsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetConfigs' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'evmChainId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'joyChainId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'evmBridgeConfigs' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id_eq' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'evmChainId' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'bridgeOperatorAccounts' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'bridgeAdminAccounts' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'timelockAdminAccounts' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pauserAccounts' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'mintingLimits' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'periodLength' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'periodLimit' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'currentPeriodMinted' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'currentPeriodEndBlock' },
+                      },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'bridgingFee' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'totalBurned' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'totalMinted' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'joyBridgeConfigs' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id_eq' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'joyChainId' },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'operatorAccount' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'pauserAccounts' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'mintAllowance' },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'feesBurned' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'bridgingFee' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'supportedRemoteChainIds' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'thawnDurationBlocks' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'thawnEndsAtBlock' },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'totalBurned' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'totalMinted' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetConfigsQuery, GetConfigsQueryVariables>
+export const GetProcessorStatusDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetProcessorStatus' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'joyProcessorStatus' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'finalizedHeight' },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'height' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'baseProcessorStatus' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'finalizedHeight' },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'height' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetProcessorStatusQuery,
+  GetProcessorStatusQueryVariables
+>
+export const GetTimelockOperationsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetTimelockOperations' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'EvmTimelockOperationWhereInput' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'orderBy' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: {
+                  kind: 'Name',
+                  value: 'EvmTimelockOperationOrderByInput',
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'limit' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'offset' },
+          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'evmTimelockOperations' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'orderBy' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'limit' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'limit' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'offset' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'offset' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'operationId' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'cancelledAtBlock' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'cancelledAtTimestamp' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'cancelledTxHash' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'createdAtBlock' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'createdAtTimestamp' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'createdTxHash' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'delayDoneTimestamp' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'executedAtBlock' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'executedAtTimestamp' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'executedTxHash' },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'predecessor' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'salt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'calls' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'callIndex' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'callArgs' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'callData' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'callSignature' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'callTarget' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'callValue' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetTimelockOperationsQuery,
+  GetTimelockOperationsQueryVariables
+>
+export const GetTransfersDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetTransfers' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'BridgeTransferWhereInput' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'orderBy' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'BridgeTransferOrderByInput' },
+              },
+            },
+          },
+          defaultValue: {
+            kind: 'ListValue',
+            values: [{ kind: 'EnumValue', value: 'createdAtTimestamp_DESC' }],
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'bridgeTransfers' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'orderBy' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'sourceAccount' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'sourceChainId' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'sourceTransferId' },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'destAccount' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'destChainId' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'createdTxHash' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'createdAtTimestamp' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'createdAtBlock' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'completedTxHash' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'completedAtTimestamp' },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'completedAtBlock' },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'amount' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'feePaid' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetTransfersQuery, GetTransfersQueryVariables>

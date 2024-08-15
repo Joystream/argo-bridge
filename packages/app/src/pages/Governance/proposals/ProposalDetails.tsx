@@ -1,4 +1,9 @@
-import { FC, ReactNode, useRef } from 'react'
+import { ProposalStatusCell } from './proposals.shared'
+import { AddressLink } from '@/components/AddressLink'
+import { EvmTxLink } from '@/components/EvmTxLink'
+import { LinkBadge } from '@/components/LinkBadge'
+import { Truncated } from '@/components/Truncated'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -6,17 +11,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useNavigate, useParams } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import { EvmTxLink } from '@/components/EvmTxLink'
-import { useEvmProposalsQuery } from '@/lib/hooks'
-import { ProposalStatusCell } from './proposals.shared'
-import { Truncated } from '@/components/Truncated'
-import { EvmGovernanceCall } from '@/lib/proposal'
-import { AddressLink } from '@/components/AddressLink'
-import { formatEth, truncateValue } from '@/lib/utils'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { LinkBadge } from '@/components/LinkBadge'
+import { useEvmProposalsQuery } from '@/lib/hooks'
+import { EvmGovernanceCall } from '@/lib/proposal'
+import { formatEth, truncateValue } from '@/lib/utils'
+import { FC, ReactNode, useRef } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export const ProposalDetails: FC = () => {
   const { id } = useParams()

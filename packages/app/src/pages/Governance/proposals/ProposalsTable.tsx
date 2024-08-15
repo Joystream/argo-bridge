@@ -1,10 +1,5 @@
-import {
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
-
+import { proposalsTableColumns } from './proposals.shared'
+import { DataTablePagination } from '@/components/DataTablePagination'
 import {
   Table,
   TableBody,
@@ -13,10 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DataTablePagination } from '@/components/DataTablePagination'
-import { FC } from 'react'
-import { proposalsTableColumns } from './proposals.shared'
 import { useEvmProposalsQuery } from '@/lib/hooks'
+import {
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from '@tanstack/react-table'
+import { FC } from 'react'
 
 type ProposalsTableProps = {}
 
@@ -44,7 +43,7 @@ export const ProposalsTable: FC<ProposalsTableProps> = ({}) => {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   )
@@ -63,7 +62,7 @@ export const ProposalsTable: FC<ProposalsTableProps> = ({}) => {
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

@@ -1,7 +1,7 @@
-import { FC, useEffect, useState } from 'react'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useEvmProposalsQuery } from '@/lib/hooks'
+import { FC, useEffect, useState } from 'react'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 
 export const GovernancePage: FC = () => {
   // preload proposals
