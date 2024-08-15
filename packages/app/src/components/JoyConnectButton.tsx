@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { Card, CardHeader } from '@/components/ui/card'
 import {
   Dialog,
@@ -28,14 +28,10 @@ import { FC } from 'react'
 import { toast } from 'sonner'
 
 type JoyConnectButtonProps = {
-  text?: string
-  variant?: ButtonProps['variant']
   fullWidth?: boolean
 }
 
 export const JoyConnectButton: FC<JoyConnectButtonProps> = ({
-  text,
-  variant,
   fullWidth = false,
 }) => {
   const {
@@ -142,8 +138,8 @@ export const JoyConnectButton: FC<JoyConnectButtonProps> = ({
     }
   }
 
-  const copyAddress = (address: string) => {
-    navigator.clipboard.writeText(address)
+  const copyAddress = async (address: string) => {
+    await navigator.clipboard.writeText(address)
     toast.success('Address copied to clipboard')
   }
 

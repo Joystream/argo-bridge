@@ -17,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { TypographyH3 } from '@/components/ui/typography'
 import { AddEvmPauser } from '@/pages/Governance/new-proposal/AddEvmPauser'
 import { RevokeEvmPauser } from '@/pages/Governance/new-proposal/RevokeEvmPauser'
 import { UnpauseEvm } from '@/pages/Governance/new-proposal/UnpauseEvm'

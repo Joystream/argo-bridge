@@ -1,5 +1,5 @@
 import { JOY_NETWORK } from '@/config'
-import * as types from '@joystream/types'
+import '@joystream/types'
 import { ApiPromise, WsProvider } from '@polkadot/api'
 import {
   FC,

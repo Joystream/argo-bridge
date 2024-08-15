@@ -1,17 +1,10 @@
 import { NewProposalFields } from './NewProposalFields'
 import { useProposeCall } from './proposals.utils'
-import { AddressLink } from '@/components/AddressLink'
 import { BRIDGE_ADDRESS } from '@/config'
-import { useBridgeConfigs } from '@/lib/bridgeConfig'
-import { evmAddressSchema } from '@/lib/forms'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { BridgeAbi } from '@joystream/argo-core'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
-import { Address, encodeFunctionData, isAddress } from 'viem'
-import { useReadContract } from 'wagmi'
-import { z } from 'zod'
+import { encodeFunctionData } from 'viem'
 
 export const UnpauseEvm: FC = () => {
   const proposeCall = useProposeCall()

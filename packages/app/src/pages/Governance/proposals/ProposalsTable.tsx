@@ -17,9 +17,7 @@ import {
 } from '@tanstack/react-table'
 import { FC } from 'react'
 
-type ProposalsTableProps = {}
-
-export const ProposalsTable: FC<ProposalsTableProps> = ({}) => {
+export const ProposalsTable: FC = () => {
   const query = useEvmProposalsQuery()
 
   const table = useReactTable({

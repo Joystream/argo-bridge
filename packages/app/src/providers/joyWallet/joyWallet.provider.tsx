@@ -15,13 +15,7 @@ import {
   WalletConnectConfiguration,
   WalletConnectProvider,
 } from '@polkadot-onboard/wallet-connect'
-import {
-  FC,
-  PropsWithChildren,
-  createContext,
-  useCallback,
-  useEffect,
-} from 'react'
+import { FC, PropsWithChildren, useCallback, useEffect } from 'react'
 
 const walletConnectParams: WalletConnectConfiguration = {
   projectId: WC_PROJECT_ID,
@@ -57,7 +51,6 @@ function parseAccounts(accounts: Account[]): Account[] {
 const InnerWalletsProvider: FC<PropsWithChildren> = ({ children }) => {
   const {
     wallet,
-    walletAccounts,
     walletStatus,
     setWallet,
     setWalletAccounts,

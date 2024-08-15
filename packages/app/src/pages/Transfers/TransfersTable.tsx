@@ -36,9 +36,7 @@ import {
 import { FilterIcon, XIcon } from 'lucide-react'
 import { FC, useMemo, useState } from 'react'
 
-type TransfersTableProps = {}
-
-export const TransfersTable: FC<TransfersTableProps> = ({}) => {
+export const TransfersTable: FC = () => {
   const query = useTransfersQuery()
 
   const { joyAddresses, evmAddresses } = useUser()

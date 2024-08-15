@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { BRIDGE_ADDRESS, ERC20_ADDRESS } from '@/config'
-import { BridgeTransferType, EvmBridgeStatus } from '@/gql/graphql'
+import { BridgeTransferType } from '@/gql/graphql'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
 import { evmAddressSchema, rawAmountSchema } from '@/lib/forms'
 import { isJoyAddress } from '@/lib/utils'
@@ -254,11 +254,7 @@ export const NewTransferCard: FC = () => {
       if (transferType === BridgeTransferType.JoyToEvm) {
         return (
           <CardFooter>
-            <JoyConnectButton
-              variant="default"
-              text="Connect wallet"
-              fullWidth
-            />
+            <JoyConnectButton fullWidth />
           </CardFooter>
         )
       } else {
