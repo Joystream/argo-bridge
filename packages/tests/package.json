@@ -1,5 +1,8 @@
 {
   "name": "@joystream/argo-tests",
+  "author": "Joystream Contributors",
+  "version": "1.0.0",
+  "license": "ISC",
   "module": "index.ts",
   "type": "module",
   "devDependencies": {

@@ -1,8 +1,9 @@
 {
   "name": "@joystream/argo-root",
-  "version": "0.1.0",
-  "keywords": [],
+  "author": "Joystream Contributors",
+  "version": "1.0.0",
   "license": "ISC",
+  "keywords": [],
   "private": "true",
   "type": "module",
   "workspaces": [

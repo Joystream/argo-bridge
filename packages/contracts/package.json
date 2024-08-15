@@ -1,5 +1,8 @@
 {
   "name": "@joystream/argo-contracts",
+  "author": "Joystream Contributors",
+  "version": "1.0.0",
+  "license": "ISC",
   "scripts": {
     "compile": "hardhat compile",
     "test": "UNIT_TESTS=true hardhat test",

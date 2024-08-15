@@ -1,6 +1,8 @@
 {
   "name": "@joystream/argo-indexer",
-  "private": true,
+  "author": "Joystream Contributors",
+  "version": "1.0.0",
+  "license": "ISC",
   "scripts": {
     "build": "rm -rf lib && tsc",
     "run": "sqd run .",
