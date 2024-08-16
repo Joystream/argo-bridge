@@ -85,7 +85,9 @@ export const proposalsTableColumns = [
     header: 'Action',
     cell: ({ row }) => {
       const description = row.original.description
-      const isDangerous = dangerousActions.includes(description)
+      const isDangerous =
+        dangerousActions.includes(description) &&
+        row.original.status.type !== 'executed'
       return (
         <Tooltip>
           <TooltipTrigger
