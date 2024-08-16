@@ -17,6 +17,7 @@ Both processors keep their own state, apart from the `BridgeTransfer` entity, wh
 - Node.js >= 18
 - `sqd` CLI available globally (`npm install -g @subsquid/cli@latest`)
 - Postgres database running locally (can be started with `docker compose -f docker-compose.dev.yml up db`, the production docker compose does not expose the database to the host)
+- Copy `.env.example` to `.env` and fill in the required values
 
 ---
 
