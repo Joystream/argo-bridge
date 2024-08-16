@@ -19,7 +19,7 @@ services:
       - .env
     environment:
       - DB_HOST=db
-      - EVM_NETWORK=baseSepolia
+      - EVM_NETWORK=base
     depends_on:
       - db
     command: ["sqd", "process:prod:eth"]
@@ -32,7 +32,7 @@ services:
       - .env
     environment:
       - DB_HOST=db
-      - JOY_NETWORK=petra
+      - JOY_NETWORK=mainnet
     depends_on:
         - db
     command: ["sqd", "process:prod:joy"]
