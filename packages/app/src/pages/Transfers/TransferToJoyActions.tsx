@@ -1,6 +1,7 @@
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { JOY_NETWORK } from '@/config'
 import { BridgeTransferStatus } from '@/gql/graphql'
+import { useBridgeConfigs } from '@/lib/bridgeConfig'
 import { useTransfersQuery } from '@/lib/hooks'
 import { BridgeTransfer } from '@/lib/transfer'
 import { useJoyApiContext } from '@/providers/joyApi'
@@ -19,6 +20,7 @@ export const TransferToJoyActions: FC<{ transfer: BridgeTransfer }> = ({
   const { userJoyOperator } = useUser()
   const { refetch: refetchTransfers } = useTransfersQuery()
   const threshold = JOY_NETWORK.opMulti?.threshold || 0
+  const { isJoyPaused } = useBridgeConfigs()
 
   const joyCompleteCall = useMemo(() => {
     if (transfer.status !== BridgeTransferStatus.Requested) {
@@ -62,6 +64,11 @@ export const TransferToJoyActions: FC<{ transfer: BridgeTransfer }> = ({
   })
 
   const approveOrComplete = async () => {
+    if (isJoyPaused) {
+      toast.error('Joystream bridge is not active')
+      return
+    }
+
     if (
       !submitJoyTx ||
       !joyCompleteCall ||
