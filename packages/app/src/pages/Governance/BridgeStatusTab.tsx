@@ -190,11 +190,11 @@ export const BridgeStatusTab: FC = () => {
 
   const renderAddresses = (addresses: string[]) => {
     return (
-      <>
+      <div className="flex flex-wrap items-start justify-end gap-1">
         {addresses.map((account) => (
           <AddressLink address={account} key={account} />
         ))}
-      </>
+      </div>
     )
   }
 
@@ -360,7 +360,7 @@ const BridgeStatusRow: FC<{ label: string; value: string | ReactNode }> = ({
   value,
 }) => {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-start justify-between">
       <h5 className="text-muted-foreground">{label}:</h5>
       <span className="text-right">{value || '—'}</span>
     </div>
