@@ -15,7 +15,7 @@ export const AddressLink: FC<{ address: string }> = ({ address }) => {
   const isEvm = isAddress(address, { strict: false })
   const knownName = knownAddresses[address.toLowerCase()]
   const { chains } = useConfig()
-  const chainId = useChainId()
+  const chainId = EVM_NETWORK.chainId
   const chain = chains.find((c) => c.id === chainId)
 
   const getUrl = () => {
