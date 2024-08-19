@@ -119,9 +119,13 @@ export const proposalsTableColumns = [
       const uniqueAddresses = Array.from(
         new Set(calls.map((call) => call.targetAddress)),
       )
-      return uniqueAddresses.map((a, idx) => (
-        <AddressLink address={a} key={idx} />
-      ))
+      return (
+        <div className="flex flex-wrap gap-1">
+          {uniqueAddresses.map((a, idx) => (
+            <AddressLink address={a} key={idx} />
+          ))}
+        </div>
+      )
     },
   }),
   // columnHelper.accessor('calls', {
