@@ -6,6 +6,7 @@ import {
 } from '@/components/ui/tooltip'
 import { BRIDGE_ADDRESS, EVM_NETWORK } from '@/config'
 import { BridgeTransferStatus } from '@/gql/graphql'
+import { useBridgeConfigs } from '@/lib/bridgeConfig'
 import { useTransfersQuery } from '@/lib/hooks'
 import { BridgeTransfer } from '@/lib/transfer'
 import { usePendingOperatorCallsQuery } from '@/providers/safe/safe.hooks'
@@ -31,6 +32,7 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
   const { refetch: refetchTransfers } = useTransfersQuery()
   const { addTxPromise, isSubmittingTx } = useTransaction()
   const { userEvmOperator } = useUser()
+  const { isEvmPaused } = useBridgeConfigs()
 
   if (!data) {
     return <DropdownMenuItem disabled>Loading...</DropdownMenuItem>
@@ -54,6 +56,11 @@ export const TransferToEvmActions: FC<{ transfer: BridgeTransfer }> = ({
 
   const approveTransfer = async () => {
     const safeAddress = EVM_NETWORK.opMulti?.address
+
+    if (isEvmPaused) {
+      toast.error('Base bridge is not active')
+      return
+    }
 
     if (
       !addTxPromise ||
