@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { BRIDGE_ADDRESS, JOY_NETWORK } from '@/config'
+import { BRIDGE_ADDRESS, EVM_NETWORK, JOY_NETWORK } from '@/config'
 import { EvmBridgeStatus, JoyBridgeStatus } from '@/gql/graphql'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
 import { formatEth, formatJoy } from '@/lib/utils'
@@ -188,7 +188,7 @@ export const BridgeStatusTab: FC = () => {
     }
   }
 
-  const renderAddresses = (addresses: string[]) => {
+  const renderAddresses = (addresses: readonly string[]) => {
     return (
       <div className="flex flex-wrap items-start justify-end gap-1">
         {addresses.map((account) => (
@@ -269,9 +269,15 @@ export const BridgeStatusTab: FC = () => {
             value={formatJoy(joyConfig.mintAllowance)}
           />
           <BridgeStatusRow
-            label="Bridge operator"
+            label="Operator multisig"
             value={renderAddresses([joyConfig.operatorAccount])}
           />
+          {JOY_NETWORK.opMulti && (
+            <BridgeStatusRow
+              label="Operator signers"
+              value={renderAddresses(JOY_NETWORK.opMulti.signers)}
+            />
+          )}
           <BridgeStatusRow
             label="Pausers"
             value={renderAddresses(joyConfig.pauserAccounts)}
@@ -324,13 +330,25 @@ export const BridgeStatusTab: FC = () => {
             value={renderAddresses(evmConfig.bridgeAdminAccounts)}
           />
           <BridgeStatusRow
-            label="Bridge operator"
+            label="Operator multisig"
             value={renderAddresses(evmConfig.bridgeOperatorAccounts)}
           />
+          {EVM_NETWORK.opMulti && (
+            <BridgeStatusRow
+              label="Operator signers"
+              value={renderAddresses(EVM_NETWORK.opMulti.signers)}
+            />
+          )}
           <BridgeStatusRow
-            label="Timelock admin"
+            label="Admin multisig"
             value={renderAddresses(evmConfig.timelockAdminAccounts)}
           />
+          {EVM_NETWORK.adminMulti && (
+            <BridgeStatusRow
+              label="Admin signers"
+              value={renderAddresses(EVM_NETWORK.adminMulti.signers)}
+            />
+          )}
           <BridgeStatusRow
             label="Pausers"
             value={renderAddresses(evmConfig.pauserAccounts)}
