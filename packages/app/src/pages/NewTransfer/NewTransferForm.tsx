@@ -101,6 +101,8 @@ export const NewTransferForm: FC<NewTransferFormProps> = ({
 
   const handleFormSubmit = (data: TransferFormSchema) => {
     const amountHapi = joyToHapi(parseFloat(data.amountRaw))
+
+    // check if user has enough tokens
     if (sourceBalance) {
       if (sourceBalance[0] < amountHapi) {
         form.setError('amountRaw', {
@@ -133,6 +135,19 @@ export const NewTransferForm: FC<NewTransferFormProps> = ({
         form.setError('sourceAddress', {
           type: 'fee',
           message: `You don't have enough ETH to cover the bridging fee`,
+        })
+        return
+      }
+    }
+
+    // check if the amount is within a single period of the EVM minting limits
+    if (transferType === BridgeTransferType.JoyToEvm) {
+      if (evmConfig && amountHapi > evmConfig.mintingLimits.periodLimit) {
+        form.setError('amountRaw', {
+          type: 'manual',
+          message: `You can't bridge more than ${formatJoy(
+            evmConfig.mintingLimits.periodLimit,
+          )} in a single transfer`,
         })
         return
       }
