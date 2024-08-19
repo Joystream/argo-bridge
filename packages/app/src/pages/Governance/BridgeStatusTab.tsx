@@ -7,10 +7,17 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { BRIDGE_ADDRESS, EVM_NETWORK, JOY_NETWORK } from '@/config'
 import { EvmBridgeStatus, JoyBridgeStatus } from '@/gql/graphql'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
-import { formatEth, formatJoy } from '@/lib/utils'
+import { cn, formatEth, formatJoy } from '@/lib/utils'
 import { useJoyApiContext } from '@/providers/joyApi'
 import { useTransaction } from '@/providers/transaction'
 import { useUser } from '@/providers/user/user.hooks'
@@ -188,16 +195,6 @@ export const BridgeStatusTab: FC = () => {
     }
   }
 
-  const renderAddresses = (addresses: readonly string[]) => {
-    return (
-      <div className="flex flex-wrap items-start justify-end gap-1">
-        {addresses.map((account) => (
-          <AddressLink address={account} key={account} />
-        ))}
-      </div>
-    )
-  }
-
   const canApprove =
     userJoyOperator && !joyCallMultisigInfo?.approvals.includes(userJoyOperator)
 
@@ -275,12 +272,22 @@ export const BridgeStatusTab: FC = () => {
           {JOY_NETWORK.opMulti && (
             <BridgeStatusRow
               label="Operator signers"
-              value={renderAddresses(JOY_NETWORK.opMulti.signers)}
+              value={
+                <AddressesDialog
+                  label="Joystream operator signers"
+                  addresses={JOY_NETWORK.opMulti.signers}
+                />
+              }
             />
           )}
           <BridgeStatusRow
             label="Pausers"
-            value={renderAddresses(joyConfig.pauserAccounts)}
+            value={
+              <AddressesDialog
+                label="Joystream pausers"
+                addresses={joyConfig.pauserAccounts}
+              />
+            }
           />
         </CardContent>
 
@@ -333,25 +340,40 @@ export const BridgeStatusTab: FC = () => {
             label="Operator multisig"
             value={renderAddresses(evmConfig.bridgeOperatorAccounts)}
           />
-          {EVM_NETWORK.opMulti && (
-            <BridgeStatusRow
-              label="Operator signers"
-              value={renderAddresses(EVM_NETWORK.opMulti.signers)}
-            />
-          )}
           <BridgeStatusRow
             label="Admin multisig"
             value={renderAddresses(evmConfig.timelockAdminAccounts)}
           />
+          {EVM_NETWORK.opMulti && (
+            <BridgeStatusRow
+              label="Operator signers"
+              value={
+                <AddressesDialog
+                  label="Base operator signers"
+                  addresses={EVM_NETWORK.opMulti.signers}
+                />
+              }
+            />
+          )}
           {EVM_NETWORK.adminMulti && (
             <BridgeStatusRow
               label="Admin signers"
-              value={renderAddresses(EVM_NETWORK.adminMulti.signers)}
+              value={
+                <AddressesDialog
+                  label="Base admin signers"
+                  addresses={EVM_NETWORK.adminMulti.signers}
+                />
+              }
             />
           )}
           <BridgeStatusRow
             label="Pausers"
-            value={renderAddresses(evmConfig.pauserAccounts)}
+            value={
+              <AddressesDialog
+                label="Base pausers"
+                addresses={evmConfig.pauserAccounts}
+              />
+            }
           />
         </CardContent>
         {evmConfig.status === EvmBridgeStatus.Active && userEvmPauser && (
@@ -381,6 +403,37 @@ const BridgeStatusRow: FC<{ label: string; value: string | ReactNode }> = ({
     <div className="flex items-start justify-between">
       <h5 className="text-muted-foreground">{label}:</h5>
       <span className="text-right max-w-[80%]">{value || '—'}</span>
+    </div>
+  )
+}
+
+const AddressesDialog: FC<{ label: string; addresses: readonly string[] }> = ({
+  label,
+  addresses,
+}) => {
+  return (
+    <Dialog>
+      <DialogTrigger className="w-fit text-right underline">
+        {addresses.length} addresses
+      </DialogTrigger>
+      <DialogContent closeable>
+        <DialogHeader>
+          <DialogTitle>{label}</DialogTitle>
+        </DialogHeader>
+        {renderAddresses(addresses, false)}
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+const renderAddresses = (addresses: readonly string[], end = true) => {
+  return (
+    <div
+      className={cn('flex flex-wrap items-start gap-1', { 'justify-end': end })}
+    >
+      {addresses.map((account) => (
+        <AddressLink address={account} key={account} />
+      ))}
     </div>
   )
 }

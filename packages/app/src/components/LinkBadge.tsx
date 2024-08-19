@@ -16,7 +16,7 @@ export type LinkBadgeProps = {
 export const LinkBadge: FC<LinkBadgeProps> = ({ href, fullText, label }) => {
   return (
     <Tooltip>
-      <TooltipTrigger>
+      <TooltipTrigger asChild>
         <a href={href} target="_blank" rel="noopener noreferrer">
           <Badge variant="outline">
             {label}
