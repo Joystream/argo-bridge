@@ -196,13 +196,13 @@ const _JOY_NETWORKS = {
     opMulti: {
       address: "j4WyzzDBZihuFqMrfmE335DmwoEK1Uuw3AmLKVAjyaSP3p1Td",
       signers: [
-        "j4RxSpbQxnJe2YBKbXQSvrZX8ZwJPehAdEvNyRAwic4i22ART",
-        "j4U3vjTyW3F4Au2UvVr6hL264PJKFkMgUYgMTEjDJhqFgJTco",
-        "j4SBZarJmedZCcfZfkTXpQz7uLDSz3UYt3VFqivSDFeGHcPgF",
-        "j4W2LS9mXL5kQMPG5dNJGoZankHrGrTHsgcYp42gfXcYkRV5s",
         "j4Rk5azus8jsXdjR8e33d5egofwdFVk7Zu26zJeBwQ7LU3LDB",
-        "j4WdPywNvexfJH7wyfjRTVJ8dVT9mjDEdHoA57a2kCSngvtf2",
+        "j4RxSpbQxnJe2YBKbXQSvrZX8ZwJPehAdEvNyRAwic4i22ART",
+        "j4SBZarJmedZCcfZfkTXpQz7uLDSz3UYt3VFqivSDFeGHcPgF",
+        "j4U3vjTyW3F4Au2UvVr6hL264PJKFkMgUYgMTEjDJhqFgJTco",
         "j4VtgDn3jPp5YidVVYnASMsUfE3E5dHqJc4gd6t6cDgdRGWAs",
+        "j4W2LS9mXL5kQMPG5dNJGoZankHrGrTHsgcYp42gfXcYkRV5s",
+        "j4WdPywNvexfJH7wyfjRTVJ8dVT9mjDEdHoA57a2kCSngvtf2",
       ],
       threshold: 4,
     },
