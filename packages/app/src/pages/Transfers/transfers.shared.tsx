@@ -49,11 +49,11 @@ export const statusFilterOptions = [
 export const toChainFilterOptions = [
   {
     value: EVM_NETWORK.chainId,
-    label: 'Base Sepolia',
+    label: 'Base',
   },
   {
     value: JOY_NETWORK.chainId,
-    label: 'Petra testnet',
+    label: 'Joystream',
   },
 ]
 
