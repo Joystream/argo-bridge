@@ -11,6 +11,17 @@ const knownAddresses = {
   [EVM_NETWORK.contracts.erc20.toLowerCase()]: 'JoystreamERC20',
 }
 
+if (EVM_NETWORK.opMulti) {
+  knownAddresses[EVM_NETWORK.opMulti.address.toLowerCase()] = 'EthOp Multisig'
+}
+if (EVM_NETWORK.adminMulti) {
+  knownAddresses[EVM_NETWORK.adminMulti.address.toLowerCase()] =
+    'EthAdmin Multisig'
+}
+if (JOY_NETWORK.opMulti) {
+  knownAddresses[JOY_NETWORK.opMulti.address.toLowerCase()] = 'JoyOp Multisig'
+}
+
 export const AddressLink: FC<{ address: string }> = ({ address }) => {
   const isEvm = isAddress(address, { strict: false })
   const knownName = knownAddresses[address.toLowerCase()]
