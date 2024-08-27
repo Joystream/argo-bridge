@@ -38,7 +38,7 @@ export const ProposalDetails: FC = () => {
               <LinkBadge
                 fullText={proposal.status.safeTx.safeTxHash}
                 label={truncateValue(proposal.status.safeTx.safeTxHash)}
-                href={`https://app.safe.global/transactions/tx?safe=basesep:${proposal.status.safeTx.safe}&id=${['multisig', proposal.status.safeTx.safe, proposal.status.safeTx.safeTxHash].join('_')}`}
+                href={`https://app.safe.global/transactions/tx?safe=base:${proposal.status.safeTx.safe}&id=${['multisig', proposal.status.safeTx.safe, proposal.status.safeTx.safeTxHash].join('_')}`}
               />
             }
           />
