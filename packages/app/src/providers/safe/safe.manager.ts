@@ -7,7 +7,7 @@ import { FC, useEffect, useRef } from 'react'
 import { useConnectorClient } from 'wagmi'
 
 export const SafeManager: FC = () => {
-  const { adminMulti, opMulti } = EVM_NETWORK
+  const { adminMulti: adminMultiConfig, opMulti: opMultiConfig } = EVM_NETWORK
   const { userEvmAdmin, userEvmOperator } = useUser()
   const opConnector = useConnectorClient({
     account: userEvmOperator || undefined,
@@ -39,44 +39,62 @@ export const SafeManager: FC = () => {
 
   useEffect(() => {
     if (
-      adminMulti &&
-      !adminSafePromise.current &&
-      userEvmAdmin &&
-      opConnector.data
+      !adminMultiConfig ||
+      adminSafePromise.current ||
+      !userEvmAdmin ||
+      !opConnector.data
     ) {
-      const setup = async () => {
-        const safe = await Safe.init({
-          provider: opConnector.data as Eip1193Provider,
-          signer: userEvmAdmin,
-          safeAddress: adminMulti.address,
-        })
-        setAdminSafe(safe)
-        return safe
-      }
-
-      adminSafePromise.current = setup()
+      console.log('cant init admin safe', {
+        adminMultiConfig,
+        adminSafePromise: adminSafePromise.current,
+        userEvmAdmin,
+        opConnector: opConnector.data,
+      })
+      return
     }
-  }, [adminMulti, userEvmAdmin, opConnector])
+
+    const setup = async () => {
+      const safe = await Safe.init({
+        provider: opConnector.data as Eip1193Provider,
+        signer: userEvmAdmin,
+        safeAddress: adminMultiConfig.address,
+      })
+      setAdminSafe(safe)
+      console.log('admin safe inited', safe)
+      return safe
+    }
+
+    adminSafePromise.current = setup()
+  }, [adminMultiConfig, userEvmAdmin, opConnector.data])
 
   useEffect(() => {
     if (
-      opMulti &&
-      !operatorSafePromise.current &&
-      userEvmOperator &&
-      adminConnector.data
+      !opMultiConfig ||
+      operatorSafePromise.current ||
+      !userEvmOperator ||
+      !adminConnector.data
     ) {
-      const setup = async () => {
-        const safe = await Safe.init({
-          provider: adminConnector.data as Eip1193Provider,
-          signer: userEvmOperator,
-          safeAddress: opMulti.address,
-        })
-        setOperatorSafe(safe)
-        return safe
-      }
-      operatorSafePromise.current = setup()
+      console.log('cant init operator safe', {
+        opMultiConfig,
+        operatorSafePromise: operatorSafePromise.current,
+        userEvmOperator,
+        adminConnector: adminConnector.data,
+      })
+      return
     }
-  }, [opMulti, userEvmOperator, adminConnector])
+
+    const setup = async () => {
+      const safe = await Safe.init({
+        provider: adminConnector.data as Eip1193Provider,
+        signer: userEvmOperator,
+        safeAddress: opMultiConfig.address,
+      })
+      setOperatorSafe(safe)
+      console.log('operator safe inited', safe)
+      return safe
+    }
+    operatorSafePromise.current = setup()
+  }, [opMultiConfig, userEvmOperator, adminConnector.data])
 
   return null
 }
