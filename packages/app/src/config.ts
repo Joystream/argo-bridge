@@ -1,4 +1,5 @@
 import { EVM_NETWORKS, JOY_NETWORKS } from '@joystream/argo-core'
+import { base } from 'wagmi/chains'
 
 // export const RPC_URL = 'wss://rpc.joyutils.org'
 // export const ARGO_INDEXER_URL = 'http://localhost:4350/graphql'
@@ -20,6 +21,7 @@ export const WC_METADATA = {
 export const EVM_OUT_OF_SYNC_THRESHOLD = 9
 export const JOY_OUT_OF_SYNC_THRESHOLD = 3
 
+export const WAGMI_CHAINS = [base] as const
 export const EVM_NETWORK = EVM_NETWORKS.base
 export const JOY_NETWORK = JOY_NETWORKS.mainnet
 export const BRIDGE_ADDRESS = EVM_NETWORK.contracts.bridge

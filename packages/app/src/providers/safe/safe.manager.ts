@@ -2,14 +2,25 @@ import { useSafeStore } from './safe.store'
 import { EVM_NETWORK } from '@/config'
 import { useUser } from '@/providers/user/user.hooks'
 import SafeApiKit from '@safe-global/api-kit'
-import Safe from '@safe-global/protocol-kit'
+import Safe, { Eip1193Provider } from '@safe-global/protocol-kit'
 import { FC, useEffect, useRef } from 'react'
-import { useAccount } from 'wagmi'
+import { useConnectorClient } from 'wagmi'
 
 export const SafeManager: FC = () => {
   const { adminMulti, opMulti } = EVM_NETWORK
   const { userEvmAdmin, userEvmOperator } = useUser()
-  const { connector } = useAccount()
+  const opConnector = useConnectorClient({
+    account: userEvmOperator || undefined,
+    query: {
+      enabled: !!userEvmOperator,
+    },
+  })
+  const adminConnector = useConnectorClient({
+    account: userEvmAdmin || undefined,
+    query: {
+      enabled: !!userEvmAdmin,
+    },
+  })
 
   const { safeApiKit, setOperatorSafe, setAdminSafe, setSafeApiKit } =
     useSafeStore()
@@ -27,10 +38,15 @@ export const SafeManager: FC = () => {
   }, [safeApiKit])
 
   useEffect(() => {
-    if (adminMulti && !adminSafePromise.current && userEvmAdmin && connector) {
+    if (
+      adminMulti &&
+      !adminSafePromise.current &&
+      userEvmAdmin &&
+      opConnector.data
+    ) {
       const setup = async () => {
         const safe = await Safe.init({
-          provider: (await connector.getProvider()) as any,
+          provider: opConnector.data as Eip1193Provider,
           signer: userEvmAdmin,
           safeAddress: adminMulti.address,
         })
@@ -40,18 +56,18 @@ export const SafeManager: FC = () => {
 
       adminSafePromise.current = setup()
     }
-  }, [adminMulti, userEvmAdmin])
+  }, [adminMulti, userEvmAdmin, opConnector])
 
   useEffect(() => {
     if (
       opMulti &&
       !operatorSafePromise.current &&
       userEvmOperator &&
-      connector
+      adminConnector.data
     ) {
       const setup = async () => {
         const safe = await Safe.init({
-          provider: (await connector.getProvider()) as any,
+          provider: adminConnector.data as Eip1193Provider,
           signer: userEvmOperator,
           safeAddress: opMulti.address,
         })
@@ -60,7 +76,7 @@ export const SafeManager: FC = () => {
       }
       operatorSafePromise.current = setup()
     }
-  }, [opMulti, userEvmOperator])
+  }, [opMulti, userEvmOperator, adminConnector])
 
   return null
 }
