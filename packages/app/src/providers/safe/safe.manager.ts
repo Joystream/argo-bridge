@@ -37,25 +37,26 @@ export const SafeManager: FC = () => {
     setSafeApiKit(apiKit)
   }, [safeApiKit])
 
+  // setup admin safe
   useEffect(() => {
     if (
       !adminMultiConfig ||
       adminSafePromise.current ||
       !userEvmAdmin ||
-      !opConnector.data
+      !adminConnector.data
     ) {
       console.log('cant init admin safe', {
         adminMultiConfig,
         adminSafePromise: adminSafePromise.current,
         userEvmAdmin,
-        opConnector: opConnector.data,
+        adminConnector: adminConnector.data,
       })
       return
     }
 
     const setup = async () => {
       const safe = await Safe.init({
-        provider: opConnector.data as Eip1193Provider,
+        provider: adminConnector.data as Eip1193Provider,
         signer: userEvmAdmin,
         safeAddress: adminMultiConfig.address,
       })
@@ -65,27 +66,28 @@ export const SafeManager: FC = () => {
     }
 
     adminSafePromise.current = setup()
-  }, [adminMultiConfig, userEvmAdmin, opConnector.data])
+  }, [adminMultiConfig, userEvmAdmin, adminConnector.data])
 
+  // setup operator safe
   useEffect(() => {
     if (
       !opMultiConfig ||
       operatorSafePromise.current ||
       !userEvmOperator ||
-      !adminConnector.data
+      !opConnector.data
     ) {
       console.log('cant init operator safe', {
         opMultiConfig,
         operatorSafePromise: operatorSafePromise.current,
         userEvmOperator,
-        adminConnector: adminConnector.data,
+        opConnector: opConnector.data,
       })
       return
     }
 
     const setup = async () => {
       const safe = await Safe.init({
-        provider: adminConnector.data as Eip1193Provider,
+        provider: opConnector.data as Eip1193Provider,
         signer: userEvmOperator,
         safeAddress: opMultiConfig.address,
       })
@@ -94,7 +96,7 @@ export const SafeManager: FC = () => {
       return safe
     }
     operatorSafePromise.current = setup()
-  }, [opMultiConfig, userEvmOperator, adminConnector.data])
+  }, [opMultiConfig, userEvmOperator, opConnector.data])
 
   return null
 }
