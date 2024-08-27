@@ -66,7 +66,7 @@ export const TransferDetails: FC = () => {
             <LinkBadge
               fullText={pendingEvmApproval.safeTxHash}
               label={truncateValue(pendingEvmApproval.safeTxHash)}
-              href={`https://app.safe.global/transactions/tx?safe=basesep:${pendingEvmApproval.safe}&id=${['multisig', pendingEvmApproval.safe, pendingEvmApproval.safeTxHash].join('_')}`}
+              href={`https://app.safe.global/transactions/tx?safe=base:${pendingEvmApproval.safe}&id=${['multisig', pendingEvmApproval.safe, pendingEvmApproval.safeTxHash].join('_')}`}
             />
           }
         />
