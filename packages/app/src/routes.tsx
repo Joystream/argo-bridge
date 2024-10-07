@@ -10,7 +10,11 @@ import { TransferDetails } from '@/pages/Transfers/TransferDetails'
 import { RouteObject } from 'react-router-dom'
 import { Navigate } from 'react-router-dom'
 
-export const ROUTES: (RouteObject & { name: string; path: string })[] = [
+type Route =
+  | (RouteObject & { name: string; path: string; external?: false })
+  | (RouteObject & { name: string; path: string; external: true })
+
+export const ROUTES: Route[] = [
   {
     path: '',
     element: <NewTransferPage />,
@@ -60,5 +64,10 @@ export const ROUTES: (RouteObject & { name: string; path: string })[] = [
     path: 'faq',
     element: <FAQPage />,
     name: 'FAQ',
+  },
+  {
+    path: 'https://app.uniswap.org/explore/tokens/base/0x8761155c814c807cd3ccd15b256d69d3c10f198c',
+    name: 'JOY on Uniswap',
+    external: true,
   },
 ]
