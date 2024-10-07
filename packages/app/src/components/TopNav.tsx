@@ -17,7 +17,7 @@ import {
 import { useTheme } from '@/providers/theme.provider'
 import { ROUTES } from '@/routes'
 import { Disclosure } from '@headlessui/react'
-import { Menu, Moon, Sun, X } from 'lucide-react'
+import { ExternalLinkIcon, Menu, Moon, Sun, X } from 'lucide-react'
 import { FC } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 
@@ -45,7 +45,20 @@ export const TopNav: FC = () => {
                             asChild
                             active={pathname.split('/')[1] === item.path}
                           >
-                            <NavLink to={item.path}>{item.name}</NavLink>
+                            <NavLink
+                              to={item.path}
+                              target={item.external ? '_blank' : undefined}
+                              rel={
+                                item.external
+                                  ? 'noopener noreferrer'
+                                  : undefined
+                              }
+                            >
+                              {item.name}
+                              {item.external && (
+                                <ExternalLinkIcon className="ml-1 h-3 w-3" />
+                              )}
+                            </NavLink>
                           </NavigationMenuLink>
                         </NavigationMenuItem>
                       ))}
