@@ -59,14 +59,18 @@ export const BridgeStatusTab: FC = () => {
     functionName: 'currentMintingPeriodEndBlock',
   })
   const { data: currentBlock } = useBlockNumber()
-  const currentEvmPeriodTokensLeft =
-    evmConfig && currentEvmPeriodMinted
-      ? evmConfig.mintingLimits.periodLimit - currentEvmPeriodMinted
-      : null
   const currentEvmPeriodBlocksLeft =
     currentEvmPeriodEndBlock && currentBlock
       ? currentEvmPeriodEndBlock - currentBlock
       : null
+  const currentEvmPeriodTokensLeft =
+    evmConfig && currentEvmPeriodMinted
+      ? currentEvmPeriodBlocksLeft != null && currentEvmPeriodBlocksLeft < 0n
+        ? evmConfig.mintingLimits.periodLimit
+        : evmConfig.mintingLimits.periodLimit - currentEvmPeriodMinted
+      : null
+
+  console.log(currentEvmPeriodEndBlock)
 
   const threshold = JOY_NETWORK.opMulti?.threshold || 0
 
@@ -363,7 +367,9 @@ export const BridgeStatusTab: FC = () => {
             label="Current period blocks left"
             value={
               currentEvmPeriodBlocksLeft
-                ? currentEvmPeriodBlocksLeft.toString()
+                ? currentEvmPeriodBlocksLeft < 0n
+                  ? '-'
+                  : currentEvmPeriodBlocksLeft.toString()
                 : null
             }
           />
