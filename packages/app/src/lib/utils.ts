@@ -1,6 +1,7 @@
 import { JOYSTREAM_SS58_PREFIX } from '@/config'
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto'
 import { type ClassValue, clsx } from 'clsx'
+import { formatDuration, intervalToDuration } from 'date-fns'
 import * as dn from 'dnum'
 import { formatUnits, parseUnits } from 'ethers'
 import { twMerge } from 'tailwind-merge'
@@ -73,4 +74,15 @@ export function isJoyAddress(address: string) {
   } catch {
     return false
   }
+}
+
+export function formatDurationSeconds(seconds: number) {
+  return formatDuration(intervalToDuration({ start: 0, end: seconds * 1000 }), {
+    format: ['days', 'hours', 'minutes'],
+  })
+}
+
+export function formatDurationBaseBlocks(_blocks: number | bigint) {
+  const blocks = typeof _blocks === 'number' ? _blocks : Number(_blocks)
+  return formatDurationSeconds(blocks * 2)
 }

@@ -22,13 +22,18 @@ import {
 } from '@/config'
 import { EvmBridgeStatus, JoyBridgeStatus } from '@/gql/graphql'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
-import { cn, formatEth, formatJoy } from '@/lib/utils'
+import {
+  cn,
+  formatDurationBaseBlocks,
+  formatDurationSeconds,
+  formatEth,
+  formatJoy,
+} from '@/lib/utils'
 import { useJoyApiContext } from '@/providers/joyApi'
 import { useTransaction } from '@/providers/transaction'
 import { useUser } from '@/providers/user/user.hooks'
 import { BridgeAbi, TimelockAbi, joyAddressCodec } from '@joystream/argo-core'
 import { useQuery } from '@tanstack/react-query'
-import { formatDuration, intervalToDuration } from 'date-fns'
 import { FC, ReactNode, useMemo } from 'react'
 import { toast } from 'sonner'
 import { Address } from 'viem'
@@ -374,12 +379,12 @@ export const BridgeStatusTab: FC = () => {
             }
           />
           <BridgeStatusRow
-            label="Current period blocks left"
+            label="Next period starts in"
             value={
               currentEvmPeriodBlocksLeft
                 ? currentEvmPeriodBlocksLeft < 0n
-                  ? '-'
-                  : currentEvmPeriodBlocksLeft.toString()
+                  ? 'Ready'
+                  : formatDurationBaseBlocks(Number(currentEvmPeriodBlocksLeft))
                 : null
             }
           />
@@ -387,12 +392,7 @@ export const BridgeStatusTab: FC = () => {
             label="Timelock delay"
             value={
               timelockDelay
-                ? formatDuration(
-                    intervalToDuration({
-                      start: 0,
-                      end: Number(timelockDelay) * 1000,
-                    }),
-                  )
+                ? formatDurationSeconds(Number(timelockDelay))
                 : null
             }
           />
