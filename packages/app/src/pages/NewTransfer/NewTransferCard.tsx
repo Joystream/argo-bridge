@@ -13,6 +13,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { DialogFooter, DialogHeader } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { BRIDGE_ADDRESS, ERC20_ADDRESS } from '@/config'
 import { BridgeTransferType } from '@/gql/graphql'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
@@ -21,13 +28,14 @@ import { isJoyAddress } from '@/lib/utils'
 import { useUser } from '@/providers/user/user.hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Erc20Abi } from '@joystream/argo-core'
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Address, isAddress } from 'viem'
-import { useAccount, useReadContract } from 'wagmi'
+import { useAccount, useReadContract, useWalletClient } from 'wagmi'
 import { z } from 'zod'
 
 const evmToJoyFormSchema = z.object({
@@ -66,6 +74,7 @@ export const NewTransferCard: FC = () => {
   const [transferStep, setTransferStep] = useState<TransferStep>({
     type: 'form',
   })
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false)
 
   const { evmAddresses, joyAddresses } = useUser()
   const { chain: connectedEvmChain } = useAccount()
@@ -294,7 +303,10 @@ export const NewTransferCard: FC = () => {
           transferData={transferStep.data}
           transferType={transferType}
           onGoBack={() => setTransferStep({ type: 'form' })}
-          onSuccess={() => setTransferStep({ type: 'form' })}
+          onSuccess={() => {
+            setTransferStep({ type: 'form' })
+            setShowSuccessDialog(true)
+          }}
         />
       )
     }
@@ -308,6 +320,11 @@ export const NewTransferCard: FC = () => {
           onChange={handleTransferTypeChange}
         />
       ) : null}
+      <TransferSuccessDialog
+        open={showSuccessDialog}
+        onClose={() => setShowSuccessDialog(false)}
+      />
+
       <Card>
         <CardHeader>
           <CardTitle>{cardTitle}</CardTitle>
@@ -318,5 +335,79 @@ export const NewTransferCard: FC = () => {
         {getDisplayedContent()}
       </Card>
     </div>
+  )
+}
+
+const TransferSuccessDialog: FC<{ open: boolean; onClose: () => void }> = ({
+  open,
+  onClose,
+}) => {
+  const { data: walletClient } = useWalletClient()
+  const handleAddToWallet = async () => {
+    if (!walletClient) {
+      toast.error('Unexpected error')
+      console.error('No client found')
+      return
+    }
+    const handleError = (error: Error) => {
+      toast.error('Failed to add JOY to your wallet')
+      console.error('Failed to add JOY to your wallet', error)
+    }
+
+    try {
+      const success = await walletClient.request({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: ERC20_ADDRESS,
+            symbol: 'JOY',
+            decimals: 10,
+            image:
+              'https://raw.githubusercontent.com/Joystream/design/refs/heads/master/logo/joystream/logo%20icon/SVG/Icon-mono-white-1bg-blue.svg',
+          },
+        },
+      })
+      if (!success) {
+        handleError(new Error('Failed to add JOY to your wallet'))
+      } else {
+        toast.success('JOY added to your wallet')
+      }
+    } catch (error) {
+      handleError(error as Error)
+    }
+  }
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md" closeable>
+        <DialogHeader>
+          <DialogTitle className="text-center">Transfer requested</DialogTitle>
+          <div className="flex flex-col items-center">
+            <DotLottieReact
+              src="https://lottie.host/e3dcc672-3e03-469d-bf77-f935d9f2cc17/9dIoizkn3h.lottie"
+              loop={false}
+              speed={0.5}
+              autoplay={true}
+              style={{ width: '200px', height: '200px' }}
+            />
+          </div>
+          <DialogDescription className="text-center text-sm text-gray-500">
+            Your funds are on their way. The transaction may take a few days to
+            complete.
+          </DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter className="flex flex-col sm:flex-row sm:justify-center sm:space-x-2">
+          <Button variant="outline" asChild>
+            <Link to="/transfers">View transfers</Link>
+          </Button>
+          {walletClient ? (
+            <Button variant="outline" onClick={handleAddToWallet}>
+              Track JOY in your wallet
+            </Button>
+          ) : null}
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
