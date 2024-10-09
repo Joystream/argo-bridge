@@ -26,7 +26,7 @@ import { useQuery } from '@tanstack/react-query'
 import { FC, ReactNode, useMemo } from 'react'
 import { toast } from 'sonner'
 import { Address } from 'viem'
-import { useWriteContract } from 'wagmi'
+import { useBlockNumber, useReadContract, useWriteContract } from 'wagmi'
 
 export const BridgeStatusTab: FC = () => {
   const { data: configsData, refetch: refetchConfigs } = useBridgeConfigs()
@@ -38,7 +38,7 @@ export const BridgeStatusTab: FC = () => {
   const { userJoyPauser, userEvmPauser, userJoyOperator } = useUser()
   const { api } = useJoyApiContext()
 
-  const { data: lastBlock } = useQuery({
+  const { data: lastJoyBlock } = useQuery({
     queryKey: ['latest joy block'],
     queryFn: async () => {
       if (!api) return
@@ -48,6 +48,25 @@ export const BridgeStatusTab: FC = () => {
     enabled: !!api,
     staleTime: 10000,
   })
+  const { data: currentEvmPeriodMinted } = useReadContract({
+    abi: BridgeAbi,
+    address: BRIDGE_ADDRESS,
+    functionName: 'currentMintingPeriodMinted',
+  })
+  const { data: currentEvmPeriodEndBlock } = useReadContract({
+    abi: BridgeAbi,
+    address: BRIDGE_ADDRESS,
+    functionName: 'currentMintingPeriodEndBlock',
+  })
+  const { data: currentBlock } = useBlockNumber()
+  const currentEvmPeriodTokensLeft =
+    evmConfig && currentEvmPeriodMinted
+      ? evmConfig.mintingLimits.periodLimit - currentEvmPeriodMinted
+      : null
+  const currentEvmPeriodBlocksLeft =
+    currentEvmPeriodEndBlock && currentBlock
+      ? currentEvmPeriodEndBlock - currentBlock
+      : null
 
   const threshold = JOY_NETWORK.opMulti?.threshold || 0
 
@@ -220,9 +239,9 @@ export const BridgeStatusTab: FC = () => {
 
       if (
         joyConfig.status === JoyBridgeStatus.Thawn &&
-        lastBlock &&
+        lastJoyBlock &&
         joyConfig.thawnEndsAtBlock &&
-        lastBlock >= joyConfig.thawnEndsAtBlock
+        lastJoyBlock >= joyConfig.thawnEndsAtBlock
       ) {
         return (
           <Button
@@ -331,6 +350,22 @@ export const BridgeStatusTab: FC = () => {
           <BridgeStatusRow
             label="Minting limits"
             value={`${formatJoy(evmConfig.mintingLimits.periodLimit)} / ${evmConfig.mintingLimits.periodLength} blocks`}
+          />
+          <BridgeStatusRow
+            label="Current period allowance"
+            value={
+              currentEvmPeriodTokensLeft
+                ? formatJoy(currentEvmPeriodTokensLeft)
+                : null
+            }
+          />
+          <BridgeStatusRow
+            label="Current period blocks left"
+            value={
+              currentEvmPeriodBlocksLeft
+                ? currentEvmPeriodBlocksLeft.toString()
+                : null
+            }
           />
           <BridgeStatusRow
             label="Bridge admin"
