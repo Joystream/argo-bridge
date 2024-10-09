@@ -14,15 +14,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { BRIDGE_ADDRESS, EVM_NETWORK, JOY_NETWORK } from '@/config'
+import {
+  BRIDGE_ADDRESS,
+  EVM_NETWORK,
+  JOY_NETWORK,
+  TIMELOCK_ADDRESS,
+} from '@/config'
 import { EvmBridgeStatus, JoyBridgeStatus } from '@/gql/graphql'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
 import { cn, formatEth, formatJoy } from '@/lib/utils'
 import { useJoyApiContext } from '@/providers/joyApi'
 import { useTransaction } from '@/providers/transaction'
 import { useUser } from '@/providers/user/user.hooks'
-import { BridgeAbi, joyAddressCodec } from '@joystream/argo-core'
+import { BridgeAbi, TimelockAbi, joyAddressCodec } from '@joystream/argo-core'
 import { useQuery } from '@tanstack/react-query'
+import { formatDuration, intervalToDuration } from 'date-fns'
 import { FC, ReactNode, useMemo } from 'react'
 import { toast } from 'sonner'
 import { Address } from 'viem'
@@ -70,7 +76,11 @@ export const BridgeStatusTab: FC = () => {
         : evmConfig.mintingLimits.periodLimit - currentEvmPeriodMinted
       : null
 
-  console.log(currentEvmPeriodEndBlock)
+  const { data: timelockDelay } = useReadContract({
+    abi: TimelockAbi,
+    address: TIMELOCK_ADDRESS,
+    functionName: 'getMinDelay',
+  })
 
   const threshold = JOY_NETWORK.opMulti?.threshold || 0
 
@@ -370,6 +380,19 @@ export const BridgeStatusTab: FC = () => {
                 ? currentEvmPeriodBlocksLeft < 0n
                   ? '-'
                   : currentEvmPeriodBlocksLeft.toString()
+                : null
+            }
+          />
+          <BridgeStatusRow
+            label="Timelock delay"
+            value={
+              timelockDelay
+                ? formatDuration(
+                    intervalToDuration({
+                      start: 0,
+                      end: Number(timelockDelay) * 1000,
+                    }),
+                  )
                 : null
             }
           />
