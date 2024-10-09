@@ -1,4 +1,5 @@
 import { ParsedTransferFormData } from './newTransfer.types'
+import { Truncated } from '@/components/Truncated'
 import { Button } from '@/components/ui/button'
 import { CardContent, CardFooter } from '@/components/ui/card'
 import { BRIDGE_ADDRESS, EVM_NETWORK } from '@/config'
@@ -8,7 +9,7 @@ import { buildRequestTransferExtrinsic } from '@/lib/joyExtrinsics'
 import { formatEth, formatJoy } from '@/lib/utils'
 import { useTransaction } from '@/providers/transaction'
 import { BridgeAbi, joyAddressCodec } from '@joystream/argo-core'
-import React, { FC } from 'react'
+import React, { FC, ReactNode } from 'react'
 import { toast } from 'sonner'
 import { Address, isHex } from 'viem'
 import { waitForTransactionReceipt } from 'viem/actions'
@@ -105,7 +106,7 @@ export const NewTransferSummary: FC<NewTransferSummaryProps> = ({
         />
         <SummaryField
           label="Source address"
-          value={transferData.sourceAddress}
+          value={<Truncated value={transferData.sourceAddress} />}
         />
         <SummaryField
           label="Amount"
@@ -113,7 +114,7 @@ export const NewTransferSummary: FC<NewTransferSummaryProps> = ({
         />
         <SummaryField
           label="Destination address"
-          value={transferData.targetAddress}
+          value={<Truncated value={transferData.targetAddress} />}
         />
         <SummaryField
           label="Fee"
@@ -141,7 +142,7 @@ export const NewTransferSummary: FC<NewTransferSummaryProps> = ({
   )
 }
 
-const SummaryField: FC<{ label: string; value: string }> = ({
+const SummaryField: FC<{ label: string; value: ReactNode }> = ({
   label,
   value,
 }) => (
