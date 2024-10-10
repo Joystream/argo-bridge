@@ -1,5 +1,6 @@
 import { JoyApiProvider } from './providers/joyApi'
 import { JoyWalletProvider } from './providers/joyWallet'
+import { Footer } from '@/components/Footer'
 import { TopNav } from '@/components/TopNav'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
@@ -11,12 +12,13 @@ import { FC } from 'react'
 import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 const Layout: FC = () => (
-  <>
+  <div className="flex flex-col min-h-screen">
     <TopNav />
-    <main className="px-4 pb-6 sm:px-6 lg:px-8 mt-[20px] sm:mt-[40px] md:mt-[80px]">
+    <main className="flex-grow px-4 pb-6 sm:px-6 lg:px-8 mt-[10px] sm:mt-[10px] md:mt-[20px]">
       <Outlet />
     </main>
-  </>
+    <Footer />
+  </div>
 )
 
 const router = createBrowserRouter([
