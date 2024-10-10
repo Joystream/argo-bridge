@@ -13,6 +13,7 @@ import { BridgeTransfer } from '@/lib/transfer'
 import { formatJoy } from '@/lib/utils'
 import { ALL_NETWORKS } from '@joystream/argo-core'
 import { createColumnHelper } from '@tanstack/react-table'
+import { formatDistanceToNow } from 'date-fns'
 import { EllipsisVertical } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { match } from 'ts-pattern'
@@ -62,14 +63,25 @@ export const transfersTableColumns = [
     header: 'ID',
   }),
   columnHelper.accessor('status', {
+    id: 'status',
     header: 'Status',
-    cell: ({ cell: { getValue } }) => {
-      const status = getValue()
+    cell: ({ row }) => {
+      const { status, createdAtTimestamp, completedAtTimestamp } = row.original
+      const date =
+        status === BridgeTransferStatus.Completed
+          ? completedAtTimestamp!
+          : createdAtTimestamp
+      const relativeTime = formatDistanceToNow(date, {
+        addSuffix: true,
+      }).replace('about ', '')
+
       return match(status)
-        .with(BridgeTransferStatus.Requested, () => 'Requested')
-        .with(BridgeTransferStatus.Completed, () => 'Completed')
-        .with(BridgeTransferStatus.Reverted, () => 'Reverted')
-        .otherwise(() => <span className="text-destructive">Unknown!</span>)
+        .with(BridgeTransferStatus.Requested, () => `Requested ${relativeTime}`)
+        .with(BridgeTransferStatus.Completed, () => `Completed ${relativeTime}`)
+        .with(BridgeTransferStatus.Reverted, () => `Reverted ${relativeTime}`)
+        .otherwise(() => (
+          <span className="text-destructive">Unknown! {relativeTime}</span>
+        ))
     },
   }),
   columnHelper.accessor('sourceChainId', {
