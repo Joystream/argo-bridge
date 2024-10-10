@@ -7,16 +7,74 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { EVM_NETWORK, JOY_NETWORK } from '@/config'
+import {
+  ARGO_INDEXER_URL,
+  BRIDGE_ADDRESS,
+  EVM_NETWORK,
+  JOY_NETWORK,
+} from '@/config'
 import { BridgeTransferStatus, BridgeTransferType } from '@/gql/graphql'
-import { BridgeTransfer } from '@/lib/transfer'
+import { BridgeTransfer, parseTransfer } from '@/lib/transfer'
 import { formatJoy } from '@/lib/utils'
-import { ALL_NETWORKS } from '@joystream/argo-core'
+import { usePendingOperatorCallsQuery } from '@/providers/safe/safe.hooks'
+import { useSafeStore } from '@/providers/safe/safe.store'
+import { getTransfersDocument } from '@/queries/transfers'
+import { ALL_NETWORKS, BridgeAbi } from '@joystream/argo-core'
+import { SafeMultisigTransactionResponse } from '@safe-global/safe-core-sdk-types'
+import { UseQueryResult, useQuery } from '@tanstack/react-query'
 import { createColumnHelper } from '@tanstack/react-table'
 import { formatDistanceToNow } from 'date-fns'
+import { request } from 'graphql-request'
 import { EllipsisVertical } from 'lucide-react'
+import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 import { match } from 'ts-pattern'
+import { encodeFunctionData } from 'viem'
+
+export function addSafeCallToTransfers(
+  transfers: BridgeTransfer[],
+  pendingOpSafeCalls: SafeMultisigTransactionResponse[],
+): BridgeTransfer[] {
+  if (!pendingOpSafeCalls) return transfers
+
+  return transfers.map((transfer) => {
+    if (transfer.type !== BridgeTransferType.JoyToEvm) return transfer
+
+    const bridgeCalls = pendingOpSafeCalls.filter(
+      (call) => call.to === BRIDGE_ADDRESS,
+    )
+    const completeTransferCalldata = encodeFunctionData({
+      abi: BridgeAbi,
+      functionName: 'completeTransferToEth',
+      args: [transfer.sourceTransferId, transfer.destAccount, transfer.amount],
+    })
+    const pendingSafeCall = bridgeCalls.find(
+      (call) => call.data === completeTransferCalldata,
+    )
+    return { ...transfer, safeCall: pendingSafeCall }
+  })
+}
+
+export function useTransfersQuery(): UseQueryResult<BridgeTransfer[]> {
+  const { safeApiKit } = useSafeStore()
+  const { data: pendingOpSafeCalls } = usePendingOperatorCallsQuery(safeApiKit)
+
+  const query = useQuery({
+    queryKey: ['transfers'],
+    queryFn: async () => {
+      const data = await request(ARGO_INDEXER_URL, getTransfersDocument, {})
+      return data.bridgeTransfers.map(parseTransfer)
+    },
+  })
+
+  const transfersWithSafeCalls = useMemo(() => {
+    if (!query.data) return query.data
+    if (!pendingOpSafeCalls) return query.data
+    return addSafeCallToTransfers(query.data, pendingOpSafeCalls.results)
+  }, [query.data, pendingOpSafeCalls])
+
+  return { ...query, data: transfersWithSafeCalls } as typeof query
+}
 
 const columnHelper = createColumnHelper<BridgeTransfer>()
 
@@ -120,6 +178,17 @@ export const transfersTableColumns = [
       const formatted = formatJoy(getValue())
       return <div className="text-right">{formatted}</div>
     },
+  }),
+  columnHelper.accessor((row) => row.safeCall?.nonce, {
+    id: 'safeCall.nonce',
+    header: () => <div className="text-right">Nonce</div>,
+    cell: ({ cell: { getValue } }) => {
+      const nonce = getValue()
+      return (
+        <div className="text-right">{nonce !== undefined ? nonce : '—'}</div>
+      )
+    },
+    enableColumnFilter: false, // Disable filtering for this column
   }),
   columnHelper.display({
     id: 'more',

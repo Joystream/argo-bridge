@@ -3,6 +3,7 @@ import {
   BridgeTransferType,
   GetTransfersQuery,
 } from '@/gql/graphql'
+import { SafeMultisigTransactionResponse } from '@safe-global/safe-core-sdk-types'
 import * as dn from 'dnum'
 import { Hex } from 'viem'
 
@@ -25,6 +26,7 @@ export type BridgeTransfer = {
   amountDn: dn.Dnum
   feePaid: bigint
   feePaidDn: dn.Dnum
+  safeCall?: SafeMultisigTransactionResponse
 }
 
 export function parseTransfer(

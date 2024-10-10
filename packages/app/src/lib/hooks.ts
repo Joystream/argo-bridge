@@ -1,12 +1,10 @@
 import { ARGO_INDEXER_URL, EVM_NETWORK } from '@/config'
 import { EvmTimelockOperationOrderByInput } from '@/gql/graphql'
 import { parseSafeOperations, parseTimelockOperations } from '@/lib/proposal'
-import { parseTransfer } from '@/lib/transfer'
 import { isJoyAddress } from '@/lib/utils'
 import { useJoyApiContext } from '@/providers/joyApi'
 import { useSafeStore } from '@/providers/safe/safe.store'
 import { getTimelockOperationsQueryDocument } from '@/queries/timelockOperations'
-import { getTransfersDocument } from '@/queries/transfers'
 import { useQuery } from '@tanstack/react-query'
 import { Dnum } from 'dnum'
 import request from 'graphql-request'
@@ -23,16 +21,6 @@ export function useJoyBalanceQuery(address: string) {
       return [balance.data.free.toBigInt(), 10]
     },
     enabled: isValid && !!api,
-  })
-}
-
-export function useTransfersQuery() {
-  return useQuery({
-    queryKey: ['transfers'],
-    queryFn: async () => {
-      const data = await request(ARGO_INDEXER_URL, getTransfersDocument, {})
-      return data.bridgeTransfers.map(parseTransfer)
-    },
   })
 }
 

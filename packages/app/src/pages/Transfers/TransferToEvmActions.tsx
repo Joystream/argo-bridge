@@ -1,3 +1,4 @@
+import { useTransfersQuery } from './transfers.shared'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import {
   Tooltip,
@@ -7,7 +8,6 @@ import {
 import { BRIDGE_ADDRESS, EVM_NETWORK } from '@/config'
 import { BridgeTransferStatus } from '@/gql/graphql'
 import { useBridgeConfigs } from '@/lib/bridgeConfig'
-import { useTransfersQuery } from '@/lib/hooks'
 import { BridgeTransfer } from '@/lib/transfer'
 import { usePendingOperatorCallsQuery } from '@/providers/safe/safe.hooks'
 import { useSafeStore } from '@/providers/safe/safe.store'

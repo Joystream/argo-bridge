@@ -1,4 +1,8 @@
-import { NETWORKS_NAME_LOOKUP, statusFilterOptions } from './transfers.shared'
+import {
+  NETWORKS_NAME_LOOKUP,
+  statusFilterOptions,
+  useTransfersQuery,
+} from './transfers.shared'
 import { EvmTxLink } from '@/components/EvmTxLink'
 import { JoyTxLink } from '@/components/JoyTxLink'
 import { LinkBadge } from '@/components/LinkBadge'
@@ -11,45 +15,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { BRIDGE_ADDRESS } from '@/config'
 import { BridgeTransferStatus, BridgeTransferType } from '@/gql/graphql'
-import { useTransfersQuery } from '@/lib/hooks'
 import { formatEth, formatJoy, truncateValue } from '@/lib/utils'
-import { usePendingOperatorCallsQuery } from '@/providers/safe/safe.hooks'
-import { useSafeStore } from '@/providers/safe/safe.store'
-import { BridgeAbi } from '@joystream/argo-core'
 import { FC, ReactNode, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { encodeFunctionData } from 'viem'
 
 export const TransferDetails: FC = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { safeApiKit } = useSafeStore()
 
   const { data, isLoading } = useTransfersQuery()
   const transfer = data?.find((t) => t.id === id)
-
-  const { data: pendingCalls } = usePendingOperatorCallsQuery(safeApiKit)
-  const getPendingEvmApproval = () => {
-    if (
-      !transfer ||
-      transfer.type !== BridgeTransferType.JoyToEvm ||
-      !pendingCalls
-    ) {
-      return
-    }
-    const bridgeCalls = pendingCalls.results.filter(
-      (call) => call.to === BRIDGE_ADDRESS,
-    )
-    const completeTransferCalldata = encodeFunctionData({
-      abi: BridgeAbi,
-      functionName: 'completeTransferToEth',
-      args: [transfer.sourceTransferId, transfer.destAccount, transfer.amount],
-    })
-    return bridgeCalls.find((call) => call.data === completeTransferCalldata)
-  }
-  const pendingEvmApproval = getPendingEvmApproval()
 
   const getContent = () => {
     if (isLoading) return <span>Loading...</span>
@@ -58,21 +34,21 @@ export const TransferDetails: FC = () => {
     const sourceNetwork = NETWORKS_NAME_LOOKUP[transfer.sourceChainId]
     const destNetwork = NETWORKS_NAME_LOOKUP[transfer.destChainId]
 
-    const pendingRows = pendingEvmApproval ? (
+    const pendingRows = transfer.safeCall ? (
       <>
         <TransferDetailsRow
           label="Safe TX"
           value={
             <LinkBadge
-              fullText={pendingEvmApproval.safeTxHash}
-              label={truncateValue(pendingEvmApproval.safeTxHash)}
-              href={`https://app.safe.global/transactions/tx?safe=base:${pendingEvmApproval.safe}&id=${['multisig', pendingEvmApproval.safe, pendingEvmApproval.safeTxHash].join('_')}`}
+              fullText={transfer.safeCall.safeTxHash}
+              label={truncateValue(transfer.safeCall.safeTxHash)}
+              href={`https://app.safe.global/transactions/tx?safe=base:${transfer.safeCall.safe}&id=${['multisig', transfer.safeCall.safe, transfer.safeCall.safeTxHash].join('_')}`}
             />
           }
         />
         <TransferDetailsRow
           label="Safe nonce"
-          value={pendingEvmApproval.nonce}
+          value={transfer.safeCall.nonce}
         />
       </>
     ) : null

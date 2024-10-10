@@ -1,4 +1,8 @@
-import { toChainFilterOptions, transfersTableColumns } from './transfers.shared'
+import {
+  toChainFilterOptions,
+  transfersTableColumns,
+  useTransfersQuery,
+} from './transfers.shared'
 import { DataTablePagination } from '@/components/DataTablePagination'
 import { Button } from '@/components/ui/button'
 import {
@@ -21,7 +25,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { BridgeTransferStatus } from '@/gql/graphql'
-import { useTransfersQuery } from '@/lib/hooks'
 import { BridgeTransfer } from '@/lib/transfer'
 import { statusFilterOptions } from '@/pages/Transfers/transfers.shared'
 import { useUser } from '@/providers/user/user.hooks'
@@ -48,14 +51,15 @@ const getBorderColorClass = (createdAt: Date) => {
 }
 
 export const TransfersTable: FC = () => {
-  const query = useTransfersQuery()
-
+  const transfersQuery = useTransfersQuery()
+  const { userEvmOperator } = useUser()
   const { joyAddresses, evmAddresses } = useUser()
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [showOnlyMyTransfers, setShowOnlyMyTransfers] = useState(false)
 
-  const visibleTransfers = useMemo(() => {
-    if (!showOnlyMyTransfers) return query.data || []
+  const tableData = useMemo(() => {
+    if (!transfersQuery.data) return []
+    if (!showOnlyMyTransfers) return transfersQuery.data
 
     const userAddressesLookup = [
       ...joyAddresses,
@@ -68,19 +72,27 @@ export const TransfersTable: FC = () => {
       {} as Record<string, boolean>,
     )
 
-    return (
-      query.data?.filter((transfer) => {
-        return (
-          userAddressesLookup[transfer.sourceAccount.toLowerCase()] ||
-          userAddressesLookup[transfer.destAccount.toLowerCase()]
-        )
-      }) || []
+    return transfersQuery.data.filter((transfer) => {
+      return (
+        userAddressesLookup[transfer.sourceAccount.toLowerCase()] ||
+        userAddressesLookup[transfer.destAccount.toLowerCase()]
+      )
+    })
+  }, [transfersQuery.data, showOnlyMyTransfers, joyAddresses, evmAddresses])
+
+  const columns = useMemo(() => {
+    if (userEvmOperator) return transfersTableColumns
+
+    return transfersTableColumns.filter(
+      (column) => column.id !== 'safeCall.nonce',
     )
-  }, [query.data, showOnlyMyTransfers, joyAddresses, evmAddresses])
+  }, [userEvmOperator])
+
+  console.log('userEvmOperator', userEvmOperator)
 
   const table = useReactTable({
-    data: visibleTransfers,
-    columns: transfersTableColumns,
+    data: tableData,
+    columns: columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
@@ -260,14 +272,14 @@ export const TransfersTable: FC = () => {
                   colSpan={transfersTableColumns.length}
                   className="h-24 text-center"
                 >
-                  {query.isLoading ? 'Loading...' : 'No results.'}
+                  {transfersQuery.isLoading ? 'Loading...' : 'No results.'}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} query={query} />
+      <DataTablePagination table={table} query={transfersQuery} />
     </div>
   )
 }
