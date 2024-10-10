@@ -20,6 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { BridgeTransferStatus } from '@/gql/graphql'
 import { useTransfersQuery } from '@/lib/hooks'
 import { BridgeTransfer } from '@/lib/transfer'
 import { statusFilterOptions } from '@/pages/Transfers/transfers.shared'
@@ -33,8 +34,18 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import clsx from 'clsx'
 import { FilterIcon, XIcon } from 'lucide-react'
 import { FC, useMemo, useState } from 'react'
+
+const getBorderColorClass = (createdAt: Date) => {
+  const now = new Date()
+  const diffInDays = (now.getTime() - createdAt.getTime()) / (1000 * 3600 * 24)
+  if (diffInDays < 1) return 'border-l-green-500'
+  if (diffInDays < 2) return 'border-l-yellow-500'
+  if (diffInDays < 3) return 'border-l-orange-500'
+  return 'border-l-red-500'
+}
 
 export const TransfersTable: FC = () => {
   const query = useTransfersQuery()
@@ -226,6 +237,12 @@ export const TransfersTable: FC = () => {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  className={clsx(
+                    'border-l-4',
+                    row.original.status === BridgeTransferStatus.Requested
+                      ? getBorderColorClass(row.original.createdAtTimestamp)
+                      : 'border-l-primary-foreground',
+                  )}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
