@@ -1,3 +1,4 @@
+import { ChangeDelay } from './ChangeDelay'
 import { ChangeEvmFee } from './ChangeEvmFee'
 import { ChangeEvmLimits } from './ChangeEvmLimits'
 import { SwapEvmAdmin } from './SwapEvmAdmin'
@@ -20,7 +21,7 @@ import {
 import { AddEvmPauser } from '@/pages/Governance/new-proposal/AddEvmPauser'
 import { RevokeEvmPauser } from '@/pages/Governance/new-proposal/RevokeEvmPauser'
 import { UnpauseEvm } from '@/pages/Governance/new-proposal/UnpauseEvm'
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 
 const selectOptions = [
   {
@@ -32,6 +33,11 @@ const selectOptions = [
     label: 'Change minting limits',
     value: 'change-evm-limits',
     component: ChangeEvmLimits,
+  },
+  {
+    label: 'Change timelock delay',
+    value: 'change-timelock-delay',
+    component: ChangeDelay,
   },
   {
     label: 'Add pauser role',
