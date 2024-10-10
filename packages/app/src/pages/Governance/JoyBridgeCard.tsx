@@ -214,53 +214,70 @@ export const JoyBridgeCard: FC<{
       <CardHeader>
         <CardTitle>Joystream bridge</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-2">
-        <BridgeStatusRow label="ID" value={joyConfig.id} />
-        <BridgeStatusRow label="Status" value={getJoyBridgeStatus()} />
-        <BridgeStatusRow
-          label="Transfer fee"
-          value={formatJoy(joyConfig.bridgingFee)}
-        />
-        <BridgeStatusRow
-          label="Total burnt"
-          value={formatJoy(joyConfig.totalBurned)}
-        />
-        <BridgeStatusRow
-          label="Total minted"
-          value={formatJoy(joyConfig.totalMinted)}
-        />
-        <BridgeStatusRow
-          label="Total fees burnt"
-          value={formatJoy(joyConfig.feesBurned)}
-        />
-        <BridgeStatusRow
-          label="Mint allowance"
-          value={formatJoy(joyConfig.mintAllowance)}
-        />
-        <BridgeStatusRow
-          label="Operator multisig"
-          value={renderAddresses([joyConfig.operatorAccount])}
-        />
-        {JOY_NETWORK.opMulti && (
-          <BridgeStatusRow
-            label="Operator signers"
-            value={
-              <AddressesDialog
-                label="Joystream operator signers"
-                addresses={JOY_NETWORK.opMulti.signers}
-              />
-            }
-          />
-        )}
-        <BridgeStatusRow
-          label="Pausers"
-          value={
-            <AddressesDialog
-              label="Joystream pausers"
-              addresses={joyConfig.pauserAccounts}
+      <CardContent className="flex flex-col gap-4">
+        <div>
+          <h3 className="text-lg font-semibold mb-2">General information</h3>
+          <div className="space-y-2">
+            <BridgeStatusRow label="Chain ID" value={joyConfig.id} />
+            <BridgeStatusRow label="Status" value={getJoyBridgeStatus()} />
+            <BridgeStatusRow
+              label="Transfer fee"
+              value={formatJoy(joyConfig.bridgingFee)}
             />
-          }
-        />
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Stats</h3>
+          <div className="space-y-2">
+            <BridgeStatusRow
+              label="Total burnt"
+              value={formatJoy(joyConfig.totalBurned)}
+            />
+            <BridgeStatusRow
+              label="Total minted"
+              value={formatJoy(joyConfig.totalMinted)}
+            />
+            <BridgeStatusRow
+              label="Total fees burnt"
+              value={formatJoy(joyConfig.feesBurned)}
+            />
+            <BridgeStatusRow
+              label="Mint allowance"
+              value={formatJoy(joyConfig.mintAllowance)}
+            />
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Governance</h3>
+          <div className="space-y-2">
+            <BridgeStatusRow
+              label="Operator multisig"
+              value={renderAddresses([joyConfig.operatorAccount])}
+            />
+            {JOY_NETWORK.opMulti && (
+              <BridgeStatusRow
+                label="Operator signers"
+                value={
+                  <AddressesDialog
+                    label="Joystream operator signers"
+                    addresses={JOY_NETWORK.opMulti.signers}
+                  />
+                }
+              />
+            )}
+            <BridgeStatusRow
+              label="Pausers"
+              value={
+                <AddressesDialog
+                  label="Joystream pausers"
+                  addresses={joyConfig.pauserAccounts}
+                />
+              }
+            />
+          </div>
+        </div>
       </CardContent>
       <CardFooter>{renderActions()}</CardFooter>
     </Card>

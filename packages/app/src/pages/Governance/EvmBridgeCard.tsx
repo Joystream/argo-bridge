@@ -96,92 +96,119 @@ export const EvmBridgeCard: FC<{
       <CardHeader>
         <CardTitle>Base bridge</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-2">
-        <BridgeStatusRow label="ID" value={evmConfig.id} />
-        <BridgeStatusRow label="Status" value={getEvmBridgeStatus()} />
-        <BridgeStatusRow
-          label="Transfer fee"
-          value={formatEth(evmConfig.bridgingFee)}
-        />
-        <BridgeStatusRow
-          label="Total burnt"
-          value={formatJoy(evmConfig.totalBurned)}
-        />
-        <BridgeStatusRow
-          label="Total minted"
-          value={formatJoy(evmConfig.totalMinted)}
-        />
-        <BridgeStatusRow
-          label="Minting limits"
-          value={`${formatJoy(evmConfig.mintingLimits.periodLimit)} / ${evmConfig.mintingLimits.periodLength} blocks`}
-        />
-        <BridgeStatusRow
-          label="Current period allowance"
-          value={
-            currentEvmPeriodTokensLeft
-              ? formatJoy(currentEvmPeriodTokensLeft)
-              : null
-          }
-        />
-        <BridgeStatusRow
-          label="Next period starts in"
-          value={
-            currentEvmPeriodBlocksLeft
-              ? currentEvmPeriodBlocksLeft < 0n
-                ? 'Ready'
-                : formatDurationBaseBlocks(Number(currentEvmPeriodBlocksLeft))
-              : null
-          }
-        />
-        <BridgeStatusRow
-          label="Timelock delay"
-          value={
-            timelockDelay ? formatDurationSeconds(Number(timelockDelay)) : null
-          }
-        />
-        <BridgeStatusRow
-          label="Bridge admin"
-          value={renderAddresses(evmConfig.bridgeAdminAccounts)}
-        />
-        <BridgeStatusRow
-          label="Operator multisig"
-          value={renderAddresses(evmConfig.bridgeOperatorAccounts)}
-        />
-        <BridgeStatusRow
-          label="Admin multisig"
-          value={renderAddresses(evmConfig.timelockAdminAccounts)}
-        />
-        {EVM_NETWORK.opMulti && (
-          <BridgeStatusRow
-            label="Operator signers"
-            value={
-              <AddressesDialog
-                label="Base operator signers"
-                addresses={EVM_NETWORK.opMulti.signers}
-              />
-            }
-          />
-        )}
-        {EVM_NETWORK.adminMulti && (
-          <BridgeStatusRow
-            label="Admin signers"
-            value={
-              <AddressesDialog
-                label="Base admin signers"
-                addresses={EVM_NETWORK.adminMulti.signers}
-              />
-            }
-          />
-        )}
-        <BridgeStatusRow
-          label="Pausers"
-          value={
-            <AddressesDialog
-              label="Base pausers"
-              addresses={evmConfig.pauserAccounts}
+      <CardContent className="flex flex-col gap-4">
+        <div>
+          <h3 className="text-lg font-semibold mb-2">General information</h3>
+          <div className="space-y-2">
+            <BridgeStatusRow label="Chain ID" value={evmConfig.id} />
+            <BridgeStatusRow label="Status" value={getEvmBridgeStatus()} />
+            <BridgeStatusRow
+              label="Transfer fee"
+              value={formatEth(evmConfig.bridgingFee)}
             />
-          }
-        />
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Stats</h3>
+          <div className="space-y-2">
+            <BridgeStatusRow
+              label="Total burnt"
+              value={formatJoy(evmConfig.totalBurned)}
+            />
+            <BridgeStatusRow
+              label="Total minted"
+              value={formatJoy(evmConfig.totalMinted)}
+            />
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Minting limits</h3>
+          <div className="space-y-2">
+            <BridgeStatusRow
+              label="Current limit"
+              value={`${formatJoy(evmConfig.mintingLimits.periodLimit)} / ${evmConfig.mintingLimits.periodLength} blocks`}
+            />
+            <BridgeStatusRow
+              label="Current period allowance"
+              value={
+                currentEvmPeriodTokensLeft
+                  ? formatJoy(currentEvmPeriodTokensLeft)
+                  : null
+              }
+            />
+            <BridgeStatusRow
+              label="Next period starts in"
+              value={
+                currentEvmPeriodBlocksLeft
+                  ? currentEvmPeriodBlocksLeft < 0n
+                    ? 'Ready'
+                    : formatDurationBaseBlocks(
+                        Number(currentEvmPeriodBlocksLeft),
+                      )
+                  : null
+              }
+            />
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Governance</h3>
+          <div className="space-y-2">
+            <BridgeStatusRow
+              label="Timelock delay"
+              value={
+                timelockDelay
+                  ? formatDurationSeconds(Number(timelockDelay))
+                  : null
+              }
+            />
+            <BridgeStatusRow
+              label="Bridge admin"
+              value={renderAddresses(evmConfig.bridgeAdminAccounts)}
+            />
+            <BridgeStatusRow
+              label="Operator multisig"
+              value={renderAddresses(evmConfig.bridgeOperatorAccounts)}
+            />
+            <BridgeStatusRow
+              label="Admin multisig"
+              value={renderAddresses(evmConfig.timelockAdminAccounts)}
+            />
+            {EVM_NETWORK.opMulti && (
+              <BridgeStatusRow
+                label="Operator signers"
+                value={
+                  <AddressesDialog
+                    label="Base operator signers"
+                    addresses={EVM_NETWORK.opMulti.signers}
+                  />
+                }
+              />
+            )}
+            {EVM_NETWORK.adminMulti && (
+              <BridgeStatusRow
+                label="Admin signers"
+                value={
+                  <AddressesDialog
+                    label="Base admin signers"
+                    addresses={EVM_NETWORK.adminMulti.signers}
+                  />
+                }
+              />
+            )}
+            <BridgeStatusRow
+              label="Pausers"
+              value={
+                <AddressesDialog
+                  label="Base pausers"
+                  addresses={evmConfig.pauserAccounts}
+                />
+              }
+            />
+          </div>
+        </div>
       </CardContent>
       {evmConfig.status === EvmBridgeStatus.Active && userEvmPauser && (
         <CardFooter>
