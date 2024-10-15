@@ -88,8 +88,6 @@ export const TransfersTable: FC = () => {
     )
   }, [userEvmOperator])
 
-  console.log('userEvmOperator', userEvmOperator)
-
   const table = useReactTable({
     data: tableData,
     columns: columns,
