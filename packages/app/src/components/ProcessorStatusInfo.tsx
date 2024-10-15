@@ -36,9 +36,24 @@ async function getProcessorStatusInfo(
   const joyDiff =
     latestJoyBlock.number.toNumber() - processorStatus.joyProcessorStatus.height
 
+  const evmInSync = evmDiff <= EVM_OUT_OF_SYNC_THRESHOLD
+  const joyInSync = joyDiff <= JOY_OUT_OF_SYNC_THRESHOLD
+
+  if (!evmInSync) {
+    console.warn(
+      `Base processor is out of sync by ${evmDiff} blocks. RPC block: ${latestEvmBlock}, processor block: ${processorStatus.baseProcessorStatus.height}`,
+    )
+  }
+
+  if (!joyInSync) {
+    console.warn(
+      `Joystream processor is out of sync by ${joyDiff} blocks. RPC block: ${latestJoyBlock.number.toNumber()}, processor block: ${processorStatus.joyProcessorStatus.height}`,
+    )
+  }
+
   return {
-    evmInSync: evmDiff <= EVM_OUT_OF_SYNC_THRESHOLD,
-    joyInSync: joyDiff <= JOY_OUT_OF_SYNC_THRESHOLD,
+    evmInSync,
+    joyInSync,
   }
 }
 
