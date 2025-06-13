@@ -6,13 +6,13 @@ import { isAddress } from 'viem'
 import { useConfig } from 'wagmi'
 
 const knownSigners = {
-  j4rxspbqxnje2ybkbxqsvrzx8zwjpehadevnyrawic4i22art: 'leet_joy',
+  j4ubmt3funxxkh24pyqebwyg7ggkjj8wpqbjwuk5jjuwnyrvo: 'leet_joy',
   j4u3vjtyw3f4au2uvvr6hl264pjkfkmguygmtejdjhqfgjtco: 'klaudiusz',
-  j4sbzarjmedzccfzfktxpqz7uldsz3uyt3vfqivsdfeghcpgf: '0x2bc',
-  j4w2ls9mxl5kqmpg5dnjgozankhrgrthsgcyp42gfxcykrv5s: 'tomato',
+  j4stut1njqd5rtvjgfx1klgd9bn27pzbd7kumdwjmd6yez6cf: '0x2bc',
   j4rk5azus8jsxdjr8e33d5egofwdfvk7zu26zjebwq7lu3ldb: 'freakstatic',
-  j4wdpywnvexfjh7wyfjrtvj8dvt9mjdedhoa57a2kcsngvtf2: 'sieemma',
   j4vtgdn3jpp5yidvvynasmsufe3e5dhqjc4gd6t6cdgdrgwas: 'marat_mu',
+  j4un3gxw44e6ncwextapa57gpegfjpu9fvf1p9ww1oa7gnhay: 'lezek',
+  j4rhy9ctyqpx2bgl1qptqan6plcvwr9kl1l96dua6ucnr3w4z: 'Codefikeyz',
   '0x34591a1e3f6394208fef7ef433c89f1d793d8d8d': 'klaudiusz',
   '0xf2052f276d33e4b6655aa193e5bd1cc9cc3f1b00': 'leet_joy',
   '0xaa709d6b0c4e0f10cb49203dcd7442e5626cbd53': 'tomato',
