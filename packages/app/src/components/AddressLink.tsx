@@ -58,7 +58,7 @@ export const AddressLink: FC<{ address: string }> = ({ address }) => {
       if (!explorer) return
       return `${explorer.url}/address/${address}`
     } else if (JOY_NETWORK.name === 'Joystream') {
-      return `https://joystream.subscan.io/account/${address}`
+      return `https://explorer.joystream.org/#/accounts/${address}`
     }
   }
 
